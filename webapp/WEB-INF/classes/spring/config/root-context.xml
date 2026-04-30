@@ -12,10 +12,12 @@
         http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
         http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd">
 
-    <!-- 스케줄러 및 비동기 처리 -->
+    <!-- 스케줄러 비활성화 (EzInOutScheduler 제거됨) -->
+    <!--
     <task:annotation-driven scheduler="scheduler" executor="executor"/>
     <task:scheduler id="scheduler" pool-size="4"/>
     <task:executor id="executor" keep-alive="10" pool-size="10-20" queue-capacity="10" rejection-policy="ABORT"/>
+    -->
     <context:property-placeholder location="classpath:solapi.properties" ignore-resource-not-found="true"/>
 
     <!-- MariaDB DataSource -->

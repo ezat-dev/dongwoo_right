@@ -111,7 +111,7 @@
 <div class="page-wrap">
   <div class="page-header">
     <div>
-      <div class="page-title">통신 모니터링</div>
+      <div class="page-title">통신 모니터링ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ</div>
       <div class="page-sub" id="subTitle">PLC 목록 로딩 중…</div>
     </div>
     <div style="display:flex;gap:8px;align-items:center">
@@ -121,7 +121,7 @@
   </div>
 
   <div class="summary-bar">
-    <div class="summary-chip"><div class="chip-dot chip-dot-ok"></div>정상 <strong id="cntOk">0</strong>대</div>
+    <div class="summary-chip"><div class="chip-dot chip-dot-ok"></div>정상1111 <strong id="cntOk">0</strong>대</div>
     <div class="summary-chip"><div class="chip-dot chip-dot-warn"></div>경고 <strong id="cntWarn">0</strong>대</div>
     <div class="summary-chip"><div class="chip-dot chip-dot-alarm"></div>오류 <strong id="cntAlarm">0</strong>대</div>
     <div class="summary-chip"><div class="chip-dot chip-dot-off"></div>오프라인 <strong id="cntOff">0</strong>대</div>
@@ -156,40 +156,47 @@ function fetchList(){
     .catch(function(){ plcList = []; });
 }
 
-/* 단일 폴링 */
-function pollOne(plc){
-  var id = plc.plcId || plc.plc_id || plc.id;
-  var t0 = Date.now();
-  return fetch(base+'/plc/read/'+encodeURIComponent(id)+'?start=10000&count=4')
-    .then(function(r){ return r.json(); })
-    .then(function(d){
-      var rtt = Date.now() - t0;
-      if(!uptimeBuf[id]) uptimeBuf[id] = [];
-      if(!rttBuf[id])    rttBuf[id]    = [];
-      if(d && d.success){
-        uptimeBuf[id].push(1);
-        rttBuf[id].push(rtt);
-        plcState[id] = { status:'ok', lastOk:new Date(), error:'', rtt:rtt };
-      } else {
-        uptimeBuf[id].push(0);
-        plcState[id] = { status:'alarm', lastOk:(plcState[id]||{}).lastOk||null, error:(d&&d.error)||'응답 오류', rtt:rtt };
-      }
-      if(uptimeBuf[id].length > 20) uptimeBuf[id].shift();
-      if(rttBuf[id].length > 20)    rttBuf[id].shift();
-    })
-    .catch(function(e){
-      if(!uptimeBuf[id]) uptimeBuf[id] = [];
-      uptimeBuf[id].push(0);
-      if(uptimeBuf[id].length > 20) uptimeBuf[id].shift();
-      plcState[id] = { status:'off', lastOk:(plcState[id]||{}).lastOk||null, error:e.message||'연결 실패', rtt:null };
-    });
-}
-
+/* 전체 PLC 상태 일괄 조회 — C# API 직접 호출 (새 TCP 연결 없음) */
 function pollAll(){
   if(!plcList.length) return Promise.resolve();
-  return plcList.reduce(function(chain, plc){
-    return chain.then(function(){ return pollOne(plc).then(renderGrid); });
-  }, Promise.resolve());
+  var csBase = 'http://'+location.hostname+':5050';
+  var t0 = Date.now();
+  return fetch(csBase+'/api/plc/status-all')
+    .then(function(r){ return r.json(); })
+    .then(function(statuses){
+      var rtt = Date.now()-t0;
+      var idMap = {};
+      (statuses||[]).forEach(function(s){ idMap[s.id]=s; });
+      plcList.forEach(function(plc){
+        var id = plc.plcId||plc.plc_id||plc.id;
+        if(!uptimeBuf[id]) uptimeBuf[id]=[];
+        if(!rttBuf[id])    rttBuf[id]=[];
+        var s = idMap[id];
+        if(s && s.ok){
+          uptimeBuf[id].push(1);
+          rttBuf[id].push(rtt);
+          plcState[id]={status:'ok',lastOk:new Date(),error:'',rtt:rtt};
+        } else {
+          uptimeBuf[id].push(0);
+          plcState[id]={status:'alarm',lastOk:(plcState[id]||{}).lastOk||null,
+                        error:(s&&s.message)||'통신 없음',rtt:null};
+        }
+        if(uptimeBuf[id].length>20) uptimeBuf[id].shift();
+        if(rttBuf[id].length>20)    rttBuf[id].shift();
+      });
+      renderGrid();
+    })
+    .catch(function(e){
+      plcList.forEach(function(plc){
+        var id=plc.plcId||plc.plc_id||plc.id;
+        if(!uptimeBuf[id]) uptimeBuf[id]=[];
+        uptimeBuf[id].push(0);
+        if(uptimeBuf[id].length>20) uptimeBuf[id].shift();
+        plcState[id]={status:'off',lastOk:(plcState[id]||{}).lastOk||null,
+                      error:'C# API 연결 실패',rtt:null};
+      });
+      renderGrid();
+    });
 }
 
 /* 렌더링 */

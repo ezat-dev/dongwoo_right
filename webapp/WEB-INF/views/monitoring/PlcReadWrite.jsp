@@ -206,6 +206,59 @@ select.plc-inp { cursor: pointer; width: 200px; color: #00FF88; border-color: #0
 .btn-cl { background:transparent; border:1px solid #1A3A5C; color:#2A4A6A; font-family:'Consolas',monospace; font-size:9px; padding:2px 6px; cursor:pointer; border-radius:2px; }
 .btn-cl:hover { border-color:#FF4466; color:#FF4466; }
 
+/* ══ 비트 패널 ══ */
+.bit-panel-wrap { background:#0D1128; border:1px solid #1A3A5C; border-radius:4px; flex-shrink:0; }
+.bit-panel-head {
+  display:flex; align-items:center; gap:8px; padding:8px 14px;
+  border-bottom:1px solid #0D1A2E; font-size:10px; font-weight:bold; letter-spacing:1px;
+}
+.bit-cards { display:flex; flex-wrap:wrap; gap:12px; padding:12px 14px; }
+.bit-card {
+  background:#060A18; border:1px solid #1A3A5C; border-radius:4px;
+  padding:10px 14px;
+}
+.bit-card-head {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:10px;
+}
+.bit-card-addr { color:#B24BF3; font-weight:bold; font-size:13px; }
+.bit-card-val  { color:#00F0FF; font-size:11px; }
+.bit-card-close { cursor:pointer; color:#2A4A6A; font-size:14px; padding:0 4px; line-height:1; }
+.bit-card-close:hover { color:#FF4466; }
+.bit-row { display:flex; gap:4px; flex-wrap:nowrap; }
+.bit-box {
+  width:34px; height:40px; border-radius:3px;
+  border:1px solid #1A3A5C; background:#030508;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:2px; transition:all .15s; font-family:'Consolas',monospace; flex-shrink:0;
+  cursor:pointer; user-select:none;
+}
+.bit-box:hover { border-color:#FFD060; background:#1A1200; }
+.bit-box:hover .bit-name { color:#FFD06099; }
+.bit-box:hover .bit-val  { color:#FFD060; }
+.bit-box .bit-name { font-size:9px; color:#2A4A6A; }
+.bit-box .bit-val  { font-size:14px; font-weight:bold; color:#2A4A6A; }
+.bit-box.on { border-color:#00FF88; background:#001A08; }
+.bit-box.on .bit-name { color:#00FF8899; }
+.bit-box.on .bit-val  { color:#00FF88; text-shadow:0 0 6px #00FF88; }
+.bit-box.on:hover { border-color:#FFD060; background:#0A0800; }
+.bit-box.writing { border-color:#FFD060 !important; animation:blink .3s 3; }
+.bit-label-row { display:flex; gap:4px; margin-top:5px; }
+.bit-label-inp {
+  width:34px; background:transparent; border:none;
+  border-bottom:1px solid #1A3A5C;
+  color:#5A7FA0; font-family:'Consolas',monospace; font-size:8px;
+  text-align:center; outline:none; padding:1px 0; flex-shrink:0;
+}
+.bit-label-inp:focus { border-bottom-color:#FFD060; color:#FFD060; }
+.bit-sublabel {
+  font-size:8px; color:#5A7FA0; text-align:center;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  width:34px; flex-shrink:0;
+}
+.bit-box.on + .bit-sublabel,
+.bit-sublabel.on { color:#00FF8899; }
+
 /* ══ PLC 추가 모달 ══ */
 .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999; align-items:center; justify-content:center; }
 .modal-overlay.show { display:flex; }
@@ -365,6 +418,25 @@ select.plc-inp { cursor: pointer; width: 200px; color: #00FF88; border-color: #0
       <button class="btn-cl" onclick="clearLog()">CLR</button>
     </div>
     <div class="con-body" id="conBody"></div>
+  </div>
+</div>
+
+<!-- ══ 비트 패널 ══ -->
+<div class="bit-panel-wrap">
+  <div class="bit-panel-head">
+    <div class="acc" style="background:#FFD060"></div>
+    <span style="color:#FFD060">BIT  MONITOR</span>
+    <span style="color:#2A4A6A;font-size:9px;margin-left:6px">// 워드 → 비트 분해  ·  LS D주소 기준</span>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:6px">
+      <span class="cfg-label">D주소</span>
+      <input class="cfg-inp" id="bitAddAddr" type="number" placeholder="예: 2" style="width:72px" onkeydown="if(event.key==='Enter')addBitMonitor()">
+      <span class="cfg-label">이름</span>
+      <input class="cfg-inp" id="bitAddLabel" type="text" placeholder="선택" style="width:90px;color:#A8D8F0" onkeydown="if(event.key==='Enter')addBitMonitor()">
+      <button class="btn btn-yellow" onclick="addBitMonitor()">추가</button>
+    </div>
+  </div>
+  <div class="bit-cards" id="bitCards">
+    <div style="color:#2A4A6A;font-size:11px;padding:8px 4px">D주소 입력 후 추가 버튼을 누르세요  //  예: D2 → 비트 0~F 표시</div>
   </div>
 </div>
 
@@ -868,6 +940,7 @@ function fetchNextChunk(id) {
             setStatus('수신 완료  (사이클 '+pol.cycle+')', 'ok');
             document.getElementById('sCnt').textContent = '사이클 '+pol.cycle+'회  '+new Date().toLocaleTimeString('ko-KR');
             flushReadTable();
+            flushBitPanel();
             if (!pol.writeBuilt) { buildAllWriteRows(); pol.writeBuilt = true; }
             else updateAllWriteCur();
         }
@@ -1068,6 +1141,178 @@ function clog(msg,type){
 }
 function clearLog(){ document.getElementById('conBody').innerHTML=''; }
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ══════════════════════════════════════════════════════════
+//  비트 패널
+// ══════════════════════════════════════════════════════════
+var bitMonitorList = []; // [{addr, label, bitLabels:[16개]}]
+
+var bitPanelTimer = null;
+
+function startBitPanelTimer() {
+    if (bitPanelTimer) return;
+    bitPanelTimer = setInterval(function() {
+        // 메인 폴링이 꺼져있을 때만 독립 읽기
+        if (!currentId || !plcMap[currentId] || plcMap[currentId].polling.running) return;
+        flushBitPanel();
+    }, 1000);
+}
+startBitPanelTimer();
+
+function addBitMonitor() {
+    var addr = parseInt(document.getElementById('bitAddAddr').value);
+    var lbl  = (document.getElementById('bitAddLabel').value || '').trim();
+    if (isNaN(addr) || addr < 0) { alert('D주소를 입력하세요'); return; }
+    if (bitMonitorList.some(function(b){ return b.addr === addr; })) {
+        alert('이미 등록됨: D' + addr); return;
+    }
+    bitMonitorList.push({ addr: addr, label: lbl || ('D' + addr), bitLabels: new Array(16).fill('') });
+    document.getElementById('bitAddAddr').value  = '';
+    document.getElementById('bitAddLabel').value = '';
+    renderBitCards();
+    flushBitPanel(); // 추가 즉시 한 번 읽기
+}
+
+function removeBitMonitor(addr) {
+    bitMonitorList = bitMonitorList.filter(function(b){ return b.addr !== addr; });
+    renderBitCards();
+}
+
+function setBitLabel(addr, bit, val) {
+    var b = bitMonitorList.find(function(x){ return x.addr === addr; });
+    if (b) b.bitLabels[bit] = val;
+}
+
+function renderBitCards() {
+    if (!bitMonitorList.length) {
+        document.getElementById('bitCards').innerHTML =
+            '<div style="color:#2A4A6A;font-size:11px;padding:8px 4px">D주소 입력 후 추가 버튼을 누르세요  //  예: D2 → 비트 0~F 표시</div>';
+        return;
+    }
+    var html = '';
+    bitMonitorList.forEach(function(b) {
+        var val = (currentId && plcMap[currentId] && plcMap[currentId].values['D'+b.addr] != null)
+                  ? plcMap[currentId].values['D'+b.addr] : 0;
+        var hex = '0x'+val.toString(16).toUpperCase().padStart(4,'0');
+
+        html += '<div class="bit-card">'
+              + '<div class="bit-card-head">'
+              + '<span class="bit-card-addr">'+esc(b.label)+'</span>'
+              + '<span class="bit-card-val" id="bval_'+b.addr+'">DEC: '+val+'  HEX: '+hex+'</span>'
+              + '<span class="bit-card-close" onclick="removeBitMonitor('+b.addr+')">✕</span>'
+              + '</div>'
+              + '<div class="bit-row">';
+
+        // 비트 F(15) → 0 순서로 표시
+        for (var bit = 15; bit >= 0; bit--) {
+            var bitName = bit.toString(16).toUpperCase();
+            var isOn    = (val >> bit) & 1;
+            html += '<div class="bit-box'+(isOn?' on':'')+'" id="bbox_'+b.addr+'_'+bit+'"'
+                  + ' onclick="writeBitFromPanel('+b.addr+','+bit+')"'
+                  + ' title="D'+b.addr+' bit'+bitName+'  클릭 시 토글 쓰기">'
+                  + '<span class="bit-name">'+bitName+'</span>'
+                  + '<span class="bit-val">'+isOn+'</span>'
+                  + '</div>';
+        }
+        html += '</div><div class="bit-label-row">';
+        for (var bit2 = 15; bit2 >= 0; bit2--) {
+            html += '<input class="bit-label-inp" type="text" maxlength="5"'
+                  + ' value="'+esc(b.bitLabels[bit2]||'')+'"'
+                  + ' placeholder="'+bit2.toString(16).toUpperCase()+'"'
+                  + ' title="비트 '+bit2.toString(16).toUpperCase()+' 레이블"'
+                  + ' oninput="setBitLabel('+b.addr+','+bit2+',this.value)">';
+        }
+        html += '</div></div>';
+    });
+    document.getElementById('bitCards').innerHTML = html;
+}
+
+function writeBitFromPanel(addr, bit) {
+    if (!currentId || !plcMap[currentId]) { clog('BIT WRITE: PLC 미선택', 'e'); return; }
+    var p = plcMap[currentId];
+    var curVal  = p.values['D'+addr] != null ? p.values['D'+addr] : 0;
+    var newVal  = curVal ^ (1 << bit);  // 해당 비트 토글
+    var bitName = bit.toString(16).toUpperCase();
+
+    // 버튼 애니메이션
+    var el = document.getElementById('bbox_'+addr+'_'+bit);
+    if (el) { el.classList.add('writing'); setTimeout(function(){ el.classList.remove('writing'); }, 400); }
+
+    clog('BIT WRITE ['+currentId+'] D'+addr+' bit'+bitName+' → '+(((newVal>>bit)&1)?'ON':'OFF')+'  (word: '+curVal+' → '+newVal+')', 'w');
+
+    fetch('/sample_pro/plc/write/'+currentId, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ address: addr, value: newVal })
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(d) {
+        if (d.success) {
+            p.stats.writeOk++;
+            p.values['D'+addr] = newVal;
+            document.getElementById('cntWriteOk').textContent = p.stats.writeOk;
+            setWriteStatus('D'+addr+' bit'+bitName+' → '+(((newVal>>bit)&1)?'ON':'OFF')+'  완료', 'ok');
+            // 비트 패널 즉시 반영
+            flushBitPanel();
+            // 쓰기 패널 현재값도 갱신
+            var wcur = document.getElementById('wcur_'+addr);
+            if (wcur) wcur.textContent = newVal;
+        } else {
+            p.stats.writeFail++;
+            document.getElementById('cntWriteFail').textContent = p.stats.writeFail;
+            setWriteStatus('BIT WRITE 실패: '+(d.error||''), 'err');
+            clog('BIT WRITE FAIL: '+(d.error||''), 'e');
+        }
+    })
+    .catch(function(e) {
+        setWriteStatus('BIT WRITE 오류: '+e.message, 'err');
+        clog('BIT WRITE ERR: '+e.message, 'e');
+    });
+}
+
+function updateBitCardDisplay(addr, val) {
+    var hex = '0x'+val.toString(16).toUpperCase().padStart(4,'0');
+    var valEl = document.getElementById('bval_'+addr);
+    if (valEl) valEl.textContent = 'DEC: '+val+'  HEX: '+hex;
+    for (var bit = 15; bit >= 0; bit--) {
+        var isOn = (val >> bit) & 1;
+        var el   = document.getElementById('bbox_'+addr+'_'+bit);
+        if (!el) continue;
+        el.className = 'bit-box'+(isOn?' on':'');
+        var valSpan = el.querySelector('.bit-val');
+        if (valSpan) valSpan.textContent = isOn;
+    }
+}
+
+function flushBitPanel() {
+    if (!bitMonitorList.length || !currentId || !plcMap[currentId]) return;
+    var p = plcMap[currentId];
+
+    bitMonitorList.forEach(function(b) {
+        // 현재 폴링 범위 안에 있는지 확인
+        var inRange = p.chunks.some(function(chunk) {
+            return b.addr >= chunk.start && b.addr < chunk.start + chunk.count;
+        });
+
+        if (inRange) {
+            // 폴링 캐시 값 사용
+            var val = p.values['D'+b.addr] != null ? p.values['D'+b.addr] : 0;
+            updateBitCardDisplay(b.addr, val);
+        } else {
+            // 폴링 범위 밖 → 직접 fetch
+            fetch('/sample_pro/plc/read/'+currentId+'?start='+b.addr+'&count=1')
+            .then(function(r){ return r.json(); })
+            .then(function(d) {
+                if (d.success && d.values && d.values.length > 0) {
+                    var val = d.values[0] != null ? d.values[0] : 0;
+                    p.values['D'+b.addr] = val;
+                    updateBitCardDisplay(b.addr, val);
+                }
+            })
+            .catch(function(){});
+        }
+    });
+}
 
 // ── 초기화: 기존 C# 등록 PLC 목록 불러오기 ────────────────
 updateChunkInfo();

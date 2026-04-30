@@ -46,4 +46,14 @@ public interface EzInOutAttendService {
      * D51~D54: cardCode 8자리 → 2글자씩 WORD 변환 후 write
      */
     void writePlcTest(int d45, String cardCode) throws Exception;
+
+    /**
+     * 경비 센서 모니터링용 PLC 읽기 (D2 값)
+     */
+    int[] readPlcWordsForSecurity() throws Exception;
+
+    /**
+     * PLC WORD 직접 쓰기 (경비 센서 비트 초기화 등)
+     */
+    void writePlcWordPublic(int address, int value) throws Exception;
 }

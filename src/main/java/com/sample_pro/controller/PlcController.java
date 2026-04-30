@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClientResponseException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -102,7 +103,7 @@ public class PlcController {
             return ResponseEntity.ok(res);
         } catch (Exception e) {
             System.out.println(">>> [READ ERR] " + e.getMessage());
-            return err("C# API 연결 실패: " + e.getMessage());
+            return errFromCsharp(e);
         }
     }
 
@@ -127,7 +128,7 @@ public class PlcController {
             return ResponseEntity.ok(res);
         } catch (Exception e) {
             System.out.println(">>> [WRITE ERR] " + e.getMessage());
-            return err("C# API 연결 실패: " + e.getMessage());
+            return errFromCsharp(e);
         }
     }
 
@@ -142,7 +143,7 @@ public class PlcController {
     public ResponseEntity<?> getConfig() {
         try {
             return ResponseEntity.ok(rest.getForObject(CSHARP + "/api/plc/config", Map.class));
-        } catch (Exception e) { return err("C# API 연결 실패: " + e.getMessage()); }
+        } catch (Exception e) { return errFromCsharp(e); }
     }
 
     /**
@@ -159,7 +160,7 @@ public class PlcController {
         System.out.println(">>> [CONFIG] " + body);
         try {
             return ResponseEntity.ok(postJson(CSHARP + "/api/plc/config", body));
-        } catch (Exception e) { return err("C# API 연결 실패: " + e.getMessage()); }
+        } catch (Exception e) { return errFromCsharp(e); }
     }
 
     /**
@@ -174,7 +175,7 @@ public class PlcController {
     public ResponseEntity<?> ping() {
         try {
             return ResponseEntity.ok(rest.getForObject(CSHARP + "/api/plc/ping", Map.class));
-        } catch (Exception e) { return err("C# API 연결 실패: " + e.getMessage()); }
+        } catch (Exception e) { return errFromCsharp(e); }
     }
 
 
@@ -221,7 +222,7 @@ public class PlcController {
     public ResponseEntity<?> list() {
         try {
             return ResponseEntity.ok(rest.getForObject(CSHARP + "/api/plc/list", Object.class));
-        } catch (Exception e) { return err("C# API 연결 실패: " + e.getMessage()); }
+        } catch (Exception e) { return errFromCsharp(e); }
     }
 
     /**
@@ -240,7 +241,7 @@ public class PlcController {
         System.out.println(">>> [ADD] " + body);
         try {
             return ResponseEntity.ok(postJson(CSHARP + "/api/plc/add", body));
-        } catch (Exception e) { return err("C# API 연결 실패: " + e.getMessage()); }
+        } catch (Exception e) { return errFromCsharp(e); }
     }
 
     /**
@@ -261,7 +262,7 @@ public class PlcController {
             Map<String, Object> r = new HashMap<>();
             r.put("success", true);
             return ResponseEntity.ok(r);
-        } catch (Exception e) { return err("C# API 연결 실패: " + e.getMessage()); }
+        } catch (Exception e) { return errFromCsharp(e); }
     }
 
     /**
@@ -293,7 +294,7 @@ public class PlcController {
         try {
             Map<?, ?> res = rest.getForObject(url, Map.class);
             return ResponseEntity.ok(res);
-        } catch (Exception e) { return err("C# API 연결 실패: " + e.getMessage()); }
+        } catch (Exception e) { return errFromCsharp(e); }
     }
 
     /**
@@ -319,7 +320,7 @@ public class PlcController {
         System.out.println(">>> [WRITE/" + id + "] addr=" + body.get("address") + " <- " + body.get("value"));
         try {
             return ResponseEntity.ok(postJson(CSHARP + "/api/plc/write/" + id, body));
-        } catch (Exception e) { return err("C# API 연결 실패: " + e.getMessage()); }
+        } catch (Exception e) { return errFromCsharp(e); }
     }
 
     /**
@@ -335,10 +336,17 @@ public class PlcController {
     @RequestMapping(value = "/ping/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<?> pingById(@PathVariable String id) {
-        System.out.println(">>> [PING/" + id + "]");
         try {
             return ResponseEntity.ok(rest.getForObject(CSHARP + "/api/plc/ping/" + id, Map.class));
-        } catch (Exception e) { return err("C# API 연결 실패: " + e.getMessage()); }
+        } catch (Exception e) { return errFromCsharp(e); }
+    }
+
+    @RequestMapping(value = "/status-all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<?> statusAll() {
+        try {
+            return ResponseEntity.ok(rest.getForObject(CSHARP + "/api/plc/status-all", Object.class));
+        } catch (Exception e) { return errFromCsharp(e); }
     }
 
 
@@ -376,7 +384,7 @@ public class PlcController {
             return ResponseEntity.ok(res);
         } catch (Exception e) {
             System.out.println(">>> [READ_BITS ERR] " + e.getMessage());
-            return err("C# API 연결 실패: " + e.getMessage());
+            return errFromCsharp(e);
         }
     }
 
@@ -401,7 +409,7 @@ public class PlcController {
             return ResponseEntity.ok(res);
         } catch (Exception e) {
             System.out.println(">>> [WRITE_BIT ERR] " + e.getMessage());
-            return err("C# API 연결 실패: " + e.getMessage());
+            return errFromCsharp(e);
         }
     }
 
@@ -429,7 +437,7 @@ public class PlcController {
         try {
             Map<?, ?> res = rest.getForObject(url, Map.class);
             return ResponseEntity.ok(res);
-        } catch (Exception e) { return err("C# API 연결 실패: " + e.getMessage()); }
+        } catch (Exception e) { return errFromCsharp(e); }
     }
 
     /**
@@ -448,7 +456,7 @@ public class PlcController {
         System.out.println(">>> [WRITE_BIT/" + id + "] addr=" + body.get("address") + " <- " + body.get("value"));
         try {
             return ResponseEntity.ok(postJson(CSHARP + "/api/plc/writeBit/" + id, body));
-        } catch (Exception e) { return err("C# API 연결 실패: " + e.getMessage()); }
+        } catch (Exception e) { return errFromCsharp(e); }
     }
 
 
@@ -468,6 +476,28 @@ public class PlcController {
         m.put("success", false);
         m.put("error", msg);
         return ResponseEntity.ok(m);
+    }
+
+    /**
+     * C# API 호출 실패 시 HTTP 상태/응답 본문을 최대한 포함해 반환.
+     * 프론트에서 왜 실패했는지 바로 확인할 수 있도록 디버깅 정보를 보강한다.
+     */
+    private ResponseEntity<?> errFromCsharp(Exception e) {
+        if (e instanceof RestClientResponseException) {
+            RestClientResponseException re = (RestClientResponseException) e;
+            String body = re.getResponseBodyAsString();
+            if (body != null) {
+                body = body.replaceAll("\\s+", " ").trim();
+                if (body.length() > 600) body = body.substring(0, 600) + "...";
+            }
+            String msg = "C# API HTTP " + re.getRawStatusCode() + " " + re.getStatusText()
+                    + (body != null && !body.isEmpty() ? " | body: " + body : "");
+            System.out.println(">>> [C# ERR] " + msg);
+            return err(msg);
+        }
+        String msg = "C# API 연결 실패: " + e.getMessage();
+        System.out.println(">>> [C# ERR] " + msg);
+        return err(msg);
     }
 
     /**

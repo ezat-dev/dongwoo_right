@@ -65,7 +65,8 @@ app.MapPost("/api/plc/config", (PlcConfigRequest req, PlcRegistry reg) =>
     if (!string.IsNullOrWhiteSpace(req.PlcType)) plc.PlcType = NormalizePlcType(req.PlcType);
     if (!string.IsNullOrWhiteSpace(req.Label)) plc.Label = req.Label;
 
-    Console.WriteLine($"[CONFIG] {plc.PlcType}  {plc.PlcIp}:{plc.PlcPort}");
+    string source = req.Source ?? "Unknown";
+    Console.WriteLine($"[CONFIG] {source}: {plc.PlcType}  {plc.PlcIp}:{plc.PlcPort}");
 
     return Results.Ok(new
     {
@@ -203,7 +204,7 @@ static int GetDefaultPort(string plcType)
 app.Run("http://0.0.0.0:5050");
 
 record WriteRequest(int Address, int Value);
-record PlcConfigRequest(string? Ip, int Port, string? PlcType, string? Label);
+record PlcConfigRequest(string? Ip, int Port, string? PlcType, string? Label, string? Source);
 record PlcAddRequest(string? Id, string? Ip, int Port, string? PlcType, string? Label, bool? Enabled);
 
 public class PlcRegistry

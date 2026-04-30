@@ -1,5 +1,114 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ include file="../main_1/common_style.jsp" %>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+:root {
+  --bg:        #F0F4F8;
+  --white:     #FFFFFF;
+  --primary:   #3182CE;
+  --primary-d: #2B6CB0;
+  --primary-l: #EBF8FF;
+  --primary-m: #BEE3F8;
+  --green:     #38A169;
+  --green-l:   #F0FFF4;
+  --orange:    #DD6B20;
+  --orange-l:  #FFFAF0;
+  --red:       #E53E3E;
+  --red-l:     #FFF5F5;
+  --purple:    #6B46C1;
+  --purple-l:  #FAF5FF;
+  --text:      #2D3748;
+  --muted:     #718096;
+  --light:     #A0AEC0;
+  --border:    #E2E8F0;
+  --shadow:    0 1px 4px rgba(0,0,0,.07);
+  --shadow-md: 0 4px 16px rgba(0,0,0,.10);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; font-family: 'Segoe UI','Malgun Gothic',sans-serif; background: var(--bg); color: var(--text); }
+
+.page-wrap { padding: 22px 24px; height: 100vh; overflow-y: auto; }
+.page-wrap::-webkit-scrollbar { width: 5px; }
+.page-wrap::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+.page-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
+}
+.page-title { font-size: 20px; font-weight: 700; color: var(--text); }
+.page-sub   { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+/* 카드 */
+.card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 12px; box-shadow: var(--shadow); padding: 18px 20px;
+}
+.card-title {
+  font-size: 13px; font-weight: 700; color: var(--text);
+  margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+}
+.card-title::before { content:''; width:3px; height:15px; background:var(--primary); border-radius:2px; }
+
+/* 테이블 */
+.data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.data-table th {
+  background: var(--bg); color: var(--muted); font-size: 11px;
+  font-weight: 600; text-align: left; padding: 9px 12px;
+  border-bottom: 2px solid var(--border); white-space: nowrap;
+}
+.data-table td {
+  padding: 10px 12px; border-bottom: 1px solid var(--border);
+  color: var(--text); vertical-align: middle;
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tbody tr:hover { background: var(--primary-l); }
+
+/* 버튼 */
+.btn-primary {
+  padding: 7px 16px; border-radius: 7px;
+  border: none; background: var(--primary); color: #fff;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: background .13s;
+}
+.btn-primary:hover { background: var(--primary-d); }
+.btn-outline {
+  padding: 7px 16px; border-radius: 7px;
+  border: 1px solid var(--border); background: var(--white);
+  color: var(--muted); font-size: 13px; cursor: pointer;
+  transition: all .13s;
+}
+.btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+.btn-sm { padding: 4px 10px; font-size: 11px; border-radius: 5px; }
+
+/* 배지 */
+.badge {
+  display: inline-flex; align-items: center; padding: 2px 8px;
+  border-radius: 20px; font-size: 11px; font-weight: 600;
+  white-space: nowrap;
+}
+.badge-ok    { background: #F0FFF4; color: var(--green);  border: 1px solid #9AE6B4; }
+.badge-warn  { background: #FFFAF0; color: var(--orange); border: 1px solid #FBD38D; }
+.badge-alarm { background: #FFF5F5; color: var(--red);    border: 1px solid #FEB2B2; }
+.badge-off   { background: var(--bg); color: var(--light); border: 1px solid var(--border); }
+.badge-blue  { background: var(--primary-l); color: var(--primary); border: 1px solid var(--primary-m); }
+
+/* 폼 */
+.form-row  { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; margin-bottom: 16px; }
+.form-field { display: flex; flex-direction: column; gap: 4px; }
+.form-label { font-size: 11px; color: var(--muted); font-weight: 600; }
+.form-input, .form-select {
+  padding: 7px 10px; border: 1px solid var(--border);
+  border-radius: 7px; font-size: 13px; color: var(--text);
+  background: var(--white); outline: none; transition: border-color .13s;
+}
+.form-input:focus, .form-select:focus { border-color: var(--primary); }
+
+/* 구분선 */
+.divider { height: 1px; background: var(--border); margin: 16px 0; }
+</style>
 <style>
 /* ── 레이아웃 ── */
 .attend-wrap {
@@ -31,9 +140,10 @@
 .emp-item.active  { background: #EBF8FF; border-left: 3px solid var(--primary); color: var(--primary); font-weight: 700; }
 .emp-item.all     { font-weight: 700; color: var(--primary); }
 .emp-badge {
-  display: inline-block; font-size: 10px; padding: 1px 6px;
-  border-radius: 10px; background: var(--bg); color: var(--muted);
-  margin-left: 6px; float: right;
+  display: inline-block; font-size: 11px; padding: 2px 4px;
+  border-radius: 8px; background: var(--bg); color: var(--muted);
+  margin-left: 6px; float: right; white-space: nowrap;
+  font-family: 'Malgun Gothic', sans-serif;
 }
 .emp-item.active .emp-badge { background: var(--primary); color: #fff; }
 
@@ -75,6 +185,68 @@
   display: flex; align-items: center; gap: 10px;
 }
 .emp-title span { font-size: 12px; font-weight: 400; color: var(--muted); }
+
+/* ══════════════════════════════════════════
+   모바일 반응형 (S26 Ultra 등 스마트폰)
+══════════════════════════════════════════ */
+@media(max-width: 640px) {
+  .page-wrap { padding: 12px 12px; }
+
+  /* 헤더 버튼 작게 */
+  .page-title { font-size: 17px; }
+  #excelBtns .btn-outline,
+  #excelBtns .btn-primary { font-size: 12px; padding: 6px 10px; }
+
+  /* 필터 바 */
+  .filter-bar { padding: 12px 12px; gap: 8px; }
+  .filter-bar .form-input { width: 120px !important; font-size: 14px; padding: 8px 8px; }
+  .filter-bar .btn-primary { font-size: 14px; padding: 8px 16px; }
+
+  /* 사원 명단: 접기/펼치기 방식 */
+  .attend-wrap { gap: 10px; }
+  .emp-panel { position: static; }
+  .emp-panel-head { cursor: pointer; user-select: none; }
+  .emp-panel-head::after { content: ' ▼'; font-size: 10px; color: var(--muted); }
+  .emp-panel.collapsed .emp-list { display: none; }
+  .emp-panel.collapsed .emp-panel-head::after { content: ' ▶'; }
+  .emp-list { max-height: 180px; }
+  .emp-item { font-size: 14px; padding: 11px 14px; }
+
+  /* 요약 카드 */
+  .sum-val { font-size: 20px; }
+
+  /* 테이블 → 카드 형태 */
+  .data-table thead { display: none; }
+  .data-table tbody tr {
+    display: block;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 10px 14px;
+    background: var(--white);
+    box-shadow: var(--shadow);
+  }
+  .data-table tbody tr:last-child { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:hover { background: var(--primary-l); }
+  .data-table td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .data-table td:last-child { border-bottom: none; }
+  .data-table td[data-label]::before {
+    content: attr(data-label);
+    font-size: 11px; font-weight: 600;
+    color: var(--muted); min-width: 50px;
+  }
+  /* No 열 숨기기 */
+  .data-table td.col-no { display: none; }
+  /* 카드코드 숨기기 */
+  .data-table td.col-card { display: none; }
+}
 </style>
 
 <body>
@@ -114,8 +286,8 @@
   <div class="attend-wrap">
 
     <!-- 좌측 명단 -->
-    <div class="emp-panel">
-      <div class="emp-panel-head">
+    <div class="emp-panel" id="empPanel">
+      <div class="emp-panel-head" onclick="toggleEmpPanel()">
         <span>사원 명단</span>
         <span id="empCount" style="font-size:11px;color:var(--muted)">0명</span>
       </div>
@@ -151,7 +323,7 @@
           전체 기록
           <span id="empTitleSub"></span>
         </div>
-        <div style="overflow-x:auto">
+        <div style="overflow-x:auto; max-height: calc(92vh - 285px); overflow-y: auto;">
           <table class="data-table" id="recordTable">
             <thead>
               <tr>
@@ -179,14 +351,27 @@ var base       = '${pageContext.request.contextPath}';
 var allRecords = [];    // 전체 조회 결과 캐시
 var curEmp     = null;  // 현재 선택 사원 (null=전체)
 
-/* ── 이번 달 기본값 세팅 ── */
+/* ── 날짜 헬퍼 ── */
+function todayStr() {
+  var now = new Date();
+  return now.getFullYear() + '-'
+    + String(now.getMonth() + 1).padStart(2, '0') + '-'
+    + String(now.getDate()).padStart(2, '0');
+}
+function monthStartStr() {
+  var now = new Date();
+  return now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-01';
+}
+function monthEndStr() {
+  var now  = new Date();
+  var last = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+  return now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(last).padStart(2, '0');
+}
+
+/* ── 초기값: 전체 기준 → 당일 ── */
 (function initDates() {
-  var now   = new Date();
-  var y     = now.getFullYear();
-  var m     = String(now.getMonth() + 1).padStart(2, '0');
-  var last  = new Date(y, now.getMonth() + 1, 0).getDate();
-  document.getElementById('fromDt').value = y + '-' + m + '-01';
-  document.getElementById('toDt').value   = y + '-' + m + '-' + String(last).padStart(2, '0');
+  document.getElementById('fromDt').value = todayStr();
+  document.getElementById('toDt').value   = todayStr();
 })();
 
 /* ══════════════════════════════════════════
@@ -209,7 +394,7 @@ function doSearch() {
       allRecords = d.data || [];
       curEmp     = null;
 
-      renderEmpList(d.empList || []);
+      renderEmpList(d.empList || [], allRecords);
       renderRecords(allRecords);
       document.getElementById('totalCount').textContent = '총 ' + allRecords.length + '건';
     })
@@ -219,17 +404,35 @@ function doSearch() {
 /* ══════════════════════════════════════════
    좌측 명단 렌더링
 ══════════════════════════════════════════ */
-function renderEmpList(empList) {
+function renderEmpList(empList, allRecords) {
   document.getElementById('empCount').textContent = empList.length + '명';
+
+  // 전체 통계 계산
+  var totalIn = 0, totalExt = 0, totalOut = 0;
+  allRecords.forEach(function(r) {
+    if (r.inTime)  totalIn++;
+    if (r.extTime) totalExt++;
+    if (r.outTime) totalOut++;
+  });
+
   var html = '<div class="emp-item all active" id="emp-all" onclick="selectEmp(null)">'
            + '전체'
-           + '<span class="emp-badge">' + allRecords.length + '</span>'
+           + '<span class="emp-badge">총 ' + allRecords.length + ' 출 ' + totalIn + ' 외 ' + totalExt + ' 퇴 ' + totalOut + '</span>'
            + '</div>';
 
   empList.forEach(function(e) {
+    // 사원별 통계 계산
+    var empRecords = allRecords.filter(function(r) { return r.empName === e.empName; });
+    var inCnt = 0, extCnt = 0, outCnt = 0;
+    empRecords.forEach(function(r) {
+      if (r.inTime)  inCnt++;
+      if (r.extTime) extCnt++;
+      if (r.outTime) outCnt++;
+    });
+
     html += '<div class="emp-item" id="emp-' + esc(e.empName) + '" onclick="selectEmp(\'' + esc(e.empName) + '\')">'
           + esc(e.empName)
-          + '<span class="emp-badge">' + e.totalCnt + '</span>'
+          + '<span class="emp-badge">총 ' + e.totalCnt + ' 출 ' + inCnt + ' 외 ' + extCnt + ' 퇴 ' + outCnt + '</span>'
           + '</div>';
   });
   document.getElementById('empList').innerHTML = html;
@@ -253,13 +456,17 @@ function selectEmp(empName) {
   // 개별 다운로드 버튼
   document.getElementById('btnEmpExcel').style.display = empName ? '' : 'none';
 
-  // 사원 선택 시 서버에서 해당 사원 일별 데이터 재조회
   if (empName) {
+    /* 개인 선택 → 이번 달 전체로 날짜 변경 후 조회 */
+    document.getElementById('fromDt').value = monthStartStr();
+    document.getElementById('toDt').value   = monthEndStr();
     var fromDt = document.getElementById('fromDt').value;
     var toDt   = document.getElementById('toDt').value;
     var qs = '?fromDt=' + encodeURIComponent(fromDt)
            + '&toDt='   + encodeURIComponent(toDt)
            + '&empName=' + encodeURIComponent(empName);
+    document.getElementById('recordBody').innerHTML =
+      '<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted)">로딩 중…</td></tr>';
     fetch(base + '/ez_in_out/attend/search' + qs)
       .then(function(r){ return r.json(); })
       .then(function(d) {
@@ -267,7 +474,11 @@ function selectEmp(empName) {
         renderRecords(d.data || [], empName);
       });
   } else {
-    renderRecords(allRecords, null);
+    /* 전체 선택 → 당일로 날짜 변경 후 재조회 */
+    document.getElementById('fromDt').value = todayStr();
+    document.getElementById('toDt').value   = todayStr();
+    doSearch();
+    return;
   }
 
   // 타이틀
@@ -304,13 +515,13 @@ function renderRecords(list, selectedEmp) {
     var outCell = r.outTime ? '<span class="badge b-out">' + esc(r.outTime) + '</span>' : '<span style="color:var(--muted)">—</span>';
 
     html += '<tr>'
-      + '<td style="text-align:center;color:var(--muted);font-size:11px">' + (i + 1) + '</td>'
-      + '<td style="font-weight:600">' + esc(r.workDate || '') + '</td>'
-      + (showEmp ? '<td style="font-weight:600">' + esc(r.empName || '') + '</td>' : '')
-      + '<td style="text-align:center">' + inCell  + '</td>'
-      + '<td style="text-align:center">' + extCell + '</td>'
-      + '<td style="text-align:center">' + outCell + '</td>'
-      + '<td style="font-family:monospace;font-size:11px;color:var(--muted)">' + esc(r.cardCode || '') + '</td>'
+      + '<td class="col-no" style="text-align:center;color:var(--muted);font-size:11px">' + (i + 1) + '</td>'
+      + '<td data-label="날짜" style="font-weight:600">' + esc(r.workDate || '') + '</td>'
+      + (showEmp ? '<td data-label="사원" style="font-weight:600">' + esc(r.empName || '') + '</td>' : '')
+      + '<td data-label="출근" style="text-align:center">' + inCell  + '</td>'
+      + '<td data-label="외근" style="text-align:center">' + extCell + '</td>'
+      + '<td data-label="퇴근" style="text-align:center">' + outCell + '</td>'
+      + '<td class="col-card" style="font-family:monospace;font-size:11px;color:var(--muted)">' + esc(r.cardCode || '') + '</td>'
       + '</tr>';
   });
   document.getElementById('recordBody').innerHTML = html;
@@ -353,6 +564,13 @@ function esc(s) {
   return String(s)
     .replace(/&/g,'&amp;').replace(/</g,'&lt;')
     .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── 사원 명단 토글 (모바일) ── */
+function toggleEmpPanel() {
+  if (window.innerWidth > 640) return;
+  var panel = document.getElementById('empPanel');
+  panel.classList.toggle('collapsed');
 }
 
 /* ── 초기 조회 ── */

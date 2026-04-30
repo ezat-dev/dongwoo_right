@@ -12,4 +12,10 @@ public interface EzInOutService {
     boolean verifyEmployeePin(String pin);
     boolean verifyEmployeePwNo(String pwNo);
     CompanyEmployee getEmployeeByPwNo(String pwNo);
+    // 경비 알림
+    List<java.util.Map<String,Object>> getSecurityEmployeeList();
+    void saveSecurityNotify(List<String> empIds);
+    // 경비 센서 로그
+    void logSecuritySensor(String sensorName, String sensorAddr, String status);
+    List<java.util.Map<String,Object>> getSensorHistory(int limit);
 }

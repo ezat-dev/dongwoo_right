@@ -16,22 +16,7 @@ public class MitsubishiController {
 
 	private static final String CSHARP_API_URL = "http://localhost:5050";
 
-    // ✅ 고정 설정 (Mitsubishi)
-    private static final String PLC_TYPE = "MITSUBISHI";
-    private static final String PLC_IP   = "192.168.1.240";
-    private static final int    PLC_PORT = 6004;
-
     private final RestTemplate restTemplate = new RestTemplate();
-
-    /** C# API에 PLC 고정 설정 적용 */
-    private void applyFixedConfig() {
-        String url = CSHARP_API_URL + "/api/plc/config";
-        Map<String, Object> cfg = new HashMap<>();
-        cfg.put("ip", PLC_IP);
-        cfg.put("port", PLC_PORT);
-        cfg.put("plcType", PLC_TYPE);
-        restTemplate.postForObject(url, cfg, Map.class);
-    }
 
     // 읽기  GET  /sample_pro/plc/mits/read?start=10000&count=4
     @RequestMapping(value = "/read", method = RequestMethod.GET)
@@ -44,8 +29,6 @@ public class MitsubishiController {
         if (count > 300) count = 300;
 
         try {
-            applyFixedConfig();
-
             String url = CSHARP_API_URL + "/api/plc/read?start=" + start + "&count=" + count;
             Map<?, ?> resp = restTemplate.getForObject(url, Map.class);
             return ResponseEntity.ok(resp);
@@ -63,8 +46,6 @@ public class MitsubishiController {
     @ResponseBody
     public ResponseEntity<?> write(@RequestBody Map<String, Object> body) {
         try {
-            applyFixedConfig();
-
             String url = CSHARP_API_URL + "/api/plc/write";
             Map<?, ?> resp = restTemplate.postForObject(url, body, Map.class);
             return ResponseEntity.ok(resp);
@@ -88,9 +69,6 @@ public class MitsubishiController {
             @RequestParam("value") int value) {
 
         try {
-
-            applyFixedConfig(); // PLC 설정
-
             String url = CSHARP_API_URL + "/api/plc/write";
 
             Map<String, Object> body = new HashMap<>();

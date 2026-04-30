@@ -1,5 +1,9 @@
 package com.sample_pro.service;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -23,14 +27,16 @@ public class EzInOutAttendServiceImpl implements EzInOutAttendService {
 
     /* ── C# PLC API (LS Electric) ── */
     private static final String CSHARP_API  = "http://localhost:5050";
-    private static final String PLC_TYPE    = "LS";
-    private static final String PLC_IP      = "192.168.1.238";
-    private static final int    PLC_PORT    = 2004;
 
     /* ── PLC 주소 ── */
     // D45: 상태 영역 (WORD) - 1=출근 / 2=외근 / 3=퇴근
     private static final int ADDR_D45 = 45;
-    // D46: 저장 트리거 (WORD) - 1이면 저장 요청, PLC가 자동 리셋 (자바에서 리셋 금지)
+    private static final int ADDR_D61 = 61;
+    private static final int ADDR_D62 = 62;
+    private static final int ADDR_D63 = 63;
+    private static final int ADDR_D64 = 64;
+    private static final int ADDR_D46 = 46;
+    // D46: 저장 트리거 (WORD) - 1이면 저장 요청, DB 저장 완료 후 자바에서 0으로 리셋
     // D61~D64: 동작용 카드코드 ASCII 값 (각 1바이트 → 2자리 HEX 문자열)
     // D45~D64 범위를 한 번에 읽기 위한 count (D45=idx0, D46=idx1, D61=idx16 ... D64=idx19)
     private static final int READ_COUNT = 20;
@@ -48,34 +54,11 @@ public class EzInOutAttendServiceImpl implements EzInOutAttendService {
     private EzInOutAttendDao attendDao;
 
     /* =============================================
-       PLC 설정 적용 (LS Electric)
-       Content-Type: application/json 헤더 명시 필요
-    ============================================= */
-    private void applyPlcConfig() {
-        try {
-            Map<String, Object> cfg = new HashMap<>();
-            cfg.put("ip",      PLC_IP);
-            cfg.put("port",    PLC_PORT);
-            cfg.put("plcType", PLC_TYPE);
-
-            org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
-            headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
-            org.springframework.http.HttpEntity<Map<String, Object>> entity =
-                new org.springframework.http.HttpEntity<>(cfg, headers);
-
-            restTemplate.postForObject(CSHARP_API + "/api/plc/config", entity, Map.class);
-        } catch (Exception e) {
-            addLog("[WARN] PLC config 적용 실패: " + e.getMessage());
-        }
-    }
-
-    /* =============================================
        PLC D45~D64 일괄 읽기
        start=45, count=20 → index 0=D45, 1=D46, 16=D61, 17=D62, 18=D63, 19=D64
     ============================================= */
     @SuppressWarnings("unchecked")
     private int[] readPlcWords() throws Exception {
-        applyPlcConfig();
         String url = CSHARP_API + "/api/plc/read?start=" + ADDR_D45 + "&count=" + READ_COUNT;
         Map<?, ?> resp = restTemplate.getForObject(url, Map.class);
         if (resp == null || !Boolean.TRUE.equals(resp.get("success"))) {
@@ -138,7 +121,6 @@ public class EzInOutAttendServiceImpl implements EzInOutAttendService {
        PLC 단일 WORD 쓰기 (Content-Type 헤더 명시)
     ============================================= */
     private void writePlcWord(int address, int value) throws Exception {
-        applyPlcConfig();
         Map<String, Object> body = new HashMap<>();
         body.put("address", address);
         body.put("value",   value);
@@ -226,12 +208,15 @@ public class EzInOutAttendServiceImpl implements EzInOutAttendService {
     @Override
     public String checkAndSave() {
         String ts = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+
+        // ── STEP 1: PLC 읽기 ──
         int[] words;
         try {
             words = readPlcWords();
         } catch (Exception e) {
             String log = "[" + ts + "] PLC 읽기 오류: " + e.getMessage();
             addLog(log);
+            fileLog("STEP1 PLC 읽기 실패: " + e.getMessage());
             return log;
         }
 
@@ -243,63 +228,115 @@ public class EzInOutAttendServiceImpl implements EzInOutAttendService {
         String d64      = wordToAsciiPair(words[19]);
         String cardCode = d61 + d62 + d63 + d64;
 
-        addLog("[" + ts + "] D45=" + d45 + ", D46=" + d46 + ", card_code=" + cardCode + " 감지");
-
-        // ── 저장 트리거 확인 (D46 == 1) ──
+        // ── STEP 2: 저장 트리거 확인 (D46 == 1) ──
         if (d46 != 1) {
-            return null; // 대기 중, 로그 불필요
+            return null; // 대기 중 — 로그 없음
         }
 
-        // ── D45 범위 확인 ──
+        // D46=1 확인된 시점부터 파일 로그 시작
+        fileLog("=== 카드 감지 [" + ts + "] ===");
+        fileLog("D45=" + d45 + "(" + d45ToName(d45) + "), D46=" + d46
+                + ", D61=" + d61 + ", D62=" + d62 + ", D63=" + d63 + ", D64=" + d64
+                + ", cardCode=" + cardCode);
+        addLog("[" + ts + "] D45=" + d45 + ", D46=" + d46 + ", card_code=" + cardCode + " 감지");
+
+        // ── STEP 3: D45 범위 확인 ──
         if (d45 < 1 || d45 > 3) {
             String log = "[" + ts + "] D45 값 범위 외 (" + d45 + "), 저장 생략";
             addLog(log);
+            fileLog("STEP3 D45 범위 외(" + d45 + ") → 종료");
             return log;
         }
+        fileLog("STEP3 D45 범위 OK (" + d45 + "=" + d45ToName(d45) + ")");
 
-        // ── 카드코드 유효성 확인 ──
+        // ── STEP 4: 카드코드 유효성 확인 ──
         if (cardCode.equals("00000000") || cardCode.trim().isEmpty()) {
             String log = "[" + ts + "] card_code 비어있음, 저장 생략";
             addLog(log);
+            fileLog("STEP4 cardCode 비어있음 → 종료");
             return log;
         }
+        fileLog("STEP4 cardCode 유효: " + cardCode);
 
-        // ── 사원명 조회 ──
+        // ── STEP 5: 사원명 조회 ──
+        fileLog("STEP5 사원 조회 시작: cardCode=" + cardCode);
         EzInOutCardMaster master = null;
         try {
             master = attendDao.selectCardMasterByCode(cardCode);
         } catch (Exception e) {
             String log = "[" + ts + "] 사원 조회 오류: " + e.getMessage();
             addLog(log);
+            fileLog("STEP5 사원 조회 DB 오류 → 종료: " + e.getMessage());
             return log;
         }
 
         if (master == null) {
             String log = "[" + ts + "] card_code=" + cardCode + " 미등록 카드, 저장 생략";
             addLog(log);
+            fileLog("STEP5 미등록 카드(" + cardCode + ") → 종료");
             return log;
         }
+        fileLog("STEP5 사원 조회 성공: " + master.getEmpName() + " (card=" + cardCode + ")");
         addLog("[" + ts + "] 사원명 조회 성공: " + master.getEmpName());
 
-        // ── 중복 저장 방지: 동일 card_code + in_out_gubun, 최근 3초 이내 ──
+        // ── STEP 6: D46 → 0 리셋 (트리거 해제, 최대 3회 재시도) ──
+        fileLog("STEP6 D46 리셋 시작");
+        {
+            int maxRetry = 3;
+            Exception lastResetEx = null;
+            boolean resetOk = false;
+            for (int attempt = 1; attempt <= maxRetry; attempt++) {
+                fileLog("STEP6 D46 리셋 시도 " + attempt + "/" + maxRetry);
+                try {
+                    writePlcWord(ADDR_D46, 0);
+                    addLog("[" + ts + "] D46 리셋 완료 (0) [시도 " + attempt + "/" + maxRetry + "]");
+                    fileLog("STEP6 D46 리셋 성공 [시도 " + attempt + "]");
+                    resetOk = true;
+                    break;
+                } catch (Exception resetEx) {
+                    lastResetEx = resetEx;
+                    addLog("[" + ts + "] D46 리셋 실패 [시도 " + attempt + "/" + maxRetry + "]: " + resetEx.getMessage());
+                    fileLog("STEP6 D46 리셋 실패 [시도 " + attempt + "]: " + resetEx.getMessage());
+                    if (attempt < maxRetry) {
+                        try { Thread.sleep(150); } catch (InterruptedException ie) { Thread.currentThread().interrupt(); }
+                    }
+                }
+            }
+            if (!resetOk) {
+                String log = "[" + ts + "] D46 리셋 " + maxRetry + "회 모두 실패, DB 저장 생략: "
+                             + (lastResetEx != null ? lastResetEx.getMessage() : "");
+                addLog(log);
+                System.err.println(">>> [EzInOut] " + log);
+                fileLog("STEP6 D46 리셋 3회 모두 실패 → DB 저장 생략, 종료");
+                return log;
+            }
+        }
+
+        // ── STEP 7: 중복 저장 방지 ──
+        fileLog("STEP7 중복 체크 시작: card=" + cardCode + ", gubun=" + d45 + ", 기준=" + DUPLICATE_SEC + "초");
         try {
             Map<String, Object> dupParams = new HashMap<>();
             dupParams.put("cardCode",    cardCode);
             dupParams.put("inOutGubun",  d45);
             dupParams.put("seconds",     DUPLICATE_SEC);
             int dupCount = attendDao.countRecentDuplicate(dupParams);
+            fileLog("STEP7 중복 체크 결과: dupCount=" + dupCount);
             if (dupCount > 0) {
                 String log = "[" + ts + "] 중복 데이터 감지로 저장 생략 (card=" + cardCode + ", gubun=" + d45 + ")";
                 addLog(log);
+                fileLog("STEP7 중복 감지 → 저장 생략, 종료");
                 return log;
             }
+            fileLog("STEP7 중복 없음 → DB 저장 진행");
         } catch (Exception e) {
-            String log = "[" + ts + "] 중복 체크 오류: " + e.getMessage();
+            // 중복 체크 쿼리 실패 시 저장은 계속 진행 (D46은 이미 0)
+            String log = "[" + ts + "] 중복 체크 오류 (INSERT 계속 진행): " + e.getMessage();
             addLog(log);
-            return log;
+            fileLog("STEP7 중복 체크 DB 오류 → INSERT 강행: " + e.getMessage());
         }
 
-        // ── DB 저장 ──
+        // ── STEP 8: DB 저장 ──
+        fileLog("STEP8 DB INSERT 시작: emp=" + master.getEmpName() + ", gubun=" + d45ToName(d45));
         try {
             EzInOutRecord record = new EzInOutRecord();
             record.setInOutGubun(d45);
@@ -319,13 +356,14 @@ public class EzInOutAttendServiceImpl implements EzInOutAttendService {
 
             String log = "[" + ts + "] " + d45ToName(d45) + " 기록 저장 완료 → " + master.getEmpName() + " (" + cardCode + ")";
             addLog(log);
-            System.out.println(">>> [EzInOutScheduler] " + log);
+            fileLog("STEP8 DB INSERT 성공 → " + master.getEmpName() + "(" + cardCode + ") " + d45ToName(d45));
+            fileLog("=== checkAndSave 완료 ===");
             return log;
 
         } catch (Exception e) {
             String log = "[" + ts + "] DB 저장 실패: " + e.getMessage();
             addLog(log);
-            System.err.println(">>> [EzInOutScheduler] ERROR " + log);
+            fileLog("STEP8 DB INSERT 실패 → 종료: " + e.getMessage());
             return log;
         }
     }
@@ -397,7 +435,7 @@ public class EzInOutAttendServiceImpl implements EzInOutAttendService {
     /* =============================================
        테스트용 PLC 쓰기
        D45 = d45 (1/2/3)
-       D51~D54 = cardCode 8자리를 2글자씩 WORD 변환 후 write
+       D61~D64 = cardCode 8자리를 2글자씩 WORD 변환 후 write
     ============================================= */
     @Override
     public void writePlcTest(int d45, String cardCode) throws Exception {
@@ -419,19 +457,68 @@ public class EzInOutAttendServiceImpl implements EzInOutAttendService {
         String p63 = cardCode.substring(4, 6);
         String p64 = cardCode.substring(6, 8);
 
-        writePlcWord(51, asciiPairToWord(p61));  // D51
-        writePlcWord(52, asciiPairToWord(p62));  // D52
-        writePlcWord(53, asciiPairToWord(p63));  // D53
-        writePlcWord(54, asciiPairToWord(p64));  // D54
+        writePlcWord(ADDR_D61, asciiPairToWord(p61));  // D61
+        writePlcWord(ADDR_D62, asciiPairToWord(p62));  // D62
+        writePlcWord(ADDR_D63, asciiPairToWord(p63));  // D63
+        writePlcWord(ADDR_D64, asciiPairToWord(p64));  // D64
 
         String ts = java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss"));
         addLog("[" + ts + "] [테스트 쓰기] D45=" + d45 + "(" + d45ToName(d45) + "), cardCode=" + cardCode + " → PLC 전송 완료");
+    }
+
+    @Override
+    public void writePlcWordPublic(int address, int value) throws Exception {
+        writePlcWord(address, value);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public int[] readPlcWordsForSecurity() throws Exception {
+        // start=2, count=43 → index 0=D2(센서비트), index 42=D44(경비 온/오프)
+        String url = CSHARP_API + "/api/plc/read?start=2&count=43";
+        Map<?, ?> resp = restTemplate.getForObject(url, Map.class);
+        if (resp == null || !Boolean.TRUE.equals(resp.get("success"))) {
+            throw new Exception("PLC read 실패: " + (resp != null ? resp.get("error") : "응답 없음"));
+        }
+        List<Number> values = (List<Number>) resp.get("values");
+        if (values == null || values.size() < 43) {
+            throw new Exception("PLC 응답 값 부족: size=" + (values != null ? values.size() : 0));
+        }
+        int d2Val  = values.get(0).intValue();   // D2  (센서 비트 A~E)
+        int d44Val = values.get(42).intValue();  // D44 (경비 온/오프)
+        return new int[]{ d2Val, d44Val };
     }
 
     private void addLog(String msg) {
         logQueue.addFirst(msg);
         while (logQueue.size() > LOG_MAX) {
             logQueue.pollLast();
+        }
+    }
+
+    /* =============================================
+       파일 로그 (D:\출퇴근 이력\YYYY-MM-DD.log)
+    ============================================= */
+    private static final String FILE_LOG_DIR = "D:\\출퇴근 이력";
+
+    private void fileLog(String msg) {
+        try {
+            File dir = new File(FILE_LOG_DIR);
+            if (!dir.exists()) dir.mkdirs();
+
+            String date     = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            String datetime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
+            File   logFile  = new File(dir, date + ".log");
+
+            try (BufferedWriter bw = new BufferedWriter(
+                    new java.io.OutputStreamWriter(
+                        new java.io.FileOutputStream(logFile, true),
+                        java.nio.charset.StandardCharsets.UTF_8))) {
+                bw.write("[" + datetime + "] " + msg);
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            System.err.println(">>> [FileLog] 파일 로그 실패: " + e.getMessage());
         }
     }
 }

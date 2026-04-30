@@ -669,13 +669,7 @@
     <header class="header">
         <div class="logo-wrap">
             <div class="logo-svg-container">
-                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
-                    <rect x="18" y="28" width="52" height="55" fill="#C8102E" rx="2"/>
-                    <polygon points="70,55 70,83 42,83" fill="white" opacity="0.18"/>
-                    <text x="28" y="74" font-family="Georgia,serif" font-style="italic" font-size="44" fill="white" opacity="0.92">E</text>
-                    <polygon points="65,38 85,45 65,52" fill="#C8102E"/>
-                    <path id="arc" d="M 15,85 A 52,52 0 0,1 85,85" fill="none"/>
-                </svg>
+                <img src="${pageContext.request.contextPath}/img/company_logo.png" alt="Company Logo" style="width:100%;height:100%;object-fit:contain;">
             </div>
         </div>
         <div class="header-badge">

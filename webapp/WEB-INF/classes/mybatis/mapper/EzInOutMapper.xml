@@ -58,6 +58,59 @@
             ADD COLUMN IF NOT EXISTS visit_reason_etc VARCHAR(255) NULL
     </update>
 
+    <!-- ══ 경비 알림 테이블 ══ -->
+    <update id="ensureSecurityNotifyTable" statementType="STATEMENT">
+        CREATE TABLE IF NOT EXISTS tb_security_notify (
+            emp_id     VARCHAR(50) PRIMARY KEY,
+            updated_at DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        )
+    </update>
+
+    <select id="selectSecurityEmployeeList" resultType="map">
+        SELECT e.emp_id,
+               COALESCE(e.dept_name,  '') AS dept_name,
+               COALESCE(e.emp_name,   '') AS emp_name,
+               COALESCE(e.title_name, '') AS title_name,
+               COALESCE(e.mobile_no,  '') AS mobile_no,
+               COALESCE(e.security_yn, 'N') AS security_yn,
+               COALESCE(e.security_yn, 'N') AS notify_yn
+        FROM tb_company_employee e
+        WHERE COALESCE(e.emp_name, '') != ''
+        ORDER BY e.dept_name ASC, e.emp_name ASC
+    </select>
+
+    <delete id="clearSecurityNotify">
+        DELETE FROM tb_security_notify
+    </delete>
+
+    <insert id="insertSecurityNotify" parameterType="string">
+        INSERT IGNORE INTO tb_security_notify (emp_id) VALUES (#{value})
+    </insert>
+
+    <update id="updateSecurityNotify" parameterType="map">
+        UPDATE tb_company_employee
+        SET security_yn = #{security_yn}
+        WHERE emp_id = #{emp_id}
+    </update>
+
+    <!-- 경비 센서 감지 기록 -->
+    <insert id="insertSecuritySensorLog" parameterType="map">
+        INSERT INTO tb_ez_in_out_security (sensor_name, sensor_addr, status)
+        VALUES (#{sensor_name}, #{sensor_addr}, #{status})
+    </insert>
+
+
+    <select id="selectSecuritySensorHistory" parameterType="int" resultType="map">
+    SELECT id,
+           sensor_name,
+           sensor_addr,
+           detected_at,
+           status
+    FROM tb_ez_in_out_security
+    ORDER BY detected_at DESC
+    LIMIT #{limit, jdbcType=INTEGER}
+</select>
+
     <select id="selectCompanyEmployeeList" resultMap="companyEmployeeMap">
         SELECT emp_id,
                COALESCE(dept_name, '')  AS dept_name,

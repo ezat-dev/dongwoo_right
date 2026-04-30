@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/main_1")
 public class MainController {
 
-    @RequestMapping(value = "/main",           method = RequestMethod.GET) public String main()          { return "/main_1/main.jsp"; }
+    @RequestMapping(value = "/main",           method = RequestMethod.GET) public String main()          { return "/main_1/main.jsp"; }
     @RequestMapping(value = "/main/monitor",  method = RequestMethod.GET) public String mainMonitor()  { return "/main_1/main_monitor.jsp"; }
+    @RequestMapping(value = "/main/monitor2", method = RequestMethod.GET) public String mainMonitor2() { return "/main_1/main_monitor2.jsp"; }
     @RequestMapping(value = "/login",          method = RequestMethod.GET) public String login()         { return "/main_1/login.jsp"; }
 
     // ì„¤ë¹„

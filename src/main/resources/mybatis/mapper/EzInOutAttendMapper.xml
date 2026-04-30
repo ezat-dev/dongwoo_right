@@ -199,12 +199,12 @@
     <!-- ── 하루 1줄 그룹핑 (리스트/엑셀용) ── -->
     <select id="selectDailyRecords" parameterType="map" resultType="map">
         SELECT
-            emp_name                                                                 AS empName,
-            card_code                                                                AS cardCode,
-            DATE_FORMAT(DATE(reg_date), '%Y-%m-%d')                                 AS workDate,
-            MAX(CASE WHEN in_out_gubun = 1 THEN DATE_FORMAT(reg_date,'%H:%i') END)  AS inTime,
-            MAX(CASE WHEN in_out_gubun = 2 THEN DATE_FORMAT(reg_date,'%H:%i') END)  AS extTime,
-            MAX(CASE WHEN in_out_gubun = 3 THEN DATE_FORMAT(reg_date,'%H:%i') END)  AS outTime
+            emp_name                                                                        AS empName,
+            card_code                                                                       AS cardCode,
+            DATE_FORMAT(DATE(reg_date), '%Y-%m-%d')                                        AS workDate,
+            DATE_FORMAT(MIN(CASE WHEN in_out_gubun = 1 THEN reg_date END), '%H:%i')        AS inTime,
+            DATE_FORMAT(MAX(CASE WHEN in_out_gubun = 2 THEN reg_date END), '%H:%i')        AS extTime,
+            DATE_FORMAT(MAX(CASE WHEN in_out_gubun = 3 THEN reg_date END), '%H:%i')        AS outTime
         FROM   tb_ez_in_out_list_page
         <where>
             <if test="fromDt != null and fromDt != ''">AND DATE(reg_date) &gt;= #{fromDt}</if>

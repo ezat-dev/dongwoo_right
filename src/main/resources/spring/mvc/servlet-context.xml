@@ -13,6 +13,23 @@
 		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 	
 	<mvc:annotation-driven/>
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<mvc:exclude-mapping path="/main_1/login"/>
+			<mvc:exclude-mapping path="/main_1/login_proc"/>
+			<mvc:exclude-mapping path="/user/login"/>
+			<mvc:exclude-mapping path="/ez_in_out/**"/>
+			<mvc:exclude-mapping path="/plc/read/**"/>
+			<mvc:exclude-mapping path="/css/**"/>
+			<mvc:exclude-mapping path="/js/**"/>
+			<mvc:exclude-mapping path="/fonts/**"/>
+			<mvc:exclude-mapping path="/image/**"/>
+			<mvc:exclude-mapping path="/img/**"/>
+			<mvc:exclude-mapping path="/uploads/**"/>
+			<bean class="com.sample_pro.interceptor.LoginInterceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors>
 	<mvc:resources  mapping="/css/**" location="/WEB-INF/resources/css/"/>
 	<mvc:resources  mapping="/js/**" location="/WEB-INF/resources/js/"/>
 	<mvc:resources  mapping="/fonts/**" location="/WEB-INF/resources/fonts/"/>

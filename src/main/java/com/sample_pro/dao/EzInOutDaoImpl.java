@@ -1,6 +1,8 @@
 package com.sample_pro.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -61,5 +63,37 @@ public class EzInOutDaoImpl implements EzInOutDao {
     @Override
     public CompanyEmployee selectEmployeeByPwNo(String pwNo) {
         return sqlSession.selectOne("EzInOutMapper.selectEmployeeByPwNo", pwNo);
+    }
+
+    @Override
+    public void ensureSecurityNotifyTable() {
+        sqlSession.update("EzInOutMapper.ensureSecurityNotifyTable");
+    }
+
+    @Override
+    public List<Map<String,Object>> selectSecurityEmployeeList() {
+        return sqlSession.selectList("EzInOutMapper.selectSecurityEmployeeList");
+    }
+
+    @Override
+    public void updateSecurityNotify(int empId, String securityYn) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("emp_id", empId);
+        param.put("security_yn", securityYn);
+        sqlSession.update("EzInOutMapper.updateSecurityNotify", param);
+    }
+
+    @Override
+    public void insertSecuritySensorLog(String sensorName, String sensorAddr, String status) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("sensor_name", sensorName);
+        param.put("sensor_addr", sensorAddr);
+        param.put("status", status);
+        sqlSession.insert("EzInOutMapper.insertSecuritySensorLog", param);
+    }
+
+    @Override
+    public List<java.util.Map<String, Object>> selectSecuritySensorHistory(int limit) {
+        return sqlSession.selectList("EzInOutMapper.selectSecuritySensorHistory", limit);
     }
 }

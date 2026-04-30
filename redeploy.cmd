@@ -38,11 +38,11 @@ for /f "delims=" %%M in ('where mvn 2^>nul') do (
   goto :mvn_found
 )
 if not defined MVN_CMD (
-  if exist "D:\apache-maven-3.9.14\bin\mvn.cmd" (
-    set "MVN_CMD=D:\apache-maven-3.9.14\bin\mvn.cmd"
+  if exist "D:\apache-maven-3.9.15\bin\mvn.cmd" (
+    set "MVN_CMD=D:\apache-maven-3.9.15\bin\mvn.cmd"
   ) else (
-    echo [WARN] mvn command not found. Please check Maven installation at D:\apache-maven-3.9.14
-    echo [HINT] Or add D:\apache-maven-3.9.14\bin to PATH
+    echo [WARN] mvn command not found. Please check Maven installation at D:\apache-maven-3.9.15
+    echo [HINT] Or add D:\apache-maven-3.9.15\bin to PATH
   )
 )
 :mvn_found
@@ -94,11 +94,19 @@ if defined MVN_CMD (
 
 echo [2/4] Stopping Tomcat...
 call "%TOMCAT_HOME%\bin\shutdown.bat" >nul 2>&1
+timeout /t 6 /nobreak >nul
+for /f "tokens=5" %%P in ('netstat -ano ^| findstr :8080 ^| findstr LISTENING') do taskkill /PID %%P /F >nul 2>&1
 timeout /t 2 /nobreak >nul
 
 echo [3/4] Deploying WAR...
-if exist "%TOMCAT_HOME%\webapps\%WAR_NAME%" del /q "%TOMCAT_HOME%\webapps\%WAR_NAME%"
+if exist "%TOMCAT_HOME%\webapps\%WAR_NAME%" del "%TOMCAT_HOME%\webapps\%WAR_NAME%"
 if exist "%TOMCAT_HOME%\webapps\%APP_DIR%" rmdir /s /q "%TOMCAT_HOME%\webapps\%APP_DIR%"
+if exist "%TOMCAT_HOME%\webapps\%APP_DIR%" (
+  echo [WARN] Deploy folder remove failed. Force kill and retry...
+  for /f "tokens=5" %%P in ('netstat -ano ^| findstr :8080') do taskkill /PID %%P /F >nul 2>&1
+  timeout /t 3 /nobreak >nul
+  rmdir /s /q "%TOMCAT_HOME%\webapps\%APP_DIR%"
+)
 copy /y "target\%WAR_NAME%" "%TOMCAT_HOME%\webapps\%WAR_NAME%" >nul
 if errorlevel 1 goto :fail
 

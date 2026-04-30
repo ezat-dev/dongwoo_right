@@ -187,11 +187,11 @@ html, body { height: 100%; font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
 
       <!-- 모니터링 -->
       <div class="sb-group-title">통신 모니터링</div>
-      <a class="sb-item" href="#" onclick="go('${pageContext.request.contextPath}/main_1/main/monitor','메인 모니터링',this);return false;">
-        <div class="sb-icon">🧭</div><span class="sb-label">메인 모니터링</span>
-      </a>
       <a class="sb-item" href="#" onclick="go('${pageContext.request.contextPath}/main_1/equip/monitor','설비 모니터링',this);return false;">
         <div class="sb-icon">🖥️</div><span class="sb-label">통신 모니터링</span>
+      </a>
+      <a class="sb-item" href="#" onclick="go('${pageContext.request.contextPath}/main_1/main/monitor','메인 모니터링',this);return false;">
+        <div class="sb-icon">🧭</div><span class="sb-label">메인 모니터링</span>
       </a>
       <a class="sb-item" href="#" onclick="go('${pageContext.request.contextPath}/main_1/equip/detail','설비 상세',this);return false;">
         <div class="sb-icon">🔍</div><span class="sb-label">설비 상세</span>
@@ -302,6 +302,18 @@ fetch('${pageContext.request.contextPath}/emp/me')
       document.getElementById('userAvatar').textContent = name.charAt(0);
     }
   });
+
+var OV_URLS = {
+  1: '${pageContext.request.contextPath}/main_1/main/monitor',
+  2: '${pageContext.request.contextPath}/main_1/main/monitor2'
+};
+function goOverview(num) {
+  document.getElementById('pageFrame').src = OV_URLS[num];
+  document.getElementById('pageTitle').textContent = 'OVERVIEW-' + num;
+  document.querySelectorAll('.sb-item').forEach(function(i){ i.classList.remove('active'); });
+  document.querySelectorAll('.ov-tab').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('ovTab' + num).classList.add('active');
+}
 
 function doLogout(){
   fetch('${pageContext.request.contextPath}/user/logout', {method:'POST'})

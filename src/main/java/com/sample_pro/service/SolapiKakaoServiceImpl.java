@@ -59,6 +59,9 @@ public class SolapiKakaoServiceImpl implements SolapiKakaoService {
     @Value("${solapi.button-url-pc:}")
     private String buttonUrlPc;
 
+    @Value("${solapi.security-template-id:}")
+    private String securityTemplateId;
+
     private static final String DEFAULT_VISITOR_URL =
         "http://ezat.iptime.org:6695/sample_pro/ez_in_out/take";
 
@@ -151,6 +154,98 @@ public class SolapiKakaoServiceImpl implements SolapiKakaoService {
             if (connection != null) {
                 connection.disconnect();
             }
+        }
+    }
+
+    @Override
+    public SolapiSendResult sendSecurityNotification(String mobileNo, String eventTime, String status) {
+        SolapiSendResult result = new SolapiSendResult();
+        System.out.println(">>> [SECURITY-KAKAO] 경비 알림 발송 시작. to=" + mobileNo);
+
+        if (!enabled) {
+            result.setSkipped(true);
+            result.setMessage("SOLAPI disabled");
+            return result;
+        }
+        if (isBlank(apiKey) || isBlank(apiSecret)) {
+            result.setSkipped(true);
+            result.setMessage("SOLAPI api-key/api-secret missing");
+            return result;
+        }
+        if (isBlank(pfId) || isBlank(securityTemplateId)) {
+            result.setSkipped(true);
+            result.setMessage("SOLAPI pfId/securityTemplateId missing");
+            System.out.println(">>> [SECURITY-KAKAO] pfId=" + pfId + ", securityTemplateId=" + securityTemplateId);
+            return result;
+        }
+
+        String to = normalizePhone(mobileNo);
+        if (isBlank(to)) {
+            result.setSkipped(true);
+            result.setMessage("recipient mobile_no missing");
+            return result;
+        }
+
+        HttpURLConnection connection = null;
+        try {
+            Map<String, Object> variables = new LinkedHashMap<>();
+            variables.put("#{eventTime}", nvl(eventTime));
+            variables.put("#{status}",    nvl(status));
+
+            Map<String, Object> kakaoOptions = new LinkedHashMap<>();
+            kakaoOptions.put("pfId",       pfId);
+            kakaoOptions.put("templateId", securityTemplateId);
+            kakaoOptions.put("variables",  variables);
+            kakaoOptions.put("disableSms", disableSms);
+
+            Map<String, Object> message = new LinkedHashMap<>();
+            message.put("to",           to);
+            message.put("type",         "ATA");
+            if (!isBlank(from)) {
+                message.put("from", normalizePhone(from));
+            }
+            message.put("kakaoOptions", kakaoOptions);
+
+            Map<String, Object> requestBody = new LinkedHashMap<>();
+            requestBody.put("messages", new Object[]{ message });
+
+            String payload = objectMapper.writeValueAsString(requestBody);
+            System.out.println(">>> [SECURITY-KAKAO] payload=" + payload);
+
+            connection = (HttpURLConnection) new URL(endpoint).openConnection();
+            connection.setRequestMethod("POST");
+            connection.setConnectTimeout(10000);
+            connection.setReadTimeout(10000);
+            connection.setDoOutput(true);
+            connection.setRequestProperty("Authorization", createAuthHeader(apiKey, apiSecret));
+            connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+
+            OutputStream outputStream = connection.getOutputStream();
+            outputStream.write(payload.getBytes(StandardCharsets.UTF_8));
+            outputStream.flush();
+            outputStream.close();
+
+            int statusCode = connection.getResponseCode();
+            String responseBody = readBody(
+                statusCode >= 200 && statusCode < 300
+                    ? connection.getInputStream()
+                    : connection.getErrorStream()
+            );
+
+            System.out.println(">>> [SECURITY-KAKAO] statusCode=" + statusCode + ", response=" + responseBody);
+
+            result.setStatusCode(statusCode);
+            result.setResponseBody(responseBody);
+            result.setSuccess(statusCode >= 200 && statusCode < 300);
+            result.setMessage(result.isSuccess() ? "성공" : "실패");
+            return result;
+        } catch (Exception e) {
+            result.setSuccess(false);
+            result.setMessage(e.getClass().getSimpleName() + ": " + e.getMessage());
+            System.err.println(">>> [SECURITY-KAKAO] 오류: " + e.getMessage());
+            return result;
+        } finally {
+            if (connection != null) connection.disconnect();
         }
     }
 
