@@ -15,17 +15,20 @@
 	<package name="com.sample_pro.domain"/>
 </typeAliases>
   <mappers>
-  	<mapper resource="mybatis/mapper/users.xml"/>
-
-    <mapper resource="mybatis/mapper/TagMapper.xml"/>
-    <mapper resource="mybatis/mapper/AlarmMapper.xml"/>
-    <mapper resource="mybatis/mapper/TempMapper.xml"/>
-    <mapper resource="mybatis/mapper/EzInOutMapper.xml"/>
-    <mapper resource="mybatis/mapper/PlcConfigMapper.xml"/>
-    <mapper resource="mybatis/mapper/PermMapper.xml"/>
-    <mapper resource="mybatis/mapper/InspectMapper.xml"/>
-    <mapper resource="mybatis/mapper/CalibMapper.xml"/>
-    <mapper resource="mybatis/mapper/PartsMapper.xml"/>
-    <mapper resource="mybatis/mapper/EzInOutAttendMapper.xml"/>
+    <!-- master -->
+    <mapper resource="mybatis/mapper/master/users.xml"/>
+    <mapper resource="mybatis/mapper/master/PermMapper.xml"/>
+    <!-- monitor -->
+    <mapper resource="mybatis/mapper/monitor/TagMapper.xml"/>
+    <mapper resource="mybatis/mapper/monitor/AlarmMapper.xml"/>
+    <mapper resource="mybatis/mapper/monitor/TempMapper.xml"/>
+    <mapper resource="mybatis/mapper/monitor/PlcConfigMapper.xml"/>
+    <!-- facility -->
+    <mapper resource="mybatis/mapper/facility/CalibMapper.xml"/>
+    <mapper resource="mybatis/mapper/facility/InspectMapper.xml"/>
+    <mapper resource="mybatis/mapper/facility/PartsMapper.xml"/>
+    <!-- management -->
+    <mapper resource="mybatis/mapper/management/EzInOutMapper.xml"/>
+    <mapper resource="mybatis/mapper/management/EzInOutAttendMapper.xml"/>
   </mappers>
 </configuration>

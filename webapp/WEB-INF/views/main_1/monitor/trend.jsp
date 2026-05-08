@@ -1,0 +1,1025 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="../common_style.jsp" %>
+<style>
+/* ══ page-wrap 오버라이드 (trend 전용: 스크롤 없이 꽉 채우기) ══ */
+.page-wrap {
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  padding-top: 14px !important;
+  padding-bottom: 14px !important;
+}
+
+/* ══ 레이아웃 ══ */
+.trend-layout {
+  display: grid;
+  grid-template-columns: 270px 1fr;
+  gap: 14px;
+  align-items: stretch;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+/* grid 자식도 min-height:0 필수 (기본값 auto → 내용만큼 늘어남) */
+.trend-layout > * { min-height: 0; }
+@media(max-width:900px){ .trend-layout { grid-template-columns:1fr; } }
+
+/* ══ LIVE 뱃지 ══ */
+.live-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 12px; border-radius: 20px;
+  border: 1px solid rgba(56,161,105,.5);
+  background: rgba(56,161,105,.08);
+  font-size: 11px; font-weight: 700;
+  color: var(--green);
+}
+.live-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--green);
+  animation: live-pulse 1.4s ease-in-out infinite;
+}
+@keyframes live-pulse {
+  0%,100%{ opacity:1; box-shadow:0 0 6px var(--green); }
+  50%    { opacity:.3; box-shadow:none; }
+}
+.live-countdown {
+  font-size: 10px; color: var(--muted); font-weight: 400;
+}
+
+/* ══ KPI 카드 행 ══ */
+.kpi-cards {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 10px;
+}
+.kpi-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 18px;
+  box-shadow: var(--shadow); border-top: 3px solid var(--primary);
+  transition: box-shadow .13s;
+}
+.kpi-card:hover { box-shadow: var(--shadow-md); }
+.kpi-card-lbl { font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.kpi-card-val { font-size: 28px; font-weight: 700; color: var(--text); font-family: monospace; line-height: 1.1; }
+.kpi-card-sub { font-size: 12px; color: var(--muted); margin-top: 5px; display: flex; gap: 8px; }
+.kpi-sub-mn { color: var(--primary); }
+.kpi-sub-mx { color: var(--red); }
+
+/* ══ 설비 필터 탭 ══ */
+.equip-tabs {
+  display: flex; flex-wrap: wrap; gap: 5px;
+  padding: 10px 14px;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 12px; box-shadow: var(--shadow);
+}
+.equip-btn {
+  padding: 4px 11px; border-radius: 6px;
+  border: 1px solid var(--border); background: var(--white);
+  font-size: 11px; font-weight: 700; cursor: pointer;
+  transition: all .13s; color: var(--muted);
+}
+.equip-btn:hover  { border-color: var(--primary-m); color: var(--primary); background: var(--primary-l); }
+.equip-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+/* ══ 태그 패널 ══ */
+.tag-panel { display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+.tag-panel .card { flex: 1; display: flex; flex-direction: column; overflow: hidden; margin: 0; min-height: 0; }
+.tag-search {
+  width: 100%; padding: 7px 10px;
+  border: 1px solid var(--border); border-radius: 7px;
+  font-size: 12px; outline: none; transition: border-color .13s;
+  flex-shrink: 0;
+}
+.tag-search:focus { border-color: var(--primary); }
+.tag-list {
+  display: flex; flex-direction: column; gap: 4px;
+  flex: 1; overflow-y: auto; margin-top: 4px;
+}
+.tag-list::-webkit-scrollbar { width: 3px; }
+.tag-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+.tag-item {
+  display: flex; align-items: center; gap: 8px; padding: 8px 10px;
+  border-radius: 8px; border: 1px solid var(--border); background: var(--white);
+  cursor: pointer; transition: all .13s; font-size: 12px; user-select: none;
+}
+.tag-item:hover { border-color: var(--primary-m); background: var(--primary-l); }
+.tag-item.sel   { border-color: var(--primary); background: var(--primary-l); box-shadow: 0 0 0 2px var(--primary-m); }
+.tag-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+
+/* ══ 차트 패널 ══ */
+.chart-panel { display: flex; flex-direction: column; gap: 12px; min-height: 0; overflow: hidden; }
+
+/* ══ 툴바 ══ */
+.toolbar-box {
+  background: var(--white); border: 1px solid var(--border); border-radius: 12px;
+  padding: 10px 14px; box-shadow: var(--shadow);
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+}
+.period-btn {
+  padding: 5px 12px; border-radius: 20px; border: 1px solid var(--border);
+  background: var(--white); font-size: 12px; font-weight: 600;
+  cursor: pointer; transition: all .13s; white-space: nowrap;
+}
+.period-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.tb-sep { width: 1px; height: 20px; background: var(--border); margin: 0 2px; }
+.dt-input {
+  padding: 5px 8px; border: 1px solid var(--border); border-radius: 6px;
+  font-size: 11px; color: var(--text); outline: none;
+}
+.dt-input:focus { border-color: var(--primary); }
+.tb-label { font-size: 11px; color: var(--muted); font-weight: 600; }
+
+/* ══ 차트 박스 ══ */
+.chart-box {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 12px; padding: 14px 16px; box-shadow: var(--shadow);
+  position: relative; flex: 1; display: flex; flex-direction: column;
+  min-height: 0; overflow: hidden;
+}
+#mainChart { flex: 1; min-height: 0; }
+
+/* ══ refresh bar ══ */
+.refresh-bar {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: var(--border); border-radius: 0 0 12px 12px; overflow: hidden;
+}
+.refresh-bar-inner { height: 100%; width: 0%; background: var(--primary); transition: width .1s linear; }
+
+/* ══ alt-drag 평균 ══ */
+.avg-overlay {
+  position: absolute;
+  background: rgba(49,130,206,.1);
+  border: 1px solid rgba(49,130,206,.4);
+  pointer-events: none; z-index: 10;
+}
+.avg-tooltip {
+  position: absolute; background: var(--white);
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 8px 12px; box-shadow: var(--shadow-md);
+  font-size: 11px; z-index: 20; pointer-events: auto;
+  min-width: 180px; top: 4px; right: 4px;
+}
+.avg-tooltip-row { display:flex; align-items:center; gap:6px; padding:2px 0; }
+
+/* ══ 줌 리셋 버튼 ══ */
+.btn-zoom-reset {
+  padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border);
+  background: var(--white); font-size: 11px; color: var(--muted);
+  cursor: pointer; transition: all .13s; display: none;
+}
+.btn-zoom-reset:hover { border-color: var(--primary); color: var(--primary); }
+.btn-zoom-reset.visible { display: inline-block; }
+.alt-hint { font-size: 10px; color: var(--muted); padding: 2px 8px; border: 1px dashed var(--border); border-radius: 4px; }
+
+/* 메모 바 */
+.memo-bar {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 10px; padding: 7px 12px; box-shadow: var(--shadow);
+  display: none; flex-wrap: wrap; align-items: center; gap: 6px;
+  flex-shrink: 0;
+}
+.memo-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 9px; border-radius: 16px;
+  border: 1px solid rgba(128,90,213,.4);
+  background: rgba(128,90,213,.08);
+  font-size: 11px; font-weight: 600; color: #553C9A;
+  cursor: pointer; transition: all .13s; user-select: none;
+}
+.memo-pill:hover { background: rgba(128,90,213,.18); }
+.memo-pill.hidden { opacity: .4; text-decoration: line-through; }
+.memo-pill-dot { width: 7px; height: 7px; border-radius: 50%; background: #805AD5; flex-shrink: 0; }
+.memo-pill-del { margin-left: 3px; color: var(--muted); font-size: 14px; line-height: 1; cursor: pointer; font-weight: 400; }
+.memo-pill-del:hover { color: var(--red); }
+
+/* 메모 모달 */
+.memo-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.45);
+  z-index: 1000; display: none; align-items: center; justify-content: center;
+}
+.memo-modal {
+  background: var(--white); border-radius: 14px;
+  padding: 24px 28px; width: 380px; max-width: 94vw;
+  box-shadow: 0 8px 40px rgba(0,0,0,.2);
+}
+.memo-modal-hd { font-size: 15px; font-weight: 700; margin-bottom: 16px; }
+.memo-field { margin-bottom: 13px; }
+.memo-field label { display: block; font-size: 11px; font-weight: 600; color: var(--muted); margin-bottom: 5px; }
+.memo-field input, .memo-field textarea {
+  width: 100%; padding: 8px 10px; border: 1px solid var(--border);
+  border-radius: 7px; font-size: 13px; outline: none;
+  transition: border-color .13s; box-sizing: border-box; font-family: inherit;
+}
+.memo-field input:focus, .memo-field textarea:focus { border-color: var(--primary); }
+.memo-field textarea { resize: vertical; min-height: 70px; }
+.memo-modal-btns { display: flex; gap: 8px; justify-content: flex-end; margin-top: 18px; }
+
+/* readability override */
+body { font-family: 'Pretendard','Noto Sans KR','Segoe UI',sans-serif; }
+.kpi-card-val { font-family: 'Segoe UI','Noto Sans KR',sans-serif; font-variant-numeric: tabular-nums; }
+.r-table, .kpi-card-lbl, .kpi-card-sub, .tag-item, .period-btn, .tb-label { font-variant-numeric: tabular-nums; }
+</style>
+<body>
+<div class="page-wrap">
+
+
+  <!-- KPI 카드 행 (상단) -->
+  <div class="kpi-cards" id="kpiCards" style="margin-bottom:10px;flex-shrink:0"></div>
+
+  <!-- 설비 탭 -->
+  <div class="equip-tabs" style="margin-bottom:10px;flex-shrink:0">
+    <span style="font-size:11px;font-weight:700;color:var(--muted);align-self:center;margin-right:4px">설비</span>
+    <button class="equip-btn active" onclick="setEquip('ALL',this)">ALL</button>
+    <button class="equip-btn" onclick="setEquip('BCF1',this)">BCF1</button>
+    <button class="equip-btn" onclick="setEquip('BCF2',this)">BCF2</button>
+    <button class="equip-btn" onclick="setEquip('BCF3',this)">BCF3</button>
+    <button class="equip-btn" onclick="setEquip('BCF4',this)">BCF4</button>
+    <button class="equip-btn" onclick="setEquip('BCF5',this)">BCF5</button>
+    <button class="equip-btn" onclick="setEquip('BCF6',this)">BCF6</button>
+    <button class="equip-btn" onclick="setEquip('BCF7',this)">BCF7</button>
+    <button class="equip-btn" onclick="setEquip('BCF8',this)">BCF8</button>
+    <button class="equip-btn" onclick="setEquip('BCF9',this)">BCF9</button>
+    <button class="equip-btn" onclick="setEquip('BCF10',this)">BCF10</button>
+    <button class="equip-btn" onclick="setEquip('BCF11',this)">BCF11</button>
+    <button class="equip-btn" onclick="setEquip('BCF12',this)">BCF12</button>
+  </div>
+
+  <div class="trend-layout">
+
+    <!-- ══ 좌측 태그 패널 ══ -->
+    <div class="tag-panel">
+      <div class="card">
+        <div class="card-title">태그 선택</div>
+        <input class="tag-search" id="tagSearch" placeholder="태그 검색..." oninput="filterTags()">
+        <div style="display:flex;gap:6px;margin:8px 0">
+          <button class="btn-outline btn-sm" onclick="selectAll(true)">전체 선택</button>
+          <button class="btn-outline btn-sm" onclick="selectAll(false)">전체 해제</button>
+        </div>
+        <div class="tag-list" id="tagList">
+          <div style="text-align:center;padding:20px;color:var(--muted);font-size:12px">로딩 중…</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 우측 차트 패널 ══ -->
+    <div class="chart-panel">
+
+      <!-- 툴바 -->
+      <div class="toolbar-box">
+        <button class="period-btn" onclick="setPeriod('1h',this)">1시간</button>
+        <button class="period-btn" onclick="setPeriod('6h',this)">6시간</button>
+        <button class="period-btn active" onclick="setPeriod('24h',this)">24시간</button>
+        <button class="period-btn" onclick="setPeriod('3d',this)">3일</button>
+        <button class="period-btn" onclick="setPeriod('7d',this)">7일</button>
+        <div class="tb-sep"></div>
+        <span class="tb-label">FROM</span>
+        <input class="dt-input" type="datetime-local" id="fromTime">
+        <span class="tb-label">TO</span>
+        <input class="dt-input" type="datetime-local" id="toTime">
+        <button class="period-btn" onclick="applyCustomRange()" style="background:var(--primary);color:#fff;border-color:var(--primary)">적용</button>
+        <div class="tb-sep"></div>
+        <span class="live-badge" id="liveBadge">
+          <span class="live-dot"></span>
+          LIVE
+          <svg id="liveGauge" width="24" height="24" style="transform:rotate(-90deg)">
+            <circle cx="12" cy="12" r="9" fill="none" stroke="rgba(56,161,105,.2)" stroke-width="2.5"/>
+            <circle id="liveArc" cx="12" cy="12" r="9" fill="none" stroke="#38A169" stroke-width="2.5"
+              stroke-dasharray="56.5" stroke-dashoffset="0" stroke-linecap="round"
+              style="transition:stroke-dashoffset .9s linear"/>
+          </svg>
+        </span>
+        <button class="btn-primary" onclick="reloadChart()">↺ 갱신</button>
+        <button class="btn-outline btn-sm" onclick="openMemoModal()" style="border-color:rgba(128,90,213,.5);color:#553C9A" data-perm="add">+ 메모</button>
+        <span style="margin-left:auto;font-size:11px;color:var(--muted)" id="periodLabel">최근 24시간</span>
+      </div>
+
+      <!-- 메모 바 -->
+      <div class="memo-bar" id="memoBar"></div>
+
+      <!-- 메인 차트 -->
+      <div class="chart-box" id="mainChartBox">
+        <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-bottom:6px;flex-shrink:0">
+          <span class="alt-hint">Alt+드래그 → 범위 평균</span>
+          <button class="btn-zoom-reset" id="btnZoomReset" onclick="resetZoom()">줌 초기화</button>
+        </div>
+        <div id="mainChart" style="flex:1;min-height:200px"></div>
+        <div class="refresh-bar"><div class="refresh-bar-inner" id="refreshBar"></div></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- 메모 추가 모달 -->
+<div class="memo-overlay" id="memoOverlay" onclick="if(event.target===this)closeMemoModal()">
+  <div class="memo-modal">
+    <div class="memo-modal-hd">메모 추가</div>
+    <div class="memo-field">
+      <label>시간 (자동 입력)</label>
+      <input type="text" id="memoTimeVal" readonly style="background:var(--bg);color:var(--muted);cursor:default">
+    </div>
+    <div class="memo-field">
+      <label>제목 <span style="color:var(--muted);font-weight:400">(최대 10자)</span></label>
+      <input type="text" id="memoName" maxlength="10" placeholder="메모 제목을 입력하세요"
+             onkeydown="if(event.key==='Enter')saveMemo()">
+    </div>
+    <div class="memo-field">
+      <label>내용 <span style="color:var(--muted);font-weight:400">(최대 100자)</span></label>
+      <textarea id="memoDesc" maxlength="100" placeholder="메모 내용을 입력하세요 (선택)"></textarea>
+    </div>
+    <div class="memo-modal-btns">
+      <button class="btn-outline btn-sm" onclick="closeMemoModal()">취소</button>
+      <button class="btn-primary btn-sm" onclick="saveMemo()">저장</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var base = '${pageContext.request.contextPath}';
+</script>
+<script src="${pageContext.request.contextPath}/js/highchart/highcharts.js"></script>
+<script src="${pageContext.request.contextPath}/js/highchart/exporting.js"></script>
+<script src="${pageContext.request.contextPath}/js/highchart/export-data.js"></script>
+<script>
+var tags       = [];
+var selTags    = {};
+var curEquip   = 'ALL';
+var curPeriod  = '24h';
+var isCustom   = false;
+var mainChart  = null;
+var countdown  = 15;
+var countTimer = null;
+var memos      = [];
+var memoVisible = {};
+var curFrom    = '';
+var curTo      = '';
+
+var COLORS = [
+  '#3182CE','#E53E3E','#38A169','#DD6B20',
+  '#805AD5','#00B5D8','#ED64A6','#ECC94B',
+  '#4299E1','#6B7280','#7B2D8B','#38B2AC'
+];
+
+var PERIOD_LABEL = {'1h':'최근 1시간','6h':'최근 6시간','24h':'최근 24시간','3d':'최근 3일','7d':'최근 7일'};
+var PERIOD_MS    = {'1h':3600000,'6h':21600000,'24h':86400000,'3d':259200000,'7d':604800000};
+
+/* ── 태그의 설비 반환 (equipId 필드 우선, 없으면 tagName 파싱) ── */
+function getEquipFromTag(t) {
+  if (t.equipId) return t.equipId;
+  var name = t.tagName || '';
+  var m = name.toUpperCase().match(/BCF[_\-](\d+)/);
+  if (!m) m = name.toUpperCase().match(/BCF(\d+)/);
+  return m ? 'BCF' + m[1] : null;
+}
+
+/* ── Highcharts 전역 설정 ── */
+Highcharts.setOptions({
+  lang: {
+    loading:'로딩 중…', noData:'데이터 없음',
+    resetZoom:'줌 초기화', resetZoomTitle:'줌 초기화',
+    months:['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+    shortMonths:['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+    weekdays:['일','월','화','수','목','금','토']
+  },
+  global: { useUTC: false }
+});
+
+/* ── 날짜 유틸 ── */
+function toLocalInput(dt) {
+  var p = function(n){ return String(n).padStart(2,'0'); };
+  return dt.getFullYear()+'-'+p(dt.getMonth()+1)+'-'+p(dt.getDate())
+       +'T'+p(dt.getHours())+':'+p(dt.getMinutes());
+}
+function toSqlDateTime(dt) {
+  var p = function(n){ return String(n).padStart(2,'0'); };
+  return dt.getFullYear()+'-'+p(dt.getMonth()+1)+'-'+p(dt.getDate())
+       +' '+p(dt.getHours())+':'+p(dt.getMinutes())+':00';
+}
+function parseTs(v) {
+  if (!v) return null;
+  if (typeof v === 'number') return v > 100000000000 ? v : v * 1000;
+  var s = typeof v === 'string' ? (v.includes('T') ? v : v.replace(' ','T')) : null;
+  if (!s) return null;
+  var t = Date.parse(s);
+  return isNaN(t) ? null : t;
+}
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+/* ── refresh bar ── */
+var rafId = null;
+function animateRefreshBar(ms) {
+  var bar = document.getElementById('refreshBar');
+  var start = null;
+  if (rafId) cancelAnimationFrame(rafId);
+  function step(ts) {
+    if (!start) start = ts;
+    var pct = Math.min((ts - start) / ms * 100, 100);
+    bar.style.width = pct + '%';
+    if (pct < 100) rafId = requestAnimationFrame(step);
+  }
+  bar.style.width = '0%';
+  rafId = requestAnimationFrame(step);
+}
+
+/* ── 실시간 카운트다운 (원형 게이지) ── */
+var CIRC = 2 * Math.PI * 9;   // r=9 → 약 56.5
+function setGaugeOffset(pct) {  // pct: 1.0=꽉참, 0=빔
+  var arc = document.getElementById('liveArc');
+  if (arc) arc.style.strokeDashoffset = (CIRC * (1 - pct)).toFixed(2);
+}
+function startCountdown() {
+  if (countTimer) clearInterval(countTimer);
+  countdown = 15;
+  setGaugeOffset(1);
+  countTimer = setInterval(function() {
+    countdown--;
+    setGaugeOffset(countdown / 15);
+    if (countdown <= 0) {
+      countdown = 15;
+      setGaugeOffset(1);
+      if (!isCustom) reloadChart();
+    }
+  }, 1000);
+}
+
+/* ── FROM/TO 초기화 ── */
+function initRange() {
+  var now  = new Date();
+  var from = new Date(now.getTime() - PERIOD_MS['24h']);
+  document.getElementById('fromTime').value = toLocalInput(from);
+  document.getElementById('toTime').value   = toLocalInput(now);
+}
+
+/* ── 태그 로드 ── */
+function loadTags() {
+  console.log('[trend] loadTags()');
+  fetch(base + '/temp/cols')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      console.log('[trend] /temp/cols response', d);
+      tags = Array.isArray(d) ? d : [];
+      if (!tags.length) { loadDemoChart(); return; }
+      initDefaultSelection();
+      renderTagList();
+      reloadChart();
+    })
+    .catch(function(){
+      loadDemoChart();
+    });
+}
+
+/* ── 태그 없을 때 빈 안내 ── */
+function loadDemoChart() {
+  document.getElementById('tagList').innerHTML =
+    '<div style="text-align:center;padding:20px;color:var(--muted);font-size:12px">등록된 태그가 없습니다.<br>태그 관리 페이지에서 태그를 먼저 등록하세요.</div>';
+  document.getElementById('kpiCards').innerHTML = '';
+  if (mainChart) { mainChart.destroy(); mainChart = null; }
+  startCountdown();
+}
+function initDefaultSelection() {
+  // 태그에서 첫 번째 설비 찾기
+  var firstEquip = null;
+  tags.forEach(function(t){
+    var eq = getEquipFromTag(t);
+    if (eq && !firstEquip) firstEquip = eq;
+  });
+
+  // 첫 번째 설비 탭 활성화 (ALL 제외)
+  curEquip = firstEquip || 'ALL';
+  document.querySelectorAll('.equip-btn').forEach(function(b){ b.classList.remove('active'); });
+  var targetBtn = document.querySelector('.equip-btn[onclick*="\''+curEquip+'\'"]');
+  if (!targetBtn) targetBtn = document.querySelector('.equip-btn'); // fallback: ALL
+  if (targetBtn) targetBtn.classList.add('active');
+
+  // 해당 설비 태그 전체 선택
+  Object.keys(selTags).forEach(function(k){ selTags[k] = false; });
+  tags.forEach(function(t){
+    if (getEquipFromTag(t) === curEquip) selTags[t.colName] = true;
+  });
+}
+
+/* ── 설비 필터 ── */
+function setEquip(eq, btn) {
+  curEquip = eq;
+  document.querySelectorAll('.equip-btn').forEach(function(b){ b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  // 해당 설비 태그만 선택
+  tags.forEach(function(t) {
+    var teq = getEquipFromTag(t);
+    if (eq === 'ALL') {
+      selTags[t.colName] = false;
+    } else {
+      selTags[t.colName] = (teq === eq);
+    }
+  });
+  if (eq === 'ALL') {
+    // ALL이면 첫 설비(ALL 다음) 태그 2개 선택
+    var firstEquip = null;
+    tags.forEach(function(t){
+      var teq2 = getEquipFromTag(t);
+      if (teq2 && !firstEquip) firstEquip = teq2;
+    });
+    var cnt = 0;
+    if (firstEquip) {
+      tags.forEach(function(t){
+        var teq2 = getEquipFromTag(t);
+        if (teq2 === firstEquip && cnt < 2) { selTags[t.colName] = true; cnt++; }
+      });
+    }
+  }
+  renderTagList();
+  reloadChart();
+}
+
+/* ── 태그 목록 렌더 ── */
+function renderTagList() {
+  if (!tags.length) {
+    document.getElementById('tagList').innerHTML =
+      '<div style="text-align:center;padding:20px;color:var(--muted);font-size:12px">등록된 태그 없음</div>';
+    return;
+  }
+  var q = (document.getElementById('tagSearch').value || '').toLowerCase();
+  var html = '';
+  tags.forEach(function(t, i) {
+    var displayName = t.trendName || t.tagName || t.colName;
+    var subName     = t.colName || t.tagName;
+    var teq  = getEquipFromTag(t);
+    // 설비 필터
+    if (curEquip !== 'ALL' && teq !== curEquip) return;
+    // 검색 필터
+    if (q && !displayName.toLowerCase().includes(q) && !subName.toLowerCase().includes(q) && !(t.address||'').toLowerCase().includes(q)) return;
+    var isSel = selTags[t.colName];
+    var color = COLORS[i % COLORS.length];
+    html += '<div class="tag-item'+(isSel?' sel':'')+'" id="ti_'+t.colName+'"'
+          + ' onclick="toggleTag(\''+t.colName+'\')">'
+          + '<div class="tag-dot" style="background:'+color+'"></div>'
+          + '<div style="flex:1;min-width:0">'
+          + '  <div style="font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(displayName)+'</div>'
+          + '  <div style="font-size:10px;color:var(--muted)">'+esc(subName)+'</div>'
+          + '</div></div>';
+  });
+  document.getElementById('tagList').innerHTML = html ||
+    '<div style="text-align:center;padding:10px;color:var(--muted);font-size:12px">태그 없음</div>';
+}
+
+function filterTags() { renderTagList(); }
+
+function toggleTag(colName) {
+  selTags[colName] = !selTags[colName];
+  var el = document.getElementById('ti_'+colName);
+  if (el) el.classList.toggle('sel', selTags[colName]);
+  reloadChart();
+}
+
+function selectAll(v) {
+  tags.forEach(function(t) {
+    var teq = getEquipFromTag(t);
+    if (curEquip === 'ALL' || teq === curEquip) selTags[t.colName] = v;
+  });
+  renderTagList();
+  reloadChart();
+}
+
+/* ── 기간 선택 ── */
+function setPeriod(p, btn) {
+  curPeriod = p; isCustom = false;
+  document.querySelectorAll('.period-btn').forEach(function(b){ b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  document.getElementById('periodLabel').textContent = PERIOD_LABEL[p];
+  var now  = new Date();
+  var from = new Date(now.getTime() - PERIOD_MS[p]);
+  document.getElementById('fromTime').value = toLocalInput(from);
+  document.getElementById('toTime').value   = toLocalInput(now);
+  reloadChart();
+}
+
+function applyCustomRange() {
+  isCustom = true;
+  document.querySelectorAll('.period-btn').forEach(function(b){ b.classList.remove('active'); });
+  var fv = document.getElementById('fromTime').value;
+  var tv = document.getElementById('toTime').value;
+  if (!fv || !tv) return;
+  document.getElementById('periodLabel').textContent = fv.replace('T',' ').slice(0,16) + ' ~ ' + tv.replace('T',' ').slice(0,16);
+  reloadChart();
+}
+
+/* ── 데이터 조회 & 차트 ── */
+function reloadChart() {
+  var selList = tags.filter(function(t){ return selTags[t.colName]; });
+  console.log('[trend] reloadChart()', { selCount: selList.length, curEquip: curEquip, curPeriod: curPeriod, isCustom: isCustom });
+
+  if (!selList.length) {
+    if (mainChart){ mainChart.destroy(); mainChart = null; }
+    document.getElementById('mainChart').innerHTML =
+      '<div style="text-align:center;padding:80px 0;color:var(--muted);font-size:13px">좌측에서 태그를 선택하세요</div>';
+    document.getElementById('kpiCards').innerHTML = '';
+    return;
+  }
+
+  var fromStr, toStr;
+  if (isCustom) {
+    var fv = document.getElementById('fromTime').value;
+    var tv = document.getElementById('toTime').value;
+    if (!fv || !tv) return;
+    fromStr = toSqlDateTime(new Date(fv));
+    toStr   = toSqlDateTime(new Date(tv));
+  } else {
+    var now  = new Date();
+    var from = new Date(now.getTime() - PERIOD_MS[curPeriod]);
+    fromStr  = toSqlDateTime(from);
+    toStr    = toSqlDateTime(now);
+  }
+
+  curFrom = fromStr;
+  curTo   = toStr;
+  console.log('[trend] range', { from: fromStr, to: toStr });
+  animateRefreshBar(800);
+
+  fetch(base + '/temp/snapshot/range?from=' + encodeURIComponent(fromStr) + '&to=' + encodeURIComponent(toStr))
+    .then(function(r){
+      console.log('[trend] /temp/snapshot/range status', r.status);
+      return r.json();
+    })
+    .then(function(rows){
+      console.log('[trend] /temp/snapshot/range rows', rows ? rows.length : rows, rows && rows[0]);
+      if (!Array.isArray(rows)) rows = [];
+      buildKpiCards(selList, rows);
+      buildMainChart(selList, rows);
+      loadMemos(curFrom, curTo);
+      if (!isCustom) startCountdown();
+    })
+    .catch(function(){
+      document.getElementById('mainChart').innerHTML =
+        '<div style="text-align:center;padding:40px;color:var(--red);font-size:13px">데이터 로드 실패</div>';
+    });
+}
+
+/* ── KPI 카드 (상단) ── */
+
+function getSnapshotKey(t) {
+  if (!t) return null;
+  var base = t.colName || t.tagName;
+  if (!base) return null;
+  var tid = (t.tempId != null) ? String(t.tempId) : '';
+  if (tid && base.indexOf(tid + '-') === 0) return base;
+  return tid ? (tid + '-' + base) : base;
+}
+
+function getSnapshotValue(row, t) {
+  if (!row || !t) return NaN;
+  var col  = t.colName || null;
+  var name = t.tagName || null;
+  var key1 = col;
+  var key2 = name;
+  var key3 = getSnapshotKey(t);
+  var key4 = (t.tempId != null && name) ? (String(t.tempId) + '-' + name) : null;
+  if (key1 && Object.prototype.hasOwnProperty.call(row, key1)) return row[key1];
+  if (key2 && Object.prototype.hasOwnProperty.call(row, key2)) return row[key2];
+  if (key3 && Object.prototype.hasOwnProperty.call(row, key3)) return row[key3];
+  if (key4 && Object.prototype.hasOwnProperty.call(row, key4)) return row[key4];
+  return NaN;
+}
+function buildKpiCards(selList, rows) {
+  var html = '';
+  selList.forEach(function(t, i) {
+    var vals = rows.map(function(row){
+      return parseFloat(getSnapshotValue(row, t));
+    }).filter(function(v){ return !isNaN(v); });
+
+    var color = COLORS[tagIdxOf(t)];
+    var name  = esc(t.trendName || t.tagName || t.colName);
+
+    if (!vals.length) {
+      html += '<div class="kpi-card" style="border-top-color:'+color+'">'
+            + '<div class="kpi-card-lbl" title="'+name+'">'+name+'</div>'
+            + '<div class="kpi-card-val" style="color:var(--muted)">N/A</div>'
+            + '</div>';
+      return;
+    }
+    var last = vals[vals.length - 1];
+    var sum  = vals.reduce(function(a,b){return a+b;},0);
+    var avg  = sum / vals.length;
+    var mn   = Math.min.apply(null, vals);
+    var mx   = Math.max.apply(null, vals);
+
+    html += '<div class="kpi-card" style="border-top-color:'+color+'">'
+          + '<div class="kpi-card-lbl" title="'+name+'">'+name+'</div>'
+          + '<div class="kpi-card-val" style="color:'+color+'">'+last.toFixed(1)+'</div>'
+          + '<div class="kpi-card-sub">'
+          + '  <span>avg <b>'+avg.toFixed(1)+'</b></span>'
+          + '  <span class="kpi-sub-mn">↓'+mn.toFixed(1)+'</span>'
+          + '  <span class="kpi-sub-mx">↑'+mx.toFixed(1)+'</span>'
+          + '</div>'
+          + '</div>';
+  });
+  document.getElementById('kpiCards').innerHTML = html;
+}
+
+/* ── 메인 차트 ── */
+function buildMainChart(selList, rows) {
+  var series = selList.map(function(t, i) {
+    var color = COLORS[tagIdxOf(t)];
+    var data = [];
+    rows.forEach(function(row) {
+      var ts = parseTs(row.record_time || row.recordTime);
+      if (!ts) return;
+      var v = parseFloat(getSnapshotValue(row, t));
+      if (!isNaN(v)) data.push([ts, v]);
+    });
+    return {
+      name: t.trendName || t.tagName || t.colName,
+      data: data, color: color, lineWidth: 2,
+      marker: { enabled: data.length < 80, radius: 3 },
+      states: { hover: { lineWidth: 3 } }
+    };
+  });
+
+  document.getElementById('btnZoomReset').classList.remove('visible');
+
+  if (mainChart) {
+    // 기존 차트는 유지하고 시리즈만 갱신
+    mainChart.update({ series: series }, true, true);
+    attachAltDragAvg(selList, rows);
+    return;
+  }
+
+  mainChart = Highcharts.chart('mainChart', {
+    chart: {
+      type: 'spline', animation: false,
+      zoomType: 'x',
+      panning: { enabled: true, type: 'x' }, panKey: 'shift',
+      style: { fontFamily:"'Segoe UI','Malgun Gothic',sans-serif" },
+      height: null,  /* flex 컨테이너 높이 그대로 사용 */
+      events: {
+        selection: function(){ document.getElementById('btnZoomReset').classList.add('visible'); }
+      },
+      resetZoomButton: { theme: { display: 'none' } }
+    },
+    title: { text: null },
+    xAxis: {
+      type: 'datetime',
+      labels: { format: '{value:%m/%d %H:%M}', style: { fontSize:'11px' } },
+      crosshair: true
+    },
+    yAxis: {
+      title: { text: null },
+      labels: { style: { fontSize:'11px' } },
+      gridLineColor: '#F0F4F8'
+    },
+    tooltip: {
+      shared: true, xDateFormat: '%Y-%m-%d %H:%M:%S',
+      pointFormat: '<span style="color:{series.color}">●</span> {series.name}: <b>{point.y:.2f}</b><br/>',
+      borderRadius: 8
+    },
+    legend: { enabled: true, itemStyle: { fontSize:'12px', fontWeight:'600' } },
+    plotOptions: { spline: { turboThreshold: 10000 } },
+    exporting: {
+      enabled: true,
+      buttons: { contextButton: { menuItems: ['downloadPNG','downloadSVG','separator','downloadCSV','downloadXLS'] } }
+    },
+    credits: { enabled: false },
+    series: series
+  });
+
+  attachAltDragAvg(selList, rows);
+
+  // flex 컨테이너 높이 변화 반영
+  setTimeout(function(){ if(mainChart) mainChart.reflow(); }, 50);
+}
+
+/* ── 줌 초기화 ── */
+function resetZoom() {
+  if (mainChart) mainChart.zoomOut();
+  document.getElementById('btnZoomReset').classList.remove('visible');
+}
+
+/* ── Alt+드래그 평균 ── */
+var avgOverlay = null;
+var avgDrag = { active: false, x0: 0, x1: 0 };
+var lastAvgSel = [], lastAvgRows = [];
+
+function attachAltDragAvg(selList, rows) {
+  lastAvgSel = selList; lastAvgRows = rows;
+  var chartEl = document.getElementById('mainChart');
+
+  // 이전 리스너 제거 방지: 클론 교체 대신 플래그
+  chartEl.onmousedown = function(e) {
+    if (!e.altKey) return;
+    e.preventDefault(); e.stopPropagation();
+    clearAvgOverlay();
+    avgDrag.active = true;
+    var rect = chartEl.getBoundingClientRect();
+    avgDrag.x0 = e.clientX - rect.left;
+    avgDrag.x1 = avgDrag.x0;
+    avgOverlay = document.createElement('div');
+    avgOverlay.className = 'avg-overlay';
+    chartEl.style.position = 'relative';
+    chartEl.appendChild(avgOverlay);
+    updateAvgOverlayPos(chartEl);
+  };
+
+  document.onmousemove = function(e) {
+    if (!avgDrag.active) return;
+    var rect = chartEl.getBoundingClientRect();
+    avgDrag.x1 = e.clientX - rect.left;
+    updateAvgOverlayPos(chartEl);
+  };
+
+  document.onmouseup = function(e) {
+    if (!avgDrag.active) return;
+    avgDrag.active = false;
+    if (!mainChart) return;
+    var x0px = Math.min(avgDrag.x0, avgDrag.x1);
+    var x1px = Math.max(avgDrag.x0, avgDrag.x1);
+    if (x1px - x0px < 5) { clearAvgOverlay(); return; }
+    var t0 = mainChart.xAxis[0].toValue(x0px - mainChart.plotLeft);
+    var t1 = mainChart.xAxis[0].toValue(x1px - mainChart.plotLeft);
+    showAvgResult(lastAvgSel, lastAvgRows, t0, t1);
+  };
+}
+
+function updateAvgOverlayPos(chartEl) {
+  if (!avgOverlay || !mainChart) return;
+  var pl = mainChart.plotLeft, pt = mainChart.plotTop, ph = mainChart.plotHeight;
+  var x0 = Math.min(avgDrag.x0, avgDrag.x1);
+  var x1 = Math.max(avgDrag.x0, avgDrag.x1);
+  avgOverlay.style.cssText = 'position:absolute;background:rgba(49,130,206,.1);border:1px solid rgba(49,130,206,.4);pointer-events:none;z-index:10;'
+    + 'left:'+x0+'px;top:'+pt+'px;width:'+(x1-x0)+'px;height:'+ph+'px';
+}
+
+function clearAvgOverlay() {
+  if (avgOverlay) { avgOverlay.remove(); avgOverlay = null; }
+}
+
+function showAvgResult(selList, rows, t0, t1) {
+  var inRange = rows.filter(function(row) {
+    var ts = parseTs(row.record_time || row.recordTime);
+    return ts !== null && ts >= t0 && ts <= t1;
+  });
+  if (!inRange.length || !avgOverlay) { clearAvgOverlay(); return; }
+
+  var results = selList.map(function(t) {
+    var vals = inRange.map(function(row){ return parseFloat(getSnapshotValue(row, t)); }).filter(function(v){ return !isNaN(v); });
+    if (!vals.length) return null;
+    var sum = vals.reduce(function(a,b){return a+b;},0);
+    return { name: t.tagName||t.colName, color: COLORS[tagIdxOf(t)], avg: sum/vals.length,
+             min: Math.min.apply(null,vals), max: Math.max.apply(null,vals), cnt: vals.length };
+  }).filter(Boolean);
+
+  if (!results.length) { clearAvgOverlay(); return; }
+
+  var html = '<div class="avg-tooltip">'
+    + '<div style="font-weight:700;margin-bottom:6px;font-size:12px">Alt-드래그 평균 ('+ inRange.length +'pts)</div>';
+  results.forEach(function(r) {
+    html += '<div class="avg-tooltip-row">'
+      + '<div style="width:8px;height:8px;border-radius:50%;background:'+r.color+';flex-shrink:0"></div>'
+      + '<span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px">'+esc(r.name)+'</span>'
+      + '<span style="font-weight:700;margin-left:8px;font-family:monospace">'+r.avg.toFixed(2)+'</span>'
+      + '</div>';
+  });
+  html += '<div style="font-size:10px;color:var(--muted);margin-top:6px;border-top:1px solid var(--border);padding-top:4px">'
+    + '<span style="cursor:pointer;color:var(--primary)" onclick="clearAvgOverlay()">닫기</span></div></div>';
+
+  avgOverlay.style.pointerEvents = 'auto';
+  avgOverlay.innerHTML = html;
+}
+
+function tagIdxOf(t) { var i = tags.indexOf(t); return i >= 0 ? i : 0; }
+
+/* ── 메모 ── */
+function openMemoModal() {
+  var now = new Date();
+  var p = function(n){ return String(n).padStart(2,'0'); };
+  var ts = now.getFullYear()+'-'+p(now.getMonth()+1)+'-'+p(now.getDate())
+          +' '+p(now.getHours())+':'+p(now.getMinutes())+':'+p(now.getSeconds());
+  document.getElementById('memoTimeVal').value = ts;
+  document.getElementById('memoName').value = '';
+  document.getElementById('memoDesc').value = '';
+  document.getElementById('memoOverlay').style.display = 'flex';
+  setTimeout(function(){ document.getElementById('memoName').focus(); }, 50);
+}
+
+function closeMemoModal() {
+  document.getElementById('memoOverlay').style.display = 'none';
+}
+
+function saveMemo() {
+  var name    = document.getElementById('memoName').value.trim();
+  var desc    = document.getElementById('memoDesc').value.trim();
+  var regtime = document.getElementById('memoTimeVal').value;
+  if (!name) { alert('메모 제목을 입력하세요'); return; }
+  fetch(base + '/temp/memo/insert', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ tcName: name, tcDesc: desc, tcRegtime: regtime, tcUserCode: 0 })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(d){
+    if (d.success === false) { alert(d.error || '저장 실패'); return; }
+    closeMemoModal();
+    loadMemos(curFrom, curTo);
+  })
+  .catch(function(){ alert('저장 실패'); });
+}
+
+function loadMemos(from, to) {
+  if (!from || !to) return;
+  fetch(base + '/temp/memo/list?from=' + encodeURIComponent(from) + '&to=' + encodeURIComponent(to))
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if (!Array.isArray(d)) return;
+      memos = d;
+      d.forEach(function(m){
+        if (memoVisible[m.tcCnt] === undefined) memoVisible[m.tcCnt] = true;
+      });
+      renderMemoPills();
+      applyMemosToChart();
+    })
+    .catch(function(){});
+}
+
+function renderMemoPills() {
+  var bar = document.getElementById('memoBar');
+  if (!memos.length) { bar.style.display = 'none'; return; }
+  bar.style.display = 'flex';
+  var html = '<span style="font-size:11px;font-weight:700;color:var(--muted);flex-shrink:0;margin-right:2px">메모</span>';
+  memos.forEach(function(m){
+    var vis = memoVisible[m.tcCnt] !== false;
+    html += '<span class="memo-pill'+(vis?'':' hidden')+'" onclick="toggleMemo('+m.tcCnt+')">'
+          + '<span class="memo-pill-dot"></span>'
+          + esc(m.tcName||'')
+          + ((!window.__PERMS || !window.__PERMS['trend'] || window.__PERMS['trend'].canDel !== 'N') ? '<span class="memo-pill-del" title="삭제" onclick="event.stopPropagation();deleteMemo('+m.tcCnt+')">&#x00D7;</span>' : '')
+          + '</span>';
+  });
+  bar.innerHTML = html;
+}
+
+function applyMemosToChart() {
+  if (!mainChart) return;
+  var axis = mainChart.xAxis[0];
+  // 기존 메모 plotLine 전부 제거
+  (axis.plotLinesAndBands || []).slice().forEach(function(b){
+    if (b.id && String(b.id).indexOf('memo-') === 0) axis.removePlotLine(b.id);
+  });
+  // 보이는 메모만 추가
+  memos.forEach(function(m){
+    if (memoVisible[m.tcCnt] === false) return;
+    var ts = parseTs(m.tcRegtime);
+    if (!ts) return;
+    axis.addPlotLine({
+      id: 'memo-' + m.tcCnt,
+      value: ts,
+      color: '#805AD5',
+      width: 1.5,
+      dashStyle: 'ShortDash',
+      zIndex: 5,
+      label: {
+        useHTML: true,
+        text: '<span style="display:inline-block;background:#805AD5;color:#fff;font-size:10px;font-weight:700;padding:4px 8px;border-radius:5px;line-height:1.6;box-shadow:0 2px 6px rgba(128,90,213,.35)">'
+            + esc(m.tcName||'')
+            + (m.tcDesc ? '<br><span style="font-weight:400;font-size:9px;opacity:.92">' + esc(m.tcDesc) + '</span>' : '')
+            + (m.tcUserName ? '<br><span style="font-weight:500;font-size:9px;opacity:.75">&#128100; ' + esc(m.tcUserName) + '</span>' : '')
+            + '</span>',
+        rotation: 0,
+        align: 'left',
+        x: 3,
+        y: 14
+      }
+    });
+  });
+}
+
+function toggleMemo(tcCnt) {
+  memoVisible[tcCnt] = (memoVisible[tcCnt] === false);
+  renderMemoPills();
+  applyMemosToChart();
+}
+
+function deleteMemo(tcCnt) {
+  if (!confirm('메모를 삭제하시겠습니까?')) return;
+  fetch(base + '/temp/memo/delete', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ tcCnt: tcCnt })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(d){
+    if (d.success === false) { alert(d.error || '삭제 실패'); return; }
+    delete memoVisible[tcCnt];
+    loadMemos(curFrom, curTo);
+  })
+  .catch(function(){ alert('삭제 실패'); });
+}
+
+/* ── 초기화 ── */
+initRange();
+loadTags();
+startCountdown();
+window.addEventListener('resize', function(){
+  if (mainChart) mainChart.reflow();
+});
+</script>
+</body>
+</html>
+
+

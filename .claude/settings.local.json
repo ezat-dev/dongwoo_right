@@ -47,7 +47,22 @@
       "Bash(cmd /c \"taskkill /F /PID 30496 /T\")",
       "Bash(cmd /c \"taskkill /F /PID 23028 /T\")",
       "Bash(tasklist /FI \"IMAGENAME eq PlcApiServer.exe\")",
-      "PowerShell(New-Item -ItemType Directory -Path \"D:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\views\\\\main_1\\\\BCF\" -Force)"
+      "PowerShell(New-Item -ItemType Directory -Path \"D:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\views\\\\main_1\\\\BCF\" -Force)",
+      "Bash(grep \"\\\\.java$\")",
+      "Bash(grep \"\\\\.jsp$\")",
+      "Bash(rm -f 'D:/apache-tomcat-9.0.115/webapps/sample_pro/WEB-INF/classes/com/sample_pro/service/*.class' 'D:/apache-tomcat-9.0.115/webapps/sample_pro/WEB-INF/classes/com/sample_pro/service/*$*.class')",
+      "Bash(rm -f 'D:/apache-tomcat-9.0.115/webapps/sample_pro/WEB-INF/classes/com/sample_pro/dao/*.class' 'D:/apache-tomcat-9.0.115/webapps/sample_pro/WEB-INF/classes/com/sample_pro/dao/*$*.class')",
+      "Read(//d/apache-tomcat-9.0.115/**)",
+      "Bash(bin/shutdown.bat)",
+      "Bash(bin/startup.bat)",
+      "Bash(awk '/14:11/,0' \"D:/apache-tomcat-9.0.115/logs/localhost.2026-05-07.log\")",
+      "Bash(rm -f '__TRACKED_VAR__/controller/*.class' '__TRACKED_VAR__/controller/*$*.class')",
+      "Bash(rm -f '__TRACKED_VAR__/service/*.class' '__TRACKED_VAR__/service/*$*.class')",
+      "Bash(rm -f '__TRACKED_VAR__/dao/*.class' '__TRACKED_VAR__/dao/*$*.class')",
+      "Bash(rm -f 'd:/sample_pro/webapp/WEB-INF/classes/com/sample_pro/controller/*.class' 'd:/sample_pro/webapp/WEB-INF/classes/com/sample_pro/controller/*$*.class')",
+      "Bash(rm -f 'd:/sample_pro/webapp/WEB-INF/classes/com/sample_pro/service/*.class' 'd:/sample_pro/webapp/WEB-INF/classes/com/sample_pro/service/*$*.class')",
+      "Bash(rm -f 'd:/sample_pro/webapp/WEB-INF/classes/com/sample_pro/dao/*.class' 'd:/sample_pro/webapp/WEB-INF/classes/com/sample_pro/dao/*$*.class')",
+      "Bash(mvn package *)"
     ],
     "additionalDirectories": [
       "D:\\apache-tomcat-9.0.115\\webapps",
