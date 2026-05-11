@@ -2,6 +2,7 @@ package com.sample_pro.controller.facility;
 
 import com.sample_pro.domain.Parts;
 import com.sample_pro.domain.StockHistory;
+import com.sample_pro.domain.Users;
 import com.sample_pro.service.facility.PartsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -18,6 +19,10 @@ public class PartsController {
 
     @Autowired
     private PartsService partsService;
+
+
+
+
 
     /* ── 재고 현황 목록 (마스터 + 계산 재고) ── */
     @RequestMapping(value = "/list", method = RequestMethod.GET,

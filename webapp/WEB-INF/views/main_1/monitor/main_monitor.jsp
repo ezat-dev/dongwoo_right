@@ -115,23 +115,23 @@
         <img class="bcf-1-tray-2" src="<%= ctx %>/img/main_monitor_1/bcf-1-tray-20.png" />
         <img class="bcf-1-tray-1" src="<%= ctx %>/img/main_monitor_1/bcf-1-tray-10.png" />
         <div class="back-1"></div>
-        <div class="bcf-1-open-1"></div>
+        <div class="bcf-1-open-1 bcf1_8"></div>
         <div class="bcf-1-close-1"></div>
-        <div class="bcf-1-open-2"></div>
+        <div class="bcf-1-open-2 bcf1_2"></div>
         <div class="bcf-1-close-2"></div>
         <div class="bcf-1-stop"></div>
         <div class="bcf-1-up"></div>
-        <div class="bcf-1-down"></div>
-        <div class="bcf-1-dt-ez-50"></div>
+        <div class="bcf-1-down bcf1_3"></div>
+        <div class="bcf-1-dt-ez-50 bcf1_50"></div>
         <img class="bcf-1-heat-off" src="<%= ctx %>/img/main_monitor_1/bcf-1-heat-off0.png" />
         <img class="bcf-1-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-1-heat-on0.png" />
         <img class="bcf-1-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-1-obj-off0.png" />
         <img class="bcf-1-obj-on" src="<%= ctx %>/img/main_monitor_1/bcf-1-obj-on0.png" />
-        <img class="bcf-1-pen-2" src="<%= ctx %>/img/main_monitor_1/bcf-1-pen-20.png" />
-        <img class="bcf-1-pen-1" src="<%= ctx %>/img/main_monitor_1/bcf-1-pen-10.png" />
-        <div class="bcf-1-jogging"></div>
+        <img class="bcf-1-pen-2 bcf1_60" src="<%= ctx %>/img/main_monitor_1/bcf-1-pen-20.png" />
+        <img class="bcf-1-pen-1 bcf1_60" src="<%= ctx %>/img/main_monitor_1/bcf-1-pen-10.png" />
+        <div class="bcf-1-jogging bcf1_56"></div>
         <img class="bcf-1-moter-off" src="<%= ctx %>/img/main_monitor_1/bcf-1-moter-off0.png" />
-        <img class="bcf-1-moter-on" src="<%= ctx %>/img/main_monitor_1/bcf-1-moter-on0.png" />
+        <img class="bcf-1-moter-on bcf1_39 bcf1_40" src="<%= ctx %>/img/main_monitor_1/bcf-1-moter-on0.png" />
       </div>
       <div class="hogi-2">
         <img class="bcf-2" src="<%= ctx %>/img/main_monitor_1/bcf-20.png" />

@@ -24,6 +24,9 @@ public class ProductInsertController {
     @Autowired
     private InspectService inspectService;
 
+
+
+    
     @RequestMapping(value = "/load", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
