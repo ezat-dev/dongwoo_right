@@ -102,7 +102,7 @@
       </div>
       <div class="hogi-1">
         <img class="bcf-1" src="<%= ctx %>/img/main_monitor_1/bcf-10.png" />
-        <img class="bcf-1-alarm" src="<%= ctx %>/img/main_monitor_1/bcf-1-alarm0.png" />
+        <img class="bcf-1-alarm bcf1_44" src="<%= ctx %>/img/main_monitor_1/bcf-1-alarm0.png" />
         <img class="bcf-1-belt" src="<%= ctx %>/img/main_monitor_1/bcf-1-belt0.png" />
         <img class="bcf-1-box-on-1" src="<%= ctx %>/img/main_monitor_1/bcf-1-box-on-10.png" />
         <img class="bcf-1-box-off-1" src="<%= ctx %>/img/main_monitor_1/bcf-1-box-off-10.png" />
@@ -112,8 +112,8 @@
         <img class="bcf-1-box-off-3" src="<%= ctx %>/img/main_monitor_1/bcf-1-box-off-30.png" />
         <img class="bcf-1-box-on-4" src="<%= ctx %>/img/main_monitor_1/bcf-1-box-on-40.png" />
         <img class="bcf-1-box-off-4" src="<%= ctx %>/img/main_monitor_1/bcf-1-box-off-40.png" />
-        <img class="bcf-1-tray-2" src="<%= ctx %>/img/main_monitor_1/bcf-1-tray-20.png" />
-        <img class="bcf-1-tray-1" src="<%= ctx %>/img/main_monitor_1/bcf-1-tray-10.png" />
+        <img class="bcf-1-tray-2 bcf1_51" src="<%= ctx %>/img/main_monitor_1/bcf-1-tray-20.png" />
+        <img class="bcf-1-tray-1 bcf1_50" src="<%= ctx %>/img/main_monitor_1/bcf-1-tray-10.png" />
         <div class="back-1"></div>
         <div class="bcf-1-open-1 bcf1_8"></div>
         <div class="bcf-1-close-1"></div>
@@ -126,7 +126,7 @@
         <img class="bcf-1-heat-off" src="<%= ctx %>/img/main_monitor_1/bcf-1-heat-off0.png" />
         <img class="bcf-1-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-1-heat-on0.png" />
         <img class="bcf-1-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-1-obj-off0.png" />
-        <img class="bcf-1-obj-on" src="<%= ctx %>/img/main_monitor_1/bcf-1-obj-on0.png" />
+        <img class="bcf-1-obj-on bcf1_46" src="<%= ctx %>/img/main_monitor_1/bcf-1-obj-on0.png" />
         <img class="bcf-1-pen-2 bcf1_60" src="<%= ctx %>/img/main_monitor_1/bcf-1-pen-20.png" />
         <img class="bcf-1-pen-1 bcf1_60" src="<%= ctx %>/img/main_monitor_1/bcf-1-pen-10.png" />
         <div class="bcf-1-jogging bcf1_56"></div>
@@ -135,7 +135,7 @@
       </div>
       <div class="hogi-2">
         <img class="bcf-2" src="<%= ctx %>/img/main_monitor_1/bcf-20.png" />
-        <img class="bcf-2-alarm" src="<%= ctx %>/img/main_monitor_1/bcf-2-alarm0.png" />
+        <img class="bcf-2-alarm bcf2_44" src="<%= ctx %>/img/main_monitor_1/bcf-2-alarm0.png" />
         <img class="bcf-2-belt" src="<%= ctx %>/img/main_monitor_1/bcf-2-belt0.png" />
         <img class="bcf-2-box-on-1" src="<%= ctx %>/img/main_monitor_1/bcf-2-box-on-10.png" />
         <img class="bcf-2-box-off-1" src="<%= ctx %>/img/main_monitor_1/bcf-2-box-off-10.png" />
@@ -145,30 +145,30 @@
         <img class="bcf-2-box-off-3" src="<%= ctx %>/img/main_monitor_1/bcf-2-box-off-30.png" />
         <img class="bcf-2-box-on-4" src="<%= ctx %>/img/main_monitor_1/bcf-2-box-on-40.png" />
         <img class="bcf-2-box-off-4" src="<%= ctx %>/img/main_monitor_1/bcf-2-box-off-40.png" />
-        <img class="bcf-2-tray-2" src="<%= ctx %>/img/main_monitor_1/bcf-2-tray-20.png" />
-        <img class="bcf-2-tray-1" src="<%= ctx %>/img/main_monitor_1/bcf-2-tray-10.png" />
+        <img class="bcf-2-tray-2 bcf2_51" src="<%= ctx %>/img/main_monitor_1/bcf-2-tray-20.png" />
+        <img class="bcf-2-tray-1 bcf2_50" src="<%= ctx %>/img/main_monitor_1/bcf-2-tray-10.png" />
         <div class="back-2"></div>
-        <div class="bcf-2-open-1"></div>
+        <div class="bcf-2-open-1 bcf2_8"></div>
         <div class="bcf-2-close-1"></div>
-        <div class="bcf-2-open-2"></div>
+        <div class="bcf-2-open-2 bcf2_2"></div>
         <div class="bcf-2-close-2"></div>
         <div class="bcf-2-stop"></div>
         <div class="bcf-2-up"></div>
-        <div class="bcf-2-down"></div>
-        <div class="bcf-2-dt"></div>
+        <div class="bcf-2-down bcf2_3"></div>
+        <div class="bcf-2-dt bcf2_50"></div>
         <img class="bcf-2-heat-off" src="<%= ctx %>/img/main_monitor_1/bcf-2-heat-off0.png" />
         <img class="bcf-2-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-2-heat-on0.png" />
         <img class="bcf-2-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-2-obj-off0.png" />
-        <img class="bcf-2-obj-on" src="<%= ctx %>/img/main_monitor_1/bcf-2-obj-on0.png" />
-        <img class="bcf-2-pen-2" src="<%= ctx %>/img/main_monitor_1/bcf-2-pen-20.png" />
-        <img class="bcf-2-pen-1" src="<%= ctx %>/img/main_monitor_1/bcf-2-pen-10.png" />
-        <div class="bcf-2-jogging"></div>
+        <img class="bcf-2-obj-on bcf2_46" src="<%= ctx %>/img/main_monitor_1/bcf-2-obj-on0.png" />
+        <img class="bcf-2-pen-2 bcf2_60" src="<%= ctx %>/img/main_monitor_1/bcf-2-pen-20.png" />
+        <img class="bcf-2-pen-1 bcf2_60" src="<%= ctx %>/img/main_monitor_1/bcf-2-pen-10.png" />
+        <div class="bcf-2-jogging bcf2_56"></div>
         <img class="bcf-2-moter-off" src="<%= ctx %>/img/main_monitor_1/bcf-2-moter-off0.png" />
-        <img class="bcf-2-moter-on" src="<%= ctx %>/img/main_monitor_1/bcf-2-moter-on0.png" />
+        <img class="bcf-2-moter-on bcf2_39 bcf2_40" src="<%= ctx %>/img/main_monitor_1/bcf-2-moter-on0.png" />
       </div>
       <div class="hogi-3">
         <img class="bcf-3" src="<%= ctx %>/img/main_monitor_1/bcf-30.png" />
-        <img class="bcf-3-alarm" src="<%= ctx %>/img/main_monitor_1/bcf-3-alarm0.png" />
+        <img class="bcf-3-alarm bcf3_44" src="<%= ctx %>/img/main_monitor_1/bcf-3-alarm0.png" />
         <img class="bcf-3-belt" src="<%= ctx %>/img/main_monitor_1/bcf-3-belt0.png" />
         <img class="bcf-3-box-on-1" src="<%= ctx %>/img/main_monitor_1/bcf-3-box-on-10.png" />
         <img class="bcf-3-box-off-1" src="<%= ctx %>/img/main_monitor_1/bcf-3-box-off-10.png" />
@@ -178,30 +178,30 @@
         <img class="bcf-3-box-off-3" src="<%= ctx %>/img/main_monitor_1/bcf-3-box-off-30.png" />
         <img class="bcf-3-box-on-4" src="<%= ctx %>/img/main_monitor_1/bcf-3-box-on-40.png" />
         <img class="bcf-3-box-off-4" src="<%= ctx %>/img/main_monitor_1/bcf-3-box-off-40.png" />
-        <img class="bcf-3-tray-2" src="<%= ctx %>/img/main_monitor_1/bcf-3-tray-20.png" />
-        <img class="bcf-3-tray-1" src="<%= ctx %>/img/main_monitor_1/bcf-3-tray-10.png" />
+        <img class="bcf-3-tray-2 bcf3_51" src="<%= ctx %>/img/main_monitor_1/bcf-3-tray-20.png" />
+        <img class="bcf-3-tray-1 bcf3_98" src="<%= ctx %>/img/main_monitor_1/bcf-3-tray-10.png" />
         <div class="back-3"></div>
-        <div class="bcf-3-open-1"></div>
+        <div class="bcf-3-open-1 bcf3_8"></div>
         <div class="bcf-3-close-1"></div>
-        <div class="bcf-3-open-2"></div>
+        <div class="bcf-3-open-2 bcf3_2"></div>
         <div class="bcf-3-close-2"></div>
         <div class="bcf-3-stop"></div>
         <div class="bcf-3-up"></div>
-        <div class="bcf-3-down"></div>
-        <div class="bcf-3-dt"></div>
+        <div class="bcf-3-down bcf3_3"></div>
+        <div class="bcf-3-dt bcf3_96 bcf3_97 bcf3_98"></div>
         <img class="bcf-3-heat-off" src="<%= ctx %>/img/main_monitor_1/bcf-3-heat-off0.png" />
         <img class="bcf-3-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-3-heat-on0.png" />
         <img class="bcf-3-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-3-obj-off0.png" />
-        <img class="bcf-3-obj-on" src="<%= ctx %>/img/main_monitor_1/bcf-3-obj-on0.png" />
-        <img class="bcf-3-pen-2" src="<%= ctx %>/img/main_monitor_1/bcf-3-pen-20.png" />
-        <img class="bcf-3-pen-1" src="<%= ctx %>/img/main_monitor_1/bcf-3-pen-10.png" />
-        <div class="bcf-3-jogging"></div>
+        <img class="bcf-3-obj-on bcf3_46" src="<%= ctx %>/img/main_monitor_1/bcf-3-obj-on0.png" />
+        <img class="bcf-3-pen-2 bcf3_60" src="<%= ctx %>/img/main_monitor_1/bcf-3-pen-20.png" />
+        <img class="bcf-3-pen-1 bcf3_60" src="<%= ctx %>/img/main_monitor_1/bcf-3-pen-10.png" />
+        <div class="bcf-3-jogging bcf3_56"></div>
         <img class="bcf-3-moter-off" src="<%= ctx %>/img/main_monitor_1/bcf-3-moter-off0.png" />
-        <img class="bcf-3-moter-on" src="<%= ctx %>/img/main_monitor_1/bcf-3-moter-on0.png" />
+        <img class="bcf-3-moter-on bcf3_39 bcf3_40" src="<%= ctx %>/img/main_monitor_1/bcf-3-moter-on0.png" />
       </div>
       <div class="hogi-4">
         <img class="bcf-4" src="<%= ctx %>/img/main_monitor_1/bcf-40.png" />
-        <img class="bcf-4-alarm" src="<%= ctx %>/img/main_monitor_1/bcf-4-alarm0.png" />
+        <img class="bcf-4-alarm bcf4_44" src="<%= ctx %>/img/main_monitor_1/bcf-4-alarm0.png" />
         <img class="bcf-4-belt" src="<%= ctx %>/img/main_monitor_1/bcf-4-belt0.png" />
         <img class="bcf-4-box-on-1" src="<%= ctx %>/img/main_monitor_1/bcf-4-box-on-10.png" />
         <img class="bcf-4-box-off-1" src="<%= ctx %>/img/main_monitor_1/bcf-4-box-off-10.png" />
@@ -211,30 +211,30 @@
         <img class="bcf-4-box-off-3" src="<%= ctx %>/img/main_monitor_1/bcf-4-box-off-30.png" />
         <img class="bcf-4-box-on-4" src="<%= ctx %>/img/main_monitor_1/bcf-4-box-on-40.png" />
         <img class="bcf-4-box-off-4" src="<%= ctx %>/img/main_monitor_1/bcf-4-box-off-40.png" />
-        <img class="bcf-4-tray-2" src="<%= ctx %>/img/main_monitor_1/bcf-4-tray-20.png" />
-        <img class="bcf-4-tray-1" src="<%= ctx %>/img/main_monitor_1/bcf-4-tray-10.png" />
+        <img class="bcf-4-tray-2 bcf4_51" src="<%= ctx %>/img/main_monitor_1/bcf-4-tray-20.png" />
+        <img class="bcf-4-tray-1 bcf4_50" src="<%= ctx %>/img/main_monitor_1/bcf-4-tray-10.png" />
         <div class="back-4"></div>
-        <div class="bcf-4-open-1"></div>
+        <div class="bcf-4-open-1 bcf4_8"></div>
         <div class="bcf-4-close-1"></div>
-        <div class="bcf-4-open-2"></div>
+        <div class="bcf-4-open-2 bcf4_2"></div>
         <div class="bcf-4-close-2"></div>
         <div class="bcf-4-stop"></div>
         <div class="bcf-4-up"></div>
-        <div class="bcf-4-down"></div>
-        <div class="bcf-4-dt"></div>
+        <div class="bcf-4-down bcf4_3"></div>
+        <div class="bcf-4-dt bcf4_50"></div>
         <img class="bcf-4-heat-off" src="<%= ctx %>/img/main_monitor_1/bcf-4-heat-off0.png" />
         <img class="bcf-4-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-4-heat-on0.png" />
         <img class="bcf-4-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-4-obj-off0.png" />
-        <img class="bcf-4-obj-on" src="<%= ctx %>/img/main_monitor_1/bcf-4-obj-on0.png" />
-        <img class="bcf-4-pen-2" src="<%= ctx %>/img/main_monitor_1/bcf-4-pen-20.png" />
-        <img class="bcf-4-pen-1" src="<%= ctx %>/img/main_monitor_1/bcf-4-pen-10.png" />
-        <div class="bcf-4-jogging"></div>
+        <img class="bcf-4-obj-on bcf4_46" src="<%= ctx %>/img/main_monitor_1/bcf-4-obj-on0.png" />
+        <img class="bcf-4-pen-2 bcf4_60" src="<%= ctx %>/img/main_monitor_1/bcf-4-pen-20.png" />
+        <img class="bcf-4-pen-1 bcf4_60" src="<%= ctx %>/img/main_monitor_1/bcf-4-pen-10.png" />
+        <div class="bcf-4-jogging bcf4_56"></div>
         <img class="bcf-4-moter-off" src="<%= ctx %>/img/main_monitor_1/bcf-4-moter-off0.png" />
-        <img class="bcf-4-moter-on" src="<%= ctx %>/img/main_monitor_1/bcf-4-moter-on0.png" />
+        <img class="bcf-4-moter-on bcf4_85 bcf4_86" src="<%= ctx %>/img/main_monitor_1/bcf-4-moter-on0.png" />
       </div>
       <div class="hogi-10">
         <img class="bcf-10" src="<%= ctx %>/img/main_monitor_1/bcf-100.png" />
-        <img class="bcf-10-alarm" src="<%= ctx %>/img/main_monitor_1/bcf-10-alarm0.png" />
+        <img class="bcf-10-alarm bcf10_46" src="<%= ctx %>/img/main_monitor_1/bcf-10-alarm0.png" />
         <img class="bcf-10-belt" src="<%= ctx %>/img/main_monitor_1/bcf-10-belt0.png" />
         <img class="bcf-10-box-on-1" src="<%= ctx %>/img/main_monitor_1/bcf-10-box-on-10.png" />
         <img class="bcf-10-box-off-1" src="<%= ctx %>/img/main_monitor_1/bcf-10-box-off-10.png" />
@@ -244,30 +244,30 @@
         <img class="bcf-10-box-off-3" src="<%= ctx %>/img/main_monitor_1/bcf-10-box-off-30.png" />
         <img class="bcf-10-box-on-4" src="<%= ctx %>/img/main_monitor_1/bcf-10-box-on-40.png" />
         <img class="bcf-10-box-off-4" src="<%= ctx %>/img/main_monitor_1/bcf-10-box-off-40.png" />
-        <img class="bcf-10-tray-2" src="<%= ctx %>/img/main_monitor_1/bcf-10-tray-20.png" />
-        <img class="bcf-10-tray-1" src="<%= ctx %>/img/main_monitor_1/bcf-10-tray-10.png" />
+        <img class="bcf-10-tray-2 bcf10_54" src="<%= ctx %>/img/main_monitor_1/bcf-10-tray-20.png" />
+        <img class="bcf-10-tray-1 bcf10_53" src="<%= ctx %>/img/main_monitor_1/bcf-10-tray-10.png" />
         <div class="back-10"></div>
-        <div class="bcf-10-open-1"></div>
+        <div class="bcf-10-open-1 bcf10_8"></div>
         <div class="bcf-10-close-1"></div>
-        <div class="bcf-10-open-2"></div>
+        <div class="bcf-10-open-2 bcf10_2"></div>
         <div class="bcf-10-close-2"></div>
         <div class="bcf-10-stop"></div>
         <div class="bcf-10-up"></div>
-        <div class="bcf-10-down"></div>
-        <div class="bcf-10-dt"></div>
+        <div class="bcf-10-down bcf10_52"></div>
+        <div class="bcf-10-dt bcf10_53"></div>
         <img class="bcf-10-heat-off" src="<%= ctx %>/img/main_monitor_1/bcf-10-heat-off0.png" />
         <img class="bcf-10-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-10-heat-on0.png" />
         <img class="bcf-10-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-10-obj-off0.png" />
-        <img class="bcf-10-obj-on" src="<%= ctx %>/img/main_monitor_1/bcf-10-obj-on0.png" />
-        <img class="bcf-10-pen-2" src="<%= ctx %>/img/main_monitor_1/bcf-10-pen-20.png" />
-        <img class="bcf-10-pen-1" src="<%= ctx %>/img/main_monitor_1/bcf-10-pen-10.png" />
-        <div class="bcf-10-jogging"></div>
+        <img class="bcf-10-obj-on bcf10_49" src="<%= ctx %>/img/main_monitor_1/bcf-10-obj-on0.png" />
+        <img class="bcf-10-pen-2 bcf10_62" src="<%= ctx %>/img/main_monitor_1/bcf-10-pen-20.png" />
+        <img class="bcf-10-pen-1 bcf10_62" src="<%= ctx %>/img/main_monitor_1/bcf-10-pen-10.png" />
+        <div class="bcf-10-jogging bcf10_58"></div>
         <img class="bcf-10-moter-off" src="<%= ctx %>/img/main_monitor_1/bcf-10-moter-off0.png" />
-        <img class="bcf-10-moter-on" src="<%= ctx %>/img/main_monitor_1/bcf-10-moter-on0.png" />
+        <img class="bcf-10-moter-on bcf10_38 bcf10_39" src="<%= ctx %>/img/main_monitor_1/bcf-10-moter-on0.png" />
       </div>
       <div class="hogi-5">
         <img class="bcf-5" src="<%= ctx %>/img/main_monitor_1/bcf-50.png" />
-        <img class="bcf-5-alarm" src="<%= ctx %>/img/main_monitor_1/bcf-5-alarm0.png" />
+        <img class="bcf-5-alarm bcf5_46" src="<%= ctx %>/img/main_monitor_1/bcf-5-alarm0.png" />
         <img class="bcf-5-belt" src="<%= ctx %>/img/main_monitor_1/bcf-5-belt0.png" />
         <img class="bcf-5-box-on-1" src="<%= ctx %>/img/main_monitor_1/bcf-5-box-on-10.png" />
         <img class="bcf-5-box-off-1" src="<%= ctx %>/img/main_monitor_1/bcf-5-box-off-10.png" />
@@ -277,28 +277,28 @@
         <img class="bcf-5-box-off-3" src="<%= ctx %>/img/main_monitor_1/bcf-5-box-off-30.png" />
         <img class="bcf-5-box-on-4" src="<%= ctx %>/img/main_monitor_1/bcf-5-box-on-40.png" />
         <img class="bcf-5-box-off-4" src="<%= ctx %>/img/main_monitor_1/bcf-5-box-off-40.png" />
-        <img class="bcf-5-tray-2" src="<%= ctx %>/img/main_monitor_1/bcf-5-tray-20.png" />
-        <img class="bcf-5-tray-1" src="<%= ctx %>/img/main_monitor_1/bcf-5-tray-10.png" />
+        <img class="bcf-5-tray-2 bcf5_54" src="<%= ctx %>/img/main_monitor_1/bcf-5-tray-20.png" />
+        <img class="bcf-5-tray-1 bcf5_53" src="<%= ctx %>/img/main_monitor_1/bcf-5-tray-10.png" />
         <div class="back-5"></div>
-        <div class="bcf-5-open-1"></div>
+        <div class="bcf-5-open-1 bcf5_8"></div>
         <div class="bcf-5-close-1"></div>
-        <div class="bcf-5-open-2"></div>
+        <div class="bcf-5-open-2 bcf5_2"></div>
         <div class="bcf-5-close-2"></div>
         <div class="bcf-5-open-3"></div>
         <div class="bcf-5-close-3"></div>
         <div class="bcf-5-stop"></div>
         <div class="bcf-5-up"></div>
-        <div class="bcf-5-down"></div>
-        <div class="bcf-5-dt"></div>
+        <div class="bcf-5-down bcf5_52"></div>
+        <div class="bcf-5-dt bcf5_53"></div>
         <img class="bcf-5-heat-off" src="<%= ctx %>/img/main_monitor_1/bcf-5-heat-off0.png" />
         <img class="bcf-5-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-5-heat-on0.png" />
         <img class="bcf-5-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-5-obj-off0.png" />
-        <img class="bcf-5-obj-on" src="<%= ctx %>/img/main_monitor_1/bcf-5-obj-on0.png" />
-        <img class="bcf-5-pen-2" src="<%= ctx %>/img/main_monitor_1/bcf-5-pen-20.png" />
-        <img class="bcf-5-pen-1" src="<%= ctx %>/img/main_monitor_1/bcf-5-pen-10.png" />
-        <div class="bcf-5-jogging"></div>
+        <img class="bcf-5-obj-on bcf5_49" src="<%= ctx %>/img/main_monitor_1/bcf-5-obj-on0.png" />
+        <img class="bcf-5-pen-2 bcf5_62" src="<%= ctx %>/img/main_monitor_1/bcf-5-pen-20.png" />
+        <img class="bcf-5-pen-1 bcf5_62" src="<%= ctx %>/img/main_monitor_1/bcf-5-pen-10.png" />
+        <div class="bcf-5-jogging bcf5_58"></div>
         <img class="bcf-5-moter-off" src="<%= ctx %>/img/main_monitor_1/bcf-5-moter-off0.png" />
-        <img class="bcf-5-moter-on" src="<%= ctx %>/img/main_monitor_1/bcf-5-moter-on0.png" />
+        <img class="bcf-5-moter-on bcf5_38 bcf5_39" src="<%= ctx %>/img/main_monitor_1/bcf-5-moter-on0.png" />
       </div>
     </div>
   </div>
@@ -446,10 +446,10 @@
           <div class="tm-ch-name">CP12</div>
         </div>
         <div class="tm-row tm-cur">
-          <div class="tm-cell">DT</div><div class="tm-cell">DT</div><div class="tm-cell">DT</div>
+          <div class="tm-cell bcf12_s_D1061">DT</div><div class="tm-cell bcf12_s_D1051">DT</div><div class="tm-cell bcf12_s_D1081">DT</div>
         </div>
         <div class="tm-row tm-set">
-          <div class="tm-cell">DT</div><div class="tm-cell">DT</div><div class="tm-cell">DT</div>
+          <div class="tm-cell bcf12_s_D1083">DT</div><div class="tm-cell bcf12_s_D1085">DT</div><div class="tm-cell bcf12_s_D1087">DT</div>
         </div>
       </div>
 
@@ -461,10 +461,10 @@
           <div class="tm-ch-name">CP1</div>
         </div>
         <div class="tm-row tm-cur">
-          <div class="tm-cell">DT</div><div class="tm-cell">DT</div><div class="tm-cell">DT</div>
+          <div class="tm-cell bcf1_s_40046">DT</div><div class="tm-cell bcf1_s_40047">DT</div><div class="tm-cell bcf1_s_40048">DT</div>
         </div>
         <div class="tm-row tm-set">
-          <div class="tm-cell">DT</div><div class="tm-cell">DT</div><div class="tm-cell">DT</div>
+          <div class="tm-cell bcf1_s_40069">DT</div><div class="tm-cell bcf1_s_40070">DT</div><div class="tm-cell bcf1_s_40071">DT</div>
         </div>
       </div>
 
@@ -476,10 +476,10 @@
           <div class="tm-ch-name">CP2</div>
         </div>
         <div class="tm-row tm-cur">
-          <div class="tm-cell">DT</div><div class="tm-cell">DT</div><div class="tm-cell">DT</div>
+          <div class="tm-cell bcf2_s_40046">DT</div><div class="tm-cell bcf2_s_40047">DT</div><div class="tm-cell bcf2_s_40052">DT</div>
         </div>
         <div class="tm-row tm-set">
-          <div class="tm-cell">DT</div><div class="tm-cell">DT</div><div class="tm-cell">DT</div>
+          <div class="tm-cell bcf2_s_40069">DT</div><div class="tm-cell bcf2_s_40070">DT</div><div class="tm-cell bcf2_s_40071">DT</div>
         </div>
       </div>
 
@@ -491,10 +491,10 @@
           <div class="tm-ch-name">CP3</div>
         </div>
         <div class="tm-row tm-cur">
-          <div class="tm-cell">DT</div><div class="tm-cell">DT</div><div class="tm-cell">DT</div>
+          <div class="tm-cell bcf3_s_40046">DT</div><div class="tm-cell bcf3_s_40047">DT</div><div class="tm-cell bcf3_s_40052">DT</div>
         </div>
         <div class="tm-row tm-set">
-          <div class="tm-cell">DT</div><div class="tm-cell">DT</div><div class="tm-cell">DT</div>
+          <div class="tm-cell bcf3_s_40069">DT</div><div class="tm-cell bcf3_s_40070">DT</div><div class="tm-cell bcf3_s_40071">DT</div>
         </div>
       </div>
 
@@ -506,10 +506,10 @@
           <div class="tm-ch-name">CP4</div>
         </div>
         <div class="tm-row tm-cur">
-          <div class="tm-cell">DT</div><div class="tm-cell">DT</div><div class="tm-cell">DT</div>
+          <div class="tm-cell bcf4_s_40046">DT</div><div class="tm-cell bcf4_s_40047">DT</div><div class="tm-cell bcf4_s_40052">DT</div>
         </div>
         <div class="tm-row tm-set">
-          <div class="tm-cell">DT</div><div class="tm-cell">DT</div><div class="tm-cell">DT</div>
+          <div class="tm-cell bcf4_s_40069">DT</div><div class="tm-cell bcf4_s_40070">DT</div><div class="tm-cell bcf4_s_40071">DT</div>
         </div>
       </div>
 
@@ -521,10 +521,10 @@
           <div class="tm-ch-name">CP10</div>
         </div>
         <div class="tm-row tm-cur">
-          <div class="tm-cell">DT</div><div class="tm-cell">DT</div><div class="tm-cell">DT</div>
+          <div class="tm-cell bcf10_s_40046">DT</div><div class="tm-cell bcf10_s_40047">DT</div><div class="tm-cell bcf10_s_40052">DT</div>
         </div>
         <div class="tm-row tm-set">
-          <div class="tm-cell">DT</div><div class="tm-cell">DT</div><div class="tm-cell">DT</div>
+          <div class="tm-cell bcf10_s_40069">DT</div><div class="tm-cell bcf10_s_40070">DT</div><div class="tm-cell bcf10_s_40071">DT</div>
         </div>
       </div>
 
@@ -536,15 +536,84 @@
           <div class="tm-ch-name">CP5</div>
         </div>
         <div class="tm-row tm-cur">
-          <div class="tm-cell">DT</div><div class="tm-cell">DT</div><div class="tm-cell">DT</div>
+          <div class="tm-cell bcf5_s_40046">DT</div><div class="tm-cell bcf5_s_40047">DT</div><div class="tm-cell bcf5_s_40052">DT</div>
         </div>
         <div class="tm-row tm-set">
-          <div class="tm-cell">DT</div><div class="tm-cell">DT</div><div class="tm-cell">DT</div>
+          <div class="tm-cell bcf5_s_40069">DT</div><div class="tm-cell bcf5_s_40070">DT</div><div class="tm-cell bcf5_s_40071">DT</div>
         </div>
       </div>
 
     </div><!-- /tm-grid -->
   </div><!-- /tm-panel -->
 
+
+<script>
+(function () {
+  'use strict';
+  const ctx = '<%= ctx %>';
+  const INTERVAL = 1500; // ms
+
+  /* ── 1. DOM에서 bcfN_s_ADDR(온도) / bcfN_ADDR(신호) 클래스 수집 ── */
+  const wordElMap = {}; // 'bcf1_s_40045' → [el, ...]
+  const bitElMap  = {}; // 'bcf1_60'      → [el, ...]
+
+  document.querySelectorAll('[class]').forEach(function (el) {
+    el.className.split(/\s+/).forEach(function (cls) {
+      if (/^bcf\d+_s_/.test(cls)) {
+        if (!wordElMap[cls]) wordElMap[cls] = [];
+        wordElMap[cls].push(el);
+      } else if (/^bcf\d+_\d+$/.test(cls)) {
+        if (!bitElMap[cls]) bitElMap[cls] = [];
+        bitElMap[cls].push(el);
+      }
+    });
+  });
+
+  const allTags = Object.keys(wordElMap).concat(Object.keys(bitElMap));
+  if (!allTags.length) return;
+
+  /* ── 2. PLC 값을 DOM에 반영 ── */
+  function applyData(data) {
+    // 온도: 텍스트 업데이트
+    Object.keys(wordElMap).forEach(function (tag) {
+      if (data[tag] == null) return;
+      var raw  = Number(data[tag]);
+      // PLC 값이 0.1°C 단위인 경우 /10, 아닌 경우 그대로 표시
+      var text = isNaN(raw) ? data[tag] : (raw / 10).toFixed(1);
+      wordElMap[tag].forEach(function (el) { el.textContent = text; });
+    });
+
+    // 신호: 1이면 표시(visible), 0이면 숨김(hidden)
+    Object.keys(bitElMap).forEach(function (tag) {
+      if (data[tag] == null) return;
+      var show = (data[tag] === 1 || data[tag] === true);
+      bitElMap[tag].forEach(function (el) {
+        el.style.visibility = show ? 'visible' : 'hidden';
+      });
+    });
+  }
+
+  /* ── 3. 폴링: 직전 요청이 끝나야 다음 요청 시작 (중첩 방지) ── */
+  var busy = false;
+
+  function fetchData() {
+    if (busy) return;
+    busy = true;
+    fetch(ctx + '/monitor/main-data', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(allTags)
+    })
+    .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+    .then(function (data) { applyData(data); })
+    .catch(function (err) { console.warn('[monitor] PLC fetch 실패:', err); })
+    .finally(function () { busy = false; });
+  }
+
+  // 페이지 로드 즉시 1회 + 이후 주기 폴링
+  fetchData();
+  setInterval(fetchData, INTERVAL);
+})();
+</script>
 </body>
 </html>

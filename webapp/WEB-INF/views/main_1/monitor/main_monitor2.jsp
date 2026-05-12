@@ -68,50 +68,50 @@
     <div class="group-2">
       <div class="bcf-11">
         <img class="bcf-112" src="<%= ctx %>/img/main_monitor_2/bcf-111.png" />
-        <img class="bcf-11-alarm" src="<%= ctx %>/img/main_monitor_2/bcf-11-alarm0.png" />
+        <img class="bcf-11-alarm bcf11_65" src="<%= ctx %>/img/main_monitor_2/bcf-11-alarm0.png" />
         <img class="bcf-11-obj-off" src="<%= ctx %>/img/main_monitor_2/bcf-11-obj-off0.png" />
         <img class="bcf-11-obj-on" src="<%= ctx %>/img/main_monitor_2/bcf-11-obj-on0.png" />
         <img class="bcf-11-moter-off-1" src="<%= ctx %>/img/main_monitor_2/bcf-11-moter-off-10.png" />
-        <img class="bcf-11-moter-on-1" src="<%= ctx %>/img/main_monitor_2/bcf-11-moter-on-10.png" />
+        <img class="bcf-11-moter-on-1 bcf11_56 bcf11_57" src="<%= ctx %>/img/main_monitor_2/bcf-11-moter-on-10.png" />
         <img class="bcf-11-moter-off-12" src="<%= ctx %>/img/main_monitor_2/bcf-11-moter-off-11.png" />
-        <img class="bcf-11-moter-on-12" src="<%= ctx %>/img/main_monitor_2/bcf-11-moter-on-11.png" />
+        <img class="bcf-11-moter-on-12 bcf11_79 bcf11_80" src="<%= ctx %>/img/main_monitor_2/bcf-11-moter-on-11.png" />
         <img class="bcf-11-moter-off-13" src="<%= ctx %>/img/main_monitor_2/bcf-11-moter-off-12.png" />
-        <img class="bcf-11-moter-on-13" src="<%= ctx %>/img/main_monitor_2/bcf-11-moter-on-12.png" />
+        <img class="bcf-11-moter-on-13 bcf11_83 bcf11_84" src="<%= ctx %>/img/main_monitor_2/bcf-11-moter-on-12.png" />
         <img class="bcf-11-moter-off-14" src="<%= ctx %>/img/main_monitor_2/bcf-11-moter-off-13.png" />
-        <img class="bcf-11-moter-on-14" src="<%= ctx %>/img/main_monitor_2/bcf-11-moter-on-13.png" />
+        <img class="bcf-11-moter-on-14 bcf11_60" src="<%= ctx %>/img/main_monitor_2/bcf-11-moter-on-13.png" />
         <img class="bcf-11-moter-off-15" src="<%= ctx %>/img/main_monitor_2/bcf-11-moter-off-14.png" />
-        <img class="bcf-11-moter-on-15" src="<%= ctx %>/img/main_monitor_2/bcf-11-moter-on-14.png" />
+        <img class="bcf-11-moter-on-15 bcf11_62" src="<%= ctx %>/img/main_monitor_2/bcf-11-moter-on-14.png" />
         <img class="bcf-11-heat-off-1" src="<%= ctx %>/img/main_monitor_2/bcf-11-heat-off-10.png" />
         <img class="bcf-11-heat-on-1" src="<%= ctx %>/img/main_monitor_2/bcf-11-heat-on-10.png" />
         <img class="bcf-11-heat-off-2" src="<%= ctx %>/img/main_monitor_2/bcf-11-heat-off-20.png" />
-        <img class="bcf-11-heat-on-2" src="<%= ctx %>/img/main_monitor_2/bcf-11-heat-on-20.png" />
-        <div class="bcf-11-jogging-1"></div>
-        <div class="bcf-11-jogging-2"></div>
-        <img class="bcf-11-tray-1" src="<%= ctx %>/img/main_monitor_2/bcf-11-tray-10.png" />
-        <img class="bcf-11-tray-2" src="<%= ctx %>/img/main_monitor_2/bcf-11-tray-20.png" />
-        <img class="bcf-11-tray-3" src="<%= ctx %>/img/main_monitor_2/bcf-11-tray-30.png" />
-        <img class="bcf-11-tray-4" src="<%= ctx %>/img/main_monitor_2/bcf-11-tray-40.png" />
-        <img class="bcf-11-tray-5" src="<%= ctx %>/img/main_monitor_2/bcf-11-tray-50.png" />
-        <div class="bcf-11-dt-1"></div>
-        <div class="bcf-11-dt-2"></div>
-        <div class="bcf-11-dt-3"></div>
-        <div class="bcf-11-dt-4"></div>
-        <div class="bcf-11-dt-5"></div>
-        <div class="bcf-11-open-1"></div>
+        <img class="bcf-11-heat-on-2 bcf11_97" src="<%= ctx %>/img/main_monitor_2/bcf-11-heat-on-20.png" />
+        <div class="bcf-11-jogging-1 bcf11_163"></div>
+        <div class="bcf-11-jogging-2 bcf11_162"></div>
+        <img class="bcf-11-tray-1 bcf11_40008" src="<%= ctx %>/img/main_monitor_2/bcf-11-tray-10.png" />
+        <img class="bcf-11-tray-2 bcf11_40010" src="<%= ctx %>/img/main_monitor_2/bcf-11-tray-20.png" />
+        <img class="bcf-11-tray-3 bcf11_40027" src="<%= ctx %>/img/main_monitor_2/bcf-11-tray-30.png" />
+        <img class="bcf-11-tray-4 bcf11_40044" src="<%= ctx %>/img/main_monitor_2/bcf-11-tray-40.png" />
+        <img class="bcf-11-tray-5 bcf11_40053" src="<%= ctx %>/img/main_monitor_2/bcf-11-tray-50.png" />
+        <div class="bcf-11-dt-1 bcf11_40008"></div>
+        <div class="bcf-11-dt-2 bcf11_40010"></div>
+        <div class="bcf-11-dt-3 bcf11_40027"></div>
+        <div class="bcf-11-dt-4 bcf11_40044"></div>
+        <div class="bcf-11-dt-5 bcf11_40053"></div>
+        <div class="bcf-11-open-1 bcf11_3"></div>
         <div class="bcf-11-close-1"></div>
-        <div class="bcf-11-open-2"></div>
+        <div class="bcf-11-open-2 bcf11_5"></div>
         <div class="bcf-11-close-2"></div>
-        <div class="bcf-11-open-3"></div>
+        <div class="bcf-11-open-3 bcf11_7"></div>
         <div class="bcf-11-close-3"></div>
-        <div class="bcf-11-open-4"></div>
+        <div class="bcf-11-open-4 bcf11_9"></div>
         <div class="bcf-11-close-4"></div>
-        <img class="bcf-11-pen-1" src="<%= ctx %>/img/main_monitor_2/bcf-11-pen-10.png" />
-        <img class="bcf-11-pen-2" src="<%= ctx %>/img/main_monitor_2/bcf-11-pen-20.png" />
-        <img class="bcf-11-pen-3" src="<%= ctx %>/img/main_monitor_2/bcf-11-pen-30.png" />
+        <img class="bcf-11-pen-1 bcf11_98" src="<%= ctx %>/img/main_monitor_2/bcf-11-pen-10.png" />
+        <img class="bcf-11-pen-2 bcf11_100" src="<%= ctx %>/img/main_monitor_2/bcf-11-pen-20.png" />
+        <img class="bcf-11-pen-3 bcf11_117" src="<%= ctx %>/img/main_monitor_2/bcf-11-pen-30.png" />
       </div>
       <div class="bcf-8">
         <img class="bcf-82" src="<%= ctx %>/img/main_monitor_2/bcf-81.png" />
-        <img class="bcf-8-alarm" src="<%= ctx %>/img/main_monitor_2/bcf-8-alarm0.png" />
+        <img class="bcf-8-alarm bcf8_93" src="<%= ctx %>/img/main_monitor_2/bcf-8-alarm0.png" />
         <img class="bcf-8-moter-off-1" src="<%= ctx %>/img/main_monitor_2/bcf-8-moter-off-10.png" />
         <img class="bcf-8-moter-on-1" src="<%= ctx %>/img/main_monitor_2/bcf-8-moter-on-10.png" />
         <img class="bcf-8-moter-off-2" src="<%= ctx %>/img/main_monitor_2/bcf-8-moter-off-20.png" />
@@ -124,11 +124,11 @@
         <div class="bcf-8-close-2"></div>
         <div class="bcf-8-open-3"></div>
         <div class="bcf-8-close-3"></div>
-        <img class="bcf-8-tray-1" src="<%= ctx %>/img/main_monitor_2/bcf-8-tray-10.png" />
-        <img class="bcf-8-tray-2" src="<%= ctx %>/img/main_monitor_2/bcf-8-tray-20.png" />
-        <img class="bcf-8-tray-3" src="<%= ctx %>/img/main_monitor_2/bcf-8-tray-30.png" />
-        <img class="bcf-8-tray-4" src="<%= ctx %>/img/main_monitor_2/bcf-8-tray-40.png" />
-        <img class="bcf-8-tray-5" src="<%= ctx %>/img/main_monitor_2/bcf-8-tray-50.png" />
+        <img class="bcf-8-tray-1 bcf8_23" src="<%= ctx %>/img/main_monitor_2/bcf-8-tray-10.png" />
+        <img class="bcf-8-tray-2 bcf8_7" src="<%= ctx %>/img/main_monitor_2/bcf-8-tray-20.png" />
+        <img class="bcf-8-tray-3 bcf8_116" src="<%= ctx %>/img/main_monitor_2/bcf-8-tray-30.png" />
+        <img class="bcf-8-tray-4 bcf8_117" src="<%= ctx %>/img/main_monitor_2/bcf-8-tray-40.png" />
+        <img class="bcf-8-tray-5 bcf8_19" src="<%= ctx %>/img/main_monitor_2/bcf-8-tray-50.png" />
         <img class="bcf-8-pen-1" src="<%= ctx %>/img/main_monitor_2/bcf-8-pen-10.png" />
         <img class="bcf-8-pen-2" src="<%= ctx %>/img/main_monitor_2/bcf-8-pen-20.png" />
         <div class="bcf-8-dt-1"></div>
