@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="WorkListMapper">
+
+    <resultMap id="workListItemMap" type="com.sample_pro.domain.WorkListItem">
+        <id     property="statusSeq"        column="status_seq"/>
+        <result property="tday"             column="TDAY"/>
+        <result property="workIndctNum"     column="WORK_INDCT_NUM"/>
+        <result property="custNm"           column="CUST_NM"/>
+        <result property="equtCd"           column="EQUT_CD"/>
+        <result property="prodNm"           column="PROD_NM"/>
+        <result property="mainWorkIndctNum" column="MAIN_WORK_INDCT_NUM"/>
+        <result property="insertDttm"       column="INSERT_DTTM"/>
+        <result property="scanStartDttm"    column="SCAN_START_DTTM"/>
+        <result property="startDttm"        column="START_DTTM"/>
+        <result property="endDttm"          column="END_DTTM"/>
+    </resultMap>
+
+    <select id="selectPendingWorkList" parameterType="String" resultMap="workListItemMap">
+        SELECT
+            status_seq,
+            TDAY,
+            WORK_INDCT_NUM,
+            CUST_NM,
+            EQUT_CD,
+            PROD_NM,
+            MAIN_WORK_INDCT_NUM,
+            DATE_FORMAT(INSERT_DTTM,     '%Y-%m-%d %H:%i') AS INSERT_DTTM,
+            DATE_FORMAT(SCAN_START_DTTM, '%Y-%m-%d %H:%i') AS SCAN_START_DTTM,
+            DATE_FORMAT(START_DTTM,      '%Y-%m-%d %H:%i') AS START_DTTM,
+            DATE_FORMAT(END_DTTM,        '%Y-%m-%d %H:%i') AS END_DTTM
+        FROM v_jacup
+        WHERE TDAY >= DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+          AND EQUT_CD = #{equtCd}
+          AND START_DTTM IS NULL
+        ORDER BY WORK_INDCT_NUM ASC
+        LIMIT 5
+    </select>
+
+</mapper>

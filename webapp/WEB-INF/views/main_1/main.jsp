@@ -267,6 +267,15 @@ html, body { height: 100%; font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
         <a class="sb-item" href="#" onclick="go('${pageContext.request.contextPath}/main_1/equip/detail','설비 상세',this);return false;">
           <div class="sb-icon">🔍</div><span class="sb-label">설비 상세</span>
         </a>
+        <a class="sb-item" href="#" onclick="go('${pageContext.request.contextPath}/main_1/work/list','작업LIST',this);return false;">
+          <div class="sb-icon">📋</div><span class="sb-label">작업LIST</span>
+        </a>
+        <a class="sb-item" href="#" onclick="go('${pageContext.request.contextPath}/main_1/work/now1','공정현황-1',this);return false;">
+          <div class="sb-icon">🏭</div><span class="sb-label">공정현황-1</span>
+        </a>
+        <a class="sb-item" href="#" onclick="go('${pageContext.request.contextPath}/main_1/work/now2','공정현황-2',this);return false;">
+          <div class="sb-icon">🏭</div><span class="sb-label">공정현황-2</span>
+        </a>
         <a class="sb-item" href="#" onclick="go('${pageContext.request.contextPath}/main_1/trend','트렌드',this);return false;">
           <div class="sb-icon">📈</div><span class="sb-label">트렌드</span>
         </a>

@@ -13,9 +13,12 @@ public class MainController {
     @RequestMapping(value = "/main/monitor2", method = RequestMethod.GET) public String mainMonitor2() { return "/main_1/monitor/main_monitor2.jsp"; }
     @RequestMapping(value = "/login",          method = RequestMethod.GET) public String login()         { return "/main_1/login.jsp"; }
 
-    // ì„¤ë¹„
+    // 설비
     @RequestMapping(value = "/equip/monitor",  method = RequestMethod.GET) public String equipMonitor()  { return "/main_1/monitor/equip_monitor.jsp"; }
     @RequestMapping(value = "/equip/detail",   method = RequestMethod.GET) public String equipDetail()   { return "/main_1/monitor/equip_detail.jsp"; }
+    @RequestMapping(value = "/work/list",      method = RequestMethod.GET) public String workList()      { return "/main_1/monitor/workList.jsp"; }
+    @RequestMapping(value = "/work/now1",      method = RequestMethod.GET) public String nowWork1()      { return "/main_1/monitor/now_work_1.jsp"; }
+    @RequestMapping(value = "/work/now2",      method = RequestMethod.GET) public String nowWork2()      { return "/main_1/monitor/now_work_2.jsp"; }
 
     // ì•ŒëžŒ
     @RequestMapping(value = "/alarm/history",  method = RequestMethod.GET) public String alarmHistory()  { return "/main_1/monitor/alarm_history.jsp"; }

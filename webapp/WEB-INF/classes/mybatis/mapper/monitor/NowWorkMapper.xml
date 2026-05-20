@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="NowWorkMapper">
+
+    <resultMap id="nowWorkMap" type="com.sample_pro.domain.NowWorkItem">
+        <id     property="seq"     column="SEQ"/>
+        <result property="pageNo"  column="PAGE_NO"/>
+        <result property="equipCd" column="EQUIP_CD"/>
+        <result property="equipNm" column="EQUIP_NM"/>
+        <result property="roomNm"  column="ROOM_NM"/>
+        <result property="rowSort" column="ROW_SORT"/>
+        <result property="custNm"  column="CUST_NM"/>
+        <result property="prodNm"  column="PROD_NM"/>
+        <result property="lotNo"   column="LOT_NO"/>
+        <result property="updDt"   column="UPD_DT"/>
+    </resultMap>
+
+    <select id="selectByPageNo" parameterType="int" resultMap="nowWorkMap">
+        SELECT SEQ, PAGE_NO, EQUIP_CD, EQUIP_NM, ROOM_NM, ROW_SORT,
+               CUST_NM, PROD_NM, LOT_NO,
+               DATE_FORMAT(UPD_DT, '%Y-%m-%d %H:%i:%s') AS UPD_DT
+        FROM   TB_NOW_WORK
+        WHERE  PAGE_NO = #{pageNo}
+        ORDER  BY SEQ
+    </select>
+
+</mapper>

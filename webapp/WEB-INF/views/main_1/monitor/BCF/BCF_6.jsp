@@ -298,18 +298,18 @@
       <img class="bcf-6-2" src="<%= ctx %>/img/bcf6/bcf-6-20.png" />
       <img class="bcf-6-3" src="<%= ctx %>/img/bcf6/bcf-6-30.png" />
       <img class="bcf-6-obj-1" src="<%= ctx %>/img/bcf6/bcf-6-obj-10.png" />
-      <img class="bcf-6-fire-1" src="<%= ctx %>/img/bcf6/bcf-6-fire-10.png" />
-      <img class="bcf-6-fire-2" src="<%= ctx %>/img/bcf6/bcf-6-fire-20.png" />
-      <img class="bcf-6-fire-3" src="<%= ctx %>/img/bcf6/bcf-6-fire-30.png" />
-      <img class="bcf-6-fire-4" src="<%= ctx %>/img/bcf6/bcf-6-fire-40.png" />
+      <img class="bcf-6-fire-1 bcf6_138" src="<%= ctx %>/img/bcf6/bcf-6-fire-10.png" />
+      <img class="bcf-6-fire-2 bcf6_138" src="<%= ctx %>/img/bcf6/bcf-6-fire-20.png" />
+      <img class="bcf-6-fire-3 bcf6_125" src="<%= ctx %>/img/bcf6/bcf-6-fire-30.png" />
+      <img class="bcf-6-fire-4 bcf6_125" src="<%= ctx %>/img/bcf6/bcf-6-fire-40.png" />
       <div class="bcf-6-obj-2"></div>
       <img class="bcf-6-elv-1" src="<%= ctx %>/img/bcf6/bcf-6-elv-10.png" />
       <img class="bcf-6-elv-2" src="<%= ctx %>/img/bcf6/bcf-6-elv-20.png" />
       <img class="bcf-6-obj-3" src="<%= ctx %>/img/bcf6/bcf-6-obj-30.png" />
       <img class="bcf-6-obj-4" src="<%= ctx %>/img/bcf6/bcf-6-obj-40.png" />
       <img class="bcf-6-bong-13" src="<%= ctx %>/img/bcf6/bcf-6-bong-130.png" />
-      <img class="bcf-6-bong-14" src="<%= ctx %>/img/bcf6/bcf-6-bong-140.png" />
-      <img class="bcf-6-bong-15" src="<%= ctx %>/img/bcf6/bcf-6-bong-150.png" />
+      <img class="bcf-6-bong-14 bcf6_40" src="<%= ctx %>/img/bcf6/bcf-6-bong-140.png" />
+      <img class="bcf-6-bong-15 bcf6_22" src="<%= ctx %>/img/bcf6/bcf-6-bong-150.png" />
       <img class="bcf-6-obj-5" src="<%= ctx %>/img/bcf6/bcf-6-obj-50.png" />
       <img class="bcf-6-obj-6" src="<%= ctx %>/img/bcf6/bcf-6-obj-60.png" />
       <img class="bcf-6-bong-16" src="<%= ctx %>/img/bcf6/bcf-6-bong-160.png" />
@@ -325,112 +325,112 @@
       <img class="bcf-6-elv-4" src="<%= ctx %>/img/bcf6/bcf-6-elv-40.png" />
       <img class="bcf-6-down-1" src="<%= ctx %>/img/bcf6/bcf-6-down-10.png" />
       <img class="bcf-6-down-2" src="<%= ctx %>/img/bcf6/bcf-6-down-20.png" />
-      <img class="bcf-6-down-3" src="<%= ctx %>/img/bcf6/bcf-6-down-30.png" />
-      <img class="bcf-1-cycle" src="<%= ctx %>/img/bcf6/bcf-1-cycle0.png" />
-      <img class="bcf-6-tray-1" src="<%= ctx %>/img/bcf6/bcf-6-tray-10.png" />
-      <img class="bcf-6-tray-2" src="<%= ctx %>/img/bcf6/bcf-6-tray-20.png" />
-      <img class="bcf-6-tray-3" src="<%= ctx %>/img/bcf6/bcf-6-tray-30.png" />
-      <img class="bcf-6-tray-4" src="<%= ctx %>/img/bcf6/bcf-6-tray-40.png" />
-      <img class="bcf-6-tray-5" src="<%= ctx %>/img/bcf6/bcf-6-tray-50.png" />
-      <img class="bcf-6-tray-6" src="<%= ctx %>/img/bcf6/bcf-6-tray-60.png" />
-      <img class="bcf-6-tray-7" src="<%= ctx %>/img/bcf6/bcf-6-tray-70.png" />
+      <img class="bcf-6-down-3 bcf6_137" src="<%= ctx %>/img/bcf6/bcf-6-down-30.png" />
+      <img class="bcf-1-cycle bcf6_234" src="<%= ctx %>/img/bcf6/bcf-1-cycle0.png" />
+      <img class="bcf-6-tray-1 bcf6_8" src="<%= ctx %>/img/bcf6/bcf-6-tray-10.png" />
+      <img class="bcf-6-tray-2 bcf6_291" src="<%= ctx %>/img/bcf6/bcf-6-tray-20.png" />
+      <img class="bcf-6-tray-3 bcf6_39" src="<%= ctx %>/img/bcf6/bcf-6-tray-30.png" />
+      <img class="bcf-6-tray-4 bcf6_293" src="<%= ctx %>/img/bcf6/bcf-6-tray-40.png" />
+      <img class="bcf-6-tray-5 bcf6_294" src="<%= ctx %>/img/bcf6/bcf-6-tray-50.png" />
+      <img class="bcf-6-tray-6 bcf6_295" src="<%= ctx %>/img/bcf6/bcf-6-tray-60.png" />
+      <img class="bcf-6-tray-7 bcf6_296" src="<%= ctx %>/img/bcf6/bcf-6-tray-70.png" />
       <img class="bcf-6-tray-8" src="<%= ctx %>/img/bcf6/bcf-6-tray-80.png" />
-      <img class="bcf-6-tray-9" src="<%= ctx %>/img/bcf6/bcf-6-tray-90.png" />
-      <img class="bcf-6-tray-10" src="<%= ctx %>/img/bcf6/bcf-6-tray-100.png" />
-      <img class="bcf-6-tray-11" src="<%= ctx %>/img/bcf6/bcf-6-tray-110.png" />
-      <img class="bcf-6-tray-12" src="<%= ctx %>/img/bcf6/bcf-6-tray-120.png" />
-      <img class="bcf-6-jog-gray-1" src="<%= ctx %>/img/bcf6/bcf-6-jog-gray-10.png" />
+      <img class="bcf-6-tray-9 bcf6_298" src="<%= ctx %>/img/bcf6/bcf-6-tray-90.png" />
+      <img class="bcf-6-tray-10 bcf6_37" src="<%= ctx %>/img/bcf6/bcf-6-tray-100.png" />
+      <img class="bcf-6-tray-11 bcf6_43" src="<%= ctx %>/img/bcf6/bcf-6-tray-110.png" />
+      <img class="bcf-6-tray-12 bcf6_131" src="<%= ctx %>/img/bcf6/bcf-6-tray-120.png" />
+      <img class="bcf-6-jog-gray-1  bcf6_303" src="<%= ctx %>/img/bcf6/bcf-6-jog-gray-10.png" />
       <img class="bcf-6-jog-red-1" src="<%= ctx %>/img/bcf6/bcf-6-jog-red-10.png" />
       <img class="bcf-6-jog-green-1" src="<%= ctx %>/img/bcf6/bcf-6-jog-green-10.png" />
-      <img class="bcf-6-jog-gray-2" src="<%= ctx %>/img/bcf6/bcf-6-jog-gray-20.png" />
+      <img class="bcf-6-jog-gray-2 bcf6_305" src="<%= ctx %>/img/bcf6/bcf-6-jog-gray-20.png" />
       <img class="bcf-6-jog-red-2" src="<%= ctx %>/img/bcf6/bcf-6-jog-red-20.png" />
-      <img class="bcf-6-jog-green-2" src="<%= ctx %>/img/bcf6/bcf-6-jog-green-20.png" />
-      <img class="bcf-6-jog-gray-3" src="<%= ctx %>/img/bcf6/bcf-6-jog-gray-30.png" />
+      <img class="bcf-6-jog-green-2 bcf6_248 bcf6_249" src="<%= ctx %>/img/bcf6/bcf-6-jog-green-20.png" />
+      <img class="bcf-6-jog-gray-3 bcf6_307" src="<%= ctx %>/img/bcf6/bcf-6-jog-gray-30.png" />
       <img class="bcf-6-jog-red-3" src="<%= ctx %>/img/bcf6/bcf-6-jog-red-30.png" />
-      <img class="bcf-6-jog-green-3" src="<%= ctx %>/img/bcf6/bcf-6-jog-green-30.png" />
-      <img class="bcf-6-jog-gray-4" src="<%= ctx %>/img/bcf6/bcf-6-jog-gray-40.png" />
+      <img class="bcf-6-jog-green-3 bcf6_252 bcf6_253" src="<%= ctx %>/img/bcf6/bcf-6-jog-green-30.png" />
+      <img class="bcf-6-jog-gray-4 bcf6_309" src="<%= ctx %>/img/bcf6/bcf-6-jog-gray-40.png" />
       <img class="bcf-6-jog-red-4" src="<%= ctx %>/img/bcf6/bcf-6-jog-red-40.png" />
-      <img class="bcf-6-jog-green-4" src="<%= ctx %>/img/bcf6/bcf-6-jog-green-40.png" />
-      <img class="bcf-6-jog-gray-5" src="<%= ctx %>/img/bcf6/bcf-6-jog-gray-50.png" />
+      <img class="bcf-6-jog-green-4 bcf6_256 bcf6_257" src="<%= ctx %>/img/bcf6/bcf-6-jog-green-40.png" />
+      <img class="bcf-6-jog-gray-5 bcf6_311" src="<%= ctx %>/img/bcf6/bcf-6-jog-gray-50.png" />
       <img class="bcf-6-jog-red-5" src="<%= ctx %>/img/bcf6/bcf-6-jog-red-50.png" />
-      <img class="bcf-6-jog-green-5" src="<%= ctx %>/img/bcf6/bcf-6-jog-green-50.png" />
-      <img class="bcf-6-jog-gray-6" src="<%= ctx %>/img/bcf6/bcf-6-jog-gray-60.png" />
+      <img class="bcf-6-jog-green-5 bcf6_260 bcf6_261" src="<%= ctx %>/img/bcf6/bcf-6-jog-green-50.png" />
+      <img class="bcf-6-jog-gray-6 bcf6_313" src="<%= ctx %>/img/bcf6/bcf-6-jog-gray-60.png" />
       <img class="bcf-6-jog-red-6" src="<%= ctx %>/img/bcf6/bcf-6-jog-red-60.png" />
-      <img class="bcf-6-jog-green-6" src="<%= ctx %>/img/bcf6/bcf-6-jog-green-60.png" />
-      <img class="bcf-6-propel-1" src="<%= ctx %>/img/bcf6/bcf-6-propel-10.png" />
-      <img class="bcf-6-propel-2" src="<%= ctx %>/img/bcf6/bcf-6-propel-20.png" />
-      <img class="bcf-6-propel-3" src="<%= ctx %>/img/bcf6/bcf-6-propel-30.png" />
+      <img class="bcf-6-jog-green-6 bcf6_264 bcf6_265" src="<%= ctx %>/img/bcf6/bcf-6-jog-green-60.png" />
+      <img class="bcf-6-propel-1 bcf6_224" src="<%= ctx %>/img/bcf6/bcf-6-propel-10.png" />
+      <img class="bcf-6-propel-2 bcf6_225" src="<%= ctx %>/img/bcf6/bcf-6-propel-20.png" />
+      <img class="bcf-6-propel-3 bcf6_84" src="<%= ctx %>/img/bcf6/bcf-6-propel-30.png" />
       <img class="bcf-6-propel-4" src="<%= ctx %>/img/bcf6/bcf-6-propel-40.png" />
       <img class="bcf-6-pen-off-1" src="<%= ctx %>/img/bcf6/bcf-6-pen-off-10.png" />
-      <img class="bcf-6-pen-on-1" src="<%= ctx %>/img/bcf6/bcf-6-pen-on-10.png" />
-      <img class="bcf-6-pen-off-2" src="<%= ctx %>/img/bcf6/bcf-6-pen-off-20.png" />
-      <img class="bcf-6-pen-on-2" src="<%= ctx %>/img/bcf6/bcf-6-pen-on-20.png" />
+      <img class="bcf-6-pen-on-1 bcf6_224" src="<%= ctx %>/img/bcf6/bcf-6-pen-on-10.png" />
+      <img class="bcf-6-pen-off-2 bcf6_113" src="<%= ctx %>/img/bcf6/bcf-6-pen-off-20.png" />
+      <img class="bcf-6-pen-on-2 bcf6_225" src="<%= ctx %>/img/bcf6/bcf-6-pen-on-20.png" />
       <img class="bcf-6-pen-off-3" src="<%= ctx %>/img/bcf6/bcf-6-pen-off-30.png" />
-      <img class="bcf-6-pen-on-3" src="<%= ctx %>/img/bcf6/bcf-6-pen-on-30.png" />
+      <img class="bcf-6-pen-on-3 bcf6_84" src="<%= ctx %>/img/bcf6/bcf-6-pen-on-30.png" />
       <img class="bcf-6-pen-off-4" src="<%= ctx %>/img/bcf6/bcf-6-pen-off-40.png" />
       <img class="bcf-6-pen-on" src="<%= ctx %>/img/bcf6/bcf-6-pen-on0.png" />
       <img class="bcf-6-circle-1" src="<%= ctx %>/img/bcf6/bcf-6-circle-10.png" />
-      <img class="bcf-6-circle-2" src="<%= ctx %>/img/bcf6/bcf-6-circle-20.png" />
-      <img class="bcf-6-circle-3" src="<%= ctx %>/img/bcf6/bcf-6-circle-30.png" />
-      <img class="bcf-6-circle-4" src="<%= ctx %>/img/bcf6/bcf-6-circle-40.png" />
-      <img class="bcf-6-circle-5" src="<%= ctx %>/img/bcf6/bcf-6-circle-50.png" />
-      <img class="bcf-6-circle-6" src="<%= ctx %>/img/bcf6/bcf-6-circle-60.png" />
+      <img class="bcf-6-circle-2 bcf6_244 bcf6_245" src="<%= ctx %>/img/bcf6/bcf-6-circle-20.png" />
+      <img class="bcf-6-circle-3 bcf6_188 bcf6_122" src="<%= ctx %>/img/bcf6/bcf-6-circle-30.png" />
+      <img class="bcf-6- bcf6_248 bcf6_249" src="<%= ctx %>/img/bcf6/bcf-6-circle-40.png" />
+      <img class="bcf-6-circle-5 bcf6_252 bcf6_253" src="<%= ctx %>/img/bcf6/bcf-6-circle-50.png" />
+      <img class="bcf-6-circle-6 bcf6_260 bcf6_261" src="<%= ctx %>/img/bcf6/bcf-6-circle-60.png" />
       <img class="bcf-6-circle-7" src="<%= ctx %>/img/bcf6/bcf-6-circle-70.png" />
-      <img class="bcf-6-circle-8" src="<%= ctx %>/img/bcf6/bcf-6-circle-80.png" />
-      <img class="bcf-6-circle-9" src="<%= ctx %>/img/bcf6/bcf-6-circle-90.png" />
-      <img class="bcf-6-circle-10" src="<%= ctx %>/img/bcf6/bcf-6-circle-100.png" />
-      <img class="bcf-6-pan-on-1" src="<%= ctx %>/img/bcf6/bcf-6-pan-on-10.png" />
-      <img class="bcf-6-pan-off-1" src="<%= ctx %>/img/bcf6/bcf-6-pan-off-10.png" />
-      <img class="bcf-6-door-close-3" src="<%= ctx %>/img/bcf6/bcf-6-door-close-30.png" />
-      <img class="bcf-6-door-open-3" src="<%= ctx %>/img/bcf6/bcf-6-door-open-30.png" />
-      <img class="bcf-6-door-close-4" src="<%= ctx %>/img/bcf6/bcf-6-door-close-40.png" />
-      <img class="bcf-6-door-open-4" src="<%= ctx %>/img/bcf6/bcf-6-door-open-40.png" />
+      <img class="bcf-6-circle-8 bcf6_128 bcf6_39" src="<%= ctx %>/img/bcf6/bcf-6-circle-80.png" />
+      <img class="bcf-6-circle-9 bcf6_128 bcf6_37" src="<%= ctx %>/img/bcf6/bcf-6-circle-90.png" />
+      <img class="bcf-6-circle-10 bcf6_132" src="<%= ctx %>/img/bcf6/bcf-6-circle-100.png" />
+      <img class="bcf-6-pan-on-1 bcf6_55" src="<%= ctx %>/img/bcf6/bcf-6-pan-on-10.png" />
+      <img class="bcf-6-pan-off-1 bcf6_54" src="<%= ctx %>/img/bcf6/bcf-6-pan-off-10.png" />
+      <img class="bcf-6-door-close-3 bcf6_20" src="<%= ctx %>/img/bcf6/bcf-6-door-close-30.png" />
+      <img class="bcf-6-door-open-3 bcf6_20" src="<%= ctx %>/img/bcf6/bcf-6-door-open-30.png" />
+      <img class="bcf-6-door-close-4 bcf6_22" src="<%= ctx %>/img/bcf6/bcf-6-door-close-40.png" />
+      <img class="bcf-6-door-open-4 bcf6_22" src="<%= ctx %>/img/bcf6/bcf-6-door-open-40.png" />
       <img class="bcf-6-door-close-5" src="<%= ctx %>/img/bcf6/bcf-6-door-close-50.png" />
       <img class="bcf-6-door-open-5" src="<%= ctx %>/img/bcf6/bcf-6-door-open-50.png" />
       <img class="bcf-6-point-1" src="<%= ctx %>/img/bcf6/bcf-6-point-10.png" />
-      <img class="bcf-6-point-2" src="<%= ctx %>/img/bcf6/bcf-6-point-20.png" />
+      <img class="bcf-6-point-2 bcf6_124" src="<%= ctx %>/img/bcf6/bcf-6-point-20.png" />
       <img class="bcf-6-point-3" src="<%= ctx %>/img/bcf6/bcf-6-point-30.png" />
-      <img class="bcf-6-point-4" src="<%= ctx %>/img/bcf6/bcf-6-point-40.png" />
-      <img class="bcf-6-pan-on-2" src="<%= ctx %>/img/bcf6/bcf-6-pan-on-20.png" />
-      <img class="bcf-6-pan-off-2" src="<%= ctx %>/img/bcf6/bcf-6-pan-off-20.png" />
-      <img class="bcf-6-door-close-1" src="<%= ctx %>/img/bcf6/bcf-6-door-close-10.png" />
-      <img class="bcf-6-door-open-1" src="<%= ctx %>/img/bcf6/bcf-6-door-open-10.png" />
-      <img class="bcf-6-door-close-2" src="<%= ctx %>/img/bcf6/bcf-6-door-close-20.png" />
-      <img class="bcf-6-door-open-2" src="<%= ctx %>/img/bcf6/bcf-6-door-open-20.png" />
-      <img class="bcf-6-door-close-6" src="<%= ctx %>/img/bcf6/bcf-6-door-close-60.png" />
-      <img class="bcf-6-door-open-6" src="<%= ctx %>/img/bcf6/bcf-6-door-open-60.png" />
+      <img class="bcf-6-point-4 bcf6_124" src="<%= ctx %>/img/bcf6/bcf-6-point-40.png" />
+      <img class="bcf-6-pan-on-2 bcf6_57" src="<%= ctx %>/img/bcf6/bcf-6-pan-on-20.png" />
+      <img class="bcf-6-pan-off-2 bcf6_133" src="<%= ctx %>/img/bcf6/bcf-6-pan-off-20.png" />
+      <img class="bcf-6-door-close-1 bcf6_14" src="<%= ctx %>/img/bcf6/bcf-6-door-close-10.png" />
+      <img class="bcf-6-door-open-1 bcf6_14" src="<%= ctx %>/img/bcf6/bcf-6-door-open-10.png" />
+      <img class="bcf-6-door-close-2 bcf6_16" src="<%= ctx %>/img/bcf6/bcf-6-door-close-20.png" />
+      <img class="bcf-6-door-open-2 bcf6_16" src="<%= ctx %>/img/bcf6/bcf-6-door-open-20.png" />
+      <img class="bcf-6-door-close-6 bcf6_26" src="<%= ctx %>/img/bcf6/bcf-6-door-close-60.png" />
+      <img class="bcf-6-door-open-6 bcf6_26" src="<%= ctx %>/img/bcf6/bcf-6-door-open-60.png" />
       <img class="bcf-6-bong-1" src="<%= ctx %>/img/bcf6/bcf-6-bong-10.png" />
-      <img class="bcf-6-bong-2" src="<%= ctx %>/img/bcf6/bcf-6-bong-20.png" />
-      <img class="bcf-6-bong-3" src="<%= ctx %>/img/bcf6/bcf-6-bong-30.png" />
+      <img class="bcf-6-bong-2 bcf6_14 bcf6_15" src="<%= ctx %>/img/bcf6/bcf-6-bong-20.png" />
+      <img class="bcf-6-bong-3 bcf6_19 bcf6_59" src="<%= ctx %>/img/bcf6/bcf-6-bong-30.png" />
       <img class="bcf-6-bong-4" src="<%= ctx %>/img/bcf6/bcf-6-bong-40.png" />
-      <img class="bcf-6-bong-5" src="<%= ctx %>/img/bcf6/bcf-6-bong-50.png" />
-      <img class="bcf-6-bong-6" src="<%= ctx %>/img/bcf6/bcf-6-bong-60.png" />
+      <img class="bcf-6-bong-5 bcf6_4 bcf6_16" src="<%= ctx %>/img/bcf6/bcf-6-bong-50.png" />
+      <img class="bcf-6-bong-6 bcf6_1 bcf6_53" src="<%= ctx %>/img/bcf6/bcf-6-bong-60.png" />
       <img class="bcf-6-bong-7" src="<%= ctx %>/img/bcf6/bcf-6-bong-70.png" />
-      <img class="bcf-6-bong-8" src="<%= ctx %>/img/bcf6/bcf-6-bong-80.png" />
-      <img class="bcf-6-bong-9" src="<%= ctx %>/img/bcf6/bcf-6-bong-90.png" />
+      <img class="bcf-6-bong-8 bcf6_39" src="<%= ctx %>/img/bcf6/bcf-6-bong-80.png" />
+      <img class="bcf-6-bong-9 bcf6_37" src="<%= ctx %>/img/bcf6/bcf-6-bong-90.png" />
       <img class="bcf-6-bong-10" src="<%= ctx %>/img/bcf6/bcf-6-bong-100.png" />
-      <img class="bcf-6-bong-11" src="<%= ctx %>/img/bcf6/bcf-6-bong-110.png" />
-      <img class="bcf-6-bong-12" src="<%= ctx %>/img/bcf6/bcf-6-bong-120.png" />
+      <img class="bcf-6-bong-11 bcf6_26" src="<%= ctx %>/img/bcf6/bcf-6-bong-110.png" />
+      <img class="bcf-6-bong-12 bcf6_44" src="<%= ctx %>/img/bcf6/bcf-6-bong-120.png" />
       <img class="bcf-6-photo-off-1" src="<%= ctx %>/img/bcf6/bcf-6-photo-off-10.png" />
-      <img class="bcf-6-photo-on-1" src="<%= ctx %>/img/bcf6/bcf-6-photo-on-10.png" />
+      <img class="bcf-6-photo-on-1  bcf6_123" src="<%= ctx %>/img/bcf6/bcf-6-photo-on-10.png" />
       <img class="bcf-6-photo-off-2" src="<%= ctx %>/img/bcf6/bcf-6-photo-off-20.png" />
-      <img class="bcf-6-photo-on-2" src="<%= ctx %>/img/bcf6/bcf-6-photo-on-20.png" />
+      <img class="bcf-6-photo-on-2 bcf6_128" src="<%= ctx %>/img/bcf6/bcf-6-photo-on-20.png" />
       <img class="bcf-6-photo-off-3" src="<%= ctx %>/img/bcf6/bcf-6-photo-off-30.png" />
-      <img class="bcf-6-photo-on-3" src="<%= ctx %>/img/bcf6/bcf-6-photo-on-30.png" />
+      <img class="bcf-6-photo-on-3 bcf6_110" src="<%= ctx %>/img/bcf6/bcf-6-photo-on-30.png" />
       <img class="bcf-6-photo-off-4" src="<%= ctx %>/img/bcf6/bcf-6-photo-off-40.png" />
       <img class="bcf-6-photo-on-4" src="<%= ctx %>/img/bcf6/bcf-6-photo-on-40.png" />
       <img class="bcf-6-photo-off-5" src="<%= ctx %>/img/bcf6/bcf-6-photo-off-50.png" />
-      <img class="bcf-6-photo-on-5" src="<%= ctx %>/img/bcf6/bcf-6-photo-on-50.png" />
+      <img class="bcf-6-photo-on-5 bcf6_110" src="<%= ctx %>/img/bcf6/bcf-6-photo-on-50.png" />
       <img class="bcf-6-photo-off-6" src="<%= ctx %>/img/bcf6/bcf-6-photo-off-60.png" />
-      <img class="bcf-6-photo-on-6" src="<%= ctx %>/img/bcf6/bcf-6-photo-on-60.png" />
+      <img class="bcf-6-photo-on-6 bcf6_109" src="<%= ctx %>/img/bcf6/bcf-6-photo-on-60.png" />
       <img class="bcf-6-photo-off-7" src="<%= ctx %>/img/bcf6/bcf-6-photo-off-70.png" />
-      <img class="bcf-6-photo-on-7" src="<%= ctx %>/img/bcf6/bcf-6-photo-on-70.png" />
+      <img class="bcf-6-photo-on-7 bcf6_118" src="<%= ctx %>/img/bcf6/bcf-6-photo-on-70.png" />
       <img class="bcf-6-photo-off-8" src="<%= ctx %>/img/bcf6/bcf-6-photo-off-80.png" />
-      <img class="bcf-6-photo-on-8" src="<%= ctx %>/img/bcf6/bcf-6-photo-on-80.png" />
+      <img class="bcf-6-photo-on-8 bcf6_115" src="<%= ctx %>/img/bcf6/bcf-6-photo-on-80.png" />
       <img class="bcf-6-photo-off-9" src="<%= ctx %>/img/bcf6/bcf-6-photo-off-90.png" />
-      <img class="bcf-6-photo-on-9" src="<%= ctx %>/img/bcf6/bcf-6-photo-on-90.png" />
+      <img class="bcf-6-photo-on-9 bcf6_119" src="<%= ctx %>/img/bcf6/bcf-6-photo-on-90.png" />
       <img class="bcf-6-photo-off-10" src="<%= ctx %>/img/bcf6/bcf-6-photo-off-100.png" />
-      <img class="bcf-6-photo-on-10" src="<%= ctx %>/img/bcf6/bcf-6-photo-on-100.png" />
+      <img class="bcf-6-photo-on-10 bcf6_116" src="<%= ctx %>/img/bcf6/bcf-6-photo-on-100.png" />
       <img class="bcf-6-photo-off-11" src="<%= ctx %>/img/bcf6/bcf-6-photo-off-110.png" />
       <img class="bcf-6-photo-on-11" src="<%= ctx %>/img/bcf6/bcf-6-photo-on-110.png" />
       <img class="bcf-6-photo-off-12" src="<%= ctx %>/img/bcf6/bcf-6-photo-off-120.png" />
@@ -438,120 +438,120 @@
       <img class="bcf-6-sensor-off-1" src="<%= ctx %>/img/bcf6/bcf-6-sensor-off-10.png" />
       <img class="bcf-6-sensor-on-1" src="<%= ctx %>/img/bcf6/bcf-6-sensor-on-10.png" />
       <img class="bcf-6-sensor-off-2" src="<%= ctx %>/img/bcf6/bcf-6-sensor-off-20.png" />
-      <img class="bcf-6-sensor-on-2" src="<%= ctx %>/img/bcf6/bcf-6-sensor-on-20.png" />
+      <img class="bcf-6-sensor-on-2 bcf6_109" src="<%= ctx %>/img/bcf6/bcf-6-sensor-on-20.png" />
       <img class="bcf-6-sensor-off-3" src="<%= ctx %>/img/bcf6/bcf-6-sensor-off-30.png" />
-      <img class="bcf-6-sensor-on-3" src="<%= ctx %>/img/bcf6/bcf-6-sensor-on-30.png" />
+      <img class="bcf-6-sensor-on-3 bcf6_136" src="<%= ctx %>/img/bcf6/bcf-6-sensor-on-30.png" />
       <img class="bcf-6-sensor-off-4" src="<%= ctx %>/img/bcf6/bcf-6-sensor-off-40.png" />
-      <img class="bcf-6-sensor-on-4" src="<%= ctx %>/img/bcf6/bcf-6-sensor-on-40.png" />
+      <img class="bcf-6-sensor-on-4 bcf6_137" src="<%= ctx %>/img/bcf6/bcf-6-sensor-on-40.png" />
       <img class="bcf-6-sensor-off-5" src="<%= ctx %>/img/bcf6/bcf-6-sensor-off-50.png" />
-      <img class="bcf-6-sensor-on-5" src="<%= ctx %>/img/bcf6/bcf-6-sensor-on-50.png" />
+      <img class="bcf-6-sensor-on-5 bcf6_107" src="<%= ctx %>/img/bcf6/bcf-6-sensor-on-50.png" />
       <img class="bcf-6-sensor-off-6" src="<%= ctx %>/img/bcf6/bcf-6-sensor-off-60.png" />
       <img class="bcf-6-sensor-on-6" src="<%= ctx %>/img/bcf6/bcf-6-sensor-on-60.png" />
-      <img class="bcf-6-rotate-1" src="<%= ctx %>/img/bcf6/bcf-6-rotate-10.png" />
-      <img class="bcf-6-rotate-2" src="<%= ctx %>/img/bcf6/bcf-6-rotate-20.png" />
-      <img class="bcf-6-rotate-3" src="<%= ctx %>/img/bcf6/bcf-6-rotate-30.png" />
-      <img class="bcf-6-rotate-4" src="<%= ctx %>/img/bcf6/bcf-6-rotate-40.png" />
-      <img class="bcf-6-rotate-5" src="<%= ctx %>/img/bcf6/bcf-6-rotate-50.png" />
-      <img class="bcf-6-rotate-6" src="<%= ctx %>/img/bcf6/bcf-6-rotate-60.png" />
-      <img class="bcf-6-rotate-7" src="<%= ctx %>/img/bcf6/bcf-6-rotate-70.png" />
+      <img class="bcf-6-rotate-1 bcf6_244 bcf6_245" src="<%= ctx %>/img/bcf6/bcf-6-rotate-10.png" />
+      <img class="bcf-6-rotate-2 bcf6_248 bcf6_249" src="<%= ctx %>/img/bcf6/bcf-6-rotate-20.png" />
+      <img class="bcf-6-rotate-3 bcf6_252 bcf6_253" src="<%= ctx %>/img/bcf6/bcf-6-rotate-30.png" />
+      <img class="bcf-6-rotate-4 bcf6_256 bcf6_257" src="<%= ctx %>/img/bcf6/bcf-6-rotate-40.png" />
+      <img class="bcf-6-rotate-5 bcf6_260 bcf6_261" src="<%= ctx %>/img/bcf6/bcf-6-rotate-50.png" />
+      <img class="bcf-6-rotate-6 bcf6_264 bcf6_265" src="<%= ctx %>/img/bcf6/bcf-6-rotate-60.png" />
+      <img class="bcf-6-rotate-7 bcf6_118 bcf6_119" src="<%= ctx %>/img/bcf6/bcf-6-rotate-70.png" />
       <img class="bcf-6-fsensor-off-1" src="<%= ctx %>/img/bcf6/bcf-6-fsensor-off-10.png" />
-      <img class="bcf-6-fsensor-on-1" src="<%= ctx %>/img/bcf6/bcf-6-fsensor-on-10.png" />
+      <img class="bcf-6-fsensor-on-1 bcf6_20" src="<%= ctx %>/img/bcf6/bcf-6-fsensor-on-10.png" />
       <img class="bcf-6-fsensor-off-2" src="<%= ctx %>/img/bcf6/bcf-6-fsensor-off-20.png" />
-      <img class="bcf-6-fsensor-on-2" src="<%= ctx %>/img/bcf6/bcf-6-fsensor-on-20.png" />
+      <img class="bcf-6-fsensor-on-2 bcf6_20" src="<%= ctx %>/img/bcf6/bcf-6-fsensor-on-20.png" />
       <img class="bcf-6-sensor-off-7" src="<%= ctx %>/img/bcf6/bcf-6-sensor-off-70.png" />
-      <img class="bcf-6-sensor-on-7" src="<%= ctx %>/img/bcf6/bcf-6-sensor-on-70.png" />
+      <img class="bcf-6-sensor-on-7 bcf6_108" src="<%= ctx %>/img/bcf6/bcf-6-sensor-on-70.png" />
       <img class="bcf-6-sensor-off-8" src="<%= ctx %>/img/bcf6/bcf-6-sensor-off-80.png" />
-      <img class="bcf-6-sensor-on-8" src="<%= ctx %>/img/bcf6/bcf-6-sensor-on-80.png" />
+      <img class="bcf-6-sensor-on-8 bcf6_134" src="<%= ctx %>/img/bcf6/bcf-6-sensor-on-80.png" />
       <img class="bcf-6-sensor-off-9" src="<%= ctx %>/img/bcf6/bcf-6-sensor-off-90.png" />
-      <img class="bcf-6-sensor-on-9" src="<%= ctx %>/img/bcf6/bcf-6-sensor-on-90.png" />
+      <img class="bcf-6-sensor-on-9 bcf6_113" src="<%= ctx %>/img/bcf6/bcf-6-sensor-on-90.png" />
       <img class="bcf-6-sensor-off-10" src="<%= ctx %>/img/bcf6/bcf-6-sensor-off-100.png" />
       <img class="bcf-6-sensor-on-10" src="<%= ctx %>/img/bcf6/bcf-6-sensor-on-100.png" />
       <img class="bcf-6-firepipe-off-1" src="<%= ctx %>/img/bcf6/bcf-6-firepipe-off-10.png" />
-      <img class="bcf-6-firepipe-on-1" src="<%= ctx %>/img/bcf6/bcf-6-firepipe-on-10.png" />
+      <img class="bcf-6-firepipe-on-1 bcf6_124" src="<%= ctx %>/img/bcf6/bcf-6-firepipe-on-10.png" />
       <img class="bcf-6-firepipe-off-2" src="<%= ctx %>/img/bcf6/bcf-6-firepipe-off-20.png" />
-      <img class="bcf-6-firepipe-on-2" src="<%= ctx %>/img/bcf6/bcf-6-firepipe-on-20.png" />
+      <img class="bcf-6-firepipe-on-2 bcf6_124" src="<%= ctx %>/img/bcf6/bcf-6-firepipe-on-20.png" />
       <img class="bcf-6-point-32" src="<%= ctx %>/img/bcf6/bcf-6-point-31.png" />
-      <img class="bcf-6-mini-1" src="<%= ctx %>/img/bcf6/bcf-6-mini-10.png" />
+      <img class="bcf-6-mini-1 bcf6_127 bcf6_57" src="<%= ctx %>/img/bcf6/bcf-6-mini-10.png" />
       <img class="bcf-6-stick-1" src="<%= ctx %>/img/bcf6/bcf-6-stick-10.png" />
-      <img class="bcf-6-mini-2" src="<%= ctx %>/img/bcf6/bcf-6-mini-20.png" />
+      <img class="bcf-6-mini-2 bcf6_127" src="<%= ctx %>/img/bcf6/bcf-6-mini-20.png" />
       <img class="bcf-6-mini-3" src="<%= ctx %>/img/bcf6/bcf-6-mini-30.png" />
-      <img class="bcf-6-mini-4" src="<%= ctx %>/img/bcf6/bcf-6-mini-40.png" />
-      <img class="bcf-6-mini-5" src="<%= ctx %>/img/bcf6/bcf-6-mini-50.png" />
-      <img class="bcf-6-alarm-1" src="<%= ctx %>/img/bcf6/bcf-6-alarm-10.png" />
-      <img class="bcf-6-alarm-2" src="<%= ctx %>/img/bcf6/bcf-6-alarm-20.png" />
-      <img class="bcf-6-alarm-3" src="<%= ctx %>/img/bcf6/bcf-6-alarm-30.png" />
-      <img class="bcf-6-alarm-4" src="<%= ctx %>/img/bcf6/bcf-6-alarm-40.png" />
-      <img class="bcf-6-alarm-5" src="<%= ctx %>/img/bcf6/bcf-6-alarm-50.png" />
-      <img class="bcf-6-alarm-6" src="<%= ctx %>/img/bcf6/bcf-6-alarm-60.png" />
-      <img class="bcf-6-alarm-7" src="<%= ctx %>/img/bcf6/bcf-6-alarm-70.png" />
-      <img class="bcf-6-alarm-8" src="<%= ctx %>/img/bcf6/bcf-6-alarm-80.png" />
-      <img class="bcf-6-alarm-9" src="<%= ctx %>/img/bcf6/bcf-6-alarm-90.png" />
-      <img class="bcf-6-alarm-10" src="<%= ctx %>/img/bcf6/bcf-6-alarm-100.png" />
-      <img class="bcf-6-alarm-11" src="<%= ctx %>/img/bcf6/bcf-6-alarm-110.png" />
-      <img class="bcf-6-alarm-12" src="<%= ctx %>/img/bcf6/bcf-6-alarm-120.png" />
-      <img class="bcf-6-alarm-13" src="<%= ctx %>/img/bcf6/bcf-6-alarm-130.png" />
-      <img class="bcf-6-alarm-14" src="<%= ctx %>/img/bcf6/bcf-6-alarm-140.png" />
-      <img class="bcf-6-alarm-15" src="<%= ctx %>/img/bcf6/bcf-6-alarm-150.png" />
-      <img class="bcf-6-alarm-16" src="<%= ctx %>/img/bcf6/bcf-6-alarm-160.png" />
-      <img class="bcf-6-alarm-17" src="<%= ctx %>/img/bcf6/bcf-6-alarm-170.png" />
-      <img class="bcf-6-alarm-18" src="<%= ctx %>/img/bcf6/bcf-6-alarm-180.png" />
-      <img class="bcf-6-alarm-19" src="<%= ctx %>/img/bcf6/bcf-6-alarm-190.png" />
-      <img class="bcf-6-alarm-20" src="<%= ctx %>/img/bcf6/bcf-6-alarm-200.png" />
-      <img class="bcf-6-alarm-21" src="<%= ctx %>/img/bcf6/bcf-6-alarm-210.png" />
-      <img class="bcf-6-alarm-22" src="<%= ctx %>/img/bcf6/bcf-6-alarm-220.png" />
-      <img class="bcf-6-alarm-23" src="<%= ctx %>/img/bcf6/bcf-6-alarm-230.png" />
-      <img class="bcf-6-alarm-24" src="<%= ctx %>/img/bcf6/bcf-6-alarm-240.png" />
-      <div class="bcf-1-flamesw-box"></div>
-      <div class="bcf-1-flamesw-box2"></div>
-      <div class="bcf-1-flamesw-box3"></div>
-      <div class="bcf-1-flamesw-box4"></div>
-      <div class="bcf-1-flamesw-box5"></div>
-      <div class="bcf-1-flamesw-box6"></div>
-      <div class="bcf-1-flamesw-box7"></div>
-      <div class="bcf-1-flamesw-box8"></div>
-      <div class="bcf-1-flamesw-box9"></div>
-      <div class="bcf-1-flamesw-box10"></div>
-      <div class="bcf-1-flamesw-box11"></div>
-      <div class="bcf-1-flamesw-box12"></div>
-      <div class="bcf-1-flamesw-box13"></div>
-      <div class="bcf-1-flamesw-box14"></div>
-      <div class="bcf-1-flamesw-box15"></div>
+      <img class="bcf-6-mini-4 bcf6_120" src="<%= ctx %>/img/bcf6/bcf-6-mini-40.png" />
+      <img class="bcf-6-mini-5 bcf6_121" src="<%= ctx %>/img/bcf6/bcf-6-mini-50.png" />
+      <img class="bcf-6-alarm-1 bcf6_357" src="<%= ctx %>/img/bcf6/bcf-6-alarm-10.png" />
+      <img class="bcf-6-alarm-2 bcf6_321" src="<%= ctx %>/img/bcf6/bcf-6-alarm-20.png" />
+      <img class="bcf-6-alarm-3 bcf6_359" src="<%= ctx %>/img/bcf6/bcf-6-alarm-30.png" />
+      <img class="bcf-6-alarm-4 bcf6_331" src="<%= ctx %>/img/bcf6/bcf-6-alarm-40.png" />
+      <img class="bcf-6-alarm-5 bcf6_358" src="<%= ctx %>/img/bcf6/bcf-6-alarm-50.png" />
+      <img class="bcf-6-alarm-6 bcf6_359" src="<%= ctx %>/img/bcf6/bcf-6-alarm-60.png" />
+      <img class="bcf-6-alarm-7 bcf6_358" src="<%= ctx %>/img/bcf6/bcf-6-alarm-70.png" />
+      <img class="bcf-6-alarm-8 bcf6_369" src="<%= ctx %>/img/bcf6/bcf-6-alarm-80.png" />
+      <img class="bcf-6-alarm-9 bcf6_331" src="<%= ctx %>/img/bcf6/bcf-6-alarm-90.png" />
+      <img class="bcf-6-alarm-10 bcf6_322" src="<%= ctx %>/img/bcf6/bcf-6-alarm-100.png" />
+      <img class="bcf-6-alarm-11 bcf6_360" src="<%= ctx %>/img/bcf6/bcf-6-alarm-110.png" />
+      <img class="bcf-6-alarm-12  bcf6_322" src="<%= ctx %>/img/bcf6/bcf-6-alarm-120.png" />
+      <img class="bcf-6-alarm-13 bcf6_331" src="<%= ctx %>/img/bcf6/bcf-6-alarm-130.png" />
+      <img class="bcf-6-alarm-14 bcf6_331" src="<%= ctx %>/img/bcf6/bcf-6-alarm-140.png" />
+      <img class="bcf-6-alarm-15 bcf6_331" src="<%= ctx %>/img/bcf6/bcf-6-alarm-150.png" />
+      <img class="bcf-6-alarm-16 bcf6_370" src="<%= ctx %>/img/bcf6/bcf-6-alarm-160.png" />
+      <img class="bcf-6-alarm-17 bcf6_371" src="<%= ctx %>/img/bcf6/bcf-6-alarm-170.png" />
+      <img class="bcf-6-alarm-18 bcf6_372" src="<%= ctx %>/img/bcf6/bcf-6-alarm-180.png" />
+      <img class="bcf-6-alarm-19 bcf6_135" src="<%= ctx %>/img/bcf6/bcf-6-alarm-190.png" />
+      <img class="bcf-6-alarm-20 bcf6_361" src="<%= ctx %>/img/bcf6/bcf-6-alarm-200.png" />
+      <img class="bcf-6-alarm-21 bcf6_331" src="<%= ctx %>/img/bcf6/bcf-6-alarm-210.png" />
+      <img class="bcf-6-alarm-22 bcf6_322" src="<%= ctx %>/img/bcf6/bcf-6-alarm-220.png" />
+      <img class="bcf-6-alarm-23 bcf6_374" src="<%= ctx %>/img/bcf6/bcf-6-alarm-230.png" />
+      <img class="bcf-6-alarm-24 bcf6_364" src="<%= ctx %>/img/bcf6/bcf-6-alarm-240.png" />
+      <div class="bcf-1-flamesw-box bcf6_140"></div>
+      <div class="bcf-1-flamesw-box2 bcf6_139"></div>
+      <div class="bcf-1-flamesw-box3 bcf6_303 bcf6_304"></div>
+      <div class="bcf-1-flamesw-box4 bcf6_33"></div>
+      <div class="bcf-1-flamesw-box5 bcf6_38"></div>
+      <div class="bcf-1-flamesw-box6" bcf6_305 bcf6_306></div>
+      <div class="bcf-1-flamesw-box7 bcf6_307 bcf6_308"></div>
+      <div class="bcf-1-flamesw-box8 bcf6_309 bcf6_310"></div>
+      <div class="bcf-1-flamesw-box9 bcf6_311 bcf6_312"></div>
+      <div class="bcf-1-flamesw-box10 bcf6_313 bcf6_314"></div>
+      <div class="bcf-1-flamesw-box11 bcf6_135"></div>
+      <div class="bcf-1-flamesw-box12 bcf6_134"></div>
+      <div class="bcf-1-flamesw-box13 bcf6_27"></div>
+      <div class="bcf-1-flamesw-box14 bcf6_26"></div>
+      <div class="bcf-1-flamesw-box15 bcf6_111"></div>
       <div class="bcf-1-flamesw-box16"></div>
-      <div class="bcf-1-flamesw-box17"></div>
-      <div class="bcf-1-flamesw-box18"></div>
-      <div class="bcf-1-flamesw-box19"></div>
+      <div class="bcf-1-flamesw-box17 bcf6_129"></div>
+      <div class="bcf-1-flamesw-box18 bcf6_130"></div>
+      <div class="bcf-1-flamesw-box19 bcf6_129"></div>
       <div class="bcf-6-alrblow-off-box"></div>
-      <div class="bcf-6-alrblow-on-box"></div>
+      <div class="bcf-6-alrblow-on-box bcf6_81"></div>
       <div class="bcf-6-mainair-off-box"></div>
-      <div class="bcf-6-mainair-on-box"></div>
+      <div class="bcf-6-mainair-on-box bcf6_7"></div>
       <div class="bcf-6-bypas-off-box"></div>
-      <div class="bcf-6-bypas-on-box"></div>
+      <div class="bcf-6-bypas-on-box bcf6_26"></div>
       <div class="bcf-6-pilot-1-off-box"></div>
-      <div class="bcf-6-pilot-1-on-box"></div>
+      <div class="bcf-6-pilot-1-on-box bcf6_132"></div>
       <div class="bcf-6-pilot-2-off-box"></div>
-      <div class="bcf-6-pilot-2-on-box"></div>
-      <img class="bcf-6-arrow-left-1" src="<%= ctx %>/img/bcf6/bcf-6-arrow-left-10.png" />
-      <img class="bcf-6-arrow-right-1" src="<%= ctx %>/img/bcf6/bcf-6-arrow-right-10.png" />
-      <img class="bcf-6-arrow-left-2" src="<%= ctx %>/img/bcf6/bcf-6-arrow-left-20.png" />
-      <img class="bcf-6-arrow-right-2" src="<%= ctx %>/img/bcf6/bcf-6-arrow-right-20.png" />
-      <img class="bcf-6-arrow-left-3" src="<%= ctx %>/img/bcf6/bcf-6-arrow-left-30.png" />
-      <img class="bcf-6-arrow-right-3" src="<%= ctx %>/img/bcf6/bcf-6-arrow-right-30.png" />
-      <img class="bcf-6-arrow-left-4" src="<%= ctx %>/img/bcf6/bcf-6-arrow-left-40.png" />
-      <img class="bcf-6-arrow-left-5" src="<%= ctx %>/img/bcf6/bcf-6-arrow-left-50.png" />
-      <img class="bcf-6-arrow-right-4" src="<%= ctx %>/img/bcf6/bcf-6-arrow-right-40.png" />
-      <img class="bcf-6-arrow-right-5" src="<%= ctx %>/img/bcf6/bcf-6-arrow-right-50.png" />
-      <img class="bcf-6-arrow-left-6" src="<%= ctx %>/img/bcf6/bcf-6-arrow-left-60.png" />
-      <img class="bcf-6-arrow-right-6" src="<%= ctx %>/img/bcf6/bcf-6-arrow-right-60.png" />
-      <img class="bcf-6-arrow-right-7" src="<%= ctx %>/img/bcf6/bcf-6-arrow-right-70.png" />
-      <img class="bcf-6-arrow-right-8" src="<%= ctx %>/img/bcf6/bcf-6-arrow-right-80.png" />
-      <img class="bcf-6-arrow-left-7" src="<%= ctx %>/img/bcf6/bcf-6-arrow-left-70.png" />
-      <img class="bcf-6-arrow-right-9" src="<%= ctx %>/img/bcf6/bcf-6-arrow-right-90.png" />
+      <div class="bcf-6-pilot-2-on-box bcf6_133"></div>
+      <img class="bcf-6-arrow-left-1 bcf6_245" src="<%= ctx %>/img/bcf6/bcf-6-arrow-left-10.png" />
+      <img class="bcf-6-arrow-right-1 bcf6_244" src="<%= ctx %>/img/bcf6/bcf-6-arrow-right-10.png" />
+      <img class="bcf-6-arrow-left-2 bcf6_249" src="<%= ctx %>/img/bcf6/bcf-6-arrow-left-20.png" />
+      <img class="bcf-6-arrow-right-2 bcf6_248" src="<%= ctx %>/img/bcf6/bcf-6-arrow-right-20.png" />
+      <img class="bcf-6-arrow-left-3 bcf6_253" src="<%= ctx %>/img/bcf6/bcf-6-arrow-left-30.png" />
+      <img class="bcf-6-arrow-right-3 bcf6_252" src="<%= ctx %>/img/bcf6/bcf-6-arrow-right-30.png" />
+      <img class="bcf-6-arrow-left-4 bcf6_257" src="<%= ctx %>/img/bcf6/bcf-6-arrow-left-40.png" />
+      <img class="bcf-6-arrow-left-5 bcf6_261" src="<%= ctx %>/img/bcf6/bcf-6-arrow-left-50.png" />
+      <img class="bcf-6-arrow-right-4 bcf6_256" src="<%= ctx %>/img/bcf6/bcf-6-arrow-right-40.png" />
+      <img class="bcf-6-arrow-right-5 bcf6_260" src="<%= ctx %>/img/bcf6/bcf-6-arrow-right-50.png" />
+      <img class="bcf-6-arrow-left-6 bcf6_265" src="<%= ctx %>/img/bcf6/bcf-6-arrow-left-60.png" />
+      <img class="bcf-6-arrow-right-6 bcf6_264" src="<%= ctx %>/img/bcf6/bcf-6-arrow-right-60.png" />
+      <img class="bcf-6-arrow-right-7 bcf6_128 bcf6_37" src="<%= ctx %>/img/bcf6/bcf-6-arrow-right-70.png" />
+      <img class="bcf-6-arrow-right-8 bcf6_128 bcf6_39" src="<%= ctx %>/img/bcf6/bcf-6-arrow-right-80.png" />
+      <img class="bcf-6-arrow-left-7 bcf6_122" src="<%= ctx %>/img/bcf6/bcf-6-arrow-left-70.png" />
+      <img class="bcf-6-arrow-right-9 bcf6_188" src="<%= ctx %>/img/bcf6/bcf-6-arrow-right-90.png" />
       <img class="bcf-6-obj-7" src="<%= ctx %>/img/bcf6/bcf-6-obj-70.png" />
       <img class="_31-2" src="<%= ctx %>/img/bcf6/_31-20.png" />
       <img class="bcf-6-enrich-red-1" src="<%= ctx %>/img/bcf6/bcf-6-enrich-red-10.png" />
-      <img class="bcf-6-enrich-green-1" src="<%= ctx %>/img/bcf6/bcf-6-enrich-green-10.png" />
+      <img class="bcf-6-enrich-green-1 bcf6_115" src="<%= ctx %>/img/bcf6/bcf-6-enrich-green-10.png" />
       <img class="bcf-6-enrich-red-2" src="<%= ctx %>/img/bcf6/bcf-6-enrich-red-20.png" />
-      <img class="bcf-6-enrich-green-2" src="<%= ctx %>/img/bcf6/bcf-6-enrich-green-20.png" />
+      <img class="bcf-6-enrich-green-2 bcf6_121" src="<%= ctx %>/img/bcf6/bcf-6-enrich-green-20.png" />
       <img class="bcf-6-enrich-red-3" src="<%= ctx %>/img/bcf6/bcf-6-enrich-red-30.png" />
       <img class="bcf-6-enrich-green-3" src="<%= ctx %>/img/bcf6/bcf-6-enrich-green-30.png" />
     </div>

@@ -336,90 +336,105 @@
         <img class="bcf-2-2" src="<%= ctx %>/img/bcf1/bcf-2-20.png" />
       </div>
       <div class="bcf-1-red-1"></div>
-      <img class="bcf-1-obj-1"        src="<%= ctx %>/img/bcf1/bcf-1-obj-10.png" />
-      <img class="bcf-1-pipe-off"     src="<%= ctx %>/img/bcf1/bcf-1-pipe-off0.png" />
-      <img class="bcf-1-pipe-on"      src="<%= ctx %>/img/bcf1/bcf-1-pipe-on0.png" />
-      <div class="bcf-oil"></div>
-      <img class="bcf-1-elv-2"        src="<%= ctx %>/img/bcf1/bcf-1-elv-20.png" />
-      <img class="bcf-1-elv-1"        src="<%= ctx %>/img/bcf1/bcf-1-elv-10.png" />
-      <img class="bcf-1-propel-1"     src="<%= ctx %>/img/bcf1/bcf-1-propel-10.png" />
-      <img class="bcf-1-arrow"        src="<%= ctx %>/img/bcf1/bcf-1-arrow0.png" />
-      <img class="bcf-1-obj-2"        src="<%= ctx %>/img/bcf1/bcf-1-obj-20.png" />
-      <img class="bcf-1-obj-3"        src="<%= ctx %>/img/bcf1/bcf-1-obj-30.png" />
-      <img class="bcf-1-firepipe-off" src="<%= ctx %>/img/bcf1/bcf-1-firepipe-off0.png" />
-      <img class="bcf-1-firepipe-on"  src="<%= ctx %>/img/bcf1/bcf-1-firepipe-on0.png" />
-      <img class="bcf-1-phone-off-2"  src="<%= ctx %>/img/bcf1/bcf-1-phone-off-20.png" />
-      <img class="bcf-1-phone-on-2"   src="<%= ctx %>/img/bcf1/bcf-1-phone-on-20.png" />
-      <img class="bcf-1-phone-off-1"  src="<%= ctx %>/img/bcf1/bcf-1-phone-off-10.png" />
-      <img class="bcf-1-phone-on-1"   src="<%= ctx %>/img/bcf1/bcf-1-phone-on-10.png" />
-      <img class="bcf-1-obj-4"        src="<%= ctx %>/img/bcf1/bcf-1-obj-40.png" />
-      <img class="bcf-1-jog-gray"     src="<%= ctx %>/img/bcf1/bcf-1-jog-gray0.png" />
-      <img class="bcf-1-jog-red"      src="<%= ctx %>/img/bcf1/bcf-1-jog-red0.png" />
-      <img class="bcf-1-jog-green"    src="<%= ctx %>/img/bcf1/bcf-1-jog-green0.png" />
-      <img class="bcf-1-obj-5"        src="<%= ctx %>/img/bcf1/bcf-1-obj-50.png" />
-      <img class="bcf-1-stick-off-1"  src="<%= ctx %>/img/bcf1/bcf-1-stick-off-10.png" />
-      <img class="bcf-1-stick-on-1"   src="<%= ctx %>/img/bcf1/bcf-1-stick-on-10.png" />
-      <img class="bcf-1-stick-off-2"  src="<%= ctx %>/img/bcf1/bcf-1-stick-off-20.png" />
-      <img class="bcf-1-stick-on-2"   src="<%= ctx %>/img/bcf1/bcf-1-stick-on-20.png" />
-      <img class="bcf-1-obj-6"        src="<%= ctx %>/img/bcf1/bcf-1-obj-60.png" />
-      <img class="bcf-1-obj-7"        src="<%= ctx %>/img/bcf1/bcf-1-obj-70.png" />
-      <img class="bcf-1-motor-off"    src="<%= ctx %>/img/bcf1/bcf-1-motor-off0.png" />
-      <img class="bcf-1-motor-on"     src="<%= ctx %>/img/bcf1/bcf-1-motor-on0.png" />
-      <img class="bcf-1-pen-off"      src="<%= ctx %>/img/bcf1/bcf-1-pen-off0.png" />
-      <img class="bcf-1-pen-on"       src="<%= ctx %>/img/bcf1/bcf-1-pen-on0.png" />
-      <img class="bcf-1-tray-1"       src="<%= ctx %>/img/bcf1/bcf-1-tray-10.png" />
-      <img class="bcf-1-tray-2"       src="<%= ctx %>/img/bcf1/bcf-1-tray-20.png" />
-      <img class="bcf-1-tray-3"       src="<%= ctx %>/img/bcf1/bcf-1-tray-30.png" />
-      <img class="bcf-1-bong-1"       src="<%= ctx %>/img/bcf1/bcf-1-bong-10.png" />
-      <img class="bcf-1-bong-2"       src="<%= ctx %>/img/bcf1/bcf-1-bong-20.png" />
-      <img class="bcf-1-bong-3"       src="<%= ctx %>/img/bcf1/bcf-1-bong-30.png" />
-      <img class="bcf-1-door-open-1"  src="<%= ctx %>/img/bcf1/bcf-1-door-open-10.png" />
-      <img class="bcf-1-door-close-1" src="<%= ctx %>/img/bcf1/bcf-1-door-close-10.png" />
-      <img class="bcf-1-bong-4"       src="<%= ctx %>/img/bcf1/bcf-1-bong-40.png" />
-      <img class="bcf-1-bong-5"       src="<%= ctx %>/img/bcf1/bcf-1-bong-50.png" />
-      <img class="bcf-1-bong-6"       src="<%= ctx %>/img/bcf1/bcf-1-bong-60.png" />
+      <img class="bcf-1-obj-1" src="<%= ctx %>/img/bcf1/bcf-1-obj-10.png" />
+      <img class="bcf-1-pipe-off" src="<%= ctx %>/img/bcf1/bcf-1-pipe-off0.png" />
+      <img class="bcf-1-pipe-on bcf5_131" src="<%= ctx %>/img/bcf1/bcf-1-pipe-on0.png" />
+      <div class="bcf-oil bcf5_12"></div>
+      <img class="bcf-1-elv-2" src="<%= ctx %>/img/bcf1/bcf-1-elv-20.png" />
+      <img class="bcf-1-elv-1" src="<%= ctx %>/img/bcf1/bcf-1-elv-10.png" />
+      <img class="bcf-1-propel-1" src="<%= ctx %>/img/bcf1/bcf-1-propel-10.png" />
+      <img class="bcf-1-arrow bcf5_38 bcf5_4" src="<%= ctx %>/img/bcf1/bcf-1-arrow0.png" />
+      <img class="bcf-1-obj-2" src="<%= ctx %>/img/bcf1/bcf-1-obj-20.png" />
+      <img class="bcf-1-obj-3" src="<%= ctx %>/img/bcf1/bcf-1-obj-30.png" />
+      <img class="bcf-1-firepipe-off bcf5_29" src="<%= ctx %>/img/bcf1/bcf-1-firepipe-off0.png" />
+      <img class="bcf-1-firepipe-on  bcf5_29" src="<%= ctx %>/img/bcf1/bcf-1-firepipe-on0.png" />
+      <img class="bcf-1-phone-off-2" src="<%= ctx %>/img/bcf1/bcf-1-phone-off-20.png" />
+      <img class="bcf-1-phone-on-2 bcf5_14" src="<%= ctx %>/img/bcf1/bcf-1-phone-on-20.png" />
+      <img class="bcf-1-phone-off-1" src="<%= ctx %>/img/bcf1/bcf-1-phone-off-10.png" />
+      <img class="bcf-1-phone-on-1 bcf5_13" src="<%= ctx %>/img/bcf1/bcf-1-phone-on-10.png" />
+      <img class="bcf-1-obj-4" src="<%= ctx %>/img/bcf1/bcf-1-obj-40.png" />
+      <img class="bcf-1-jog-gray" src="<%= ctx %>/img/bcf1/bcf-1-jog-gray0.png" />
+      <img class="bcf-1-jog-red" src="<%= ctx %>/img/bcf1/bcf-1-jog-red0.png" />
+      <img class="bcf-1-jog-green" src="<%= ctx %>/img/bcf1/bcf-1-jog-green0.png" />
+      <img class="bcf-1-obj-5" src="<%= ctx %>/img/bcf1/bcf-1-obj-50.png" />
+      <img class="bcf-1-stick-off-1 bcf5_132" src="<%= ctx %>/img/bcf1/bcf-1-stick-off-10.png" />
+      <img class="bcf-1-stick-on-1 bcf5_132" src="<%= ctx %>/img/bcf1/bcf-1-stick-on-10.png" />
+      <img class="bcf-1-stick-off-2 bcf5_132" src="<%= ctx %>/img/bcf1/bcf-1-stick-off-20.png" />
+      <img class="bcf-1-stick-on-2 bcf5_132" src="<%= ctx %>/img/bcf1/bcf-1-stick-on-20.png" />
+      <img class="bcf-1-obj-6" src="<%= ctx %>/img/bcf1/bcf-1-obj-60.png" />
+      <img class="bcf-1-obj-7" src="<%= ctx %>/img/bcf1/bcf-1-obj-70.png" />
+      <img class="bcf-1-motor-off" src="<%= ctx %>/img/bcf1/bcf-1-motor-off0.png" />
+      <img class="bcf-1-motor-on bcf5_46" src="<%= ctx %>/img/bcf1/bcf-1-motor-on0.png" />
+      <img class="bcf-1-pen-off" src="<%= ctx %>/img/bcf1/bcf-1-pen-off0.png" />
+      <img class="bcf-1-pen-on bcf5_22" src="<%= ctx %>/img/bcf1/bcf-1-pen-on0.png" />
+      <img class="bcf-1-tray-1 bcf5_51" src="<%= ctx %>/img/bcf1/bcf-1-tray-10.png" />
+      <img class="bcf-1-tray-2 bcf5_3" src="<%= ctx %>/img/bcf1/bcf-1-tray-20.png" />
+      <img class="bcf-1-tray-3" src="<%= ctx %>/img/bcf1/bcf-1-tray-30.png" />
+      <img class="bcf-1-bong-1" src="<%= ctx %>/img/bcf1/bcf-1-bong-10.png" />
+      <img class="bcf-1-bong-2 bcf5_34" src="<%= ctx %>/img/bcf1/bcf-1-bong-20.png" />
+      <img class="bcf-1-bong-3 bcf5_33" src="<%= ctx %>/img/bcf1/bcf-1-bong-30.png" />
+      <img class="bcf-1-door-open-1  bcf5_2" src="<%= ctx %>/img/bcf1/bcf-1-door-open-10.png" />
+      <img class="bcf-1-door-close-1  bcf5_2" src="<%= ctx %>/img/bcf1/bcf-1-door-close-10.png" />
+      <img class="bcf-1-bong-4" src="<%= ctx %>/img/bcf1/bcf-1-bong-40.png" />
+      <img class="bcf-1-bong-5 bcf5_2" src="<%= ctx %>/img/bcf1/bcf-1-bong-50.png" />
+      <img class="bcf-1-bong-6 bcf5_2" src="<%= ctx %>/img/bcf1/bcf-1-bong-60.png" />
       <img class="bcf-1-door-close-2" src="<%= ctx %>/img/bcf1/bcf-1-door-close-20.png" />
-      <img class="bcf-1-door-open-2"  src="<%= ctx %>/img/bcf1/bcf-1-door-open-20.png" />
-      <img class="bcf-1-air-cycle"    src="<%= ctx %>/img/bcf1/bcf-1-air-cycle0.png" />
+      <img class="bcf-1-door-open-2" src="<%= ctx %>/img/bcf1/bcf-1-door-open-20.png" />
+      <img class="bcf-1-air-cycle bcf5_60" src="<%= ctx %>/img/bcf1/bcf-1-air-cycle0.png" />
       <img class="bcf-1-sensor-off-1" src="<%= ctx %>/img/bcf1/bcf-1-sensor-off-10.png" />
-      <img class="bcf-1-sensor-on-1"  src="<%= ctx %>/img/bcf1/bcf-1-sensor-on-10.png" />
+      <img class="bcf-1-sensor-on-1 bcf5_9" src="<%= ctx %>/img/bcf1/bcf-1-sensor-on-10.png" />
       <img class="bcf-1-sensor-off-2" src="<%= ctx %>/img/bcf1/bcf-1-sensor-off-20.png" />
-      <img class="bcf-1-sensor-on-2"  src="<%= ctx %>/img/bcf1/bcf-1-sensor-on-20.png" />
-      <img class="bcf-1-cycle"        src="<%= ctx %>/img/bcf1/bcf-1-cycle0.png" />
-      <img class="bcf-1-rotate-1"     src="<%= ctx %>/img/bcf1/bcf-1-rotate-10.png" />
-      <img class="bcf-1-rotate-2"     src="<%= ctx %>/img/bcf1/bcf-1-rotate-20.png" />
-      <img class="bcf-1-rotate-3"     src="<%= ctx %>/img/bcf1/bcf-1-rotate-30.png" />
-      <img class="bcf-1-alarm-1"      src="<%= ctx %>/img/bcf1/bcf-1-alarm-10.png" />
-      <img class="bcf-1-alarm-2"      src="<%= ctx %>/img/bcf1/bcf-1-alarm-20.png" />
-      <img class="bcf-1-alarm-3"      src="<%= ctx %>/img/bcf1/bcf-1-alarm-30.png" />
-      <img class="bcf-1-alarm-4"      src="<%= ctx %>/img/bcf1/bcf-1-alarm-40.png" />
-      <img class="bcf-1-alarm-5"      src="<%= ctx %>/img/bcf1/bcf-1-alarm-50.png" />
-      <img class="bcf-1-alarm-6"      src="<%= ctx %>/img/bcf1/bcf-1-alarm-60.png" />
-      <img class="bcf-1-alarm-7"      src="<%= ctx %>/img/bcf1/bcf-1-alarm-70.png" />
-      <img class="bcf-1-alarm-8"      src="<%= ctx %>/img/bcf1/bcf-1-alarm-80.png" />
-      <img class="bcf-1-alarm-9"      src="<%= ctx %>/img/bcf1/bcf-1-alarm-90.png" />
-      <img class="bcf-1-alarm-10"     src="<%= ctx %>/img/bcf1/bcf-1-alarm-100.png" />
-      <img class="bcf-1-alarm-11"     src="<%= ctx %>/img/bcf1/bcf-1-alarm-110.png" />
-      <img class="bcf-1-alarm-12"     src="<%= ctx %>/img/bcf1/bcf-1-alarm-120.png" />
-      <img class="bcf-1-alarm-13"     src="<%= ctx %>/img/bcf1/bcf-1-alarm-130.png" />
-      <img class="bcf-1-alarm-14"     src="<%= ctx %>/img/bcf1/bcf-1-alarm-140.png" />
-      <img class="bcf-1-enrich-gray"  src="<%= ctx %>/img/bcf1/bcf-1-enrich-gray0.png" />
-      <img class="bcf-1-enrich-red"   src="<%= ctx %>/img/bcf1/bcf-1-enrich-red0.png" />
-      <img class="bcf-1-enrich-green" src="<%= ctx %>/img/bcf1/bcf-1-enrich-green0.png" />
-      <img class="bcf-1-amm-gray"     src="<%= ctx %>/img/bcf1/bcf-1-amm-gray0.png" />
-      <img class="bcf-1-amm-red"      src="<%= ctx %>/img/bcf1/bcf-1-amm-red0.png" />
-      <img class="bcf-1-amm-green"    src="<%= ctx %>/img/bcf1/bcf-1-amm-green0.png" />
-      <div class="bcf-1-enrich-off-box"></div><div class="bcf-1-enrich-on-box"></div>
-      <div class="bcf-1-amm-off-box"></div><div class="bcf-1-amm-on-box"></div>
-      <div class="bcf-1-jog-stop-box"></div><div class="bcf-1-jog-manual-box"></div><div class="bcf-1-jog-on-box"></div>
-      <div class="bcf-1-stop-box-1"></div><div class="bcf-1-manual-box-1"></div><div class="bcf-1-auto-box-1"></div>
-      <div class="bcf-1-stop-box-2"></div><div class="bcf-1-manual-box-2"></div><div class="bcf-1-auto-box-2"></div>
-      <div class="bcf-1-1-sok-box"></div><div class="bcf-1-2-sok-box"></div><div class="bcf-1-3-sok-box"></div>
-      <div class="bcf-1-dt-2"></div><div class="bcf-1-dt-1"></div>
-      <div class="bcf-1-ro-on"></div><div class="bcf-1-ro-off"></div><div class="bcf-1-dt-3"></div>
-      <div class="bcf-1-flamesw-box"></div><div class="bcf-1-flame-box"></div><div class="bcf-1-fire-box"></div>
-      <img class="bcf-1-fire-1" src="<%= ctx %>/img/bcf1/bcf-1-fire-10.png" />
-      <img class="bcf-1-fire-2" src="<%= ctx %>/img/bcf1/bcf-1-fire-20.png" />
+      <img class="bcf-1-sensor-on-2" src="<%= ctx %>/img/bcf1/bcf-1-sensor-on-20.png" />
+      <img class="bcf-1-cycle bcf5_39 bcf5_40" src="<%= ctx %>/img/bcf1/bcf-1-cycle0.png" />
+      <img class="bcf-1-rotate-1 bcf5_" src="<%= ctx %>/img/bcf1/bcf-1-rotate-10.png" />
+      <img class="bcf-1-rotate-2 bcf5_" src="<%= ctx %>/img/bcf1/bcf-1-rotate-20.png" />
+      <img class="bcf-1-rotate-3 bcf5_39 bcf5_40" src="<%= ctx %>/img/bcf1/bcf-1-rotate-30.png" />
+      <img class="bcf-1-alarm-1 bcf5_74" src="<%= ctx %>/img/bcf1/bcf-1-alarm-10.png" />
+      <img class="bcf-1-alarm-2 bcf5_85" src="<%= ctx %>/img/bcf1/bcf-1-alarm-20.png" />
+      <img class="bcf-1-alarm-3 bcf5_76" src="<%= ctx %>/img/bcf1/bcf-1-alarm-30.png" />
+      <img class="bcf-1-alarm-4 bcf5_90" src="<%= ctx %>/img/bcf1/bcf-1-alarm-40.png" />
+      <img class="bcf-1-alarm-5 bcf5_88" src="<%= ctx %>/img/bcf1/bcf-1-alarm-50.png" />
+      <img class="bcf-1-alarm-6 bcf5_66" src="<%= ctx %>/img/bcf1/bcf-1-alarm-60.png" />
+      <img class="bcf-1-alarm-7 bcf5_67" src="<%= ctx %>/img/bcf1/bcf-1-alarm-70.png" />
+      <img class="bcf-1-alarm-8 bcf5_79" src="<%= ctx %>/img/bcf1/bcf-1-alarm-80.png" />
+      <img class="bcf-1-alarm-9 bcf5_69" src="<%= ctx %>/img/bcf1/bcf-1-alarm-90.png" />
+      <img class="bcf-1-alarm-10 bcf5_81" src="<%= ctx %>/img/bcf1/bcf-1-alarm-100.png" />
+      <img class="bcf-1-alarm-11 bcf5_80" src="<%= ctx %>/img/bcf1/bcf-1-alarm-110.png" />
+      <img class="bcf-1-alarm-12 bcf5_72" src="<%= ctx %>/img/bcf1/bcf-1-alarm-120.png" />
+      <img class="bcf-1-alarm-13 bcf5_83" src="<%= ctx %>/img/bcf1/bcf-1-alarm-130.png" />
+      <img class="bcf-1-alarm-14 bcf5_71" src="<%= ctx %>/img/bcf1/bcf-1-alarm-140.png" />
+      <img class="bcf-1-enrich-gray bcf5_139" src="<%= ctx %>/img/bcf1/bcf-1-enrich-gray0.png" />
+      <img class="bcf-1-enrich-red" src="<%= ctx %>/img/bcf1/bcf-1-enrich-red0.png" />
+      <img class="bcf-1-enrich-green bcf5_27" src="<%= ctx %>/img/bcf1/bcf-1-enrich-green0.png" />
+      <img class="bcf-1-amm-gray bcf5_141" src="<%= ctx %>/img/bcf1/bcf-1-amm-gray0.png" />
+      <img class="bcf-1-amm-red" src="<%= ctx %>/img/bcf1/bcf-1-amm-red0.png" />
+      <img class="bcf-1-amm-green bcf5_28" src="<%= ctx %>/img/bcf1/bcf-1-amm-green0.png" />
+      <div class="bcf-1-enrich-off-box bcf5_138"></div>
+      <div class="bcf-1-enrich-on-box bcf5_139"></div>
+      <div class="bcf-1-amm-off-box  bcf5_140"></div>
+      <div class="bcf-1-amm-on-box bcf5_141"></div>
+      <div class="bcf-1-jog-stop-box"></div>
+      <div class="bcf-1-jog-manual-box bcf5_57 bcf5_59"></div>
+      <div class="bcf-1-jog-on-box bcf5_56 bcf5_58"></div>
+      <div class="bcf-1-stop-box-1"></div>
+      <div class="bcf-1-manual-box-1 bcf5_136"></div>
+      <div class="bcf-1-auto-box-1 bcf5_137"></div>
+      <div class="bcf-1-stop-box-2"></div>
+      <div class="bcf-1-manual-box-2 bcf5_134"></div>
+      <div class="bcf-1-auto-box-2"></div>
+      <div class="bcf-1-1-sok-box bcf5_41"></div>
+      <div class="bcf-1-2-sok-box bcf5_48"></div>
+      <div class="bcf-1-3-sok-box bcf5_49"></div>
+      <div class="bcf-1-dt-2 bcf5_3"></div>
+      <div class="bcf-1-dt-1 bcf5_51"></div>
+      <div class="bcf-1-ro-on bcf5_52"></div>
+      <div class="bcf-1-ro-off"></div>
+      <div class="bcf-1-dt-3"></div>
+      <div class="bcf-1-flamesw-box bcf5_17"></div>
+      <div class="bcf-1-flame-box bcf5_18"></div>
+      <div class="bcf-1-fire-box bcf5_16"></div>
+      <img class="bcf-1-fire-1 bcf5_30" src="<%= ctx %>/img/bcf1/bcf-1-fire-10.png" />
+      <img class="bcf-1-fire-2  bcf5_16" src="<%= ctx %>/img/bcf1/bcf-1-fire-20.png" />
     </div>
 
     <!-- ═══════════════════════════════════════
