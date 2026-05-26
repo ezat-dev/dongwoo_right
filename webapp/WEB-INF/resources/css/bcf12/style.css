@@ -1,0 +1,801 @@
+.group-3,
+.group-3 * {
+  box-sizing: border-box;
+}
+.group-3 {
+  height: 897px;
+  position: relative;
+}
+.rectangle-1 {
+  background: #d9d9d9;
+  width: 1918px;
+  height: 878px;
+  position: absolute;
+  left: 0px;
+  top: 19px;
+}
+.group-1 {
+  width: 1031px;
+  height: 760px;
+  position: static;
+}
+.bcf-12-1 {
+  width: 439px;
+  height: 544px;
+  position: absolute;
+  left: 592px;
+  top: 92px;
+  object-fit: cover;
+  aspect-ratio: 439/544;
+}
+.bcf-12-2 {
+  width: 299px;
+  height: 515px;
+  position: absolute;
+  left: 308px;
+  top: 245px;
+  object-fit: cover;
+  aspect-ratio: 299/515;
+}
+.bcf-12-red-1 {
+  background: #ff0000;
+  width: 279px;
+  height: 219px;
+  position: absolute;
+  left: 701px;
+  top: 266px;
+}
+.bcf-12-obj-1 {
+  width: 56px;
+  height: 41px;
+  position: absolute;
+  left: 742px;
+  top: 211px;
+  object-fit: cover;
+  aspect-ratio: 56/41;
+}
+.bcf-12-pipe-off {
+  width: 272px;
+  height: 165px;
+  position: absolute;
+  left: 705px;
+  top: 265px;
+  object-fit: cover;
+  aspect-ratio: 272/165;
+}
+.bcf-12-pipe-on {
+  width: 272px;
+  height: 164px;
+  position: absolute;
+  left: 705px;
+  top: 266px;
+  object-fit: cover;
+  aspect-ratio: 272/164;
+}
+.bcf-12-oil {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 0, 0, 1) 100%
+  );
+  width: 279px;
+  height: 227px;
+  position: absolute;
+  left: 318px;
+  top: 515px;
+}
+.bcf-12-elv-2 {
+  width: 281px;
+  height: 455px;
+  position: absolute;
+  left: 318px;
+  top: 257px;
+  object-fit: cover;
+  aspect-ratio: 281/455;
+}
+.bcf-12-elv-1 {
+  width: 281px;
+  height: 455px;
+  position: absolute;
+  left: 318px;
+  top: 2px;
+  object-fit: cover;
+  aspect-ratio: 281/455;
+}
+.bcf-12-propel-1 {
+  width: 82px;
+  height: 69px;
+  position: absolute;
+  left: 793px;
+  top: 229px;
+  object-fit: cover;
+  aspect-ratio: 82/69;
+}
+.bcf-12-arrow-1 {
+  width: 197px;
+  height: 19px;
+  position: absolute;
+  left: 364px;
+  top: 433px;
+  object-fit: cover;
+  aspect-ratio: 197/19;
+}
+.bcf-12-arrow-2 {
+  width: 197px;
+  height: 19px;
+  position: absolute;
+  left: 364px;
+  top: 688px;
+  object-fit: cover;
+  aspect-ratio: 197/19;
+}
+.bcf-12-obj-2 {
+  width: 38px;
+  height: 134px;
+  position: absolute;
+  left: 928px;
+  top: 96px;
+  object-fit: cover;
+  aspect-ratio: 38/134;
+}
+.bcf-12-obj-3 {
+  width: 38px;
+  height: 134px;
+  position: absolute;
+  left: 928px;
+  top: 96px;
+  object-fit: cover;
+  aspect-ratio: 38/134;
+}
+.bcf-12-firepipe-off {
+  width: 49px;
+  height: 67px;
+  position: absolute;
+  left: 928px;
+  top: 96px;
+  object-fit: cover;
+  aspect-ratio: 49/67;
+}
+.bcf-12-firepipe-on {
+  width: 49px;
+  height: 67px;
+  position: absolute;
+  left: 928px;
+  top: 96.5px;
+  object-fit: cover;
+  aspect-ratio: 49/67;
+}
+.bcf-12-fire-1 {
+  width: 64px;
+  height: 97px;
+  position: absolute;
+  left: 918px;
+  top: 7px;
+  object-fit: cover;
+  aspect-ratio: 64/97;
+}
+.bcf-12-phone-off-2 {
+  width: 25px;
+  height: 46px;
+  position: absolute;
+  left: 939px;
+  top: 419px;
+  object-fit: cover;
+  aspect-ratio: 25/46;
+}
+.bcf-12-phone-on-2 {
+  width: 25px;
+  height: 46px;
+  position: absolute;
+  left: 939px;
+  top: 419px;
+  object-fit: cover;
+  aspect-ratio: 25/46;
+}
+.bcf-12-phone-off-1 {
+  width: 25px;
+  height: 46px;
+  position: absolute;
+  left: 939px;
+  top: 317px;
+  object-fit: cover;
+  aspect-ratio: 25/46;
+}
+.bcf-12-phone-on-1 {
+  width: 25px;
+  height: 46px;
+  position: absolute;
+  left: 939px;
+  top: 317px;
+  object-fit: cover;
+  aspect-ratio: 25/46;
+}
+.bcf-12-obj-4 {
+  width: 268px;
+  height: 80px;
+  position: absolute;
+  left: 666px;
+  top: 463px;
+  object-fit: cover;
+  aspect-ratio: 268/80;
+}
+.bcf-12-jog-gray {
+  width: 87px;
+  height: 59px;
+  position: absolute;
+  left: 800px;
+  top: 500px;
+  object-fit: cover;
+  aspect-ratio: 87/59;
+}
+.bcf-12-jog-red {
+  width: 86px;
+  height: 59px;
+  position: absolute;
+  left: 801px;
+  top: 500px;
+  object-fit: cover;
+  aspect-ratio: 86/59;
+}
+.bcf-12-jog-green {
+  width: 87px;
+  height: 59px;
+  position: absolute;
+  left: 800px;
+  top: 500px;
+  object-fit: cover;
+  aspect-ratio: 87/59;
+}
+.bcf-12-obj-5 {
+  width: 50px;
+  height: 17px;
+  position: absolute;
+  left: 759px;
+  top: 481px;
+  object-fit: cover;
+  aspect-ratio: 50/17;
+}
+.bcf-12-stick-off-1 {
+  width: 21px;
+  height: 156px;
+  position: absolute;
+  left: 325px;
+  top: 515px;
+  object-fit: cover;
+  aspect-ratio: 21/156;
+}
+.bcf-12-stick-on-1 {
+  width: 21px;
+  height: 155px;
+  position: absolute;
+  left: 325px;
+  top: 515px;
+  object-fit: cover;
+  aspect-ratio: 21/155;
+}
+.bcf-12-stick-off-2 {
+  width: 21px;
+  height: 156px;
+  position: absolute;
+  left: 569px;
+  top: 515px;
+  object-fit: cover;
+  aspect-ratio: 21/156;
+}
+.bcf-12-stick-on-2 {
+  width: 21px;
+  height: 155px;
+  position: absolute;
+  left: 569px;
+  top: 515px;
+  object-fit: cover;
+  aspect-ratio: 21/155;
+}
+.bcf-12-obj-6 {
+  width: 12px;
+  height: 205px;
+  position: absolute;
+  left: 648px;
+  top: 105px;
+  object-fit: cover;
+  aspect-ratio: 12/205;
+}
+.bcf-12-obj-7 {
+  width: 12px;
+  height: 205px;
+  position: absolute;
+  left: 607px;
+  top: 105px;
+  object-fit: cover;
+  aspect-ratio: 12/205;
+}
+.bcf-12-obj-8 {
+  width: 81px;
+  height: 75px;
+  position: absolute;
+  left: 619px;
+  top: 98px;
+  object-fit: cover;
+  aspect-ratio: 81/75;
+}
+.bcf-12-obj-9 {
+  width: 81px;
+  height: 75px;
+  position: absolute;
+  left: 649px;
+  top: 98px;
+  transform-origin: 0 0;
+  transform: rotate(0deg) scale(-1, 1);
+  object-fit: cover;
+  aspect-ratio: 81/75;
+}
+.bcf-12-obj-10 {
+  width: 234px;
+  height: 153px;
+  position: absolute;
+  left: 0px;
+  top: 338px;
+  object-fit: cover;
+  aspect-ratio: 234/153;
+}
+.bcf-12-pen-off {
+  width: 100px;
+  height: 197px;
+  position: absolute;
+  left: 784px;
+  top: 69px;
+  object-fit: cover;
+  aspect-ratio: 100/197;
+}
+.bcf-12-pen-on {
+  width: 100px;
+  height: 197px;
+  position: absolute;
+  left: 784.5px;
+  top: 69px;
+  object-fit: cover;
+  aspect-ratio: 100/197;
+}
+.bcf-12-tray-1 {
+  width: 168px;
+  height: 96px;
+  position: absolute;
+  left: 374px;
+  top: 331px;
+  object-fit: cover;
+  aspect-ratio: 168/96;
+}
+.bcf-12-tray-2 {
+  width: 168px;
+  height: 96px;
+  position: absolute;
+  left: 374px;
+  top: 588px;
+  object-fit: cover;
+  aspect-ratio: 168/96;
+}
+.bcf-12-tray-3 {
+  width: 168px;
+  height: 96px;
+  position: absolute;
+  left: 750px;
+  top: 325px;
+  object-fit: cover;
+  aspect-ratio: 168/96;
+}
+.bcf-12-bong-1 {
+  width: 66px;
+  height: 277px;
+  position: absolute;
+  left: 425px;
+  top: 0px;
+  object-fit: cover;
+  aspect-ratio: 66/277;
+}
+.bcf-12-bong-2 {
+  width: 66px;
+  height: 277px;
+  position: absolute;
+  left: 425px;
+  top: 0.5px;
+  object-fit: cover;
+  aspect-ratio: 66/277;
+}
+.bcf-12-bong-3 {
+  width: 66px;
+  height: 277px;
+  position: absolute;
+  left: 425px;
+  top: 0px;
+  object-fit: cover;
+  aspect-ratio: 66/277;
+}
+.bcf-12-door-open-1 {
+  width: 36px;
+  height: 198px;
+  position: absolute;
+  left: 275px;
+  top: 116px;
+  object-fit: cover;
+  aspect-ratio: 36/198;
+}
+.bcf-12-door-close-1 {
+  width: 36px;
+  height: 198px;
+  position: absolute;
+  left: 275px;
+  top: 275px;
+  object-fit: cover;
+  aspect-ratio: 36/198;
+}
+.bcf-12-bong-4 {
+  width: 21px;
+  height: 180px;
+  position: absolute;
+  left: 291px;
+  top: 301px;
+  object-fit: cover;
+  aspect-ratio: 21/180;
+}
+.bcf-12-bong-5 {
+  width: 22px;
+  height: 180px;
+  position: absolute;
+  left: 290px;
+  top: 301px;
+  object-fit: cover;
+  aspect-ratio: 22/180;
+}
+.bcf-12-bong-6 {
+  width: 22px;
+  height: 180px;
+  position: absolute;
+  left: 290px;
+  top: 301px;
+  object-fit: cover;
+  aspect-ratio: 22/180;
+}
+.bcf-12-door-close-2 {
+  width: 28px;
+  height: 179px;
+  position: absolute;
+  left: 597px;
+  top: 300px;
+  object-fit: cover;
+  aspect-ratio: 28/179;
+}
+.bcf-12-door-open-2 {
+  width: 28px;
+  height: 179px;
+  position: absolute;
+  left: 597px;
+  top: 145px;
+  object-fit: cover;
+  aspect-ratio: 28/179;
+}
+.bcf-12-door-close-3 {
+  width: 28px;
+  height: 179px;
+  position: absolute;
+  left: 638px;
+  top: 300px;
+  object-fit: cover;
+  aspect-ratio: 28/179;
+}
+.bcf-12-door-open-3 {
+  width: 28px;
+  height: 179px;
+  position: absolute;
+  left: 638px;
+  top: 145px;
+  object-fit: cover;
+  aspect-ratio: 28/179;
+}
+.bcf-12-air-cycle {
+  width: 233px;
+  height: 142px;
+  position: absolute;
+  left: 344px;
+  top: 588px;
+  object-fit: cover;
+  aspect-ratio: 233/142;
+}
+.bcf-12-sensor-off-1 {
+  width: 38px;
+  height: 49px;
+  position: absolute;
+  left: 873px;
+  top: 161px;
+  transform-origin: 0 0;
+  transform: rotate(-90deg) scale(1, 1);
+  object-fit: cover;
+  aspect-ratio: 38/49;
+}
+.bcf-12-sensor-on-1 {
+  width: 38px;
+  height: 49px;
+  position: absolute;
+  left: 873px;
+  top: 162px;
+  transform-origin: 0 0;
+  transform: rotate(-90deg) scale(1, 1);
+  object-fit: cover;
+  aspect-ratio: 38/49;
+}
+.bcf-12-sensor-off-2 {
+  width: 38px;
+  height: 49px;
+  position: absolute;
+  left: 663px;
+  top: 466px;
+  object-fit: cover;
+  aspect-ratio: 38/49;
+}
+.bcf-12-sensor-on-2 {
+  width: 38px;
+  height: 49px;
+  position: absolute;
+  left: 663px;
+  top: 466px;
+  object-fit: cover;
+  aspect-ratio: 38/49;
+}
+.bcf-12-cycle-1 {
+  width: 272px;
+  height: 30px;
+  position: absolute;
+  left: 669px;
+  top: 432px;
+  object-fit: cover;
+  aspect-ratio: 272/30;
+}
+.bcf-12-rotate-1 {
+  width: 33px;
+  height: 34px;
+  position: absolute;
+  left: 827px;
+  top: 506px;
+  object-fit: cover;
+  aspect-ratio: 33/34;
+}
+.bcf-12-jog-stop-box {
+  background: #9ccc8d;
+  border-radius: 5px;
+  border-style: solid;
+  border-color: #81a769;
+  border-width: 1px;
+  width: 84px;
+  height: 16px;
+  position: absolute;
+  left: 802px;
+  top: 556px;
+}
+.bcf-12-jog-manual-box {
+  background: #9ccc8d;
+  border-radius: 5px;
+  border-style: solid;
+  border-color: #81a769;
+  border-width: 1px;
+  width: 84px;
+  height: 16px;
+  position: absolute;
+  left: 802px;
+  top: 556px;
+}
+.bcf-12-jog-on-box {
+  background: #9ccc8d;
+  border-radius: 5px;
+  border-style: solid;
+  border-color: #81a769;
+  border-width: 1px;
+  width: 84px;
+  height: 16px;
+  position: absolute;
+  left: 802px;
+  top: 556px;
+}
+.bcf-12-1-sok-box {
+  background: #9ccc8d;
+  border-radius: 5px;
+  border-style: solid;
+  border-color: #81a769;
+  border-width: 1px;
+  width: 50px;
+  height: 19px;
+  position: absolute;
+  left: 435px;
+  top: 721px;
+}
+.bcf-12-2-sok-box {
+  background: #9ccc8d;
+  border-radius: 5px;
+  border-style: solid;
+  border-color: #81a769;
+  border-width: 1px;
+  width: 50px;
+  height: 19px;
+  position: absolute;
+  left: 435px;
+  top: 721px;
+}
+.bcf-12-3-sok-box {
+  background: #9ccc8d;
+  border-radius: 5px;
+  border-style: solid;
+  border-color: #81a769;
+  border-width: 1px;
+  width: 50px;
+  height: 19px;
+  position: absolute;
+  left: 435px;
+  top: 721px;
+}
+.bcf-12-motor-off-1 {
+  width: 106px;
+  height: 58px;
+  position: absolute;
+  left: 257px;
+  top: 105px;
+  transform-origin: 0 0;
+  transform: rotate(0deg) scale(-1, 1);
+  object-fit: cover;
+  aspect-ratio: 106/58;
+}
+.bcf-12-motor-green-1 {
+  width: 106px;
+  height: 58px;
+  position: absolute;
+  left: 257px;
+  top: 105px;
+  transform-origin: 0 0;
+  transform: rotate(0deg) scale(-1, 1);
+  object-fit: cover;
+  aspect-ratio: 106/58;
+}
+.bcf-12-motor-yellow-1 {
+  width: 106px;
+  height: 58px;
+  position: absolute;
+  left: 257px;
+  top: 105px;
+  transform-origin: 0 0;
+  transform: rotate(0deg) scale(-1, 1);
+  object-fit: cover;
+  aspect-ratio: 106/58;
+}
+.bcf-12-motor-off-2 {
+  width: 106px;
+  height: 58px;
+  position: absolute;
+  left: 934px;
+  top: 605px;
+  transform-origin: 0 0;
+  transform: rotate(0deg) scale(-1, 1);
+  object-fit: cover;
+  aspect-ratio: 106/58;
+}
+.bcf-12-motor-green-2 {
+  width: 106px;
+  height: 58px;
+  position: absolute;
+  left: 934px;
+  top: 605px;
+  transform-origin: 0 0;
+  transform: rotate(0deg) scale(-1, 1);
+  object-fit: cover;
+  aspect-ratio: 106/58;
+}
+.bcf-12-motor-yellow-2 {
+  width: 106px;
+  height: 58px;
+  position: absolute;
+  left: 934px;
+  top: 605px;
+  transform-origin: 0 0;
+  transform: rotate(0deg) scale(-1, 1);
+  object-fit: cover;
+  aspect-ratio: 106/58;
+}
+.bcf-12-alarm-1 {
+  width: 38px;
+  height: 39px;
+  position: absolute;
+  left: 188px;
+  top: 106px;
+  object-fit: cover;
+  aspect-ratio: 38/39;
+}
+.bcf-12-alarm-2 {
+  width: 38px;
+  height: 39px;
+  position: absolute;
+  left: 318px;
+  top: 424px;
+  object-fit: cover;
+  aspect-ratio: 38/39;
+}
+.bcf-12-alarm-3 {
+  width: 38px;
+  height: 39px;
+  position: absolute;
+  left: 362px;
+  top: 710px;
+  object-fit: cover;
+  aspect-ratio: 38/39;
+}
+.bcf-12-alarm-4 {
+  width: 38px;
+  height: 39px;
+  position: absolute;
+  left: 522px;
+  top: 710px;
+  object-fit: cover;
+  aspect-ratio: 38/39;
+}
+.bcf-12-alarm-5 {
+  width: 38px;
+  height: 39px;
+  position: absolute;
+  left: 614px;
+  top: 305px;
+  object-fit: cover;
+  aspect-ratio: 38/39;
+}
+.bcf-12-alarm-6 {
+  width: 38px;
+  height: 39px;
+  position: absolute;
+  left: 816px;
+  top: 128px;
+  object-fit: cover;
+  aspect-ratio: 38/39;
+}
+.bcf-12-alarm-7 {
+  width: 38px;
+  height: 39px;
+  position: absolute;
+  left: 933px;
+  top: 370px;
+  object-fit: cover;
+  aspect-ratio: 38/39;
+}
+.bcf-12-alarm-8 {
+  width: 38px;
+  height: 39px;
+  position: absolute;
+  left: 825px;
+  top: 460px;
+  object-fit: cover;
+  aspect-ratio: 38/39;
+}
+.bcf-12-alarm-9 {
+  width: 38px;
+  height: 39px;
+  position: absolute;
+  left: 863px;
+  top: 609px;
+  object-fit: cover;
+  aspect-ratio: 38/39;
+}
+.bcf-12-sensor-off-22 {
+  width: 44px;
+  height: 56px;
+  position: absolute;
+  left: 313px;
+  top: 720px;
+  transform-origin: 0 0;
+  transform: rotate(90deg) scale(1, -1);
+  object-fit: cover;
+  aspect-ratio: 44/56;
+}
+.bcf-12-sensor-on-22 {
+  width: 44px;
+  height: 56px;
+  position: absolute;
+  left: 313px;
+  top: 720px;
+  transform-origin: 0 0;
+  transform: rotate(90deg) scale(1, -1);
+  object-fit: cover;
+  aspect-ratio: 44/56;
+}

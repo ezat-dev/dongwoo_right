@@ -62,8 +62,16 @@ html, body { height: 100%; font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
   display: flex; align-items: center; justify-content: center;
   padding: 12px 14px; border-bottom: 1px solid var(--border);
   min-height: 62px; flex-shrink: 0; overflow: hidden;
+  cursor: pointer;
+  transition: background .2s, box-shadow .2s;
+  border-radius: 0;
 }
-.sb-logo img { height: 34px; max-width: 180px; object-fit: contain; transition: max-width .22s; }
+.sb-logo:hover {
+  background: rgba(37,99,235,.07);
+  box-shadow: inset 0 -2px 0 var(--primary);
+}
+.sb-logo:hover img { filter: brightness(1.08) drop-shadow(0 1px 4px rgba(37,99,235,.25)); }
+.sb-logo img { height: 34px; max-width: 180px; object-fit: contain; transition: max-width .22s, filter .2s; }
 .sidebar.collapsed .sb-logo img { max-width: 32px; }
 
 /* 스크롤 영역 */
@@ -215,41 +223,41 @@ html, body { height: 100%; font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
   <!-- ══ 사이드바 ══ -->
   <nav class="sidebar" id="sidebar">
 
-    <div class="sb-logo">
+    <div class="sb-logo" onclick="go('${pageContext.request.contextPath}/main_1/equip/monitor','통신 모니터링',null)">
       <img src="${pageContext.request.contextPath}/img/동우 로고 디자인.png" alt="로고">
     </div>
 
     <div class="sb-body">
 
-      <!-- 제품관리 -->
+      <%-- 제품관리
       <div class="sb-group-header closed empty" onclick="toggleGroup(this)">
         <span class="sb-group-cat-icon">📦</span>
         <span class="sb-group-name">제품관리</span>
         <span class="sb-group-chevron">▼</span>
       </div>
       <div class="sb-group-body closed">
-        <a class="sb-item coming-soon" href="#"><div class="sb-icon">·</div><span class="sb-label">준비중</span></a>
       </div>
+      --%>
 
-      <!-- 생산관리 -->
+      <%-- 생산관리
       <div class="sb-group-header closed empty" onclick="toggleGroup(this)">
         <span class="sb-group-cat-icon">🏭</span>
         <span class="sb-group-name">생산관리</span>
         <span class="sb-group-chevron">▼</span>
       </div>
       <div class="sb-group-body closed">
-        <a class="sb-item coming-soon" href="#"><div class="sb-icon">·</div><span class="sb-label">준비중</span></a>
       </div>
+      --%>
 
-      <!-- 생산공정관리 -->
+      <%-- 생산공정관리
       <div class="sb-group-header closed empty" onclick="toggleGroup(this)">
         <span class="sb-group-cat-icon">⚙️</span>
         <span class="sb-group-name">생산공정관리</span>
         <span class="sb-group-chevron">▼</span>
       </div>
       <div class="sb-group-body closed">
-        <a class="sb-item coming-soon" href="#"><div class="sb-icon">·</div><span class="sb-label">준비중</span></a>
       </div>
+      --%>
 
       <!-- 모니터링 -->
       <div class="sb-group-header open" onclick="toggleGroup(this)">
@@ -324,7 +332,7 @@ html, body { height: 100%; font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
         <span class="sb-group-chevron">▼</span>
       </div>
       <div class="sb-group-body closed">
-        <a class="sb-item coming-soon" href="#"><div class="sb-icon">·</div><span class="sb-label">준비중</span></a>
+        <%-- <a class="sb-item coming-soon" href="#"><div class="sb-icon">·</div><span class="sb-label">준비중</span></a> --%>
       </div>
 
       <!-- 기준정보 -->
@@ -345,15 +353,15 @@ html, body { height: 100%; font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
         </a>
       </div>
 
-      <!-- 작업지시 -->
+      <%-- 작업지시
       <div class="sb-group-header closed empty" onclick="toggleGroup(this)">
         <span class="sb-group-cat-icon">📝</span>
         <span class="sb-group-name">작업지시</span>
         <span class="sb-group-chevron">▼</span>
       </div>
       <div class="sb-group-body closed">
-        <a class="sb-item coming-soon" href="#"><div class="sb-icon">·</div><span class="sb-label">준비중</span></a>
       </div>
+      --%>
 
     </div>
 

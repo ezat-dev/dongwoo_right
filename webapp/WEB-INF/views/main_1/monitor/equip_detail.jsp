@@ -51,9 +51,13 @@
 </div>
 <script>
 var cur = location.pathname.split('/').pop();
-document.querySelectorAll('.bcf-tab').forEach(function(a){
-  if(a.getAttribute('href').split('/').pop() === cur) a.classList.add('active');
-});
+if(cur === 'detail') {
+  location.replace('${pageContext.request.contextPath}/main_1/BCF/BCF_1');
+} else {
+  document.querySelectorAll('.bcf-tab').forEach(function(a){
+    if(a.getAttribute('href').split('/').pop() === cur) a.classList.add('active');
+  });
+}
 </script>
 </body>
 </html>
