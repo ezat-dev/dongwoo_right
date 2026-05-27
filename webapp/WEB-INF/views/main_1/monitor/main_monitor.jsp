@@ -461,7 +461,7 @@
           <div class="tm-ch-name">CP1</div>
         </div>
         <div class="tm-row tm-cur">
-          <div class="tm-cell bcf1_s_40046">DT</div><div class="tm-cell bcf1_s_40047">DT</div><div class="tm-cell bcf1_s_40048">DT</div>
+          <div class="tm-cell bcf1_s_40046">DT</div><div class="tm-cell bcf1_s_40047">DT</div><div class="tm-cell bcf1_s_40052">DT</div>
         </div>
         <div class="tm-row tm-set">
           <div class="tm-cell bcf1_s_40069">DT</div><div class="tm-cell bcf1_s_40070">DT</div><div class="tm-cell bcf1_s_40071">DT</div>
@@ -573,13 +573,22 @@
   if (!allTags.length) return;
 
   /* ── 2. PLC 값을 DOM에 반영 ── */
+  /* CP 태그: 40052·40071 (BCF1~10), D1081·D1087 (BCF12) */
+  var CP_TAG = /_(40052|40071|D1081|D1087)$/;
+
   function applyData(data) {
-    // 온도: 텍스트 업데이트
+    // 온도 ×10 / CP ×0.01
     Object.keys(wordElMap).forEach(function (tag) {
       if (data[tag] == null) return;
       var raw  = Number(data[tag]);
-      // PLC 값이 0.1°C 단위인 경우 /10, 아닌 경우 그대로 표시
-      var text = isNaN(raw) ? data[tag] : (raw / 10).toFixed(1);
+      var text;
+      if (isNaN(raw)) {
+        text = data[tag];
+      } else if (CP_TAG.test(tag)) {
+        text = (raw * 0.001).toFixed(3);  // CP: ×0.001
+      } else {
+        text = raw.toFixed(0);            // 온도: 그대로
+      }
       wordElMap[tag].forEach(function (el) { el.textContent = text; });
     });
 

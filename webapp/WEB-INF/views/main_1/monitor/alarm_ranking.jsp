@@ -159,6 +159,22 @@ function countBy(data, key){
   return Object.entries(map).sort(function(a,b){ return b[1]-a[1]; });
 }
 
+/* dongwoo_04 → BCF4 */
+function plcLabel(id){
+  var m = (id||'').match(/(\d+)$/);
+  return m ? 'BCF' + parseInt(m[1]) : (id||'?');
+}
+
+/* 호기_경보내용 복합키 집계 */
+function countByItem(data){
+  var map = {};
+  data.forEach(function(r){
+    var k = plcLabel(r.plcId) + '_' + (r.alarmMsg || 'unknown');
+    map[k] = (map[k]||0) + 1;
+  });
+  return Object.entries(map).sort(function(a,b){ return b[1]-a[1]; });
+}
+
 /* ── 데이터 로드 ── */
 function loadData(){
   document.getElementById('lastUpdate').textContent = '로딩 중…';
@@ -197,7 +213,7 @@ function renderAll(){
 function renderKpi(data){
   document.getElementById('kpiTotal').textContent = data.length;
 
-  var byItem = countBy(data, 'tagName');
+  var byItem = countByItem(data);
   var topItemEl = document.getElementById('kpiTopItem');
   if(byItem.length > 0){
     topItemEl.innerHTML = '<div class="kpi-mini-val" style="color:var(--red);font-size:18px">'+esc(byItem[0][0])+'</div>'
@@ -218,7 +234,7 @@ function renderKpi(data){
 
 /* ── 랭킹 리스트 ── */
 function renderRankLists(data){
-  var byItem = countBy(data, 'tagName').slice(0,10);
+  var byItem = countByItem(data).slice(0,10);
   var byPlc  = countBy(data, 'plcId').slice(0,10);
   document.getElementById('itemRanking').innerHTML = buildRankHtml(byItem);
   document.getElementById('plcRanking').innerHTML  = buildRankHtml(byPlc);
@@ -248,7 +264,7 @@ function destroyChart(key){
 }
 
 function renderCharts(data){
-  var byItem = countBy(data, 'tagName').slice(0,10);
+  var byItem = countByItem(data).slice(0,10);
   var byPlc  = countBy(data, 'plcId').slice(0,10);
 
   /* 항목 가로 바 */

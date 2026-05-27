@@ -3,6 +3,7 @@
 <%@ include file="../../common_style.jsp" %>
 <% String ctx = request.getContextPath(); %>
 <link rel="stylesheet" href="<%= ctx %>/css/bcf1/style.css">
+<link rel="stylesheet" href="<%= ctx %>/css/tabulator/tabulator.css">
 <style>
 /* ── 불 이미지 위치 ─────────────────────── */
 .bcf-1-fire-1 { left: 155.36px; top: 86.95px; }
@@ -188,16 +189,23 @@
 }
 .alarm-body {
   flex: 1;
-  background: #b8b8b8;
-  border-top: 1px solid #888;
+  min-height: 0;
+  border-top: 1px solid #c0a0e5;
+  overflow: hidden;
   position: relative;
 }
-.alarm-body::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 2px;
-  background: #2255cc;
+.alarm-body .tabulator,
+.alarm-body .tabulator-tableHolder { background: #f7f0ff; border: none; }
+.alarm-body .tabulator-row,
+.alarm-body .tabulator-row.tabulator-row-even { background: #f7f0ff; border-bottom: 1px solid #e5d5fc; min-height: 52px; }
+.alarm-body .tabulator-row:hover { background: #ede0ff !important; }
+.alarm-body .tabulator-cell { border-right: none; padding: 5px 6px; color: #220050; font-family: '맑은 고딕','Malgun Gothic',sans-serif; font-size: 15px; font-weight: 700; white-space: normal; word-break: break-word; line-height: 1.35; align-items: flex-start; overflow: hidden; }
+.alarm-body .tabulator-placeholder span { background: #f7f0ff; color: #4400aa; font-family: '맑은 고딕','Malgun Gothic',sans-serif; font-size: 13px; }
+.alarm-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #7722dd; vertical-align: middle; animation: alarm-pulse 1.2s ease-in-out infinite; }
+.alarm-time-val { color: #4400aa; font-size: 14px; font-weight: 700; letter-spacing: .3px; font-variant-numeric: tabular-nums; }
+@keyframes alarm-pulse {
+  0%, 100% { opacity: 1;   box-shadow: 0 0 5px #7722dd; }
+  50%       { opacity: 0.25; box-shadow: none; }
 }
 
 /* ══════════════════════════════
@@ -689,6 +697,7 @@
 <style>
 @keyframes bcf4-spin { to { transform: rotate(360deg); } }
 </style>
+<script src="<%= ctx %>/js/tabulator/tabulator.js"></script>
 <script>
 /* ── BCF 탭 활성화 ── */
 (function() {
@@ -759,12 +768,20 @@
   }
 
   /* 데이터 반영 */
+  var CP_TAG = /_(40052|40071)$/;
   function applyData(data) {
-    /* 아날로그: 텍스트 업데이트 (PLC raw = 0.1 단위 → /10) */
+    /* 온도: raw 그대로, CP: ×0.001 (소수 3자리) */
     Object.keys(wordElMap).forEach(function(tag) {
       if (data[tag] == null) return;
       var raw = Number(data[tag]);
-      var text = isNaN(raw) ? data[tag] : (raw / 10).toFixed(1);
+      var text;
+      if (isNaN(raw)) {
+        text = data[tag];
+      } else if (CP_TAG.test(tag)) {
+        text = (raw * 0.001).toFixed(3);
+      } else {
+        text = raw.toFixed(0);
+      }
       wordElMap[tag].forEach(function(el) { el.textContent = text; });
     });
 
@@ -807,34 +824,43 @@
     .finally(function() { busy = false; });
   }
 
-  /* 현재 경보 (1호기 = plcId: 'ls4') */
+  /* 현재 경보 Tabulator (1호기 = plcId: 'dongwoo_04') */
+  var alarmTable = new Tabulator('.alarm-body', {
+    height:        '100%',
+    layout:        'fitColumns',
+    headerVisible: false,
+    placeholder:   '현재 경보 없음',
+    rowHeight:     52,
+    data:          [],
+    columns: [
+      {
+        title: '', field: 'dot', width: 22, resizable: false, headerSort: false,
+        formatter: function() { return '<span class="alarm-dot"></span>'; }
+      },
+      {
+        title: '시간', field: 'occurTime', width: 152, resizable: false, headerSort: false,
+        formatter: function(cell) {
+          var v = cell.getValue() || '';
+          return '<span class="alarm-time-val">' + (v.length >= 16 ? v.substring(0, 16) : v) + '</span>';
+        }
+      },
+      {
+        title: '경보 내용', field: 'alarmMsg', headerSort: false,
+        formatter: function(cell) { return cell.getValue() || '알람'; }
+      }
+    ]
+  });
+
   function fetchAlarms() {
     fetch(ctx + '/alarm/active/list?limit=200')
       .then(function(r) { return r.ok ? r.json() : []; })
       .then(function(list) {
         var items = (Array.isArray(list) ? list : []).filter(function(a) {
-          return a.plcId === 'ls4';
+          return a.plcId === 'dongwoo_04';
         });
-        renderAlarms(items);
+        alarmTable.setData(items);
       })
       .catch(function() {});
-  }
-
-  function renderAlarms(alarms) {
-    var body = document.querySelector('.alarm-body');
-    if (!body) return;
-    body.innerHTML = '';
-    if (!alarms.length) {
-      body.innerHTML = '<div style="padding:8px 6px;font-size:11px;color:#555;text-align:center;">현재 경보 없음</div>';
-      return;
-    }
-    alarms.forEach(function(a) {
-      var row = document.createElement('div');
-      row.style.cssText = 'padding:3px 6px 3px 10px;font-size:11px;font-weight:700;'
-        + 'border-bottom:1px solid #a00;color:#fff;background:#cc1111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;';
-      row.textContent = a.alarmMsg || a.address || '알람';
-      body.appendChild(row);
-    });
   }
 
   /* 시작 */

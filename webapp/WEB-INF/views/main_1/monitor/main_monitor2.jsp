@@ -442,52 +442,52 @@
       <!-- BCF-8 그룹: 파랑 -->
       <div class="tm-item tm-blue">
         <div class="tm-item-name">침탄8</div>
-        <div class="tm-cell tm-cur">DT</div>
-        <div class="tm-cell tm-set">DT</div>
+        <div class="tm-cell tm-cur bcf8_s_40046">DT</div>
+        <div class="tm-cell tm-set bcf8_s_40069">DT</div>
       </div>
       <div class="tm-item tm-blue">
         <div class="tm-item-name">유조8</div>
-        <div class="tm-cell tm-cur">DT</div>
-        <div class="tm-cell tm-set">DT</div>
+        <div class="tm-cell tm-cur bcf8_s_40047">DT</div>
+        <div class="tm-cell tm-set bcf8_s_40070">DT</div>
       </div>
       <div class="tm-item tm-blue">
         <div class="tm-item-name">CP8</div>
-        <div class="tm-cell tm-cur">0.000</div>
-        <div class="tm-cell tm-set">0.000</div>
+        <div class="tm-cell tm-cur bcf8_s_40052">0.000</div>
+        <div class="tm-cell tm-set bcf8_s_40071">0.000</div>
       </div>
 
       <!-- BCF-9 그룹: 초록 -->
       <div class="tm-item tm-green">
         <div class="tm-item-name">침탄9</div>
-        <div class="tm-cell tm-cur">DT</div>
-        <div class="tm-cell tm-set">DT</div>
+        <div class="tm-cell tm-cur bcf9_s_40046">DT</div>
+        <div class="tm-cell tm-set bcf9_s_40069">DT</div>
       </div>
       <div class="tm-item tm-green">
         <div class="tm-item-name">유조9</div>
-        <div class="tm-cell tm-cur">DT</div>
-        <div class="tm-cell tm-set">DT</div>
+        <div class="tm-cell tm-cur bcf9_s_40047">DT</div>
+        <div class="tm-cell tm-set bcf9_s_40070">DT</div>
       </div>
       <div class="tm-item tm-green">
         <div class="tm-item-name">CP9</div>
-        <div class="tm-cell tm-cur">0.000</div>
-        <div class="tm-cell tm-set">0.000</div>
+        <div class="tm-cell tm-cur bcf9_s_40052">0.000</div>
+        <div class="tm-cell tm-set bcf9_s_40071">0.000</div>
       </div>
 
       <!-- BCF-7 그룹: 파랑 -->
       <div class="tm-item tm-blue">
         <div class="tm-item-name">침탄7</div>
-        <div class="tm-cell tm-cur">DT</div>
-        <div class="tm-cell tm-set">DT</div>
+        <div class="tm-cell tm-cur bcf7_s_40046">DT</div>
+        <div class="tm-cell tm-set bcf7_s_40069">DT</div>
       </div>
       <div class="tm-item tm-blue">
         <div class="tm-item-name">유조7</div>
-        <div class="tm-cell tm-cur">DT</div>
-        <div class="tm-cell tm-set">DT</div>
+        <div class="tm-cell tm-cur bcf7_s_40047">DT</div>
+        <div class="tm-cell tm-set bcf7_s_40070">DT</div>
       </div>
       <div class="tm-item tm-blue">
         <div class="tm-item-name">CP7</div>
-        <div class="tm-cell tm-cur">0.000</div>
-        <div class="tm-cell tm-set">0.000</div>
+        <div class="tm-cell tm-cur bcf7_s_40052">0.000</div>
+        <div class="tm-cell tm-set bcf7_s_40071">0.000</div>
       </div>
 
       <!-- BCF-6 그룹: 초록 -->
@@ -540,5 +540,76 @@
     </div><!-- /tm-grid -->
   </div><!-- /tm-panel -->
 
+
+<script>
+(function () {
+  'use strict';
+  const ctx = '<%= ctx %>';
+  const INTERVAL = 1500;
+
+  const wordElMap = {};
+  const bitElMap  = {};
+
+  document.querySelectorAll('[class]').forEach(function (el) {
+    el.className.split(/\s+/).forEach(function (cls) {
+      if (/^bcf\d+_s_/.test(cls)) {
+        if (!wordElMap[cls]) wordElMap[cls] = [];
+        wordElMap[cls].push(el);
+      } else if (/^bcf\d+_\d+$/.test(cls)) {
+        if (!bitElMap[cls]) bitElMap[cls] = [];
+        bitElMap[cls].push(el);
+      }
+    });
+  });
+
+  const allTags = Object.keys(wordElMap).concat(Object.keys(bitElMap));
+  if (!allTags.length) return;
+
+  var CP_TAG = /_(40052|40071|D1081|D1087)$/;
+
+  function applyData(data) {
+    Object.keys(wordElMap).forEach(function (tag) {
+      if (data[tag] == null) return;
+      var raw  = Number(data[tag]);
+      var text;
+      if (isNaN(raw)) {
+        text = data[tag];
+      } else if (CP_TAG.test(tag)) {
+        text = (raw * 0.001).toFixed(3);  // CP: ×0.001
+      } else {
+        text = raw.toFixed(0);            // 온도: 그대로
+      }
+      wordElMap[tag].forEach(function (el) { el.textContent = text; });
+    });
+
+    Object.keys(bitElMap).forEach(function (tag) {
+      if (data[tag] == null) return;
+      var show = (data[tag] === 1 || data[tag] === true);
+      bitElMap[tag].forEach(function (el) {
+        el.style.visibility = show ? 'visible' : 'hidden';
+      });
+    });
+  }
+
+  var busy = false;
+
+  function fetchData() {
+    if (busy) return;
+    busy = true;
+    fetch(ctx + '/monitor/main-data', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(allTags)
+    })
+    .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+    .then(function (data) { applyData(data); })
+    .catch(function (err) { console.warn('[monitor2] PLC fetch 실패:', err); })
+    .finally(function () { busy = false; });
+  }
+
+  fetchData();
+  setInterval(fetchData, INTERVAL);
+})();
+</script>
 </body>
 </html>

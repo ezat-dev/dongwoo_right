@@ -348,9 +348,11 @@ html, body { height: 100%; font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
         <a class="sb-item" href="#" onclick="go('${pageContext.request.contextPath}/main_1/user/permission','권한 부여',this);return false;">
           <div class="sb-icon">🔐</div><span class="sb-label">권한 부여</span>
         </a>
+        <%-- 제품 등록
         <a class="sb-item" href="#" onclick="go('${pageContext.request.contextPath}/main_1/management/productInsert','제품 등록',this);return false;">
           <div class="sb-icon">🔐</div><span class="sb-label">제품 등록</span>
         </a>
+        --%>
       </div>
 
       <%-- 작업지시
