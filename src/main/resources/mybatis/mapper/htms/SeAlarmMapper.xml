@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SeAlarmMapper">
+
+    <resultMap id="seAlarmMap" type="com.sample_pro.domain.SeAlarm">
+        <id     column="Cookie"     property="cookie"/>
+        <result column="Source"     property="source"/>
+        <result column="AreaMask"   property="areaMask"/>
+        <result column="DescString" property="descString"/>
+        <result column="PV"         property="pv"/>
+        <result column="TripValue"  property="tripValue"/>
+        <result column="TimeACT"    property="timeAct"/>
+        <result column="TimeRTN"    property="timeRtn"/>
+        <result column="TimeACK"    property="timeAck"/>
+    </resultMap>
+
+    <select id="selectSeAlarmList" parameterType="map" resultMap="seAlarmMap">
+        SELECT Cookie, Source, AreaMask, DescString, PV, TripValue,
+               DATE_FORMAT(TimeACT, '%Y-%m-%d %H:%i:%s') AS TimeACT,
+               DATE_FORMAT(TimeRTN, '%Y-%m-%d %H:%i:%s') AS TimeRTN,
+               DATE_FORMAT(TimeACK, '%Y-%m-%d %H:%i:%s') AS TimeACK
+        FROM se
+        WHERE TimeACT BETWEEN #{from} AND #{to}
+        <if test="areaMask != null and areaMask > 0">
+            AND AreaMask = #{areaMask}
+        </if>
+        ORDER BY TimeACT DESC
+        LIMIT 2000
+    </select>
+
+    <!-- bcfN_ 트렌드 데이터 (분 단위 GROUP BY - 초 오프셋 무관) -->
+    <select id="selectBcfTrendData" parameterType="map" resultType="map">
+        SELECT DATE_FORMAT(MIN(DataDate), '%Y-%m-%d %H:%i:00') AS DataDate,
+               MIN(Data1)  AS Data1,  MIN(Data2)  AS Data2,  MIN(Data3)  AS Data3,
+               MIN(Data4)  AS Data4,  MIN(Data5)  AS Data5,  MIN(Data6)  AS Data6,
+               MIN(Data7)  AS Data7,  MIN(Data8)  AS Data8,  MIN(Data9)  AS Data9,
+               MIN(Data10) AS Data10, MIN(Data11) AS Data11, MIN(Data12) AS Data12,
+               MIN(Data13) AS Data13, MIN(Data14) AS Data14, MIN(Data15) AS Data15,
+               MIN(Data16) AS Data16
+        FROM ${tableName}
+        WHERE DataDate BETWEEN #{from} AND #{to}
+        GROUP BY DATE_FORMAT(DataDate, '%Y-%m-%d %H:%i')
+        ORDER BY DataDate ASC
+    </select>
+
+</mapper>

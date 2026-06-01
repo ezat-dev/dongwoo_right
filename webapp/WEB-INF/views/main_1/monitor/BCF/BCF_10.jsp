@@ -3,6 +3,7 @@
 <%@ include file="../../common_style.jsp" %>
 <% String ctx = request.getContextPath(); %>
 <link rel="stylesheet" href="<%= ctx %>/css/bcf1/style.css">
+<link rel="stylesheet" href="<%= ctx %>/css/tabulator/tabulator.css">
 <style>
 /* ── BCF 탭 네비 ─────────────────────────── */
 .bcf-nav {
@@ -235,8 +236,10 @@
   text-overflow: ellipsis;
   padding: 0 3px;
 }
-.auto-item.state-red   { background: #ff2222; color: #fff; border-color: #cc0000; }
-.auto-item.state-green { background: #85c25f; color: #fff; border-color: #5a9a30; }
+.auto-row               { flex: 1; display: flex; gap: 2px; }
+.auto-item.left.active  { background: #ff0000; color: #fff; border-color: #cc0000; }
+.auto-item.right.active { background: #99cc00; color: #000; border-color: #669900; }
+.auto-item:not(.active) { opacity: 0.4; }
 
 /* ══════════════════════════════
    존별 구간 데이터 테이블
@@ -306,6 +309,11 @@
 .zbox.yellow { background: #fffaaa; border-color: #c8c000; color: #5a5000; }
 .zbox.cyan   { background: #aaeeff; border-color: #40aacc; color: #003a5c; }
 .zbox.empty  { background: #f0f0f0; border-color: #ccc;    color: #aaa; }
+@keyframes blink { 50% { opacity: 0; } }
+.alarm-dot {
+  display: inline-block; width: 8px; height: 8px;
+  background: #ff2222; border-radius: 50%; animation: blink 1s infinite;
+}
 </style>
 
 <body>
@@ -453,51 +461,45 @@
             <div class="tp-title">온도 및 CP</div>
             <div class="tp-header">
 
-              <!-- 침탄실 DT ℃ -->
+              <!-- 침탄실 ℃ -->
               <div class="tp-group">
                 <span class="tp-lbl red">침탄실</span>
-                <span class="tp-unit">DT</span>
-                <div class="tp-val"></div>
+                <div class="tp-val bcf10_40046">--</div>
                 <span class="tp-unit">℃</span>
               </div>
 
-              <!-- 유조 DT ℃ -->
+              <!-- 유조 ℃ -->
               <div class="tp-group">
                 <span class="tp-lbl green">유조</span>
-                <span class="tp-unit">DT</span>
-                <div class="tp-val"></div>
+                <div class="tp-val bcf10_40047">--</div>
                 <span class="tp-unit">℃</span>
               </div>
 
-              <!-- CP DT % -->
+              <!-- CP % -->
               <div class="tp-group">
                 <span class="tp-lbl blue">CP</span>
-                <span class="tp-unit">DT</span>
-                <div class="tp-val blue"></div>
+                <div class="tp-val blue bcf10_40052">--</div>
                 <span class="tp-unit">%</span>
               </div>
 
-              <!-- 침탄SP DT ℃ -->
+              <!-- 침탄SP ℃ -->
               <div class="tp-group">
                 <span class="tp-lbl red">침탄SP</span>
-                <span class="tp-unit">DT</span>
-                <div class="tp-val"></div>
+                <div class="tp-val bcf10_40069">--</div>
                 <span class="tp-unit">℃</span>
               </div>
 
-              <!-- 유조SP DT ℃ -->
+              <!-- 유조SP ℃ -->
               <div class="tp-group">
                 <span class="tp-lbl green">유조SP</span>
-                <span class="tp-unit">DT</span>
-                <div class="tp-val"></div>
+                <div class="tp-val bcf10_40070">--</div>
                 <span class="tp-unit">℃</span>
               </div>
 
-              <!-- CP SP DT % -->
+              <!-- CPSP % -->
               <div class="tp-group">
                 <span class="tp-lbl blue">CP SP</span>
-                <span class="tp-unit">DT</span>
-                <div class="tp-val blue"></div>
+                <div class="tp-val blue bcf10_40071">--</div>
                 <span class="tp-unit">%</span>
               </div>
 
@@ -516,20 +518,62 @@
         <div class="bcf-auto-panel">
           <div class="auto-title">자동운전 준비조건</div>
           <div class="auto-list">
-            <div class="auto-item state-red">수동 SS</div>
-            <div class="auto-item">DC POWER OFF</div>
-            <div class="auto-item state-red">비상정지</div>
-            <div class="auto-item state-red">베기 파이로트 OFF</div>
-            <div class="auto-item state-red">입구문 커튼SW OFF</div>
-            <div class="auto-item state-red">팬 정지</div>
-            <div class="auto-item state-red">입구문 열림</div>
-            <div class="auto-item state-red">E/V 하강</div>
-            <div class="auto-item state-red">중간문 닫힘</div>
-            <div class="auto-item state-red">로내롤러 자동조깅</div>
-            <div class="auto-item state-red">장입 자동스탭 준비</div>
-            <div class="auto-item state-red">본체 자동스탭 준비</div>
-            <div class="auto-item state-red">추출 자동스탭 준비</div>
-            <div class="auto-item">— 예비 —</div>
+            <div class="auto-row">
+              <div class="auto-item left active" data-tag="bcf10_25" data-side="left">수동 SS</div>
+              <div class="auto-item right"        data-tag="bcf10_25" data-side="right">자동 SS</div>
+            </div>
+            <div class="auto-row">
+              <div class="auto-item left active" data-tag="bcf10_20" data-side="left">DC POWER OFF</div>
+              <div class="auto-item right"        data-tag="bcf10_20" data-side="right">DC POWER ON</div>
+            </div>
+            <div class="auto-row">
+              <div class="auto-item left active" data-tag="bcf10_19" data-side="left">비상정지</div>
+              <div class="auto-item right"        data-tag="bcf10_19" data-side="right">비상정지 해제</div>
+            </div>
+            <div class="auto-row">
+              <div class="auto-item left active" data-tag="bcf10_15" data-side="left">배기 파이로트 OFF</div>
+              <div class="auto-item right"        data-tag="bcf10_15" data-side="right">배기 파이로트 ON</div>
+            </div>
+            <div class="auto-row">
+              <div class="auto-item left active" data-tag="bcf10_18" data-side="left">입구문 파이로트 OFF</div>
+              <div class="auto-item right"        data-tag="bcf10_18" data-side="right">입구문 파이로트 ON</div>
+            </div>
+            <div class="auto-row">
+              <div class="auto-item left active" data-tag="bcf10_17" data-side="left">입구문 커튼SW OFF</div>
+              <div class="auto-item right"        data-tag="bcf10_17" data-side="right">입구문 커튼SW ON</div>
+            </div>
+            <div class="auto-row">
+              <div class="auto-item left active" data-tag="bcf10_22" data-side="left">팬 정지</div>
+              <div class="auto-item right"        data-tag="bcf10_22" data-side="right">팬 가동</div>
+            </div>
+            <div class="auto-row">
+              <div class="auto-item left active" data-tag="bcf10_1" data-side="left">입구문 열림</div>
+              <div class="auto-item right"        data-tag="bcf10_1" data-side="right">입구문 닫힘</div>
+            </div>
+            <div class="auto-row">
+              <div class="auto-item left active" data-tag="bcf10_4" data-side="left">E/V 하강</div>
+              <div class="auto-item right"        data-tag="bcf10_4" data-side="right">E/V 상승</div>
+            </div>
+            <div class="auto-row">
+              <div class="auto-item left active" data-tag="bcf10_7" data-side="left">중간문 열림</div>
+              <div class="auto-item right"        data-tag="bcf10_7" data-side="right">중간문 닫힘</div>
+            </div>
+            <div class="auto-row">
+              <div class="auto-item left active" data-tag="bcf10_10" data-side="left">로내롤러 자동조깅 OFF</div>
+              <div class="auto-item right"        data-tag="bcf10_10" data-side="right">로내롤러 자동조깅 ON</div>
+            </div>
+            <div class="auto-row">
+              <div class="auto-item left active" data-tag="bcf10_53" data-side="left">장입 자동스텝 미준비</div>
+              <div class="auto-item right"        data-tag="bcf10_53" data-side="right">장입 자동스텝 준비</div>
+            </div>
+            <div class="auto-row">
+              <div class="auto-item left active" data-tag="bcf10_54" data-side="left">본체 자동스텝 미준비</div>
+              <div class="auto-item right"        data-tag="bcf10_54" data-side="right">본체 자동스텝 준비</div>
+            </div>
+            <div class="auto-row">
+              <div class="auto-item left active" data-tag="bcf10_55" data-side="left">추출 자동스텝 미준비</div>
+              <div class="auto-item right"        data-tag="bcf10_55" data-side="right">추출 자동스텝 준비</div>
+            </div>
           </div>
         </div>
 
@@ -555,60 +599,60 @@
           <tbody>
             <tr>
               <td class="row-label">시간(min) PV</td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
+              <td colspan="2"><div class="zbox bcf10_40015">--</div></td>
+              <td colspan="2"><div class="zbox bcf10_40016">--</div></td>
+              <td colspan="2"><div class="zbox bcf10_40017">--</div></td>
+              <td colspan="2"><div class="zbox bcf10_40018">--</div></td>
+              <td colspan="2"><div class="zbox bcf10_40019">--</div></td>
+              <td colspan="2"><div class="zbox bcf10_40020">--</div></td>
+              <td colspan="2"><div class="zbox bcf10_40021">--</div></td>
+              <td colspan="2"><div class="zbox bcf10_40023">--</div></td>
+              <td colspan="2"><div class="zbox bcf10_40025">--</div></td>
             </tr>
             <tr>
               <td class="row-label">시간(min) SP</td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
+              <td colspan="2"><div class="zbox yellow bcf10_40028">--</div></td>
+              <td colspan="2"><div class="zbox yellow bcf10_40029">--</div></td>
+              <td colspan="2"><div class="zbox yellow bcf10_40030">--</div></td>
+              <td colspan="2"><div class="zbox yellow bcf10_40031">--</div></td>
+              <td colspan="2"><div class="zbox yellow bcf10_40032">--</div></td>
+              <td colspan="2"><div class="zbox yellow bcf10_40033">--</div></td>
+              <td colspan="2"><div class="zbox yellow bcf10_40034">--</div></td>
+              <td colspan="2"><div class="zbox yellow bcf10_40035">--</div></td>
+              <td colspan="2"><div class="zbox yellow bcf10_40036">--</div></td>
             </tr>
             <tr>
               <td class="row-label">온도(℃) PV</td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox empty"></div></td>
+              <td colspan="2"><div class="zbox bcf10_40046">--</div></td>
+              <td colspan="2"><div class="zbox bcf10_40046">--</div></td>
+              <td colspan="2"><div class="zbox bcf10_40046">--</div></td>
+              <td colspan="2"><div class="zbox bcf10_40046">--</div></td>
+              <td colspan="2"><div class="zbox bcf10_40046">--</div></td>
+              <td colspan="2"><div class="zbox bcf10_40046">--</div></td>
+              <td colspan="2"><div class="zbox bcf10_40046">--</div></td>
+              <td colspan="2"><div class="zbox bcf10_40047">--</div></td>
+              <td colspan="2"><div class="zbox bcf10_40047">--</div></td>
             </tr>
             <tr>
               <td class="row-label">온도(℃) SP</td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox empty"></div></td>
+              <td colspan="2"><div class="zbox yellow bcf10_40038">--</div></td>
+              <td colspan="2"><div class="zbox yellow bcf10_40039">--</div></td>
+              <td colspan="2"><div class="zbox yellow bcf10_40040">--</div></td>
+              <td colspan="2"><div class="zbox yellow bcf10_40041">--</div></td>
+              <td colspan="2"><div class="zbox yellow bcf10_40042">--</div></td>
+              <td colspan="2"><div class="zbox yellow bcf10_40043">--</div></td>
+              <td colspan="2"><div class="zbox yellow bcf10_40044">--</div></td>
+              <td colspan="2"><div class="zbox yellow bcf10_40070">--</div></td>
+              <td colspan="2"><div class="zbox yellow bcf10_40070">--</div></td>
             </tr>
             <tr>
               <td class="row-label">CP(%) PV</td>
               <td colspan="2"><div class="zbox empty"></div></td>
               <td colspan="2"><div class="zbox empty"></div></td>
-              <td colspan="2"><div class="zbox cyan"></div></td>
-              <td colspan="2"><div class="zbox cyan"></div></td>
-              <td colspan="2"><div class="zbox cyan"></div></td>
-              <td colspan="2"><div class="zbox cyan"></div></td>
+              <td colspan="2"><div class="zbox cyan bcf10_40052">--</div></td>
+              <td colspan="2"><div class="zbox cyan bcf10_40052">--</div></td>
+              <td colspan="2"><div class="zbox cyan bcf10_40052">--</div></td>
+              <td colspan="2"><div class="zbox cyan bcf10_40052">--</div></td>
               <td colspan="2"><div class="zbox empty"></div></td>
               <td colspan="2"><div class="zbox empty"></div></td>
               <td colspan="2"><div class="zbox empty"></div></td>
@@ -617,10 +661,10 @@
               <td class="row-label">CP(%) SP</td>
               <td colspan="2"><div class="zbox empty"></div></td>
               <td colspan="2"><div class="zbox empty"></div></td>
-              <td colspan="2"><div class="zbox cyan"></div></td>
-              <td colspan="2"><div class="zbox cyan"></div></td>
-              <td colspan="2"><div class="zbox cyan"></div></td>
-              <td colspan="2"><div class="zbox cyan"></div></td>
+              <td colspan="2"><div class="zbox cyan bcf10_40048">--</div></td>
+              <td colspan="2"><div class="zbox cyan bcf10_40049">--</div></td>
+              <td colspan="2"><div class="zbox cyan bcf10_40050">--</div></td>
+              <td colspan="2"><div class="zbox cyan bcf10_40051">--</div></td>
               <td colspan="2"><div class="zbox empty"></div></td>
               <td colspan="2"><div class="zbox empty"></div></td>
               <td colspan="2"><div class="zbox empty"></div></td>
@@ -634,11 +678,123 @@
   </div><!-- /group-1 -->
 </div><!-- /page-wrap -->
 
+<script src="<%= ctx %>/js/tabulator/tabulator.js"></script>
 <script>
-var cur = location.pathname.split('/').pop();
-document.querySelectorAll('.bcf-tab').forEach(function(a){
-  if(a.getAttribute('href').split('/').pop() === cur) a.classList.add('active');
-});
+(function() {
+  var cur = location.pathname.split('/').pop();
+  document.querySelectorAll('.bcf-tab').forEach(function(a) {
+    if (a.getAttribute('href').split('/').pop() === cur) a.classList.add('active');
+  });
+})();
+
+(function() {
+  'use strict';
+  var ctx = '<%= ctx %>';
+  var INTERVAL = 3000;
+  var bitElMap = {}, wordElMap = {};
+
+  document.querySelectorAll('[class]').forEach(function(el) {
+    el.className.split(/\s+/).forEach(function(cls) {
+      var mLow = cls.match(/^bcf10_(\d+)$/);
+      if (mLow) {
+        if (parseInt(mLow[1], 10) >= 40000) {
+          var apiTag = 'bcf10_s_' + mLow[1];
+          if (!wordElMap[apiTag]) wordElMap[apiTag] = [];
+          wordElMap[apiTag].push(el);
+        } else {
+          if (!bitElMap[cls]) bitElMap[cls] = [];
+          bitElMap[cls].push(el);
+        }
+      }
+    });
+  });
+
+  /* 자동운전 준비조건 left/right 쌍 */
+  var autoElMap = {};
+  document.querySelectorAll('[data-tag][data-side]').forEach(function(el) {
+    var tag  = el.getAttribute('data-tag');
+    var side = el.getAttribute('data-side');
+    if (!autoElMap[tag]) autoElMap[tag] = {};
+    autoElMap[tag][side] = el;
+  });
+
+  var allTags = Object.keys(wordElMap).concat(Object.keys(bitElMap));
+  Object.keys(autoElMap).forEach(function(tag) {
+    if (allTags.indexOf(tag) === -1) allTags.push(tag);
+  });
+
+  /* CP 값: ×0.001 스케일링 */
+  var CP_TAG = /_(40048|40049|40050|40051|40052|40071)$/;
+
+  function applyData(data) {
+    Object.keys(wordElMap).forEach(function(tag) {
+      if (data[tag] == null) return;
+      var raw = Number(data[tag]);
+      var text;
+      if (isNaN(raw)) {
+        text = data[tag];
+      } else if (CP_TAG.test(tag)) {
+        text = (raw * 0.001).toFixed(3);
+      } else {
+        text = raw.toFixed(0);
+      }
+      wordElMap[tag].forEach(function(el) { el.textContent = text; });
+    });
+    Object.keys(bitElMap).forEach(function(tag) {
+      if (data[tag] == null) return;
+      var isOn = (data[tag] === 1 || data[tag] === true);
+      bitElMap[tag].forEach(function(el) { el.style.visibility = isOn ? 'visible' : 'hidden'; });
+    });
+    Object.keys(autoElMap).forEach(function(tag) {
+      if (data[tag] == null) return;
+      var isOn = (data[tag] === 1 || data[tag] === true);
+      var pair = autoElMap[tag];
+      if (pair.left)  pair.left.classList.toggle('active',  !isOn);
+      if (pair.right) pair.right.classList.toggle('active',  isOn);
+    });
+  }
+
+  var busy = false;
+  function fetchData() {
+    if (busy || !allTags.length) return;
+    busy = true;
+    fetch(ctx + '/monitor/main-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(allTags)
+    })
+    .then(function(r) { return r.ok ? r.json() : Promise.reject(r.status); })
+    .then(function(data) { applyData(data); })
+    .catch(function(err) { console.warn('[BCF10] PLC fetch 실패:', err); })
+    .finally(function() { busy = false; });
+  }
+
+  var alarmTable = new Tabulator('.alarm-body', {
+    height: '100%', layout: 'fitColumns', headerVisible: false,
+    placeholder: '현재 경보 없음', rowHeight: 36, data: [],
+    columns: [
+      { title: '', field: 'dot', width: 22, resizable: false, headerSort: false,
+        formatter: function() { return '<span class="alarm-dot"></span>'; } },
+      { title: '경보', field: 'alarmMsg', headerSort: false,
+        formatter: function(cell) { return cell.getValue() || '알람'; } }
+    ]
+  });
+
+  function fetchAlarms() {
+    fetch(ctx + '/alarm/active/list?limit=200')
+      .then(function(r) { return r.ok ? r.json() : []; })
+      .then(function(list) {
+        alarmTable.setData((Array.isArray(list) ? list : []).filter(function(a) {
+          return a.plcId === 'dongwoo_10';
+        }));
+      })
+      .catch(function() {});
+  }
+
+  fetchData(); fetchAlarms();
+  setInterval(fetchData,   INTERVAL);
+  setInterval(fetchAlarms, INTERVAL);
+})();
 </script>
 </body>
 </html>

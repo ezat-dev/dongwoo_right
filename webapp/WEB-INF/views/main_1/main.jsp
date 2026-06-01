@@ -311,6 +311,9 @@ html, body { height: 100%; font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
         <a class="sb-item" href="#" onclick="go('${pageContext.request.contextPath}/main_1/spare/parts','스페어파트',this);return false;">
           <div class="sb-icon">🔩</div><span class="sb-label">스페어파트</span>
         </a>
+        <a class="sb-item" href="#" onclick="go('${pageContext.request.contextPath}/main_1/facility/backup','BACKUP-DATA',this);return false;">
+          <div class="sb-icon">💾</div><span class="sb-label">BACKUP-DATA</span>
+        </a>
       </div>
 
       <!-- 품질관리 -->

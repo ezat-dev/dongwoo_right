@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SeAlarmMapper">
+
+    <resultMap id="seAlarmMap" type="com.sample_pro.domain.SeAlarm">
+        <id     column="Cookie"     property="cookie"/>
+        <result column="Source"     property="source"/>
+        <result column="AreaMask"   property="areaMask"/>
+        <result column="DescString" property="descString"/>
+        <result column="PV"         property="pv"/>
+        <result column="TripValue"  property="tripValue"/>
+        <result column="TimeACT"    property="timeAct"/>
+        <result column="TimeRTN"    property="timeRtn"/>
+        <result column="TimeACK"    property="timeAck"/>
+    </resultMap>
+
+    <select id="selectSeAlarmList" parameterType="map" resultMap="seAlarmMap">
+        SELECT Cookie, Source, AreaMask, DescString, PV, TripValue,
+               DATE_FORMAT(TimeACT, '%Y-%m-%d %H:%i:%s') AS TimeACT,
+               DATE_FORMAT(TimeRTN, '%Y-%m-%d %H:%i:%s') AS TimeRTN,
+               DATE_FORMAT(TimeACK, '%Y-%m-%d %H:%i:%s') AS TimeACK
+        FROM se
+        WHERE TimeACT BETWEEN #{from} AND #{to}
+        <if test="areaMask != null and areaMask > 0">
+            AND AreaMask = #{areaMask}
+        </if>
+        ORDER BY TimeACT DESC
+        LIMIT 2000
+    </select>
+
+    <!-- bcfN_ 트렌드 데이터 (분 단위 샘플링) -->
+    <select id="selectBcfTrendData" parameterType="map" resultType="map">
+        SELECT DATE_FORMAT(DataDate, '%Y-%m-%d %H:%i:%s') AS DataDate,
+               Data1, Data2, Data3,  Data4,  Data5,  Data6,  Data7,  Data8,
+               Data9, Data10, Data11, Data12, Data13, Data14, Data15, Data16
+        FROM ${tableName}
+        WHERE DataDate BETWEEN #{from} AND #{to}
+          AND SECOND(DataDate) = 0
+        ORDER BY DataDate ASC
+    </select>
+
+</mapper>

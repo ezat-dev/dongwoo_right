@@ -12,8 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/temp")
@@ -130,7 +132,44 @@ public class TempController {
             @RequestParam("from") String from,
             @RequestParam("to") String to) {
         try {
-            return ResponseEntity.ok(tempService.getTempSnapshotRange(from, to));
+            List<Map<String, Object>> rows = tempService.getTempSnapshotRange(from, to);
+
+            // CP 태그 colName 수집 (trendName → tagName → colName 순으로 이름 결정, \bcp\b 매칭)
+            List<TempTag> tags = tempService.getTempTagList();
+            Set<String> cpCols = new HashSet<>();
+            for (TempTag t : tags) {
+                String name = t.getTrendName() != null && !t.getTrendName().isEmpty() ? t.getTrendName()
+                            : t.getTagName()   != null && !t.getTagName().isEmpty()   ? t.getTagName()
+                            : t.getColName()   != null                                ? t.getColName()
+                            : "";
+                boolean isCpName = false;
+                for (String seg : name.toLowerCase().split("[_\\s]+")) {
+                    if (seg.equals("cp")) { isCpName = true; break; }
+                }
+                if (isCpName && t.getColName() != null) {
+                    cpCols.add(t.getColName());
+                }
+            }
+
+            // CP 컬럼 값 ÷ 1000 (row 키는 DB 컬럼명 그대로, 대소문자 양쪽 시도)
+            if (!cpCols.isEmpty()) {
+                for (Map<String, Object> row : rows) {
+                    for (String col : cpCols) {
+                        Object val = row.containsKey(col) ? row.get(col)
+                                   : row.containsKey(col.toLowerCase()) ? row.get(col.toLowerCase())
+                                   : null;
+                        if (val == null) continue;
+                        try {
+                            double scaled = Double.parseDouble(val.toString()) * 0.001;
+                            // 원래 키와 소문자 키 모두 갱신
+                            if (row.containsKey(col))               row.put(col, scaled);
+                            if (row.containsKey(col.toLowerCase())) row.put(col.toLowerCase(), scaled);
+                        } catch (NumberFormatException ignored) {}
+                    }
+                }
+            }
+
+            return ResponseEntity.ok(rows);
         } catch (Exception e) {
             return ResponseEntity.ok(err("Temp snapshot range failed: " + e.getMessage()));
         }

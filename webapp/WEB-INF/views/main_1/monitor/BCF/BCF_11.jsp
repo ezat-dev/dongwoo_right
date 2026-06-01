@@ -3,6 +3,7 @@
 <%@ include file="../../common_style.jsp" %>
 <% String ctx = request.getContextPath(); %>
 <link rel="stylesheet" href="<%= ctx %>/css/bcf11/style.css">
+<link rel="stylesheet" href="<%= ctx %>/css/tabulator/tabulator.css">
 <style>
 .bcf-nav {
   display: flex; gap: 6px;
@@ -42,7 +43,7 @@
 /* ═══════════════════════════════════════════════
    [우측] 자동운전 조건 - 2열 그리드 (10행)
    ═══════════════════════════════════════════════ */
-.bcf7-auto-panel {
+.bcf11-auto-panel {
   position: absolute;
   left:   1330px;
   top:    0;
@@ -54,7 +55,7 @@
   border-radius: 3px;
   overflow: hidden;
 }
-.bcf7-auto-title {
+.bcf11-auto-title {
   background: #3dbdb0;
   color: #fff;
   font-size: 11px;
@@ -64,7 +65,7 @@
   letter-spacing: 1px;
   flex-shrink: 0;
 }
-.bcf7-auto-grid {
+.bcf11-auto-grid {
   flex: 1;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -72,7 +73,7 @@
   padding: 3px;
   overflow-y: hidden;
 }
-.bcf7-auto-item {
+.bcf11-auto-item {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -86,15 +87,15 @@
   padding: 2px 3px;
   line-height: 1.2;
 }
-.bcf7-auto-item.state-red    { background: #ff2222; color: #fff; border-color: #cc0000; }
-.bcf7-auto-item.state-green  { background: #85c25f; color: #fff; border-color: #5a9a30; }
-.bcf7-auto-item.state-gray   { background: #d9d9d9; color: #333; border-color: #999; }
-.bcf7-auto-item.state-yellow { background: #f5c400; color: #333; border-color: #c8a000; }
+.bcf11-auto-item.state-red    { background: #ff2222; color: #fff; border-color: #cc0000; }
+.bcf11-auto-item.state-green  { background: #85c25f; color: #fff; border-color: #5a9a30; }
+.bcf11-auto-item.state-gray   { background: #d9d9d9; color: #333; border-color: #999; }
+.bcf11-auto-item.state-yellow { background: #f5c400; color: #333; border-color: #c8a000; }
 
 /* ═══════════════════════════════════════════════
    [하단] 존구간(좌) + 온도CP/현재경보(우)
    ═══════════════════════════════════════════════ */
-.bcf7-bottom-panel {
+.bcf11-bottom-panel {
   position: absolute;
   left:   0;
   top:    430px;
@@ -109,45 +110,45 @@
 }
 
 /* ── 좌: 존구간 테이블 ── */
-.bcf7-zone-panel {
+.bcf11-zone-panel {
   flex: 0 0 570px;
   border: 1.5px solid #888;
   border-radius: 3px;
   overflow: hidden;
   background: #e8e8e8;
 }
-.bcf7-zone-table {
+.bcf11-zone-table {
   width: 100%;
   height: 100%;
   border-collapse: collapse;
   font-size: 10px;
   table-layout: fixed;
 }
-.bcf7-zone-table th,
-.bcf7-zone-table td {
+.bcf11-zone-table th,
+.bcf11-zone-table td {
   border: 1px solid #bbb;
   text-align: center;
   padding: 1px 2px;
   white-space: nowrap;
   overflow: hidden;
 }
-.bcf7-zone-table thead tr th {
+.bcf11-zone-table thead tr th {
   background: #d0d0d0;
   color: #222;
   font-weight: 700;
   font-size: 10px;
   padding: 3px 1px;
 }
-.bcf7-zone-table thead tr th.th-empty {
+.bcf11-zone-table thead tr th.th-empty {
   background: #e8e8e8;
   border: none;
 }
 /* 특수 헤더 색상 - 사진처럼 침탄은 빨강, 강온은 노랑 */
-.bcf7-zone-table thead tr th.th-red    { background: #ffb0b0; color: #880000; }
-.bcf7-zone-table thead tr th.th-yellow { background: #fff08a; color: #665000; }
+.bcf11-zone-table thead tr th.th-red    { background: #ffb0b0; color: #880000; }
+.bcf11-zone-table thead tr th.th-yellow { background: #fff08a; color: #665000; }
 
-.bcf7-zone-table tbody tr td { background: #fff; }
-.bcf7-zone-table tbody tr td.row-label {
+.bcf11-zone-table tbody tr td { background: #fff; }
+.bcf11-zone-table tbody tr td.row-label {
   background: #d8d8d8;
   font-weight: 700;
   color: #222;
@@ -176,7 +177,7 @@
 .zbox7.empty  { background: #eeeeee; border-color: #ccc;    color: #aaa; }
 
 /* ── 우: 온도CP(상) + 현재경보(하) ── */
-.bcf7-right-col {
+.bcf11-right-col {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -185,13 +186,13 @@
 }
 
 /* 온도 및 CP */
-.bcf7-temp-panel {
+.bcf11-temp-panel {
   flex-shrink: 0;
   border: 1.5px solid #2aada0;
   border-radius: 3px;
   overflow: hidden;
 }
-.bcf7-panel-title {
+.bcf11-panel-title {
   background: #3dbdb0;
   color: #fff;
   font-size: 11px;
@@ -201,7 +202,7 @@
   letter-spacing: 1px;
 }
 /* 온도CP 한 줄: 침탄실 DT ℃ | 유조 DT ℃ | CP DT ℃ | 침탄SP DT % | 유조SP DT % | CPSP DT % */
-.bcf7-tp-row {
+.bcf11-tp-row {
   display: flex;
   align-items: center;
   background: #d0f0ec;
@@ -210,15 +211,15 @@
   gap: 3px;
   flex-wrap: nowrap;
 }
-.bcf7-tp-lbl {
+.bcf11-tp-lbl {
   font-size: 9px;
   font-weight: 700;
   color: #cc0000;
   white-space: nowrap;
   flex-shrink: 0;
 }
-.bcf7-tp-lbl.blue  { color: #003399; }
-.bcf7-tp-val {
+.bcf11-tp-lbl.blue  { color: #003399; }
+.bcf11-tp-val {
   flex: 1;
   min-width: 28px;
   height: 17px;
@@ -230,15 +231,15 @@
   color: #1a4000;
   text-align: center;
 }
-.bcf7-tp-val.blue { background: #b0d8f8; border-color: #5aadda; color: #003a5c; }
-.bcf7-tp-unit {
+.bcf11-tp-val.blue { background: #b0d8f8; border-color: #5aadda; color: #003a5c; }
+.bcf11-tp-unit {
   font-size: 9px;
   color: #1a5c52;
   font-weight: 700;
   white-space: nowrap;
   flex-shrink: 0;
 }
-.bcf7-tp-sep {
+.bcf11-tp-sep {
   width: 1px;
   height: 18px;
   background: #2aada0;
@@ -246,7 +247,7 @@
 }
 
 /* 현재 경보 */
-.bcf7-alarm-panel {
+.bcf11-alarm-panel {
   flex: 1;
   border: 1.5px solid #2aada0;
   border-radius: 3px;
@@ -255,18 +256,23 @@
   flex-direction: column;
   min-height: 0;
 }
-.bcf7-alarm-body {
+.bcf11-alarm-body {
   flex: 1;
   background: #b8b8b8;
   border-top: 1px solid #888;
   position: relative;
 }
-.bcf7-alarm-body::before {
+.bcf11-alarm-body::before {
   content: '';
   position: absolute;
   left: 0; top: 0; bottom: 0;
   width: 2px;
   background: #2255cc;
+}
+@keyframes blink { 50% { opacity: 0; } }
+.alarm-dot {
+  display: inline-block; width: 8px; height: 8px;
+  background: #ff2222; border-radius: 50%; animation: blink 1s infinite;
 }
 </style>
 
@@ -403,38 +409,52 @@
     </div>
 
     <!-- ═══ [우측] 자동운전 조건 - 2열 10행 ═══ -->
-    <div class="bcf7-auto-panel">
-      <div class="bcf7-auto-title">자동운전 조건</div>
-      <div class="bcf7-auto-grid">
-        <div class="bcf7-auto-item state-green">추출포크 후진</div>
-        <div class="bcf7-auto-item state-green">입구 커튼 S/W ON</div>
-        <div class="bcf7-auto-item state-green">포크베이스 하강</div>
-        <div class="bcf7-auto-item state-green">출구 커튼 S/W ON</div>
-        <div class="bcf7-auto-item state-green">보조롤러 하강</div>
-        <div class="bcf7-auto-item state-green">출구 FLAME ON</div>
-        <div class="bcf7-auto-item state-green">입구문 닫힘</div>
-        <div class="bcf7-auto-item state-green">배기 FLAME ON</div>
-        <div class="bcf7-auto-item state-green">중간문 닫힘</div>
-        <div class="bcf7-auto-item state-green">비상정지(판넬)</div>
-        <div class="bcf7-auto-item state-green">E/V 상승</div>
-        <div class="bcf7-auto-item state-green">비상정지(입구)</div>
-        <div class="bcf7-auto-item state-green">출구문 닫힘</div>
-        <div class="bcf7-auto-item state-green">비상정지(출구)</div>
-        <div class="bcf7-auto-item state-green">자동스텝1 준비완료</div>
-        <div class="bcf7-auto-item state-green">자동SS(입구)</div>
-        <div class="bcf7-auto-item state-green">자동스텝2 준비완료</div>
-        <div class="bcf7-auto-item state-green">자동SS(출구)</div>
-        <div class="bcf7-auto-item state-green">PLC 컨트롤 (PC OFF)</div>
-        <div class="bcf7-auto-item state-green">유조 처리품 없음</div>
-      </div>
+    <div class="bcf11-auto-panel">
+          <div class="bcf11-auto-title">자동운전 조건</div>
+        <div class="bcf11-auto-grid">
+
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_170">제어전원</div>
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_192">입구 조작반 비상정지</div>
+
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_171">1실 온도 750도 이상</div>
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_51">출구 조작반 비상정지</div>
+
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_185">2실 온도 750도 이상</div>
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_52">입구조작반 수동</div>
+
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_186">온도저하 가스차단 컷</div>
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_53">출구조작반 수동</div>
+
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_187">입구 보조 리프트 상승</div>
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_54">1실 입구문 화염감지 S/W</div>
+
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_188">1실 입구문 닫힘</div>
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_55">냉각실 배기변 화염감지</div>
+
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_189">2실 입구문 닫힘</div>
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_56">냉각실 배기변 화염감지 S/W</div>
+
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_190">냉각실 입구문 닫힘</div>
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_58">1실 자동 스텝 준비</div>
+
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_191">냉각실 출구문 닫힘</div>
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_118">2실 자동스텝 준비</div>
+
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_162">1실 자동 조깅</div>
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_72">냉각실 자동 스텝 준비</div>
+
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_163">2실 자동 조깅</div>
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_57">GOT 자동운전 선택 S/W</div>
+
+    </div>
     </div>
 
     <!-- ═══ [하단] 존구간(좌) + 온도CP/현재경보(우) ═══ -->
-    <div class="bcf7-bottom-panel">
+    <div class="bcf11-bottom-panel">
 
       <!-- 좌: 존구간 테이블 - 침탄/승온/침탄/확산/강온/균열/강온/드레인 -->
-      <div class="bcf7-zone-panel">
-        <table class="bcf7-zone-table">
+      <div class="bcf11-zone-panel">
+        <table class="bcf11-zone-table">
           <thead>
             <tr>
               <th class="th-empty" style="width:80px;"></th>
@@ -451,68 +471,68 @@
           <tbody>
             <tr>
               <td class="row-label">시간 (min) PV</td>
-              <td><div class="zbox7">DT</div></td>
-              <td><div class="zbox7">DT</div></td>
-              <td><div class="zbox7">DT</div></td>
-              <td><div class="zbox7">DT</div></td>
-              <td><div class="zbox7">DT</div></td>
-              <td><div class="zbox7">DT</div></td>
-              <td><div class="zbox7">DT</div></td>
-              <td><div class="zbox7">DT</div></td>
+              <td><div class="zbox7 bcf11_73">--</div></td>
+              <td><div class="zbox7 bcf11_74">--</div></td>
+              <td><div class="zbox7 bcf11_75">--</div></td>
+              <td><div class="zbox7 bcf11_76">--</div></td>
+              <td><div class="zbox7 bcf11_77">--</div></td>
+              <td><div class="zbox7 bcf11_78">--</div></td>
+              <td><div class="zbox7 bcf11_79">--</div></td>
+              <td><div class="zbox7 bcf11_80">--</div></td>
             </tr>
             <tr>
               <td class="row-label">시간 (min) SP</td>
-              <td><div class="zbox7 yellow"></div></td>
-              <td><div class="zbox7 yellow">DT</div></td>
-              <td><div class="zbox7 yellow">DT</div></td>
-              <td><div class="zbox7 yellow"></div></td>
-              <td><div class="zbox7 yellow">DT</div></td>
-              <td><div class="zbox7 yellow">DT</div></td>
-              <td><div class="zbox7 yellow">DT</div></td>
-              <td><div class="zbox7 yellow">DT</div></td>
+              <td><div class="zbox7 yellow bcf11_81">--</div></td>
+              <td><div class="zbox7 yellow bcf11_82">--</div></td>
+              <td><div class="zbox7 yellow bcf11_137">--</div></td>
+              <td><div class="zbox7 yellow bcf11_2">--</div></td>
+              <td><div class="zbox7 yellow bcf11_4">--</div></td>
+              <td><div class="zbox7 yellow bcf11_3">--</div></td>
+              <td><div class="zbox7 yellow bcf11_19">--</div></td>
+              <td><div class="zbox7 yellow bcf11_4">--</div></td>
             </tr>
             <tr>
               <td class="row-label">온도 (°C) PV</td>
-              <td><div class="zbox7">DT</div></td>
-              <td><div class="zbox7">DT</div></td>
-              <td><div class="zbox7">DT</div></td>
-              <td><div class="zbox7">DT</div></td>
-              <td><div class="zbox7">DT</div></td>
-              <td><div class="zbox7">DT</div></td>
-              <td><div class="zbox7">DT</div></td>
-              <td><div class="zbox7">DT</div></td>
+              <td><div class="zbox7 bcf11_40077">--</div></td>
+              <td><div class="zbox7 bcf11_40077">--</div></td>
+              <td><div class="zbox7 bcf11_40077">--</div></td>
+              <td><div class="zbox7 bcf11_40077">--</div></td>
+              <td><div class="zbox7 bcf11_40078">--</div></td>
+              <td><div class="zbox7 bcf11_40078">--</div></td>
+              <td><div class="zbox7 bcf11_40078">--</div></td>
+              <td><div class="zbox7 bcf11_40079">--</div></td>
             </tr>
             <tr>
               <td class="row-label">온도 (°C) SP</td>
-              <td><div class="zbox7 yellow">DT</div></td>
-              <td><div class="zbox7 yellow">DT</div></td>
-              <td><div class="zbox7 yellow">DT</div></td>
-              <td><div class="zbox7 yellow">DT</div></td>
-              <td><div class="zbox7 yellow">DT</div></td>
-              <td><div class="zbox7 yellow">DT</div></td>
-              <td><div class="zbox7 yellow">DT</div></td>
-              <td><div class="zbox7 yellow">DT</div></td>
+              <td><div class="zbox7 yellow bcf11_6">--</div></td>
+              <td><div class="zbox7 yellow bcf11_8">--</div></td>
+              <td><div class="zbox7 yellow bcf11_10">--</div></td>
+              <td><div class="zbox7 yellow bcf11_101">--</div></td>
+              <td><div class="zbox7 yellow bcf11_141">--</div></td>
+              <td><div class="zbox7 yellow bcf11_106">--</div></td>
+              <td><div class="zbox7 yellow bcf11_145">--</div></td>
+              <td><div class="zbox7 yellow bcf11_103">--</div></td>
             </tr>
             <tr>
               <td class="row-label">CP (%) PV</td>
               <td><div class="zbox7 empty"></div></td>
-              <td><div class="zbox7 cyan">DT</div></td>
-              <td><div class="zbox7 cyan">DT</div></td>
               <td><div class="zbox7 empty"></div></td>
-              <td><div class="zbox7 empty"></div></td>
-              <td><div class="zbox7 empty"></div></td>
-              <td><div class="zbox7 empty"></div></td>
+              <td><div class="zbox7 cyan bcf11_40080">--</div></td>
+              <td><div class="zbox7 cyan bcf11_40080">--</div></td>
+              <td><div class="zbox7 cyan bcf11_40081">--</div></td>
+              <td><div class="zbox7 cyan bcf11_40081">--</div></td>
+              <td><div class="zbox7 cyan bcf11_40081">--</div></td>
               <td><div class="zbox7 empty"></div></td>
             </tr>
             <tr>
               <td class="row-label">CP (%) SP</td>
               <td><div class="zbox7 empty"></div></td>
-              <td><div class="zbox7 cyan">DT</div></td>
-              <td><div class="zbox7 cyan">DT</div></td>
               <td><div class="zbox7 empty"></div></td>
-              <td><div class="zbox7 empty"></div></td>
-              <td><div class="zbox7 empty"></div></td>
-              <td><div class="zbox7 empty"></div></td>
+              <td><div class="zbox7 cyan bcf11_142">--</div></td>
+              <td><div class="zbox7 cyan bcf11_143">--</div></td>
+              <td><div class="zbox7 cyan bcf11_1">--</div></td>
+              <td><div class="zbox7 cyan bcf11_6">--</div></td>
+              <td><div class="zbox7 cyan bcf11_7">--</div></td>
               <td><div class="zbox7 empty"></div></td>
             </tr>
           </tbody>
@@ -520,59 +540,170 @@
       </div>
 
       <!-- 우: 온도CP(상) + 현재경보(하) -->
-      <div class="bcf7-right-col">
+      <div class="bcf11-right-col">
 
         <!-- 온도 및 CP: 침탄실 DT ℃ | 유조 DT ℃ | CP DT ℃ | 침탄SP DT % | 유조SP DT % | CPSP DT % -->
-        <div class="bcf7-temp-panel">
-          <div class="bcf7-panel-title">온도 및 CP</div>
-          <div class="bcf7-tp-row">
-            <span class="bcf7-tp-lbl">침탄실</span>
-            <div class="bcf7-tp-val"></div>
-            <span class="bcf7-tp-unit">DT</span>
-            <div class="bcf7-tp-val"></div>
-            <span class="bcf7-tp-unit">℃</span>
-            <div class="bcf7-tp-sep"></div>
-            <span class="bcf7-tp-lbl">유조</span>
-            <div class="bcf7-tp-val"></div>
-            <span class="bcf7-tp-unit">DT</span>
-            <div class="bcf7-tp-val"></div>
-            <span class="bcf7-tp-unit">℃</span>
-            <div class="bcf7-tp-sep"></div>
-            <span class="bcf7-tp-lbl blue">CP</span>
-            <div class="bcf7-tp-val blue"></div>
-            <span class="bcf7-tp-unit">DT</span>
-            <div class="bcf7-tp-val blue"></div>
-            <span class="bcf7-tp-unit">℃</span>
-            <div class="bcf7-tp-sep"></div>
-            <span class="bcf7-tp-lbl">침탄SP</span>
-            <div class="bcf7-tp-val"></div>
-            <span class="bcf7-tp-unit">DT</span>
-            <div class="bcf7-tp-val"></div>
-            <span class="bcf7-tp-unit">%</span>
-            <div class="bcf7-tp-sep"></div>
-            <span class="bcf7-tp-lbl">유조SP</span>
-            <div class="bcf7-tp-val"></div>
-            <span class="bcf7-tp-unit">DT</span>
-            <div class="bcf7-tp-val"></div>
-            <span class="bcf7-tp-unit">%</span>
-            <div class="bcf7-tp-sep"></div>
-            <span class="bcf7-tp-lbl blue">CPSP</span>
-            <div class="bcf7-tp-val blue"></div>
-            <span class="bcf7-tp-unit">DT</span>
-            <div class="bcf7-tp-val blue"></div>
-            <span class="bcf7-tp-unit">%</span>
+        <div class="bcf11-temp-panel">
+          <div class="bcf11-panel-title">온도 및 CP</div>
+          <div class="bcf11-tp-row">
+            <span class="bcf11-tp-lbl">침탄1</span>
+            <div class="bcf11-tp-val bcf11_40077">--</div>
+            <span class="bcf11-tp-unit">℃</span>
+            <div class="bcf11-tp-sep"></div>
+            <span class="bcf11-tp-lbl">침탄2</span>
+            <div class="bcf11-tp-val bcf11_40078">--</div>
+            <span class="bcf11-tp-unit">℃</span>
+            <div class="bcf11-tp-sep"></div>
+            <span class="bcf11-tp-lbl">냉각</span>
+            <div class="bcf11-tp-val bcf11_40079">--</div>
+            <span class="bcf11-tp-unit">℃</span>
+            <div class="bcf11-tp-sep"></div>
+            <span class="bcf11-tp-lbl blue">CP1</span>
+            <div class="bcf11-tp-val blue bcf11_40080">--</div>
+            <span class="bcf11-tp-unit">%</span>
+            <div class="bcf11-tp-sep"></div>
+            <span class="bcf11-tp-lbl blue">CP2</span>
+            <div class="bcf11-tp-val blue bcf11_40081">--</div>
+            <span class="bcf11-tp-unit">%</span>
           </div>
         </div>
 
         <!-- 현재 경보 -->
-        <div class="bcf7-alarm-panel">
-          <div class="bcf7-panel-title">현재 경보</div>
-          <div class="bcf7-alarm-body"></div>
+        <div class="bcf11-alarm-panel">
+          <div class="bcf11-panel-title">현재 경보</div>
+          <div class="bcf11-alarm-body"></div>
         </div>
 
-      </div><!-- /bcf7-right-col -->
+      </div><!-- /bcf11-right-col -->
 
-    </div><!-- /bcf7-bottom-panel -->
+    </div><!-- /bcf11-bottom-panel -->
+
+  </div><!-- /group-2 -->
+</div><!-- /page-wrap -->
+
+<script src="<%= ctx %>/js/tabulator/tabulator.js"></script>
+<script>
+(function() {
+  var cur = location.pathname.split('/').pop();
+  document.querySelectorAll('.bcf-tab').forEach(function(a) {
+    if (a.getAttribute('href').split('/').pop() === cur) a.classList.add('active');
+  });
+})();
+
+(function() {
+  'use strict';
+  var ctx = '<%= ctx %>';
+  var INTERVAL = 3000;
+  var bitElMap = {}, wordElMap = {};
+
+  document.querySelectorAll('[class]').forEach(function(el) {
+    if (el.classList.contains('bcf11-auto-item')) return; /* statusElMap 에서 처리 */
+    el.className.split(/\s+/).forEach(function(cls) {
+      var mLow = cls.match(/^bcf11_(\d+)$/);
+      if (!mLow) return;
+      var addr = parseInt(mLow[1], 10);
+      /* zbox7 / bcf11-tp-val 은 수치 표시용 → 주소 크기 무관하게 word read */
+      var isDisplay = el.classList.contains('zbox7') || el.classList.contains('bcf11-tp-val');
+      if (addr >= 40000 || isDisplay) {
+        var apiTag = 'bcf11_s_' + mLow[1];
+        if (!wordElMap[apiTag]) wordElMap[apiTag] = [];
+        wordElMap[apiTag].push(el);
+      } else {
+        if (!bitElMap[cls]) bitElMap[cls] = [];
+        bitElMap[cls].push(el);
+      }
+    });
+  });
+
+  var statusElMap = {};
+  document.querySelectorAll('.bcf11-auto-item[data-tag]').forEach(function(el) {
+    var tag = el.getAttribute('data-tag');
+    if (!statusElMap[tag]) statusElMap[tag] = [];
+    statusElMap[tag].push(el);
+  });
+
+  var allTags = Object.keys(wordElMap).concat(Object.keys(bitElMap))
+    .concat(Object.keys(statusElMap).filter(function(t) { return !bitElMap[t]; }));
+
+  /* CP 스케일링: ×0.001 */
+  var CP_TAG = /^bcf11_s_(40080|40081)$/;
+
+  function updateStatusItem(el, val) {
+    var isOn = (val === 1 || val === true);
+    el.classList.remove('state-red', 'state-green', 'state-gray');
+    el.classList.add(isOn ? 'state-green' : 'state-gray');
+  }
+
+  function applyData(data) {
+    Object.keys(wordElMap).forEach(function(tag) {
+      if (data[tag] == null) return;
+      var raw = Number(data[tag]);
+      var text;
+      if (isNaN(raw)) {
+        text = data[tag];
+      } else if (CP_TAG.test(tag)) {
+        text = (raw * 0.001).toFixed(3);
+      } else {
+        text = raw.toFixed(0);
+      }
+      wordElMap[tag].forEach(function(el) { el.textContent = text; });
+    });
+    Object.keys(bitElMap).forEach(function(tag) {
+      if (data[tag] == null) return;
+      var isOn = (data[tag] === 1 || data[tag] === true);
+      bitElMap[tag].forEach(function(el) { el.style.visibility = isOn ? 'visible' : 'hidden'; });
+    });
+    Object.keys(statusElMap).forEach(function(tag) {
+      if (data[tag] == null) return;
+      statusElMap[tag].forEach(function(el) { updateStatusItem(el, data[tag]); });
+    });
+  }
+
+  var busy = false;
+  function fetchData() {
+    if (busy || !allTags.length) return;
+    busy = true;
+    fetch(ctx + '/monitor/main-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(allTags)
+    })
+    .then(function(r) { return r.ok ? r.json() : Promise.reject(r.status); })
+    .then(function(data) { applyData(data); })
+    .catch(function(err) { console.warn('[BCF11] PLC fetch 실패:', err); })
+    .finally(function() { busy = false; });
+  }
+
+  var alarmTable = new Tabulator('.bcf11-alarm-body', {
+    height: '100%', layout: 'fitColumns', headerVisible: false,
+    placeholder: '현재 경보 없음', rowHeight: 36, data: [],
+    columns: [
+      { title: '', field: 'dot', width: 22, resizable: false, headerSort: false,
+        formatter: function() { return '<span class="alarm-dot"></span>'; } },
+      { title: '경보', field: 'alarmMsg', headerSort: false,
+        formatter: function(cell) { return cell.getValue() || '알람'; } }
+    ]
+  });
+
+  function fetchAlarms() {
+    fetch(ctx + '/alarm/active/list?limit=200')
+      .then(function(r) { return r.ok ? r.json() : []; })
+      .then(function(list) {
+        alarmTable.setData((Array.isArray(list) ? list : []).filter(function(a) {
+          return a.plcId === 'dongwoo_11';
+        }));
+      })
+      .catch(function() {});
+  }
+
+  fetchData(); fetchAlarms();
+  setInterval(fetchData,   INTERVAL);
+  setInterval(fetchAlarms, INTERVAL);
+})();
+</script>
+</body>
+
+    </div><!-- /bcf11-bottom-panel -->
 
   </div><!-- /group-2 -->
 </div><!-- /page-wrap -->

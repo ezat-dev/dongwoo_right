@@ -36,6 +36,7 @@
     </div>
     <div style="display:flex;gap:8px;align-items:center">
       <span style="font-size:11px;color:var(--muted)" id="lastUpdate"></span>
+      <button class="btn-outline" onclick="downloadExcel()">📥 엑셀 다운로드</button>
       <button class="btn-primary" onclick="loadAll()">🔄 새로고침</button>
     </div>
   </div>
@@ -127,7 +128,7 @@
       <thead>
         <tr>
           <th>No</th><th>발생시각</th><th>PLC</th><th>태그명</th>
-          <th>등급</th><th>내용</th><th>발생값</th><th>해제시각</th><th>상태</th>
+          <th>내용</th><th>발생값</th><th>해제시각</th><th>상태</th>
         </tr>
       </thead>
       <tbody id="alarmBody"></tbody>
@@ -137,6 +138,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
 var base = '${pageContext.request.contextPath}';
 var allHistory = [];  // history/list 결과
@@ -326,14 +328,13 @@ function renderPage(page){
           + '<td style="font-size:12px;font-family:monospace">'+(r.occurTime||'-')+'</td>'
           + '<td><span style="font-family:monospace;font-size:11px">'+esc(r.plcId||'-')+'</span></td>'
           + '<td style="font-weight:600">'+esc(r.tagName||'-')+'</td>'
-          + '<td><span class="badge '+lvBadge+'" style="background:'+LV_COLOR[lv]+'22;color:'+LV_COLOR[lv]+';border-color:'+LV_COLOR[lv]+'44">'+lvLabel+'</span></td>'
           + '<td>'+esc(r.alarmMsg||'-')+'</td>'
           + '<td style="font-family:monospace;font-size:12px">'+(r.valueAtOccur!=null?r.valueAtOccur:'-')+'</td>'
           + '<td style="font-size:12px;color:var(--muted)">'+(r.clearTime||'—')+'</td>'
           + '<td><span class="badge '+(isActive?'badge-alarm':'badge-ok')+'">'+(isActive?'활성':'해제')+'</span></td>'
           + '</tr>';
   });
-  document.getElementById('alarmBody').innerHTML = html || '<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:30px">데이터 없음</td></tr>';
+  document.getElementById('alarmBody').innerHTML = html || '<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:30px">데이터 없음</td></tr>';
   renderPaging();
 }
 
@@ -348,6 +349,78 @@ function renderPaging(){
   }
   if(curPage<total) html += '<button class="page-btn" onclick="renderPage('+(curPage+1)+')">›</button>';
   document.getElementById('pagination').innerHTML = html;
+}
+
+/* ── 엑셀 다운로드 ── */
+var BCF_MACHINES = [
+  {plcId:'dongwoo_01', label:'BCF_01'},
+  {plcId:'dongwoo_02', label:'BCF_02'},
+  {plcId:'dongwoo_03', label:'BCF_03'},
+  {plcId:'dongwoo_04', label:'BCF_04'},
+  {plcId:'dongwoo_05', label:'BCF_05'},
+  {plcId:'dongwoo_06', label:'BCF_06'},
+  {plcId:'dongwoo_07', label:'BCF_07'},
+  {plcId:'dongwoo_08', label:'BCF_08'},
+  {plcId:'dongwoo_09', label:'BCF_09'},
+  {plcId:'dongwoo_10', label:'BCF_10'},
+  {plcId:'dongwoo_11', label:'BCF_11'},
+  {plcId:'dongwoo_12', label:'BCF_12'}
+];
+var LV_TEXT = {1:'위험(Lv1)',2:'경고(Lv2)',3:'주의(Lv3)',4:'정보(Lv4)'};
+
+function downloadExcel(){
+  if(typeof XLSX === 'undefined'){ alert('라이브러리 로드 중입니다. 잠시 후 다시 시도해주세요.'); return; }
+
+  var from  = document.getElementById('dateFrom').value;
+  var to    = document.getElementById('dateTo').value;
+  var toEnd = to + 'T23:59:59';
+
+  // active + history 합본 (중복 제거)
+  var combined = allHistory.slice();
+  allActive.forEach(function(a){
+    var dup = combined.some(function(h){ return h.tagName===a.tagName && h.occurTime===a.occurTime; });
+    if(!dup) combined.push(a);
+  });
+
+  // 날짜 범위 필터
+  var data = combined.filter(function(r){
+    if(from && (r.occurTime||'') < from) return false;
+    if(to   && (r.occurTime||'') > toEnd) return false;
+    return true;
+  });
+
+  var wb = XLSX.utils.book_new();
+  var HEADER = ['No','발생시각','설비','태그명','알람내용','발생값','해제시각','상태','등급'];
+
+  BCF_MACHINES.forEach(function(m){
+    var rows = data.filter(function(r){ return r.plcId === m.plcId; });
+    rows.sort(function(a,b){ return (a.occurTime||'') < (b.occurTime||'') ? -1 : 1; });
+
+    var wsData = [HEADER];
+    rows.forEach(function(r, i){
+      var lv = parseInt(r.level)||0;
+      wsData.push([
+        i+1,
+        r.occurTime  || '-',
+        m.label,
+        r.tagName    || '-',
+        r.alarmMsg   || '-',
+        r.valueAtOccur != null ? r.valueAtOccur : '-',
+        r.clearTime  || '',
+        r.clearTime  ? '해제' : '활성',
+        LV_TEXT[lv]  || ('Lv'+lv)
+      ]);
+    });
+
+    var ws = XLSX.utils.aoa_to_sheet(wsData);
+    ws['!cols'] = [
+      {wch:5},{wch:22},{wch:10},{wch:28},{wch:45},{wch:12},{wch:22},{wch:8},{wch:14}
+    ];
+    XLSX.utils.book_append_sheet(wb, ws, m.label);
+  });
+
+  var fileName = '알람이력_' + from + '_' + to + '.xlsx';
+  XLSX.writeFile(wb, fileName);
 }
 
 /* ── 유틸 ── */

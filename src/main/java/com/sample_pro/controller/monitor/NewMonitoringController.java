@@ -81,25 +81,36 @@ public class NewMonitoringController {
         Map<Integer, Map<Integer, Object>> wordCache = new HashMap<>();
         Map<Integer, Map<Integer, Object>> bitCache  = new HashMap<>();
 
-        // 워드(온도) 읽기 — LS/Mitsubishi/Modbus 모두 /api/plc/read/{id} 사용
+        // 워드(온도) 읽기 — Modbus 영역 경계(40000)를 기준으로 분리하여 각각 요청
+        // BCF_6처럼 소주소(2~48)와 4x주소(40033~)가 섞이면 C# API가 범위 예외 발생 → 분리 처리
         wordAddrs.forEach((plcNum, addrs) -> {
-            int start = addrs.first();
-            int count = addrs.last() - start + 1;
-            String url = CSHARP + "/api/plc/read/" + plcId(plcNum) + "?start=" + start + "&count=" + count;
-            System.out.println(">>> [MONITOR/WORD/" + plcId(plcNum) + "] " + url);
-            try {
-                Map<?, ?> res = rest.getForObject(url, Map.class);
-                if (res != null && Boolean.TRUE.equals(res.get("success"))) {
-                    List<?> vals = (List<?>) res.get("values");
-                    Map<Integer, Object> m = new HashMap<>();
-                    for (int addr : addrs) {
-                        int idx = addr - start;
-                        if (idx >= 0 && idx < vals.size()) m.put(addr, vals.get(idx));
+            Map<Integer, Object> merged = wordCache.computeIfAbsent(plcNum, k -> new HashMap<>());
+
+            // 영역 분리: 40000 미만 / 40000 이상
+            TreeSet<Integer> lowGroup  = new TreeSet<>(addrs.headSet(40000, false));
+            TreeSet<Integer> highGroup = new TreeSet<>(addrs.tailSet(40000));
+
+            for (TreeSet<Integer> group : Arrays.asList(lowGroup, highGroup)) {
+                if (group.isEmpty()) continue;
+                int start = group.first();
+                int count = group.last() - start + 1;
+                // 소주소(< 40000): FC03 raw read (PLC 0-based holding register)
+                // 대주소(≥ 40000): 표준 Modbus 4x 주소
+                String endpoint = (start < 40000) ? "/api/plc/readRaw/" : "/api/plc/read/";
+                String url = CSHARP + endpoint + plcId(plcNum) + "?start=" + start + "&count=" + count;
+                System.out.println(">>> [MONITOR/WORD/" + plcId(plcNum) + "] " + url);
+                try {
+                    Map<?, ?> res = rest.getForObject(url, Map.class);
+                    if (res != null && Boolean.TRUE.equals(res.get("success"))) {
+                        List<?> vals = (List<?>) res.get("values");
+                        for (int addr : group) {
+                            int idx = addr - start;
+                            if (idx >= 0 && idx < vals.size()) merged.put(addr, vals.get(idx));
+                        }
                     }
-                    wordCache.put(plcNum, m);
+                } catch (Exception e) {
+                    System.out.println(">>> [MONITOR/WORD ERR/" + plcId(plcNum) + "] " + e.getMessage());
                 }
-            } catch (Exception e) {
-                System.out.println(">>> [MONITOR/WORD ERR/" + plcId(plcNum) + "] " + e.getMessage());
             }
         });
 

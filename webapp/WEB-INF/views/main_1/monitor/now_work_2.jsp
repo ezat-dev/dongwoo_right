@@ -56,23 +56,28 @@
   }
 
   thead tr:first-child th {
-    background: #1E293B;
-    color: #F1F5F9;
+    background: #8DC34A;
+    color: #1A3A00;
     font-size: clamp(13px, 1.35vw, 24px);
     font-weight: 900;
     letter-spacing: 1px;
     height: 5.5vh;
-    border-color: #334155;
+    border-color: #7AB03A;
+  }
+
+  th.th-equip {
+    background: #F4956A;
+    color: #5A1A00;
   }
 
   thead tr:last-child th {
-    background: #334155;
-    color: #CBD5E1;
+    background: #8DC34A;
+    color: #1A3A00;
     font-size: clamp(11px, 1.1vw, 19px);
     font-weight: 800;
     height: 4vh;
-    border-color: #3D4F63;
-    border-bottom: 1px solid #475569;
+    border-color: #7AB03A;
+    border-bottom: 1px solid #6FAA2C;
   }
 
   td.equip {
@@ -101,8 +106,12 @@
   }
 
   td.st {
-    background: #E2EFFA;
-    border-color: #E0F0FF;
+    background: #D4EDBA;
+    border-color: #BCDDA0;
+  }
+  td.st.on {
+    background: #8DC34A;
+    border-color: #6FAA2C;
   }
 
   tr.sep td { border-top: 2px solid #CBD5E1 !important; }
@@ -121,7 +130,7 @@
       </colgroup>
       <thead>
         <tr>
-          <th rowspan="2" colspan="2">설 비 명</th>
+          <th class="th-equip" rowspan="2" colspan="2">설 비 명</th>
           <th rowspan="2">고 객 사</th>
           <th rowspan="2">품 명</th>
           <th rowspan="2">LOT NO</th>

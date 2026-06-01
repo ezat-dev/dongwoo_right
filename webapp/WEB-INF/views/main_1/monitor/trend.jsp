@@ -13,7 +13,7 @@
 /* ══ 레이아웃 ══ */
 .trend-layout {
   display: grid;
-  grid-template-columns: 270px 1fr;
+  grid-template-columns: 195px 1fr;
   gap: 14px;
   align-items: stretch;
   flex: 1;
@@ -54,14 +54,14 @@
 }
 .kpi-card {
   background: var(--white); border: 1px solid var(--border);
-  border-radius: 10px; padding: 14px 18px;
+  border-radius: 7px; padding: 5px 9px;
   box-shadow: var(--shadow); border-top: 3px solid var(--primary);
   transition: box-shadow .13s;
 }
 .kpi-card:hover { box-shadow: var(--shadow-md); }
-.kpi-card-lbl { font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.kpi-card-val { font-size: 28px; font-weight: 700; color: var(--text); font-family: monospace; line-height: 1.1; }
-.kpi-card-sub { font-size: 12px; color: var(--muted); margin-top: 5px; display: flex; gap: 8px; }
+.kpi-card-lbl { font-size: 10px; color: var(--muted); font-weight: 600; margin-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.kpi-card-val { font-size: 17px; font-weight: 700; color: var(--text); font-family: monospace; line-height: 1.1; }
+.kpi-card-sub { font-size: 9px; color: var(--muted); margin-top: 1px; display: flex; gap: 5px; }
 .kpi-sub-mn { color: var(--primary); }
 .kpi-sub-mx { color: var(--red); }
 
@@ -84,6 +84,18 @@
 /* ══ 태그 패널 ══ */
 .tag-panel { display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
 .tag-panel .card { flex: 1; display: flex; flex-direction: column; overflow: hidden; margin: 0; min-height: 0; }
+
+/* 패널 탭 */
+.panel-tabs { display: flex; gap: 0; margin-bottom: 10px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); flex-shrink: 0; }
+.panel-tab {
+  flex: 1; padding: 7px 0; border: none; background: var(--white);
+  font-size: 12px; font-weight: 700; cursor: pointer; color: var(--muted);
+  transition: all .13s;
+}
+.panel-tab:not(:last-child) { border-right: 1px solid var(--border); }
+.panel-tab.active { background: var(--primary); color: #fff; }
+.panel-tab:hover:not(.active) { background: var(--primary-l); color: var(--primary); }
+
 .tag-search {
   width: 100%; padding: 7px 10px;
   border: 1px solid var(--border); border-radius: 7px;
@@ -106,14 +118,34 @@
 .tag-item.sel   { border-color: var(--primary); background: var(--primary-l); box-shadow: 0 0 0 2px var(--primary-m); }
 .tag-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
 
+/* 로트 패널 */
+.lot-ctrl { display: flex; gap: 6px; align-items: center; margin-bottom: 8px; flex-shrink: 0; }
+.lot-date { flex: 1; padding: 6px 8px; border: 1px solid var(--border); border-radius: 7px; font-size: 12px; outline: none; }
+.lot-date:focus { border-color: var(--primary); }
+.lot-load-btn { padding: 6px 12px; border-radius: 7px; border: none; background: var(--primary); color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+.lot-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
+.lot-list::-webkit-scrollbar { width: 3px; }
+.lot-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+.lot-row {
+  padding: 9px 11px; border-radius: 8px; border: 1px solid var(--border);
+  background: var(--white); cursor: pointer; transition: all .13s;
+  font-size: 12px; user-select: none;
+}
+.lot-row:hover { border-color: var(--orange); background: #FFFAF0; }
+.lot-row.active-lot { border-color: var(--orange); background: #FFFAF0; box-shadow: 0 0 0 2px #FBD38D; }
+.lot-num { font-weight: 700; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lot-prod { font-size: 10px; color: var(--muted); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lot-time { font-size: 10px; color: var(--primary); margin-top: 3px; }
+.lot-running { color: var(--green); font-weight: 700; }
+
 /* ══ 차트 패널 ══ */
-.chart-panel { display: flex; flex-direction: column; gap: 12px; min-height: 0; overflow: hidden; }
+.chart-panel { display: flex; flex-direction: column; gap: 6px; min-height: 0; overflow: hidden; }
 
 /* ══ 툴바 ══ */
 .toolbar-box {
-  background: var(--white); border: 1px solid var(--border); border-radius: 12px;
-  padding: 10px 14px; box-shadow: var(--shadow);
-  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+  padding: 6px 12px; box-shadow: var(--shadow);
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
 }
 .period-btn {
   padding: 5px 12px; border-radius: 20px; border: 1px solid var(--border);
@@ -131,8 +163,9 @@
 
 /* ══ 차트 박스 ══ */
 .chart-box {
-  background: var(--white); border: 1px solid var(--border);
-  border-radius: 12px; padding: 14px 16px; box-shadow: var(--shadow);
+  background: #141c2e; border: 1px solid #1e2d4a;
+  border-radius: 12px; padding: 14px 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,.4);
   position: relative; flex: 1; display: flex; flex-direction: column;
   min-height: 0; overflow: hidden;
 }
@@ -163,13 +196,32 @@
 
 /* ══ 줌 리셋 버튼 ══ */
 .btn-zoom-reset {
-  padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border);
-  background: var(--white); font-size: 11px; color: var(--muted);
+  padding: 4px 10px; border-radius: 6px; border: 1px solid #2d3d5a;
+  background: #1e2d45; font-size: 11px; color: #8899bb;
   cursor: pointer; transition: all .13s; display: none;
 }
-.btn-zoom-reset:hover { border-color: var(--primary); color: var(--primary); }
+.btn-zoom-reset:hover { border-color: #60A5FA; color: #60A5FA; }
 .btn-zoom-reset.visible { display: inline-block; }
-.alt-hint { font-size: 10px; color: var(--muted); padding: 2px 8px; border: 1px dashed var(--border); border-radius: 4px; }
+.alt-hint { font-size: 10px; color: #5a6a8a; padding: 2px 8px; border: 1px dashed #2d3d5a; border-radius: 4px; }
+
+/* 작업지시 바 */
+.jacup-bar {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 10px; padding: 7px 12px; box-shadow: var(--shadow);
+  display: none; flex-wrap: wrap; align-items: center; gap: 6px;
+  flex-shrink: 0;
+}
+.jacup-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 9px; border-radius: 16px;
+  border: 1px solid rgba(221,107,32,.4);
+  background: rgba(221,107,32,.08);
+  font-size: 11px; font-weight: 600; color: #7B341E;
+  cursor: pointer; transition: all .13s; user-select: none;
+}
+.jacup-pill:hover { background: rgba(221,107,32,.18); }
+.jacup-pill.hidden { opacity: .4; text-decoration: line-through; }
+.jacup-pill-dot { width: 7px; height: 7px; border-radius: 50%; background: #DD6B20; flex-shrink: 0; }
 
 /* 메모 바 */
 .memo-bar {
@@ -249,14 +301,33 @@ body { font-family: 'Pretendard','Noto Sans KR','Segoe UI',sans-serif; }
     <!-- ══ 좌측 태그 패널 ══ -->
     <div class="tag-panel">
       <div class="card">
-        <div class="card-title">태그 선택</div>
-        <input class="tag-search" id="tagSearch" placeholder="태그 검색..." oninput="filterTags()">
-        <div style="display:flex;gap:6px;margin:8px 0">
-          <button class="btn-outline btn-sm" onclick="selectAll(true)">전체 선택</button>
-          <button class="btn-outline btn-sm" onclick="selectAll(false)">전체 해제</button>
+        <!-- 탭 -->
+        <div class="panel-tabs">
+          <button class="panel-tab active" id="tabTag" onclick="switchPanelTab('tag')">태그 선택</button>
+          <button class="panel-tab" id="tabLot" onclick="switchPanelTab('lot')">🔍 로트 검색</button>
         </div>
-        <div class="tag-list" id="tagList">
-          <div style="text-align:center;padding:20px;color:var(--muted);font-size:12px">로딩 중…</div>
+
+        <!-- 태그 뷰 -->
+        <div id="tagView" style="display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden">
+          <input class="tag-search" id="tagSearch" placeholder="태그 검색..." oninput="filterTags()">
+          <div style="display:flex;gap:6px;margin:8px 0;flex-shrink:0">
+            <button class="btn-outline btn-sm" onclick="selectAll(true)">전체 선택</button>
+            <button class="btn-outline btn-sm" onclick="selectAll(false)">전체 해제</button>
+          </div>
+          <div class="tag-list" id="tagList">
+            <div style="text-align:center;padding:20px;color:var(--muted);font-size:12px">로딩 중…</div>
+          </div>
+        </div>
+
+        <!-- 로트 검색 뷰 -->
+        <div id="lotView" style="display:none;flex-direction:column;flex:1;min-height:0;overflow:hidden">
+          <div class="lot-ctrl">
+            <input type="date" class="lot-date" id="lotDate">
+            <button class="lot-load-btn" onclick="loadLotList()">조회</button>
+          </div>
+          <div class="lot-list" id="lotList">
+            <div style="text-align:center;padding:20px;color:var(--muted);font-size:12px">조회 버튼을 누르세요</div>
+          </div>
         </div>
       </div>
     </div>
@@ -267,8 +338,8 @@ body { font-family: 'Pretendard','Noto Sans KR','Segoe UI',sans-serif; }
       <!-- 툴바 -->
       <div class="toolbar-box">
         <button class="period-btn" onclick="setPeriod('1h',this)">1시간</button>
-        <button class="period-btn" onclick="setPeriod('6h',this)">6시간</button>
-        <button class="period-btn active" onclick="setPeriod('24h',this)">24시간</button>
+        <button class="period-btn active" onclick="setPeriod('6h',this)">6시간</button>
+        <button class="period-btn" onclick="setPeriod('24h',this)">24시간</button>
         <button class="period-btn" onclick="setPeriod('3d',this)">3일</button>
         <button class="period-btn" onclick="setPeriod('7d',this)">7일</button>
         <div class="tb-sep"></div>
@@ -292,6 +363,9 @@ body { font-family: 'Pretendard','Noto Sans KR','Segoe UI',sans-serif; }
         <button class="btn-outline btn-sm" onclick="openMemoModal()" style="border-color:rgba(128,90,213,.5);color:#553C9A" data-perm="add">+ 메모</button>
         <span style="margin-left:auto;font-size:11px;color:var(--muted)" id="periodLabel">최근 24시간</span>
       </div>
+
+      <!-- 작업지시 바 -->
+      <div class="jacup-bar" id="jacupBar"></div>
 
       <!-- 메모 바 -->
       <div class="memo-bar" id="memoBar"></div>
@@ -344,7 +418,7 @@ var base = '${pageContext.request.contextPath}';
 var tags       = [];
 var selTags    = {};
 var curEquip   = 'ALL';
-var curPeriod  = '24h';
+var curPeriod  = '6h';
 var isCustom   = false;
 var mainChart  = null;
 var countdown  = 15;
@@ -353,11 +427,20 @@ var memos      = [];
 var memoVisible = {};
 var curFrom    = '';
 var curTo      = '';
+var jacups      = [];
+var jacupVisible = {};
+
+var EQUT_MAP = {
+  'BCF1': '2420M001', 'BCF2': '2420M002', 'BCF3': '2420M003',
+  'BCF4': '2420M004', 'BCF5': '2420M005', 'BCF6': '2420M011',
+  'BCF7': '2420M006', 'BCF8': '2420M007', 'BCF9': '2420M008',
+  'BCF10': '2420M009', 'BCF11': '2420M010', 'BCF12': '2421M002'
+};
 
 var COLORS = [
-  '#3182CE','#E53E3E','#38A169','#DD6B20',
-  '#805AD5','#00B5D8','#ED64A6','#ECC94B',
-  '#4299E1','#6B7280','#7B2D8B','#38B2AC'
+  '#60A5FA','#F87171','#4ADE80','#FBBF24',
+  '#A78BFA','#22D3EE','#F472B6','#FDE047',
+  '#93C5FD','#86EFAC','#C084FC','#2DD4BF'
 ];
 
 var PERIOD_LABEL = {'1h':'최근 1시간','6h':'최근 6시간','24h':'최근 24시간','3d':'최근 3일','7d':'최근 7일'};
@@ -445,9 +528,13 @@ function startCountdown() {
 /* ── FROM/TO 초기화 ── */
 function initRange() {
   var now  = new Date();
-  var from = new Date(now.getTime() - PERIOD_MS['24h']);
+  var from = new Date(now.getTime() - PERIOD_MS[curPeriod]);
   document.getElementById('fromTime').value = toLocalInput(from);
   document.getElementById('toTime').value   = toLocalInput(now);
+  // 로트 날짜 기본값: 오늘
+  var p = function(n){ return String(n).padStart(2,'0'); };
+  document.getElementById('lotDate').value =
+    now.getFullYear() + '-' + p(now.getMonth()+1) + '-' + p(now.getDate());
 }
 
 /* ── 태그 로드 ── */
@@ -646,6 +733,7 @@ function reloadChart() {
       buildKpiCards(selList, rows);
       buildMainChart(selList, rows);
       loadMemos(curFrom, curTo);
+      loadJacupAnnotations(curFrom, curTo);
       if (!isCustom) startCountdown();
     })
     .catch(function(){
@@ -688,6 +776,8 @@ function buildKpiCards(selList, rows) {
 
     var color = COLORS[tagIdxOf(t)];
     var name  = esc(t.trendName || t.tagName || t.colName);
+    var cp    = isCpTag(t);
+    var dec   = cp ? 3 : 1;
 
     if (!vals.length) {
       html += '<div class="kpi-card" style="border-top-color:'+color+'">'
@@ -704,21 +794,28 @@ function buildKpiCards(selList, rows) {
 
     html += '<div class="kpi-card" style="border-top-color:'+color+'">'
           + '<div class="kpi-card-lbl" title="'+name+'">'+name+'</div>'
-          + '<div class="kpi-card-val" style="color:'+color+'">'+last.toFixed(1)+'</div>'
+          + '<div class="kpi-card-val" style="color:'+color+'">'+last.toFixed(dec)+'</div>'
           + '<div class="kpi-card-sub">'
-          + '  <span>avg <b>'+avg.toFixed(1)+'</b></span>'
-          + '  <span class="kpi-sub-mn">↓'+mn.toFixed(1)+'</span>'
-          + '  <span class="kpi-sub-mx">↑'+mx.toFixed(1)+'</span>'
+          + '  <span>avg <b>'+avg.toFixed(dec)+'</b></span>'
+          + '  <span class="kpi-sub-mn">↓'+mn.toFixed(dec)+'</span>'
+          + '  <span class="kpi-sub-mx">↑'+mx.toFixed(dec)+'</span>'
           + '</div>'
           + '</div>';
   });
   document.getElementById('kpiCards').innerHTML = html;
 }
 
+/* ── CP 태그 판별 (tagName/trendName/colName 에 'cp' 포함 여부) ── */
+function isCpTag(t) {
+  var name = (t.trendName || t.tagName || t.colName || '').toLowerCase();
+  return name.split(/[_\s]+/).indexOf('cp') !== -1;
+}
+
 /* ── 메인 차트 ── */
 function buildMainChart(selList, rows) {
   var series = selList.map(function(t, i) {
     var color = COLORS[tagIdxOf(t)];
+    var isCp  = isCpTag(t);
     var data = [];
     rows.forEach(function(row) {
       var ts = parseTs(row.record_time || row.recordTime);
@@ -729,6 +826,8 @@ function buildMainChart(selList, rows) {
     return {
       name: t.trendName || t.tagName || t.colName,
       data: data, color: color, lineWidth: 2,
+      yAxis: isCp ? 1 : 0,
+      isCp: isCp,
       marker: { enabled: data.length < 80, radius: 3 },
       states: { hover: { lineWidth: 3 } }
     };
@@ -737,9 +836,9 @@ function buildMainChart(selList, rows) {
   document.getElementById('btnZoomReset').classList.remove('visible');
 
   if (mainChart) {
-    // 기존 차트는 유지하고 시리즈만 갱신
     mainChart.update({ series: series }, true, true);
     attachAltDragAvg(selList, rows);
+    applyJacupToChart();
     return;
   }
 
@@ -747,9 +846,12 @@ function buildMainChart(selList, rows) {
     chart: {
       type: 'spline', animation: false,
       zoomType: 'x',
+      backgroundColor: '#141c2e',
+      plotBackgroundColor: '#0e1623',
       panning: { enabled: true, type: 'x' }, panKey: 'shift',
       style: { fontFamily:"'Segoe UI','Malgun Gothic',sans-serif" },
-      height: null,  /* flex 컨테이너 높이 그대로 사용 */
+      height: null,
+      clip: true,
       events: {
         selection: function(){ document.getElementById('btnZoomReset').classList.add('visible'); }
       },
@@ -758,20 +860,54 @@ function buildMainChart(selList, rows) {
     title: { text: null },
     xAxis: {
       type: 'datetime',
-      labels: { format: '{value:%m/%d %H:%M}', style: { fontSize:'11px' } },
-      crosshair: true
+      lineColor: '#2d3d5a',
+      tickColor: '#2d3d5a',
+      gridLineColor: '#1a2840',
+      labels: { format: '{value:%m/%d %H:%M}', style: { fontSize:'11px', color:'#8899bb' } },
+      crosshair: { color: 'rgba(96,165,250,.4)' }
     },
-    yAxis: {
-      title: { text: null },
-      labels: { style: { fontSize:'11px' } },
-      gridLineColor: '#F0F4F8'
-    },
+    yAxis: [
+      {
+        /* 좌측: 온도 계열  0~1000, step 50 */
+        title: { text: null },
+        min: 0, max: 1000, tickInterval: 50,
+        gridLineColor: '#1a2840',
+        labels: { format: '{value}', style: { fontSize:'10px', color:'#8899bb' } },
+        opposite: false
+      },
+      {
+        /* 우측: CP 계열  0~2.0 기준, step 0.1, 데이터 초과 시 자동 확장 */
+        title: { text: null },
+        min: 0, softMax: 2.0, tickInterval: 0.1,
+        gridLineColor: 'transparent',
+        labels: { format: '{value:.1f}', style: { fontSize:'10px', color:'#4ADE80' } },
+        opposite: true
+      }
+    ],
     tooltip: {
-      shared: true, xDateFormat: '%Y-%m-%d %H:%M:%S',
-      pointFormat: '<span style="color:{series.color}">●</span> {series.name}: <b>{point.y:.2f}</b><br/>',
-      borderRadius: 8
+      shared: true,
+      backgroundColor: '#0d1628',
+      borderColor: '#2d3d5a',
+      borderRadius: 8,
+      style: { color: '#d0ddf0' },
+      formatter: function() {
+        var s = '<span style="font-size:10px;color:#8899bb">'
+              + Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x)
+              + '</span><br/>';
+        this.points.forEach(function(p) {
+          var dec = p.series.options.isCp ? 3 : 1;
+          s += '<span style="color:' + p.series.color + '">●</span> '
+             + p.series.name + ': <b>' + p.y.toFixed(dec) + '</b><br/>';
+        });
+        return s;
+      }
     },
-    legend: { enabled: true, itemStyle: { fontSize:'12px', fontWeight:'600' } },
+    legend: {
+      enabled: true,
+      backgroundColor: 'transparent',
+      itemStyle: { fontSize:'12px', fontWeight:'600', color:'#c0cde0' },
+      itemHoverStyle: { color:'#ffffff' }
+    },
     plotOptions: { spline: { turboThreshold: 10000 } },
     exporting: {
       enabled: true,
@@ -885,6 +1021,199 @@ function showAvgResult(selList, rows, t0, t1) {
 }
 
 function tagIdxOf(t) { var i = tags.indexOf(t); return i >= 0 ? i : 0; }
+
+/* ── 패널 탭 전환 ── */
+var curPanelTab = 'tag';
+function switchPanelTab(tab) {
+  curPanelTab = tab;
+  document.getElementById('tabTag').classList.toggle('active', tab === 'tag');
+  document.getElementById('tabLot').classList.toggle('active', tab === 'lot');
+  document.getElementById('tagView').style.display = tab === 'tag' ? 'flex' : 'none';
+  var lv = document.getElementById('lotView');
+  lv.style.display = tab === 'lot' ? 'flex' : 'none';
+  if (tab === 'lot') loadLotList();
+}
+
+/* ── 로트 검색 ── */
+var lotActiveSel = null;
+function loadLotList() {
+  var dateEl = document.getElementById('lotDate');
+  var d = dateEl.value;
+  if (!d) return;
+  var from = d + ' 00:00:00';
+  var to   = d + ' 23:59:59';
+  var equtCd = EQUT_MAP[curEquip] || '';
+  document.getElementById('lotList').innerHTML =
+    '<div style="text-align:center;padding:20px;color:var(--muted);font-size:12px">조회 중…</div>';
+
+  fetch(base + '/work/jacup/range?equtCd=' + encodeURIComponent(equtCd)
+      + '&from=' + encodeURIComponent(from) + '&to=' + encodeURIComponent(to))
+    .then(function(r){ return r.json(); })
+    .then(function(rows){
+      renderLotList(rows);
+    })
+    .catch(function(){
+      document.getElementById('lotList').innerHTML =
+        '<div style="text-align:center;padding:20px;color:var(--red);font-size:12px">조회 실패</div>';
+    });
+}
+
+/* DB 컬럼명 대소문자 무관하게 값 꺼내기 */
+function lotVal(row, key) {
+  return row[key] || row[key.toLowerCase()] || row[key.toUpperCase()] || '';
+}
+/* 'YYYY-MM-DD HH:mm:ss' → Date (로컬 시간) */
+function parseLotDt(s) {
+  if (!s) return null;
+  var p = s.split(/[\s\-:]/);
+  return new Date(+p[0], +p[1]-1, +p[2], +(p[3]||0), +(p[4]||0), +(p[5]||0));
+}
+
+function renderLotList(rows) {
+  var el = document.getElementById('lotList');
+  if (!rows || !rows.length) {
+    el.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:12px">데이터 없음</div>';
+    return;
+  }
+  var EQUT_REV = {};
+  Object.keys(EQUT_MAP).forEach(function(k){ EQUT_REV[EQUT_MAP[k]] = k; });
+
+  var frag = document.createDocumentFragment();
+  rows.forEach(function(r, i) {
+    var num      = lotVal(r, 'WORK_INDCT_NUM');
+    var prod     = lotVal(r, 'PROD_CD');
+    var equtCd   = lotVal(r, 'EQUT_CD');
+    var equtTag  = EQUT_REV[equtCd] || equtCd;
+    var startRaw = lotVal(r, 'START_DTTM');
+    var endRaw   = lotVal(r, 'END_DTTM');
+    var start16  = startRaw.substring(0, 16);
+    var end16    = endRaw   ? endRaw.substring(0, 16) : '';
+
+    var div = document.createElement('div');
+    div.className = 'lot-row';
+    div.id = 'lotRow_' + i;
+    div.dataset.start = startRaw;
+    div.dataset.end   = endRaw;
+    div.dataset.equt  = equtCd;
+    div.dataset.idx   = i;
+
+    var timeHtml = start16 + ' ~ ' + (end16 || '<span class="lot-running">진행중</span>');
+    div.innerHTML = '<div class="lot-num">' + esc(num) + '</div>'
+      + '<div class="lot-prod">' + esc(prod) + (equtTag ? ' · <b>' + esc(equtTag) + '</b>' : '') + '</div>'
+      + '<div class="lot-time">' + timeHtml + '</div>';
+
+    div.addEventListener('click', function() { selectLot(this); });
+    frag.appendChild(div);
+  });
+  el.innerHTML = '';
+  el.appendChild(frag);
+  lotActiveSel = null;
+}
+
+function selectLot(rowEl) {
+  // 이전 선택 해제
+  document.querySelectorAll('.lot-row.active-lot').forEach(function(el){ el.classList.remove('active-lot'); });
+  rowEl.classList.add('active-lot');
+  lotActiveSel = rowEl.dataset.idx;
+
+  var startRaw = rowEl.dataset.start;
+  var endRaw   = rowEl.dataset.end;
+  var equtCd   = rowEl.dataset.equt;
+  if (!startRaw) return;
+
+  var startDt = parseLotDt(startRaw);
+  var endDt   = endRaw ? parseLotDt(endRaw) : new Date();
+  if (!startDt) return;
+
+  // 해당 설비 태그 자동 선택 (선택된 태그 없을 경우)
+  var EQUT_REV = {};
+  Object.keys(EQUT_MAP).forEach(function(k){ EQUT_REV[EQUT_MAP[k]] = k; });
+  var bcfTag = EQUT_REV[equtCd];
+  var selList = tags.filter(function(t){ return selTags[t.colName]; });
+  if (!selList.length && bcfTag) {
+    tags.forEach(function(t){ selTags[t.colName] = (getEquipFromTag(t) === bcfTag); });
+    renderTagList();
+  }
+
+  // 전후 10분 여유
+  var fromDt = new Date(startDt.getTime() - 10 * 60 * 1000);
+  var toDt   = new Date(endDt.getTime()   + 10 * 60 * 1000);
+
+  document.getElementById('fromTime').value = toLocalInput(fromDt);
+  document.getElementById('toTime').value   = toLocalInput(toDt);
+  isCustom = true;
+  document.querySelectorAll('.period-btn').forEach(function(b){ b.classList.remove('active'); });
+  var label = startRaw.substring(0,16) + ' ~ ' + (endRaw ? endRaw.substring(0,16) : '현재');
+  document.getElementById('periodLabel').textContent = label;
+  reloadChart();
+}
+
+/* ── 작업지시 어노테이션 ── */
+function loadJacupAnnotations(from, to) {
+  if (!from || !to) return;
+  var equtCd = EQUT_MAP[curEquip] || '';
+  fetch(base + '/work/jacup/range?equtCd=' + encodeURIComponent(equtCd)
+      + '&from=' + encodeURIComponent(from) + '&to=' + encodeURIComponent(to))
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if (!Array.isArray(d)) return;
+      jacups = d;
+      d.forEach(function(j){ if (jacupVisible[j.WORK_INDCT_NUM] === undefined) jacupVisible[j.WORK_INDCT_NUM] = true; });
+      renderJacupPills();
+      applyJacupToChart();
+    })
+    .catch(function(){});
+}
+
+function renderJacupPills() {
+  var bar = document.getElementById('jacupBar');
+  if (!jacups.length) { bar.style.display = 'none'; return; }
+  bar.style.display = 'flex';
+  var html = '<span style="font-size:11px;font-weight:700;color:var(--orange);flex-shrink:0;margin-right:2px">작업지시</span>';
+  jacups.forEach(function(j){
+    var key = j.WORK_INDCT_NUM;
+    var vis = jacupVisible[key] !== false;
+    var lbl = esc(key || '');
+    html += '<span class="jacup-pill'+(vis?'':' hidden')+'" onclick="toggleJacup(\''+key+'\')">'
+          + '<span class="jacup-pill-dot"></span>'
+          + lbl
+          + '</span>';
+  });
+  bar.innerHTML = html;
+}
+
+function applyJacupToChart() {
+  if (!mainChart) return;
+  var axis = mainChart.xAxis[0];
+  (axis.plotLinesAndBands || []).slice().forEach(function(b){
+    if (b.id && String(b.id).indexOf('jacup-') === 0) axis.removePlotLine(b.id);
+  });
+  jacups.forEach(function(j){
+    var key = j.WORK_INDCT_NUM;
+    if (jacupVisible[key] === false) return;
+    var ts = parseTs(j.START_DTTM);
+    if (!ts) return;
+    axis.addPlotLine({
+      id: 'jacup-' + key,
+      value: ts, color: '#DD6B20', width: 1.5, dashStyle: 'ShortDash', zIndex: 5,
+      label: {
+        useHTML: true,
+        text: '<span style="display:inline-block;background:#DD6B20;color:#fff;font-size:10px;font-weight:700;padding:4px 8px;border-radius:5px;line-height:1.6;box-shadow:0 2px 6px rgba(221,107,32,.35)">'
+            + esc(key||'')
+            + (j.PROD_CD ? '<br><span style="font-weight:400;font-size:9px;opacity:.92">' + esc(j.PROD_CD) + '</span>' : '')
+            + (j.EQUT_CD ? '<br><span style="font-weight:500;font-size:9px;opacity:.75">&#128295; ' + esc(j.EQUT_CD) + '</span>' : '')
+            + '</span>',
+        rotation: 0, align: 'left', x: 3, y: 14
+      }
+    });
+  });
+}
+
+function toggleJacup(key) {
+  jacupVisible[key] = (jacupVisible[key] === false);
+  renderJacupPills();
+  applyJacupToChart();
+}
 
 /* ── 메모 ── */
 function openMemoModal() {
@@ -1012,6 +1341,15 @@ function deleteMemo(tcCnt) {
 }
 
 /* ── 초기화 ── */
+(function(){
+  try {
+    var p = window.parent;
+    if (p && p !== window) {
+      var sb = p.document.getElementById('sidebar');
+      if (sb && !sb.classList.contains('collapsed')) sb.classList.add('collapsed');
+    }
+  } catch(e) {}
+})();
 initRange();
 loadTags();
 startCountdown();

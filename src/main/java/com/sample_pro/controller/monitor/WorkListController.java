@@ -43,6 +43,20 @@ public class WorkListController {
         MACHINES = Collections.unmodifiableList(list);
     }
 
+    // GET /work/jacup/range → 트렌드용 시간범위 조회
+    @RequestMapping(value = "/jacup/range", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public ResponseEntity<?> jacupRange(@RequestParam(required = false, defaultValue = "") String equtCd,
+                                         @RequestParam String from,
+                                         @RequestParam String to) {
+        try {
+            List<Map<String, Object>> data = workListService.getJacupByRange(equtCd, from, to);
+            return ResponseEntity.ok(data);
+        } catch (Exception e) {
+            return ResponseEntity.ok(Collections.emptyList());
+        }
+    }
+
     // GET /work/listData → 12개 설비 미시작 작업지시 일괄 반환
     @RequestMapping(value = "/listData", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody

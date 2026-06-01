@@ -31,8 +31,9 @@ public class MainController {
     @RequestMapping(value = "/calib/status",   method = RequestMethod.GET) public String calibStatus()   { return "/main_1/facility/calib_status.jsp"; }
 
     // ì ê²€
-    @RequestMapping(value = "/inspect/daily",  method = RequestMethod.GET) public String inspectDaily()  { return "/main_1/facility/daily_inspect.jsp"; }
-    @RequestMapping(value = "/inspect/fproof", method = RequestMethod.GET) public String inspectFproof() { return "/main_1/quality/fproof.jsp"; }
+    @RequestMapping(value = "/inspect/daily",        method = RequestMethod.GET) public String inspectDaily()       { return "/main_1/facility/daily_inspect.jsp"; }
+    @RequestMapping(value = "/inspect/daily/tablet", method = RequestMethod.GET) public String inspectDailyTablet() { return "/main_1/facility/daily_inspect_tablet.jsp"; }
+    @RequestMapping(value = "/inspect/fproof",       method = RequestMethod.GET) public String inspectFproof()      { return "/main_1/quality/fproof.jsp"; }
 
     // ìžìž¬
     @RequestMapping(value = "/spare/parts",    method = RequestMethod.GET) public String spareParts()    { return "/main_1/facility/spare_parts.jsp"; }
@@ -40,6 +41,9 @@ public class MainController {
     // ì‹œìŠ¤í…œ
     @RequestMapping(value = "/user/manage",    method = RequestMethod.GET) public String userManage()    { return "/main_1/master/user_manage.jsp"; }
     @RequestMapping(value = "/user/permission",method = RequestMethod.GET) public String userPermission(){ return "/main_1/master/user_permission.jsp"; }
+
+    // 설비보존관리 - BACKUP-DATA
+    @RequestMapping(value = "/facility/backup", method = RequestMethod.GET) public String facilityBackup() { return "/main_1/facility/backup_data.jsp"; }
 }
 
 

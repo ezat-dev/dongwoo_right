@@ -55,6 +55,28 @@
    .ov-tab:not(:last-child) { border-right: 1px solid #CBD5E0; }
    .ov-tab:hover { background: #EBF8FF; color: #3182CE; }
    .ov-tab.active { background: #3182CE; color: #fff; }
+
+   /* ── BCF 명칭 / 운전모드 라벨 ── */
+   .bcf-name-lbl {
+     position: absolute;
+     width: 183px; height: 26px;
+     display: flex; align-items: center; justify-content: center;
+     font-size: 13px; font-weight: 800; letter-spacing: 1.2px;
+     background: #e8d84a; color: #1a1000;
+     border: 2px solid #b8a812; border-radius: 4px;
+     top: 62px; z-index: 200;
+     font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+   }
+   .bcf-mode-lbl {
+     position: absolute;
+     width: 183px; height: 26px;
+     display: flex; align-items: center; justify-content: center;
+     font-size: 12px; font-weight: 700; color: #fff;
+     background: #22c55e; border-radius: 4px;
+     top: 92px; z-index: 200;
+     font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+     transition: background .2s;
+   }
    </style>
   <title>Document</title>
 </head>
@@ -64,6 +86,28 @@
     <button class="ov-tab" onclick="window.parent.goOverview(2)">OVERVIEW-2</button>
   </div>
   <div class="group-1">
+
+    <!-- BCF 명칭 / 운전모드 라벨 (절대좌표, 각 작화 정중앙 정렬) -->
+    <div class="bcf-name-lbl" style="left:107.65px">NO.12</div>
+    <div class="bcf-mode-lbl" data-mode-tag="bcf12_25" style="left:107.65px">확인중</div>
+
+    <div class="bcf-name-lbl" style="left:357.49px">NO.1</div>
+    <div class="bcf-mode-lbl" data-mode-tag="bcf1_25" style="left:357.49px">확인중</div>
+
+    <div class="bcf-name-lbl" style="left:607.34px">NO.2</div>
+    <div class="bcf-mode-lbl" data-mode-tag="bcf2_25" style="left:607.34px">확인중</div>
+
+    <div class="bcf-name-lbl" style="left:857.18px">NO.3</div>
+    <div class="bcf-mode-lbl" data-mode-tag="bcf3_25" style="left:857.18px">확인중</div>
+
+    <div class="bcf-name-lbl" style="left:1107.03px">NO.4</div>
+    <div class="bcf-mode-lbl" data-mode-tag="bcf4_25" style="left:1107.03px">확인중</div>
+
+    <div class="bcf-name-lbl" style="left:1356.88px">NO.10</div>
+    <div class="bcf-mode-lbl" data-mode-tag="bcf10_25" style="left:1356.88px">확인중</div>
+
+    <div class="bcf-name-lbl" style="left:1606.72px">NO.5</div>
+    <div class="bcf-mode-lbl" data-mode-tag="bcf5_25" style="left:1606.72px">확인중</div>
 
     <div class="over-view-1">
       <div class="hogi-12">
@@ -570,6 +614,14 @@
   });
 
   const allTags = Object.keys(wordElMap).concat(Object.keys(bitElMap));
+
+  /* 운전모드 라벨 (data-mode-tag) → allTags 에 추가 */
+  const modeLblEls = document.querySelectorAll('[data-mode-tag]');
+  modeLblEls.forEach(function(el) {
+    var tag = el.getAttribute('data-mode-tag');
+    if (allTags.indexOf(tag) < 0) allTags.push(tag);
+  });
+
   if (!allTags.length) return;
 
   /* ── 2. PLC 값을 DOM에 반영 ── */
@@ -600,9 +652,81 @@
         el.style.visibility = show ? 'visible' : 'hidden';
       });
     });
+
+    // 운전모드 라벨 업데이트
+    modeLblEls.forEach(function(el) {
+      var tag = el.getAttribute('data-mode-tag');
+      if (data[tag] == null) return;
+      var isAuto = (data[tag] === 1 || data[tag] === true);
+      el.textContent        = isAuto ? '자동운전' : '수동운전';
+      el.style.background   = isAuto ? '#22c55e'  : '#ef4444';
+    });
   }
 
-  /* ── 3. 폴링: 직전 요청이 끝나야 다음 요청 시작 (중첩 방지) ── */
+  /* ── 3. 설비별 통신 로그 ── */
+  var BCF_IDS = ['bcf1', 'bcf2', 'bcf3', 'bcf4', 'bcf5', 'bcf10', 'bcf12'];
+  var pollCount = 0;
+
+  function logByDevice(data) {
+    pollCount++;
+    var now = new Date().toLocaleTimeString('ko-KR', {hour12: false, hour:'2-digit', minute:'2-digit', second:'2-digit'});
+    console.groupCollapsed('[MONITOR] 폴링 #' + pollCount + '  ' + now);
+
+    BCF_IDS.forEach(function(id) {
+      // 이 설비에 해당하는 태그만 추출
+      var prefix = id + '_';
+      var wordTags = Object.keys(wordElMap).filter(function(t){ return t.indexOf(prefix) === 0; });
+      var bitTags  = Object.keys(bitElMap ).filter(function(t){ return t.indexOf(prefix) === 0; });
+      var modeTags = allTags.filter(function(t){
+        return t.indexOf(prefix) === 0 && !wordElMap[t] && !bitElMap[t];
+      });
+
+      var nullWord = wordTags.filter(function(t){ return data[t] == null; });
+      var nullBit  = bitTags .filter(function(t){ return data[t] == null; });
+      var hasNull  = nullWord.length + nullBit.length > 0;
+
+      var style = hasNull ? 'color:#e53e3e;font-weight:700' : 'color:#38a169;font-weight:700';
+      console.groupCollapsed('%c' + id.toUpperCase()
+        + '  워드:' + wordTags.length + '  비트:' + bitTags.length
+        + (hasNull ? '  ⚠ 미응답:' + (nullWord.length + nullBit.length) : '  ✓'), style);
+
+      if (wordTags.length) {
+        console.group('▶ 워드(온도/CP)');
+        wordTags.forEach(function(t) {
+          var v = data[t];
+          if (v == null) { console.warn('  ' + t + ' → null (미응답)'); }
+          else {
+            var disp = CP_TAG.test(t) ? (Number(v)*0.001).toFixed(3)+' %' : Number(v).toFixed(0)+' ℃';
+            console.log('  ' + t + ' → ' + v + '  (' + disp + ')');
+          }
+        });
+        console.groupEnd();
+      }
+
+      if (bitTags.length) {
+        var onBits  = bitTags.filter(function(t){ return data[t] === 1 || data[t] === true; });
+        var offBits = bitTags.filter(function(t){ return data[t] === 0 || data[t] === false; });
+        var nullBitList = bitTags.filter(function(t){ return data[t] == null; });
+        console.group('▶ 비트  ON:' + onBits.length + '  OFF:' + offBits.length + (nullBitList.length ? '  NULL:'+nullBitList.length : ''));
+        if (onBits.length)  console.log('  ON  →', onBits.join(', '));
+        if (nullBitList.length) console.warn('  NULL→', nullBitList.join(', '));
+        console.groupEnd();
+      }
+
+      if (modeTags.length) {
+        modeTags.forEach(function(t) {
+          var v = data[t];
+          console.log('  운전모드 ' + t + ' →', v == null ? '❌ null' : (v ? '자동운전' : '수동운전'));
+        });
+      }
+
+      console.groupEnd(); // 설비
+    });
+
+    console.groupEnd(); // 전체
+  }
+
+  /* ── 4. 폴링: 직전 요청이 끝나야 다음 요청 시작 (중첩 방지) ── */
   var busy = false;
 
   function fetchData() {
@@ -614,7 +738,7 @@
       body:    JSON.stringify(allTags)
     })
     .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
-    .then(function (data) { applyData(data); })
+    .then(function (data) { applyData(data); logByDevice(data); })
     .catch(function (err) { console.warn('[monitor] PLC fetch 실패:', err); })
     .finally(function () { busy = false; });
   }

@@ -844,10 +844,7 @@
           return '<span class="alarm-time-val">' + (v.length >= 16 ? v.substring(0, 16) : v) + '</span>';
         }
       },
-      {
-        title: '경보 내용', field: 'alarmMsg', headerSort: false,
-        formatter: function(cell) { return cell.getValue() || '알람'; }
-      }
+
     ]
   });
 

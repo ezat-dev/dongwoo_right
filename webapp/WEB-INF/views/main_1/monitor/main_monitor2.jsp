@@ -55,6 +55,28 @@
    .ov-tab:not(:last-child) { border-right: 1px solid #CBD5E0; }
    .ov-tab:hover { background: #EBF8FF; color: #3182CE; }
    .ov-tab.active { background: #3182CE; color: #fff; }
+
+   /* ── BCF 명칭 / 운전모드 라벨 ── */
+   .bcf-name-lbl {
+     position: absolute;
+     height: 26px;
+     display: flex; align-items: center; justify-content: center;
+     font-size: 13px; font-weight: 800; letter-spacing: 1.2px;
+     background: #e8d84a; color: #1a1000;
+     border: 2px solid #b8a812; border-radius: 4px;
+     top: 18px; z-index: 200;
+     font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+   }
+   .bcf-mode-lbl {
+     position: absolute;
+     height: 26px;
+     display: flex; align-items: center; justify-content: center;
+     font-size: 12px; font-weight: 700; color: #fff;
+     background: #22c55e; border-radius: 4px;
+     top: 48px; z-index: 200;
+     font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+     transition: background .2s;
+   }
    </style>
   <title>Document</title>
 </head>
@@ -64,7 +86,23 @@
     <button class="ov-tab active">OVERVIEW-2</button>
   </div>
   <div class="group-3">
-  
+
+    <!-- BCF 명칭 / 운전모드 라벨 -->
+    <div class="bcf-name-lbl" style="left:345px;width:113px">NO.11</div>
+    <div class="bcf-mode-lbl" data-mode-tag="bcf11_25" style="left:345px;width:113px">확인중</div>
+
+    <div class="bcf-name-lbl" style="left:563px;width:152px">NO.8</div>
+    <div class="bcf-mode-lbl" data-mode-tag="bcf8_25" style="left:563px;width:152px">확인중</div>
+
+    <div class="bcf-name-lbl" style="left:809px;width:152px">NO.9</div>
+    <div class="bcf-mode-lbl" data-mode-tag="bcf9_25" style="left:809px;width:152px">확인중</div>
+
+    <div class="bcf-name-lbl" style="left:1055px;width:152px">NO.7</div>
+    <div class="bcf-mode-lbl" data-mode-tag="bcf7_25" style="left:1055px;width:152px">확인중</div>
+
+    <div class="bcf-name-lbl" style="left:1314px;width:222px">NO.6</div>
+    <div class="bcf-mode-lbl" data-mode-tag="bcf6_25" style="left:1314px;width:222px">확인중</div>
+
     <div class="group-2">
       <div class="bcf-11">
         <img class="bcf-112" src="<%= ctx %>/img/main_monitor_2/bcf-111.png" />
@@ -563,6 +601,14 @@
   });
 
   const allTags = Object.keys(wordElMap).concat(Object.keys(bitElMap));
+
+  /* 운전모드 라벨 (data-mode-tag) → allTags 에 추가 */
+  const modeLblEls = document.querySelectorAll('[data-mode-tag]');
+  modeLblEls.forEach(function(el) {
+    var tag = el.getAttribute('data-mode-tag');
+    if (allTags.indexOf(tag) < 0) allTags.push(tag);
+  });
+
   if (!allTags.length) return;
 
   var CP_TAG = /_(40052|40071|D1081|D1087)$/;
@@ -588,6 +634,15 @@
       bitElMap[tag].forEach(function (el) {
         el.style.visibility = show ? 'visible' : 'hidden';
       });
+    });
+
+    // 운전모드 라벨 업데이트
+    modeLblEls.forEach(function(el) {
+      var tag = el.getAttribute('data-mode-tag');
+      if (data[tag] == null) return;
+      var isAuto = (data[tag] === 1 || data[tag] === true);
+      el.textContent      = isAuto ? '자동운전' : '수동운전';
+      el.style.background = isAuto ? '#22c55e'  : '#ef4444';
     });
   }
 

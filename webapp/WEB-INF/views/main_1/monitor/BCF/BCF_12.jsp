@@ -3,6 +3,7 @@
 <%@ include file="../../common_style.jsp" %>
 <% String ctx = request.getContextPath(); %>
 <link rel="stylesheet" href="<%= ctx %>/css/bcf12/style.css">
+<link rel="stylesheet" href="<%= ctx %>/css/tabulator/tabulator.css">
 <style>
 /* ── BCF 탭 네비 ─────────────────────────── */
 .bcf-nav {
@@ -48,7 +49,7 @@
 .bcf-right-panel {
   position: absolute;
   left:    1070px;
-  top:     10;
+  top:     10px;
   right:   0;
   bottom:  0;
   display: flex;
@@ -62,7 +63,7 @@
 .bcf-top-row {
   display: flex;
   gap: 4px;
-  flex: 0 0 500px;
+  flex: 0 0 420px;
   min-height: 0;
 }
 
@@ -306,6 +307,84 @@
 .zbox.yellow { background: #fffaaa; border-color: #c8c000; color: #5a5000; }
 .zbox.cyan   { background: #aaeeff; border-color: #40aacc; color: #003a5c; }
 .zbox.empty  { background: #f0f0f0; border-color: #ccc;    color: #aaa; }
+
+/* ══════════════════════════════
+   bcf12 존구간 테이블
+   ══════════════════════════════ */
+.bcf12-zone-panel {
+  flex: 1;
+  min-height: 0;
+  border: 1.5px solid #7a9ab0;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.bcf12-zone-table {
+  width: 100%;
+  height: 100%;
+  border-collapse: collapse;
+  font-size: 10px;
+  font-family: 'Malgun Gothic', sans-serif;
+  table-layout: fixed;
+}
+.bcf12-zone-table th,
+.bcf12-zone-table td {
+  border: 1px solid #aac4d8;
+  text-align: center;
+  padding: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.bcf12-zone-table thead tr th {
+  background: #b8dde8;
+  color: #1a3a5c;
+  font-weight: 700;
+  font-size: 10px;
+  padding: 2px 0;
+}
+.bcf12-zone-table thead tr th.th-empty {
+  background: #e0e8f0;
+  border: none;
+}
+.bcf12-zone-table tbody tr td { background: #fff; }
+.bcf12-zone-table tbody tr td.row-label {
+  background: #d0e6f0;
+  font-weight: 700;
+  color: #1a3a5c;
+  text-align: left;
+  padding-left: 4px;
+  font-size: 9px;
+  white-space: nowrap;
+}
+
+/* 존 값 박스 (bcf12) */
+.zbox12 {
+  display: block;
+  width: 90%;
+  margin: 1px auto;
+  height: 14px;
+  line-height: 14px;
+  border-radius: 2px;
+  background: #ffb0b0;
+  border: 1px solid #e05050;
+  font-size: 8px;
+  color: #5a0000;
+  text-align: center;
+}
+.zbox12.yellow      { background: #fffaaa; border-color: #c8c000; color: #5a5000; }
+.zbox12.cyan        { background: #aaeeff; border-color: #40aacc; color: #003a5c; }
+.zbox12.empty       { background: #eeeeee; border-color: #ccc;    color: #aaa; }
+.zbox12.gas.c3h8    { background: #ffe4b0; border-color: #cc8800; color: #5a3000; }
+.zbox12.gas.c3h8-sp { background: #ffd070; border-color: #b07000; color: #4a2000; }
+.zbox12.gas.nh3     { background: #e8d0ff; border-color: #9060c0; color: #3a0060; }
+.zbox12.gas.nh3-sp  { background: #d0b0f0; border-color: #7040a0; color: #2a0050; }
+.zbox12.gas.air     { background: #c8eeff; border-color: #4090c0; color: #002850; }
+.zbox12.gas.air-sp  { background: #a8d8ff; border-color: #2070a0; color: #001840; }
+
+@keyframes blink { 50% { opacity: 0; } }
+.alarm-dot {
+  display: inline-block; width: 8px; height: 8px;
+  background: #ff2222; border-radius: 50%; animation: blink 1s infinite;
+}
 </style>
 
 <body>
@@ -412,7 +491,6 @@
       <img class="bcf-12-alarm-9" src="<%= ctx %>/img/bcf12/bcf-12-alarm-90.png" />
       <img class="bcf-12-sensor-off-22" src="<%= ctx %>/img/bcf12/bcf-12-sensor-off-21.png" />
       <img class="bcf-12-sensor-on-22" src="<%= ctx %>/img/bcf12/bcf-12-sensor-on-21.png" />
-    </div>
 
     <!-- ═══════════════════════════════════════
          오른쪽 패널 (신규)
@@ -430,11 +508,11 @@
             <div class="tp-title">온도 및 CP</div>
             <div class="tp-header">
 
-              <!-- 침탄실 DT ℃ -->
+              <!-- 침탄 DT ℃ -->
               <div class="tp-group">
-                <span class="tp-lbl red">침탄실</span>
+                <span class="tp-lbl red">침탄</span>
                 <span class="tp-unit">DT</span>
-                <div class="tp-val"></div>
+                <div class="tp-val" data-tag="bcf12_d1061">--</div>
                 <span class="tp-unit">℃</span>
               </div>
 
@@ -442,7 +520,7 @@
               <div class="tp-group">
                 <span class="tp-lbl green">유조</span>
                 <span class="tp-unit">DT</span>
-                <div class="tp-val"></div>
+                <div class="tp-val" data-tag="bcf12_d1051">--</div>
                 <span class="tp-unit">℃</span>
               </div>
 
@@ -450,31 +528,7 @@
               <div class="tp-group">
                 <span class="tp-lbl blue">CP</span>
                 <span class="tp-unit">DT</span>
-                <div class="tp-val blue"></div>
-                <span class="tp-unit">%</span>
-              </div>
-
-              <!-- 침탄SP DT ℃ -->
-              <div class="tp-group">
-                <span class="tp-lbl red">침탄SP</span>
-                <span class="tp-unit">DT</span>
-                <div class="tp-val"></div>
-                <span class="tp-unit">℃</span>
-              </div>
-
-              <!-- 유조SP DT ℃ -->
-              <div class="tp-group">
-                <span class="tp-lbl green">유조SP</span>
-                <span class="tp-unit">DT</span>
-                <div class="tp-val"></div>
-                <span class="tp-unit">℃</span>
-              </div>
-
-              <!-- CP SP DT % -->
-              <div class="tp-group">
-                <span class="tp-lbl blue">CP SP</span>
-                <span class="tp-unit">DT</span>
-                <div class="tp-val blue"></div>
+                <div class="tp-val blue" data-tag="bcf12_d1081">--</div>
                 <span class="tp-unit">%</span>
               </div>
 
@@ -512,95 +566,154 @@
 
       </div><!-- /bcf-top-row -->
 
-      <!-- 존별 구간 데이터 테이블 -->
-      <div class="bcf-zone-panel">
-        <table class="bcf-zone-table">
+      <!-- BCF12 존구간 테이블 -->
+      <div class="bcf12-zone-panel">
+        <table class="bcf12-zone-table">
           <thead>
             <tr>
-              <th rowspan="2" style="width:72px; font-size:10px;">구분</th>
-              <th colspan="2">승온1</th>
-              <th colspan="2">승온2</th>
-              <th colspan="2">침탄1</th>
-              <th colspan="2">침탄2</th>
-              <th colspan="2">확산1</th>
-              <th colspan="2">확산2</th>
-              <th colspan="2">강온</th>
-              <th colspan="2">로냉</th>
-              <th colspan="2">드레인</th>
+              <th class="th-empty" style="width:80px;"></th>
+              <th>승온1</th>
+              <th>침탄1</th>
+              <th>침탄2</th>
+              <th>확산1</th>
+              <th>확산2</th>
+              <th>강온</th>
+              <th>소인</th>
+              <th>냉각</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td class="row-label">시간(min) PV</td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
+              <td class="row-label">시간 (min) PV</td>
+              <td><div class="zbox12 bcf12_x084">--</div></td>
+              <td><div class="zbox12 bcf12_x085">--</div></td>
+              <td><div class="zbox12 bcf12_y135h">--</div></td>
+              <td><div class="zbox12 bcf12_y0deh">--</div></td>
+              <td><div class="zbox12 bcf12_y0dfh">--</div></td>
+              <td><div class="zbox12 bcf12_y10dh">--</div></td>
+              <td><div class="zbox12 bcf12_y130h">--</div></td>
+              <td><div class="zbox12 bcf12_x08b">--</div></td>
             </tr>
             <tr>
-              <td class="row-label">시간(min) SP</td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
+              <td class="row-label">시간 (min) SP</td>
+              <td><div class="zbox12 yellow bcf12_40024">--</div></td>
+              <td><div class="zbox12 yellow bcf12_x09d">--</div></td>
+              <td><div class="zbox12 yellow bcf12_x09e">--</div></td>
+              <td><div class="zbox12 yellow bcf12_x080">--</div></td>
+              <td><div class="zbox12 yellow bcf12_x081">--</div></td>
+              <td><div class="zbox12 yellow bcf12_y100h">--</div></td>
+              <td><div class="zbox12 yellow bcf12_y0d0h">--</div></td>
+              <td><div class="zbox12 yellow bcf12_y0d1h">--</div></td>
             </tr>
             <tr>
-              <td class="row-label">온도(℃) PV</td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox"></div></td>
-              <td colspan="2"><div class="zbox empty"></div></td>
+              <td class="row-label">온도 (℃) PV</td>
+              <td><div class="zbox12 bcf12_d1081">--</div></td>
+              <td><div class="zbox12 bcf12_d1061">--</div></td>
+              <td><div class="zbox12 bcf12_d1081">--</div></td>
+              <td><div class="zbox12 bcf12_d1061">--</div></td>
+              <td><div class="zbox12 bcf12_d1061">--</div></td>
+              <td><div class="zbox12 bcf12_d1061">--</div></td>
+              <td><div class="zbox12 bcf12_d1051">--</div></td>
+              <td><div class="zbox12 empty"></div></td>
             </tr>
             <tr>
-              <td class="row-label">온도(℃) SP</td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox yellow"></div></td>
-              <td colspan="2"><div class="zbox empty"></div></td>
+              <td class="row-label">온도 (℃) SP</td>
+              <td><div class="zbox12 yellow bcf12_y0f5h">--</div></td>
+              <td><div class="zbox12 yellow bcf12_x02b">--</div></td>
+              <td><div class="zbox12 yellow bcf12_x0b7">--</div></td>
+              <td><div class="zbox12 yellow bcf12_x07a">--</div></td>
+              <td><div class="zbox12 yellow bcf12_x079">--</div></td>
+              <td><div class="zbox12 yellow bcf12_y0f7h">--</div></td>
+              <td><div class="zbox12 yellow bcf12_y0f6h">--</div></td>
+              <td><div class="zbox12 empty"></div></td>
             </tr>
             <tr>
-              <td class="row-label">CP(%) PV</td>
-              <td colspan="2"><div class="zbox empty"></div></td>
-              <td colspan="2"><div class="zbox empty"></div></td>
-              <td colspan="2"><div class="zbox cyan"></div></td>
-              <td colspan="2"><div class="zbox cyan"></div></td>
-              <td colspan="2"><div class="zbox cyan"></div></td>
-              <td colspan="2"><div class="zbox cyan"></div></td>
-              <td colspan="2"><div class="zbox empty"></div></td>
-              <td colspan="2"><div class="zbox empty"></div></td>
-              <td colspan="2"><div class="zbox empty"></div></td>
+              <td class="row-label">CP (%) PV</td>
+              <td><div class="zbox12 cyan bcf12_d1081">--</div></td>
+              <td><div class="zbox12 cyan bcf12_d1081">--</div></td>
+              <td><div class="zbox12 cyan bcf12_d1081">--</div></td>
+              <td><div class="zbox12 cyan bcf12_d1081">--</div></td>
+              <td><div class="zbox12 cyan bcf12_d1081">--</div></td>
+              <td><div class="zbox12 cyan bcf12_d1081">--</div></td>
+              <td><div class="zbox12 empty"></div></td>
+              <td><div class="zbox12 empty"></div></td>
             </tr>
             <tr>
-              <td class="row-label">CP(%) SP</td>
-              <td colspan="2"><div class="zbox empty"></div></td>
-              <td colspan="2"><div class="zbox empty"></div></td>
-              <td colspan="2"><div class="zbox cyan"></div></td>
-              <td colspan="2"><div class="zbox cyan"></div></td>
-              <td colspan="2"><div class="zbox cyan"></div></td>
-              <td colspan="2"><div class="zbox cyan"></div></td>
-              <td colspan="2"><div class="zbox empty"></div></td>
-              <td colspan="2"><div class="zbox empty"></div></td>
-              <td colspan="2"><div class="zbox empty"></div></td>
+              <td class="row-label">CP (%) SP</td>
+              <td><div class="zbox12 cyan bcf12_y0f5h">--</div></td>
+              <td><div class="zbox12 cyan bcf12_x0b7">--</div></td>
+              <td><div class="zbox12 cyan bcf12_y0d3h">--</div></td>
+              <td><div class="zbox12 cyan bcf12_y0d8h">--</div></td>
+              <td><div class="zbox12 cyan bcf12_x082">--</div></td>
+              <td><div class="zbox12 cyan bcf12_x083">--</div></td>
+              <td><div class="zbox12 empty"></div></td>
+              <td><div class="zbox12 empty"></div></td>
+            </tr>
+            <tr>
+              <td class="row-label">C3H8(%) PV</td>
+              <td><div class="zbox12 gas c3h8 bcf12_d1010">--</div></td>
+              <td><div class="zbox12 gas c3h8 bcf12_d1010">--</div></td>
+              <td><div class="zbox12 gas c3h8 bcf12_d1010">--</div></td>
+              <td><div class="zbox12 gas c3h8 bcf12_d1010">--</div></td>
+              <td><div class="zbox12 gas c3h8 bcf12_d1010">--</div></td>
+              <td><div class="zbox12 gas c3h8 bcf12_d1010">--</div></td>
+              <td><div class="zbox12 empty"></div></td>
+              <td><div class="zbox12 empty"></div></td>
+            </tr>
+            <tr>
+              <td class="row-label">C3H8(%) SP</td>
+              <td><div class="zbox12 gas c3h8-sp bcf12_y0dch">--</div></td>
+              <td><div class="zbox12 gas c3h8-sp bcf12_y0d9h">--</div></td>
+              <td><div class="zbox12 gas c3h8-sp bcf12_y0dah">--</div></td>
+              <td><div class="zbox12 gas c3h8-sp bcf12_y0dbh">--</div></td>
+              <td><div class="zbox12 gas c3h8-sp bcf12_y0ddh">--</div></td>
+              <td><div class="zbox12 gas c3h8-sp bcf12_y132h">--</div></td>
+              <td><div class="zbox12 empty"></div></td>
+              <td><div class="zbox12 empty"></div></td>
+            </tr>
+            <tr>
+              <td class="row-label">NH3(%) PV</td>
+              <td><div class="zbox12 gas nh3 bcf12_d1020">--</div></td>
+              <td><div class="zbox12 gas nh3 bcf12_d1020">--</div></td>
+              <td><div class="zbox12 gas nh3 bcf12_d1020">--</div></td>
+              <td><div class="zbox12 gas nh3 bcf12_d1020">--</div></td>
+              <td><div class="zbox12 gas nh3 bcf12_d1020">--</div></td>
+              <td><div class="zbox12 gas nh3 bcf12_d1020">--</div></td>
+              <td><div class="zbox12 empty"></div></td>
+              <td><div class="zbox12 empty"></div></td>
+            </tr>
+            <tr>
+              <td class="row-label">NH3(%) SP</td>
+              <td><div class="zbox12 gas nh3-sp bcf12_x07c">--</div></td>
+              <td><div class="zbox12 gas nh3-sp bcf12_y10bh">--</div></td>
+              <td><div class="zbox12 gas nh3-sp bcf12_x09b">--</div></td>
+              <td><div class="zbox12 gas nh3-sp bcf12_x09c">--</div></td>
+              <td><div class="zbox12 gas nh3-sp bcf12_x07d">--</div></td>
+              <td><div class="zbox12 gas nh3-sp bcf12_y131h">--</div></td>
+              <td><div class="zbox12 empty"></div></td>
+              <td><div class="zbox12 empty"></div></td>
+            </tr>
+            <tr>
+              <td class="row-label">AIR(%) PV</td>
+              <td><div class="zbox12 gas air bcf12_y0d6h">--</div></td>
+              <td><div class="zbox12 gas air bcf12_y0d6h">--</div></td>
+              <td><div class="zbox12 gas air bcf12_y0d6h">--</div></td>
+              <td><div class="zbox12 gas air bcf12_y0d6h">--</div></td>
+              <td><div class="zbox12 gas air bcf12_y0d6h">--</div></td>
+              <td><div class="zbox12 gas air bcf12_y0d6h">--</div></td>
+              <td><div class="zbox12 empty"></div></td>
+              <td><div class="zbox12 empty"></div></td>
+            </tr>
+            <tr>
+              <td class="row-label">AIR(%) SP</td>
+              <td><div class="zbox12 gas air-sp bcf12_x086">--</div></td>
+              <td><div class="zbox12 gas air-sp bcf12_y134h">--</div></td>
+              <td><div class="zbox12 gas air-sp bcf12_x089">--</div></td>
+              <td><div class="zbox12 gas air-sp bcf12_y133h">--</div></td>
+              <td><div class="zbox12 gas air-sp bcf12_x087h">--</div></td>
+              <td><div class="zbox12 gas air-sp bcf12_y0d4h">--</div></td>
+              <td><div class="zbox12 empty"></div></td>
+              <td><div class="zbox12 empty"></div></td>
             </tr>
           </tbody>
         </table>
@@ -611,11 +724,103 @@
   </div><!-- /group-1 -->
 </div><!-- /page-wrap -->
 
+<script src="<%= ctx %>/js/tabulator/tabulator.js"></script>
 <script>
-var cur = location.pathname.split('/').pop();
-document.querySelectorAll('.bcf-tab').forEach(function(a){
-  if(a.getAttribute('href').split('/').pop() === cur) a.classList.add('active');
-});
+(function() {
+  var cur = location.pathname.split('/').pop();
+  document.querySelectorAll('.bcf-tab').forEach(function(a) {
+    if (a.getAttribute('href').split('/').pop() === cur) a.classList.add('active');
+  });
+})();
+
+(function() {
+  'use strict';
+  var ctx = '<%= ctx %>';
+  var INTERVAL = 3000;
+  var wordElMap = {};
+
+  document.querySelectorAll('.zbox12').forEach(function(el) {
+    el.className.split(/\s+/).forEach(function(cls) {
+      if (!/^bcf12_/.test(cls)) return;
+      if (!wordElMap[cls]) wordElMap[cls] = [];
+      wordElMap[cls].push(el);
+    });
+  });
+
+  var tpElMap = {};
+  document.querySelectorAll('.tp-val[data-tag]').forEach(function(el) {
+    var tag = el.getAttribute('data-tag');
+    if (!tpElMap[tag]) tpElMap[tag] = [];
+    tpElMap[tag].push(el);
+  });
+
+  var allTags = Object.keys(wordElMap).concat(
+    Object.keys(tpElMap).filter(function(t) { return !wordElMap[t]; })
+  );
+
+  function applyData(data) {
+    Object.keys(wordElMap).forEach(function(tag) {
+      if (data[tag] == null) return;
+      var raw = Number(data[tag]);
+      var text = isNaN(raw) ? data[tag] : raw.toFixed(0);
+      wordElMap[tag].forEach(function(el) { el.textContent = text; });
+    });
+    Object.keys(tpElMap).forEach(function(tag) {
+      if (data[tag] == null) return;
+      var raw = Number(data[tag]);
+      var text;
+      if (isNaN(raw)) {
+        text = data[tag];
+      } else if (tag === 'bcf12_d1081') {
+        text = (raw * 0.001).toFixed(3);
+      } else {
+        text = raw.toFixed(0);
+      }
+      tpElMap[tag].forEach(function(el) { el.textContent = text; });
+    });
+  }
+
+  var busy = false;
+  function fetchData() {
+    if (busy || !allTags.length) return;
+    busy = true;
+    fetch(ctx + '/monitor/main-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(allTags)
+    })
+    .then(function(r) { return r.ok ? r.json() : Promise.reject(r.status); })
+    .then(function(data) { applyData(data); })
+    .catch(function(err) { console.warn('[BCF12] PLC fetch 실패:', err); })
+    .finally(function() { busy = false; });
+  }
+
+  var alarmTable = new Tabulator('.alarm-body', {
+    height: '100%', layout: 'fitColumns', headerVisible: false,
+    placeholder: '현재 경보 없음', rowHeight: 36, data: [],
+    columns: [
+      { title: '', field: 'dot', width: 22, resizable: false, headerSort: false,
+        formatter: function() { return '<span class="alarm-dot"></span>'; } },
+      { title: '경보', field: 'alarmMsg', headerSort: false,
+        formatter: function(cell) { return cell.getValue() || '알람'; } }
+    ]
+  });
+
+  function fetchAlarms() {
+    fetch(ctx + '/alarm/active/list?limit=200')
+      .then(function(r) { return r.ok ? r.json() : []; })
+      .then(function(list) {
+        alarmTable.setData((Array.isArray(list) ? list : []).filter(function(a) {
+          return a.plcId === 'dongwoo_12';
+        }));
+      })
+      .catch(function() {});
+  }
+
+  fetchData(); fetchAlarms();
+  setInterval(fetchData,   INTERVAL);
+  setInterval(fetchAlarms, INTERVAL);
+})();
 </script>
 </body>
 </html>

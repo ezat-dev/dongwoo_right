@@ -79,26 +79,28 @@
             saved_at=CURRENT_TIMESTAMP
     </insert>
 
-    <!-- ── 점검 결과 (일별) ── -->
+    <!-- ── 점검 결과 (일별·주간야간) ── -->
     <resultMap id="resultMap" type="com.sample_pro.domain.InspectResult">
         <id     property="resultId"   column="result_id"/>
         <result property="equipId"    column="equip_id"/>
         <result property="inspectYm"  column="inspect_ym"/>
         <result property="inspectDay" column="inspect_day"/>
         <result property="itemId"     column="item_id"/>
-        <result property="result"     column="result"/>
+        <result property="shift"      column="shift"/>
+        <result property="val"        column="val"/>
     </resultMap>
 
     <select id="selectResults" parameterType="map" resultMap="resultMap">
-        SELECT result_id, equip_id, inspect_ym, inspect_day, item_id, result
+        SELECT result_id, equip_id, inspect_ym, inspect_day, item_id, shift, val
         FROM tb_inspect_result
         WHERE equip_id=#{equipId} AND inspect_ym=#{ym}
     </select>
 
+    <!-- shift 포함 upsert: UNIQUE KEY(equip_id, inspect_ym, item_id, inspect_day, shift) 필요 -->
     <insert id="upsertCell" parameterType="com.sample_pro.domain.InspectResult">
-        INSERT INTO tb_inspect_result (equip_id, inspect_ym, inspect_day, item_id, result)
-        VALUES (#{equipId}, #{inspectYm}, #{inspectDay}, #{itemId}, #{result})
-        ON DUPLICATE KEY UPDATE result=VALUES(result)
+        INSERT INTO tb_inspect_result (equip_id, inspect_ym, inspect_day, item_id, shift, val)
+        VALUES (#{equipId}, #{inspectYm}, #{inspectDay}, #{itemId}, #{shift}, #{val})
+        ON DUPLICATE KEY UPDATE val = VALUES(val)
     </insert>
 
 </mapper>

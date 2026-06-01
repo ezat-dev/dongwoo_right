@@ -181,7 +181,6 @@ function buildTable(m) {
     '<thead><tr>' +
       '<th class="col-num">#</th>' +
       '<th class="col-lot">LOT번호</th>' +
-      '<th class="col-cust">거래처</th>' +
       '<th class="col-prod">제품명</th>' +
     '</tr></thead>';
 
@@ -198,7 +197,6 @@ function buildTable(m) {
     tr.innerHTML =
       '<td class="col-num">' + (i + 1) + '</td>' +
       '<td class="col-lot"  title="' + esc(item.workIndctNum) + '">' + esc(item.workIndctNum || '') + '</td>' +
-      '<td class="col-cust" title="' + esc(item.custNm)       + '">' + esc(item.custNm       || '') + '</td>' +
       '<td class="col-prod" title="' + esc(item.prodNm)       + '">' + esc(item.prodNm       || '') + '</td>';
     tr.addEventListener('click', (function(t, k){ return function(){ toggleRow(t, k); }; })(tr, key));
     tbody.appendChild(tr);
@@ -208,7 +206,7 @@ function buildTable(m) {
   for (var j = items.length; j < FIXED_ROWS; j++) {
     var pad = document.createElement('tr');
     pad.className = 'empty-fixed';
-    pad.innerHTML = '<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>';
+    pad.innerHTML = '<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>';
     tbody.appendChild(pad);
   }
 
