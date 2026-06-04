@@ -280,6 +280,46 @@ var trendChart   = null;
 var trendRawData = [];
 var seriesMeta   = []; /* [{col, label, color, active}] */
 
+/* BCF별 컬럼 한글명 매핑 (미정의 컬럼은 Data번호로 fallback) */
+var BCF_COMMON_1_5 = {
+  Data1:'침탄온도PV', Data2:'침탄온도SP', Data3:'CP PV',    Data4:'CP SP',
+  Data5:'유조온도PV', Data6:'유조온도SP', Data7:'C3H8 유량'
+};
+var BCF_COMMON_7_10_12 = {
+  Data1:'침탄온도PV', Data2:'침탄온도SP', Data3:'CP PV',    Data4:'CP SP',
+  Data5:'유조온도PV', Data6:'유조온도SP', Data7:'C3H8 유량', Data8:'NH3 유량'
+};
+var BCF_LABEL_MAP = {
+  '1':  BCF_COMMON_1_5,
+  '2':  BCF_COMMON_1_5,
+  '3':  BCF_COMMON_1_5,
+  '4':  BCF_COMMON_1_5,
+  '5':  BCF_COMMON_1_5,
+  '6':  {
+    Data1:'예열온도PV',      Data2:'예열온도SP',
+    Data3:'가열온도PV',      Data4:'가열온도SP',
+    Data5:'침탄1온도PV',     Data6:'침탄1온도SP',
+    Data7:'침탄2온도PV',     Data8:'침탄2온도SP',
+    Data9:'강온온도PV',      Data10:'강온온도SP',
+    Data11:'가열 CP PV',     Data12:'가열 CP SP',
+    Data13:'침탄 CP PV',     Data14:'침탄 CP SP',
+    Data15:'가열 C3H8 유량', Data16:'침탄 C3H8 유량'
+  },
+  '7':  BCF_COMMON_7_10_12,
+  '8':  BCF_COMMON_7_10_12,
+  '9':  BCF_COMMON_7_10_12,
+  '10': BCF_COMMON_7_10_12,
+  '11': {
+    Data1:'1실온도PV',  Data2:'1실온도SP',
+    Data3:'2실온도PV',  Data4:'2실온도SP',
+    Data5:'냉각실온도PV', Data6:'냉각실온도SP',
+    Data7:'1실 CP PV', Data8:'1실 CP SP',
+    Data9:'2실 CP PV', Data10:'2실 CP SP',
+    Data11:'1실 C3H8', Data12:'2실 C3H8'
+  },
+  '12': BCF_COMMON_7_10_12
+};
+
 Highcharts.setOptions({
   lang: { months:['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
           shortMonths:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
@@ -347,6 +387,9 @@ function loadTrend() {
 function buildSeriesPanel(rows) {
   if (!rows.length) return;
 
+  var bcf      = document.getElementById('trend-equip').value;
+  var labelMap = BCF_LABEL_MAP[bcf] || {};
+
   /* 컬럼 키 탐지 (Data1~Data16, 대소문자 무관) */
   var firstRow = rows[0];
   var allKeys  = Object.keys(firstRow);
@@ -360,8 +403,17 @@ function buildSeriesPanel(rows) {
     return rows.some(function(row){ return parseFloat(row[col]) !== 0; });
   });
 
+  /* 컬럼 키를 정규화 (DB 반환 키 대소문자 무관하게 labelMap 조회) */
+  function getLabel(col) {
+    var normalized = col.charAt(0).toUpperCase() + col.slice(1).toLowerCase()
+                       .replace(/(\d+)$/, function(m){ return m; });
+    /* "data1" → "Data1" 형태로 */
+    var key = 'Data' + col.replace(/\D/g,'');
+    return labelMap[key] || col;
+  }
+
   seriesMeta = dataCols.map(function(col, i){
-    return { col: col, color: COLORS[i % COLORS.length], active: activeCols.indexOf(col) !== -1 };
+    return { col: col, label: getLabel(col), color: COLORS[i % COLORS.length], active: activeCols.indexOf(col) !== -1 };
   });
 
   /* 체크박스 렌더 */
@@ -370,7 +422,7 @@ function buildSeriesPanel(rows) {
     html += '<label class="series-item">'
           + '<input type="checkbox" ' + (s.active ? 'checked' : '') + ' data-idx="' + i + '" onchange="onSeriesToggle(this)">'
           + '<span class="series-dot" style="background:' + s.color + '"></span>'
-          + s.col
+          + s.label
           + '</label>';
   });
   document.getElementById('series-list').innerHTML = html;
@@ -413,7 +465,7 @@ function renderTrendChart() {
       return [times[i], parseFloat(row[s.col]) || 0];
     });
     return {
-      name:      s.col,
+      name:      s.label,
       data:      data,
       color:     s.color,
       lineWidth: 1.5,
@@ -433,8 +485,8 @@ function renderTrendChart() {
     chart: {
       type: 'spline', animation: false,
       zoomType: 'x',
-      backgroundColor: '#FFFFFF',
-      plotBackgroundColor: '#F7FAFC',
+      backgroundColor: '#0F1923',
+      plotBackgroundColor: '#0A1220',
       panning: { enabled: true, type: 'x' }, panKey: 'shift',
       style: { fontFamily: "'Segoe UI','Malgun Gothic',sans-serif" },
       height: null,
@@ -444,14 +496,14 @@ function renderTrendChart() {
     legend: { enabled: false },
     xAxis: {
       type: 'datetime',
-      lineColor: '#CBD5E0', tickColor: '#CBD5E0', gridLineColor: '#EDF2F7',
-      labels: { format: '{value:%m/%d %H:%M}', style: { fontSize:'10px', color:'#718096' } },
-      crosshair: { color: 'rgba(49,130,206,.3)' }
+      lineColor: '#2D3748', tickColor: '#2D3748', gridLineColor: '#1E2A3A',
+      labels: { format: '{value:%m/%d %H:%M}', style: { fontSize:'10px', color:'#A0AEC0' } },
+      crosshair: { color: 'rgba(99,179,237,.25)' }
     },
     yAxis: {
       title: { text: null },
-      gridLineColor: '#EDF2F7',
-      labels: { style: { fontSize:'10px', color:'#718096' } }
+      gridLineColor: '#1E2A3A',
+      labels: { style: { fontSize:'10px', color:'#A0AEC0' } }
     },
     tooltip: {
       shared: true,
@@ -497,10 +549,11 @@ function initAlarmTable() {
       { title: '설비',   field: 'source',     width: 65,  hozAlign: 'center',
         formatter: function(cell){ return '<span class="cell-bcf">' + getBcf(cell.getValue()) + '</span>'; }
       },
-      { title: '알람내용', field: 'descString', width: 150 },
-      { title: 'PV',     field: 'pv',         width: 60,  hozAlign: 'center' },
-      { title: '설정값', field: 'tripValue',   width: 60,  hozAlign: 'center' },
-      { title: '발생시간', field: 'timeAct',   minWidth: 140 }
+    
+      { title: 'PV',     field: 'pv',         width: 160,  hozAlign: 'center' },
+      { title: '설정값', field: 'tripValue',   width: 160,  hozAlign: 'center' },
+      { title: '발생시간', field: 'timeAct',   minWidth: 140 },
+        { title: '알람내용', field: 'descString', width: 550 }
     ]
   });
 }
@@ -545,6 +598,24 @@ function exportExcel() {
   var to   = document.getElementById('alarm-end').value;
   alarmTable.download('csv', 'alarm_' + from + '_' + to + '.csv', { bom: true });
 }
+
+/* ════════════════════════════
+   페이지 로드 시 자동 조회
+════════════════════════════ */
+document.addEventListener('DOMContentLoaded', function() {
+  var now  = new Date();
+  var past = new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000);
+
+  document.getElementById('trend-end').value   = fmtDt(now);
+  document.getElementById('trend-start').value = fmtDt(past);
+
+  var ymd = now.getFullYear() + '-'
+          + String(now.getMonth()+1).padStart(2,'0') + '-'
+          + String(now.getDate()).padStart(2,'0');
+  document.getElementById('alarm-end').value = ymd;
+
+  loadTrend();
+});
 </script>
 </body>
 </html>

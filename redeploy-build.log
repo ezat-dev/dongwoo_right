@@ -10,11 +10,13 @@
 [INFO] 
 [INFO] --- resources:3.4.0:resources (default-resources) @ web ---
 [WARNING] Using platform encoding (MS949 actually) to copy filtered resources, i.e. build is platform dependent!
-[INFO] Copying 22 resources from src\main\resources to target\classes
+[INFO] Copying 24 resources from src\main\resources to target\classes
 [INFO] 
 [INFO] --- compiler:3.10.1:compile (default-compile) @ web ---
 [INFO] Changes detected - recompiling the module!
-[INFO] Compiling 112 source files to D:\sample_pro\target\classes
+[INFO] Compiling 120 source files to D:\sample_pro\target\classes
+[INFO] /D:/sample_pro/src/main/java/com/sample_pro/controller/facility/AuxiliaryInspectionController.java: D:\sample_pro\src\main\java\com\sample_pro\controller\facility\AuxiliaryInspectionController.java uses or overrides a deprecated API.
+[INFO] /D:/sample_pro/src/main/java/com/sample_pro/controller/facility/AuxiliaryInspectionController.java: Recompile with -Xlint:deprecation for details.
 [INFO] 
 [INFO] --- resources:3.4.0:testResources (default-testResources) @ web ---
 [WARNING] Using platform encoding (MS949 actually) to copy filtered resources, i.e. build is platform dependent!
@@ -34,6 +36,6 @@
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  3.833 s
-[INFO] Finished at: 2026-06-01T11:44:06+09:00
+[INFO] Total time:  3.959 s
+[INFO] Finished at: 2026-06-04T11:17:47+09:00
 [INFO] ------------------------------------------------------------------------

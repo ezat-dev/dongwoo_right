@@ -11,7 +11,7 @@ import java.util.Map;
 @Repository
 public class WorkListDaoImpl implements WorkListDao {
 
-    @Resource(name = "session")
+    @Resource(name = "htmsSession")
     private SqlSession sqlSession;
 
     @Override

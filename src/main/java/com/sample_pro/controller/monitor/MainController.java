@@ -44,6 +44,12 @@ public class MainController {
 
     // 설비보존관리 - BACKUP-DATA
     @RequestMapping(value = "/facility/backup", method = RequestMethod.GET) public String facilityBackup() { return "/main_1/facility/backup_data.jsp"; }
+
+    // 유류, 소모재 관리대장
+    @RequestMapping(value = "/consumable/ledger", method = RequestMethod.GET) public String consumableLedger() { return "/main_1/facility/consumableLedger.jsp"; }
+
+    // 부대설비 점검표
+    @RequestMapping(value = "/auxiliary/inspection", method = RequestMethod.GET) public String auxiliaryInspection() { return "/main_1/facility/auxiliaryInspection.jsp"; }
 }
 
 

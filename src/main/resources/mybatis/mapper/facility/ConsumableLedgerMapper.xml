@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+  ※ 신규 테이블 생성 SQL (최초 1회 DB에서 실행)
+  ===================================================
+  CREATE TABLE tb_consumable_ledger (
+    id          BIGINT        AUTO_INCREMENT PRIMARY KEY,
+    category    VARCHAR(100)  NOT NULL COMMENT '구분',
+    item_name   VARCHAR(200)  NOT NULL COMMENT '품명/규격',
+    package_unit VARCHAR(100)          COMMENT '포장단위',
+    stock_qty   VARCHAR(50)            COMMENT '보유재고 수량 (varchar: GAS 등 문자열 입력 가능)',
+    stock_unit  VARCHAR(50)            COMMENT '보유재고 단위',
+    safety_qty  VARCHAR(50)            COMMENT '안전재고 수량',
+    safety_unit VARCHAR(50)            COMMENT '안전재고 단위',
+    remark      VARCHAR(1000)          COMMENT '비고(특이사항)',
+    sort_order  INT           DEFAULT 0,
+    use_yn      CHAR(1)       DEFAULT 'Y',
+    reg_date    DATETIME      DEFAULT CURRENT_TIMESTAMP,
+    update_date DATETIME      NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='유류,소모재 관리대장';
+
+  ※ 초기 데이터 INSERT SQL
+  ===================================================
+  INSERT INTO tb_consumable_ledger (category, item_name, package_unit, stock_qty, stock_unit, safety_qty, safety_unit, sort_order) VALUES
+  ('열처리유',  'BW-2200',       '200L / DRUM', '', 'DRUM', '5',        'DRUM', 10),
+  ('열처리유',  'BW-2110',       '200L / DRUM', '', 'DRUM', '1',        'DRUM', 20),
+  ('열처리유',  'BW-1180K',      '200L / DRUM', '', 'DRUM', '1',        'DRUM', 30),
+  ('세정액',    'NW-854',        '200L / DRUM', '', 'DRUM', '3',        'DRUM', 40),
+  ('열매체유',  'BWTHREAM',      '200L / DRUM', '', 'DRUM', '3',        'DRUM', 50),
+  ('미정',      'P-SV(A)',       '20L / 말',    '', '말',   '2',        '말',   60),
+  ('미정',      'P-DBH(A)',      '20L / 말',    '', 'DRUM', '1',        'DRUM', 70),
+  ('미정',      'P-ST(WD40)',    '20L / 말',    '', '말',   '2',        '말',   80),
+  ('미정',      'ANTIRUST 425LF','200L / DRUM', '', 'DRUM', '2',        'DRUM', 90),
+  ('미정',      'RP-300',        '20L / 말',    '', '말',   '2',        '말',   100),
+  ('미정',      'UCON',          '20L / 말',    '', '말',   '2',        '말',   110),
+  ('SHOT BALL', '0.4mm',         '25kg / 포',   '', 'kg',   '500',      'kg',   120),
+  ('CUT WIRE',  '0.3mm',         '25kg / 포',   '', 'kg',   '100',      'kg',   130),
+  ('호닝파우더','WA-150',         '20kg / 포',   '', 'kg',   '200',      'kg',   140),
+  ('GAS',       'NH3',           '45kg / 병',   '', '병',   '2',        '병',   150),
+  ('GAS',       'C3H8',          '·',           '2.45t :', '%',         '2.45t : 30', '%', 160),
+  ('GAS',       'N2',            '·',           '', 'mmH2O','700',      'mmH2O',170),
+  ('GAS',       'H2',            '47ℓ / 병',   '', '병',   '2',        '병',   180),
+  ('GAS',       'CH4',           '47ℓ / 병',   '', '병',   '1',        '병',   190),
+  ('GAS',       'Ar',            '47ℓ / 병',   '', '병',   '1',        '병',   200);
+-->
+
+<mapper namespace="ConsumableLedgerMapper">
+
+    <resultMap id="ledgerMap" type="com.sample_pro.domain.ConsumableLedger">
+        <id     property="id"          column="id"/>
+        <result property="category"    column="category"/>
+        <result property="itemName"    column="item_name"/>
+        <result property="packageUnit" column="package_unit"/>
+        <result property="stockQty"    column="stock_qty"/>
+        <result property="stockUnit"   column="stock_unit"/>
+        <result property="safetyQty"   column="safety_qty"/>
+        <result property="safetyUnit"  column="safety_unit"/>
+        <result property="remark"      column="remark"/>
+        <result property="sortOrder"   column="sort_order"/>
+        <result property="useYn"       column="use_yn"/>
+        <result property="regDate"     column="reg_date"/>
+        <result property="updateDate"  column="update_date"/>
+    </resultMap>
+
+    <!-- 목록 조회 -->
+    <select id="selectList" resultMap="ledgerMap">
+        SELECT id, category, item_name, package_unit,
+               stock_qty, stock_unit, safety_qty, safety_unit,
+               remark, sort_order, use_yn,
+               DATE_FORMAT(reg_date,    '%Y-%m-%d %H:%i') AS reg_date,
+               DATE_FORMAT(update_date, '%Y-%m-%d %H:%i') AS update_date
+        FROM tb_consumable_ledger
+        WHERE use_yn = 'Y'
+        ORDER BY sort_order, id
+    </select>
+
+    <!-- 신규 추가 -->
+    <insert id="insert" parameterType="com.sample_pro.domain.ConsumableLedger"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tb_consumable_ledger
+            (category, item_name, package_unit, stock_qty, stock_unit,
+             safety_qty, safety_unit, remark, sort_order, use_yn)
+        VALUES
+            (#{category}, #{itemName}, #{packageUnit}, #{stockQty}, #{stockUnit},
+             #{safetyQty}, #{safetyUnit}, #{remark}, #{sortOrder}, 'Y')
+    </insert>
+
+    <!-- 수정 -->
+    <update id="update" parameterType="com.sample_pro.domain.ConsumableLedger">
+        UPDATE tb_consumable_ledger
+        SET category     = #{category},
+            item_name    = #{itemName},
+            package_unit = #{packageUnit},
+            stock_qty    = #{stockQty},
+            stock_unit   = #{stockUnit},
+            safety_qty   = #{safetyQty},
+            safety_unit  = #{safetyUnit},
+            remark       = #{remark},
+            sort_order   = #{sortOrder},
+            update_date  = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <!-- 논리 삭제 (use_yn = 'N') -->
+    <update id="delete" parameterType="long">
+        UPDATE tb_consumable_ledger
+        SET use_yn      = 'N',
+            update_date = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <!-- 보유재고 수량만 업데이트 (입고/사용 후 자동 반영) -->
+    <update id="updateStock" parameterType="map">
+        UPDATE tb_consumable_ledger
+        SET stock_qty   = #{stockQty},
+            update_date = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <!-- 단건 조회 (재고 업데이트용) -->
+    <select id="selectById" parameterType="long" resultMap="ledgerMap">
+        SELECT id, stock_qty FROM tb_consumable_ledger WHERE id = #{id}
+    </select>
+
+    <!-- ══════════════════════════════════════
+         입출고 이력 (tb_consumable_history)
+    ══════════════════════════════════════
+
+    ※ 이력 테이블 CREATE SQL (최초 1회 실행)
+    CREATE TABLE tb_consumable_history (
+        id          BIGINT       AUTO_INCREMENT PRIMARY KEY,
+        ledger_id   BIGINT       NOT NULL COMMENT 'tb_consumable_ledger.id',
+        type        CHAR(3)      NOT NULL COMMENT 'IN=입고 / OUT=사용',
+        qty         VARCHAR(50)           COMMENT '수량',
+        remark      VARCHAR(500)          COMMENT '비고',
+        user_name   VARCHAR(100)          COMMENT '담당자',
+        reg_date    DATETIME     DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    -->
+
+    <resultMap id="historyMap" type="com.sample_pro.domain.ConsumableLedgerHistory">
+        <id     property="id"        column="id"/>
+        <result property="ledgerId"  column="ledger_id"/>
+        <result property="category"  column="category"/>
+        <result property="itemName"  column="item_name"/>
+        <result property="type"      column="type"/>
+        <result property="qty"       column="qty"/>
+        <result property="remark"    column="remark"/>
+        <result property="userName"  column="user_name"/>
+        <result property="regDate"   column="reg_date"/>
+    </resultMap>
+
+    <!-- 이력 목록 조회 -->
+    <select id="selectHistoryList" parameterType="map" resultMap="historyMap">
+        SELECT h.id, h.ledger_id, l.category, l.item_name,
+               h.type, h.qty, h.remark, h.user_name,
+               DATE_FORMAT(h.reg_date, '%Y-%m-%d %H:%i') AS reg_date
+        FROM tb_consumable_history h
+        LEFT JOIN tb_consumable_ledger l ON h.ledger_id = l.id
+        <where>
+            <if test="ledgerId != null">AND h.ledger_id = #{ledgerId}</if>
+            <if test="type     != null and type != ''">AND h.type = #{type}</if>
+            <if test="fromDt   != null and fromDt != ''">AND DATE(h.reg_date) &gt;= #{fromDt}</if>
+            <if test="toDt     != null and toDt   != ''">AND DATE(h.reg_date) &lt;= #{toDt}</if>
+        </where>
+        ORDER BY h.id DESC
+        LIMIT 500
+    </select>
+
+    <!-- 이력 추가 -->
+    <insert id="insertHistory" parameterType="com.sample_pro.domain.ConsumableLedgerHistory"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tb_consumable_history (ledger_id, type, qty, remark, user_name)
+        VALUES (#{ledgerId}, #{type}, #{qty}, #{remark}, #{userName})
+    </insert>
+
+    <!-- 이력 삭제 -->
+    <delete id="deleteHistory" parameterType="long">
+        DELETE FROM tb_consumable_history WHERE id = #{id}
+    </delete>
+
+</mapper>

@@ -106,6 +106,7 @@ var PAGES = [
   { url:'alarm/ranking',  name:'알람 랭킹',      icon:'🏆' },
   { url:'calib/status',   name:'보정현황',       icon:'🌡️' },
   { url:'inspect/daily',  name:'일상점검일지',   icon:'📋' },
+  { url:'auxiliary/inspection', name:'부대설비 점검표', icon:'🏭' },
   { url:'inspect/fproof', name:'F/PROOF',        icon:'🛡️' },
   { url:'spare/parts',    name:'스페어파트',     icon:'🔩' },
   { url:'user/manage',    name:'사용자 관리',    icon:'👤' },

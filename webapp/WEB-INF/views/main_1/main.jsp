@@ -308,11 +308,17 @@ html, body { height: 100%; font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
         <a class="sb-item" href="#" onclick="go('${pageContext.request.contextPath}/main_1/inspect/daily','일상점검일지',this);return false;">
           <div class="sb-icon">📋</div><span class="sb-label">일상점검일지</span>
         </a>
+        <a class="sb-item" href="#" onclick="go('${pageContext.request.contextPath}/main_1/auxiliary/inspection','부대설비 점검표',this);return false;">
+          <div class="sb-icon">🏭</div><span class="sb-label">부대설비 점검표</span>
+        </a>
         <a class="sb-item" href="#" onclick="go('${pageContext.request.contextPath}/main_1/spare/parts','스페어파트',this);return false;">
           <div class="sb-icon">🔩</div><span class="sb-label">스페어파트</span>
         </a>
         <a class="sb-item" href="#" onclick="go('${pageContext.request.contextPath}/main_1/facility/backup','BACKUP-DATA',this);return false;">
           <div class="sb-icon">💾</div><span class="sb-label">BACKUP-DATA</span>
+        </a>
+        <a class="sb-item" href="#" onclick="go('${pageContext.request.contextPath}/main_1/consumable/ledger','유류·소모재 관리대장',this);return false;">
+          <div class="sb-icon">🛢️</div><span class="sb-label">유류·소모재 관리대장</span>
         </a>
       </div>
 

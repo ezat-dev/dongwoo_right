@@ -31,14 +31,18 @@
         LIMIT 2000
     </select>
 
-    <!-- bcfN_ 트렌드 데이터 (분 단위 샘플링) -->
+    <!-- bcfN_ 트렌드 데이터 (분 단위 GROUP BY - 초 오프셋 무관) -->
     <select id="selectBcfTrendData" parameterType="map" resultType="map">
-        SELECT DATE_FORMAT(DataDate, '%Y-%m-%d %H:%i:%s') AS DataDate,
-               Data1, Data2, Data3,  Data4,  Data5,  Data6,  Data7,  Data8,
-               Data9, Data10, Data11, Data12, Data13, Data14, Data15, Data16
+        SELECT DATE_FORMAT(MIN(DataDate), '%Y-%m-%d %H:%i:00') AS DataDate,
+               MIN(Data1)  AS Data1,  MIN(Data2)  AS Data2,  MIN(Data3)  AS Data3,
+               MIN(Data4)  AS Data4,  MIN(Data5)  AS Data5,  MIN(Data6)  AS Data6,
+               MIN(Data7)  AS Data7,  MIN(Data8)  AS Data8,  MIN(Data9)  AS Data9,
+               MIN(Data10) AS Data10, MIN(Data11) AS Data11, MIN(Data12) AS Data12,
+               MIN(Data13) AS Data13, MIN(Data14) AS Data14, MIN(Data15) AS Data15,
+               MIN(Data16) AS Data16
         FROM ${tableName}
         WHERE DataDate BETWEEN #{from} AND #{to}
-          AND SECOND(DataDate) = 0
+        GROUP BY DATE_FORMAT(DataDate, '%Y-%m-%d %H:%i')
         ORDER BY DataDate ASC
     </select>
 

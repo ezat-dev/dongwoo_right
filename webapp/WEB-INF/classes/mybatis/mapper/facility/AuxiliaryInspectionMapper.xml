@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+  ※ 신규 테이블 CREATE SQL (최초 1회 DB에서 실행)
+  ========================================================
+  CREATE TABLE tb_auxiliary_inspection (
+      id               BIGINT       AUTO_INCREMENT PRIMARY KEY,
+      inspect_date     DATE         NOT NULL              COMMENT '점검일자',
+      day_inspector    VARCHAR(100)                       COMMENT '주간 점검자(조)',
+      night_inspector  VARCHAR(100)                       COMMENT '야간 점검자(조)',
+      outdoor_data     TEXT                               COMMENT '옥외부대설비 점검값 JSON',
+      comp_data        TEXT                               COMMENT '콤프레샤 점검값 JSON',
+      n2gas_data       TEXT                               COMMENT 'N2 GAS 점검값 JSON',
+      notes            TEXT                               COMMENT '점검시 유의사항',
+      special_notes    TEXT                               COMMENT '특기사항',
+      reg_date         DATETIME     DEFAULT CURRENT_TIMESTAMP,
+      update_date      DATETIME,
+      UNIQUE KEY uk_date (inspect_date)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='부대설비 점검표';
+
+  CREATE TABLE tb_auxiliary_template (
+      id            INT          DEFAULT 1 PRIMARY KEY,
+      notes         TEXT                               COMMENT '점검시 유의사항 기본값 (다음날 인계)',
+      special_notes TEXT                               COMMENT '특기사항 기본값',
+      update_date   DATETIME     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+  INSERT INTO tb_auxiliary_template (id, notes, special_notes) VALUES
+  (1,
+   '1. 점검시간은 주간 08:30~17:30내에 실시\n       야간 20:30~05:30내에 실시\n\n2. 점검한 사항은 가능한 수치를 적고, 정확한 내용을 기재한다.\n\n3. 점검표는 주간 16:30, 야간 08:30에 보고 한다.\n   (주간중 개별 이상 내용은 조장에 보고)\n\n4. 조장은 확인하여 보고하고, 조치토록 한다.',
+   '');
+-->
+
+<mapper namespace="AuxiliaryInspectionMapper">
+
+    <!-- 날짜로 단건 조회 -->
+    <select id="selectByDate" parameterType="String" resultType="map">
+        SELECT id,
+               DATE_FORMAT(inspect_date, '%Y-%m-%d') AS inspect_date,
+               day_inspector, night_inspector,
+               outdoor_data, comp_data, n2gas_data,
+               notes, special_notes
+        FROM tb_auxiliary_inspection
+        WHERE inspect_date = #{value}
+    </select>
+
+    <!-- 기본값 템플릿 조회 (notes/special_notes 다음날 인계용) -->
+    <select id="selectTemplate" resultType="map">
+        SELECT notes, special_notes FROM tb_auxiliary_template WHERE id = 1
+    </select>
+
+    <!-- 신규 등록 -->
+    <insert id="insert" parameterType="map">
+        INSERT INTO tb_auxiliary_inspection
+            (inspect_date, day_inspector, night_inspector,
+             outdoor_data, comp_data, n2gas_data, notes, special_notes)
+        VALUES
+            (#{inspect_date}, #{day_inspector}, #{night_inspector},
+             #{outdoor_data}, #{comp_data}, #{n2gas_data}, #{notes}, #{special_notes})
+    </insert>
+
+    <!-- 수정 -->
+    <update id="update" parameterType="map">
+        UPDATE tb_auxiliary_inspection
+        SET day_inspector    = #{day_inspector},
+            night_inspector  = #{night_inspector},
+            outdoor_data     = #{outdoor_data},
+            comp_data        = #{comp_data},
+            n2gas_data       = #{n2gas_data},
+            notes            = #{notes},
+            special_notes    = #{special_notes},
+            update_date      = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <!-- 유의사항/특기사항 템플릿 upsert (저장 시 항상 업데이트) -->
+    <update id="upsertTemplate" parameterType="map">
+        INSERT INTO tb_auxiliary_template (id, notes, special_notes)
+        VALUES (1, #{notes}, #{special_notes})
+        ON DUPLICATE KEY UPDATE
+            notes         = #{notes},
+            special_notes = #{special_notes},
+            update_date   = NOW()
+    </update>
+
+</mapper>
