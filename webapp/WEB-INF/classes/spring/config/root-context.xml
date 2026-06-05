@@ -26,6 +26,11 @@
         <property name="url" value="jdbc:mariadb://localhost:3306/ez_scada"/>
         <property name="username" value="root"/>
         <property name="password" value="ezat6695!"/>
+        <!-- 끊긴 커넥션 자동 감지: MySQL wait_timeout 초과 후 재연결 -->
+        <property name="validationQuery" value="SELECT 1"/>
+        <property name="testOnBorrow" value="true"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
     </bean>
 
     <!-- htms DataSource (알람 이력) -->
@@ -34,6 +39,11 @@
         <property name="url" value="jdbc:mariadb://192.168.1.93:3306/htms"/>
         <property name="username" value="root"/>
         <property name="password" value="a123456789"/>
+        <!-- htms DB도 동일하게 stale connection 방지 -->
+        <property name="validationQuery" value="SELECT 1"/>
+        <property name="testOnBorrow" value="true"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
     </bean>
     
     

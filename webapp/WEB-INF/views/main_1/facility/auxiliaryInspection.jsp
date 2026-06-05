@@ -8,13 +8,21 @@
   cursor:pointer; transition:all .13s; color:var(--muted); }
 .ax-tab.active { background:var(--primary); color:#fff; border-color:var(--primary); }
 
-/* ── 3단 그리드 (1:1:1 균등) ── */
-.ax-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; align-items:start; }
-@media(max-width:900px){  .ax-grid{ grid-template-columns:1fr 1fr; } }
+/* ── 3단 그리드 (1:1:1 균등, 높이 stretch) ── */
+.ax-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; align-items:stretch; }
+@media(max-width:900px){  .ax-grid{ grid-template-columns:1fr 1fr; align-items:start; } }
 @media(max-width:620px){  .ax-grid{ grid-template-columns:1fr; } }
 
-/* ── 콤프레샤 + 유의사항 묶음 컬럼 ── */
-#col2Wrap { display:flex; flex-direction:column; gap:12px; }
+/* ── 2·3열 래퍼: 테이블 + 노트 세로 배치, 높이 100% ── */
+#col2Wrap, #col3Wrap {
+  display:flex; flex-direction:column; gap:12px; height:100%;
+}
+/* 노트 카드: 남은 공간 채우기 */
+#noteCard1, #noteCard2 {
+  flex:1; display:flex; flex-direction:column; min-height:80px;
+}
+#noteCard1 .ax-textarea,
+#noteCard2 .ax-textarea { flex:1; min-height:60px; resize:vertical; }
 
 /* ── 점검 테이블 공통 ── */
 .ax-table { width:100%; border-collapse:collapse; font-size:12px; table-layout:fixed; }
@@ -27,7 +35,8 @@
   padding:4px; border:1px solid #CBD5E0;
   vertical-align:middle; text-align:center;
 }
-.ax-table td.left { text-align:left; font-size:11px; word-break:keep-all; }
+.ax-table td.left  { text-align:left; font-size:11px; word-break:keep-all; }
+.ax-table .sub-cell { font-size:10px; color:#718096; text-align:center; }
 .ax-table td.group-cell {
   background:#EDF2F7; font-weight:700; font-size:11px;
   writing-mode:vertical-lr; text-orientation:upright;
@@ -95,7 +104,10 @@ body.tablet-mode #notesArea { gap:12px; }
 /* ── 태블릿 모드: 공통 크기 조정 ── */
 body.tablet-mode .ax-table th { font-size:13px; padding:8px 6px; }
 body.tablet-mode .ax-table td { padding:6px 4px; }
-body.tablet-mode .ax-table td.left { font-size:12px; }
+/* 옥외부대설비: 점검항목·관리기준·서브·구분 글씨 확대 */
+body.tablet-mode #outdoorTable td.left      { font-size:14px; }
+body.tablet-mode #outdoorTable .sub-cell    { font-size:13px; color:#4A5568; }
+body.tablet-mode #outdoorTable td.group-cell{ font-size:13px; min-width:62px; }
 body.tablet-mode .ox-cell  { min-width:42px; height:42px; font-size:16px; }
 body.tablet-mode .tri-cell { min-width:42px; height:42px; font-size:18px; }
 body.tablet-mode .ax-input { font-size:14px; }
@@ -104,50 +116,83 @@ body.tablet-mode .btn-primary, body.tablet-mode .btn-outline { min-height:44px; 
 body.tablet-mode .form-input { min-height:44px; font-size:14px; }
 body.tablet-mode .ax-tab { padding:10px 24px; font-size:14px; }
 
-/* ── 태블릿: 테이블 자동 확장 ── */
+/* ── 태블릿: 테이블 자동 확장, axGrid 단일 열 ── */
 body.tablet-mode .ax-table { table-layout:auto !important; }
-/* 태블릿에서 axGrid는 단일 열 (탭으로 하나만 보임) */
 body.tablet-mode .ax-grid  { grid-template-columns:1fr !important; }
 
 /* ── 태블릿: 구분 셀 가로 텍스트 ── */
 body.tablet-mode .ax-table td.group-cell {
-  writing-mode:horizontal-tb !important;
-  text-orientation:mixed !important;
-  letter-spacing:0 !important;
-  width:auto !important;
-  min-width:54px !important;
-  padding:4px 6px !important;
-  white-space:nowrap;
+  writing-mode:horizontal-tb !important; text-orientation:mixed !important;
+  letter-spacing:0 !important; width:auto !important;
+  min-width:54px !important; padding:4px 6px !important; white-space:nowrap;
 }
 
-/* ── 레이아웃 ── */
-#mainLayout       { display:contents; }
-#tabletViewArea   { display:contents; }  /* 일반: 투명 래퍼 */
+/* ── 레이아웃 (일반 모드) ── */
+#mainLayout     { display:flex; flex-direction:column; }
+#tabletViewArea { display:contents; }
+#notesColumn    { display:none; }
 
-/* ── 태블릿: 4:1:1 그리드 (섹션 탭 | 유의사항 | 특기사항) ── */
+/* ── 태블릿: page scroll 차단 ── */
+body.tablet-mode .page-wrap { overflow:hidden; }
+
+/* ── 태블릿: 4:1 그리드 (높이는 JS가 직접 px로 세팅) ── */
 body.tablet-mode #tabletViewArea {
   display:grid;
-  grid-template-columns:4fr 1fr 1fr;
+  grid-template-columns:4fr 1fr;
   gap:12px;
-  align-items:stretch;  /* 세 열 높이 동일하게 */
+  align-items:stretch;
 }
-/* notesArea의 두 카드를 그리드 직접 자식으로 올림 */
-body.tablet-mode #tabletViewArea > #notesArea {
-  display:contents;
+
+/* 각 섹션 공통: JS가 height px 직접 세팅 + 내부 flex */
+body.tablet-mode #sec-outdoor,
+body.tablet-mode #col2Wrap,
+body.tablet-mode #col3Wrap {
+  box-sizing:border-box; overflow:hidden;
+  display:flex; flex-direction:column;
 }
-/* 노트 카드: 그리드 셀 높이 100% 채우기 */
-body.tablet-mode #tabletViewArea > #notesArea > .card {
-  height:100%;
-  box-sizing:border-box;
-  display:flex;
-  flex-direction:column;
+
+/* 옥외부대설비 스크롤 */
+body.tablet-mode #sec-outdoor > div:last-child {
+  flex:1; overflow:auto; min-height:0;
+  -webkit-overflow-scrolling:touch;
 }
-/* 텍스트에어리어: 카드 내 남은 공간 전부 채우기 */
-body.tablet-mode #tabletViewArea > #notesArea > .card .ax-textarea {
-  flex:1;
-  min-height:0;
-  resize:none;
-  font-size:13px;
+
+/* 콤프레샤: 내부 카드 flex + 행 비율 채우기 */
+body.tablet-mode #col2Wrap > #sec-comp {
+  flex:1; box-sizing:border-box; overflow:hidden;
+  display:flex; flex-direction:column;
+}
+body.tablet-mode #col2Wrap > #sec-comp > div:last-child {
+  flex:1; overflow:auto; min-height:0;
+  -webkit-overflow-scrolling:touch;
+}
+body.tablet-mode #compTable { height:100%; }
+body.tablet-mode #compTable tbody tr { height:1%; }
+
+/* N₂ GAS: 내부 카드 flex + 행 높이 축소 */
+body.tablet-mode #col3Wrap > #sec-n2gas {
+  flex:1; box-sizing:border-box; overflow:hidden;
+  display:flex; flex-direction:column;
+}
+body.tablet-mode #col3Wrap > #sec-n2gas > div:last-child {
+  flex:1; overflow:auto; min-height:0;
+  -webkit-overflow-scrolling:touch;
+}
+body.tablet-mode #n2gasTable td          { padding:3px 4px; }
+body.tablet-mode #n2gasTable .tri-cell   { height:32px; min-width:36px; font-size:16px; }
+body.tablet-mode #n2gasTable td.left     { font-size:12px; }
+
+/* 노트 컬럼: JS가 height px 직접 세팅 */
+body.tablet-mode #notesColumn {
+  display:flex; flex-direction:column; gap:12px; overflow:hidden;
+}
+body.tablet-mode #noteCard1,
+body.tablet-mode #noteCard2 {
+  flex:1; box-sizing:border-box; display:flex; flex-direction:column; min-height:0;
+}
+body.tablet-mode #noteCard1 .ax-textarea,
+body.tablet-mode #noteCard2 .ax-textarea {
+  flex:1; min-height:0; resize:none; font-size:13px;
 }
 </style>
 <body>
@@ -208,7 +253,7 @@ body.tablet-mode #tabletViewArea > #notesArea > .card .ax-textarea {
           </div>
         </div>
 
-        <!-- ② 콤프레샤 + 유의사항/특기사항 묶음 (일반 모드: 같은 열) -->
+        <!-- ② 콤프레샤 + ※점검시유의사항 -->
         <div id="col2Wrap">
           <div class="card ax-section" id="sec-comp">
             <div class="section-title">콤프레샤 점검표</div>
@@ -217,34 +262,34 @@ body.tablet-mode #tabletViewArea > #notesArea > .card .ax-textarea {
               <table class="ax-table" id="compTable"></table>
             </div>
           </div>
-          <!-- 유의사항/특기사항: 일반=여기(col2 하단), 태블릿=우측 패널(JS로 이동) -->
-          <div id="notesArea">
-            <div class="card" style="padding:12px 14px">
-              <div style="font-size:12px;font-weight:700;margin-bottom:6px">※ 점검시 유의사항
-                <small style="font-weight:400;color:var(--muted);margin-left:6px">(저장 시 다음 날 자동 인계)</small>
-              </div>
-              <textarea class="ax-textarea" id="notes" placeholder="유의사항을 입력하세요"></textarea>
+          <div class="card" id="noteCard1" style="padding:12px 14px">
+            <div style="font-size:12px;font-weight:700;margin-bottom:6px">※ 점검시 유의사항
+              <small style="font-weight:400;color:var(--muted);margin-left:6px">(저장 시 다음 날 자동 인계)</small>
             </div>
-            <div class="card" style="padding:12px 14px">
-              <div style="font-size:12px;font-weight:700;margin-bottom:6px">※ 특기사항
-                <small style="font-weight:400;color:var(--muted);margin-left:6px">(저장 시 다음 날 자동 인계)</small>
-              </div>
-              <textarea class="ax-textarea" id="specialNotes" placeholder="특기사항을 입력하세요"></textarea>
-            </div>
-          </div><!-- /notesArea -->
+            <textarea class="ax-textarea" id="notes" placeholder="유의사항을 입력하세요"></textarea>
+          </div>
         </div><!-- /col2Wrap -->
 
-        <!-- ③ N2 GAS 일일 점검일지 -->
-        <div class="card ax-section" id="sec-n2gas">
-          <div class="section-title">N₂ GAS 일일 점검일지</div>
-          <div class="section-note">(점검이상무 ○, 점검이상 △, 이상조치완료 ⊙)</div>
-          <div style="overflow-x:auto">
-            <table class="ax-table" id="n2gasTable"></table>
+        <!-- ③ N2 GAS + ※특기사항 -->
+        <div id="col3Wrap">
+          <div class="card ax-section" id="sec-n2gas">
+            <div class="section-title">N₂ GAS 일일 점검일지</div>
+            <div class="section-note">(점검이상무 ○, 점검이상 △, 이상조치완료 ⊙)</div>
+            <div style="overflow-x:auto">
+              <table class="ax-table" id="n2gasTable"></table>
+            </div>
           </div>
-        </div>
+          <div class="card" id="noteCard2" style="padding:12px 14px">
+            <div style="font-size:12px;font-weight:700;margin-bottom:6px">※ 특기사항
+              <small style="font-weight:400;color:var(--muted);margin-left:6px">(저장 시 다음 날 자동 인계)</small>
+            </div>
+            <textarea class="ax-textarea" id="specialNotes" placeholder="특기사항을 입력하세요"></textarea>
+          </div>
+        </div><!-- /col3Wrap -->
 
       </div><!-- /ax-grid -->
-      <!-- notesArea가 JS로 여기(tabletViewArea)로 이동됨 (태블릿 모드) -->
+      <!-- 태블릿: 우측 노트 컬럼 (noteCard1/2가 JS로 여기로 이동) -->
+      <div id="notesColumn"></div>
       </div><!-- /tabletViewArea -->
     </div><!-- /sectionsWrap -->
 
@@ -255,7 +300,9 @@ body.tablet-mode #tabletViewArea > #notesArea > .card .ax-textarea {
 <script>
 var base = '${pageContext.request.contextPath}';
 var canEdit = true;
-var tabletMode = localStorage.getItem('ax_tablet_mode') === '1';
+/* 소형 화면(모바일) 첫 방문 시 태블릿 모드 자동 활성화 */
+var _savedMode = localStorage.getItem('ax_tablet_mode');
+var tabletMode = _savedMode !== null ? (_savedMode === '1') : (window.innerWidth < 768);
 
 /* ══════════════════════════════════════════
    형식 정의
@@ -354,44 +401,93 @@ function toggleTabletMode() {
 }
 
 function applyTabletMode() {
-  var btn       = document.getElementById('btnTablet');
-  var tabs      = document.getElementById('axTabs');
-  var notesEl   = document.getElementById('notesArea');
-  var tabletVA  = document.getElementById('tabletViewArea');
-  var col2      = document.getElementById('col2Wrap');
+  var btn      = document.getElementById('btnTablet');
+  var tabs     = document.getElementById('axTabs');
+  var nc1      = document.getElementById('noteCard1');
+  var nc2      = document.getElementById('noteCard2');
+  var tabletVA = document.getElementById('tabletViewArea');
+  var col2     = document.getElementById('col2Wrap');
+  var col3     = document.getElementById('col3Wrap');
+
+  var notesCol = document.getElementById('notesColumn');
 
   if (tabletMode) {
     document.body.classList.add('tablet-mode');
     if (btn)  { btn.classList.add('active'); btn.innerHTML = '💻 일반 모드'; }
-    if (tabs) tabs.style.display = 'flex';  // 탭 표시
-    // notesArea를 tabletViewArea 끝으로 이동 → display:contents로 두 카드가 4:1:1 그리드 3번째 자식이 됨
-    if (notesEl && tabletVA && notesEl.parentElement !== tabletVA) tabletVA.appendChild(notesEl);
+    if (tabs) tabs.style.display = 'flex';
+    // noteCard1/2를 notesColumn으로 이동 (세로 반반)
+    if (nc1 && notesCol) notesCol.appendChild(nc1);
+    if (nc2 && notesCol) notesCol.appendChild(nc2);
     // 탭 초기: outdoor 표시, 나머지 숨김
-    ['sec-outdoor','col2Wrap','sec-n2gas'].forEach(function(id, i) {
+    ['sec-outdoor','col2Wrap','col3Wrap'].forEach(function(id, i) {
       var el = document.getElementById(id);
       if (el) el.style.display = i === 0 ? '' : 'none';
     });
-    // 탭 버튼 첫 번째 활성화
     var tabBtns = document.querySelectorAll('.ax-tab');
     tabBtns.forEach(function(b){ b.classList.remove('active'); });
     if (tabBtns[0]) tabBtns[0].classList.add('active');
+    setTabletHeight();  /* JS로 높이 직접 계산 */
   } else {
     document.body.classList.remove('tablet-mode');
     if (btn)  { btn.classList.remove('active'); btn.innerHTML = '📱 태블릿 모드'; }
     if (tabs) tabs.style.display = 'none';
-    // notesArea를 col2Wrap으로 복귀
-    if (notesEl && col2 && notesEl.parentElement !== col2) col2.appendChild(notesEl);
-    // 3개 섹션 모두 표시
-    ['sec-outdoor','col2Wrap','sec-n2gas'].forEach(function(id) {
+    // noteCard1 → col2Wrap 복귀, noteCard2 → col3Wrap 복귀
+    if (nc1 && col2 && nc1.parentElement !== col2) col2.appendChild(nc1);
+    if (nc2 && col3 && nc2.parentElement !== col3) col3.appendChild(nc2);
+    // 3개 모두 표시 + 높이 인라인 제거
+    ['sec-outdoor','col2Wrap','col3Wrap'].forEach(function(id) {
       var el = document.getElementById(id);
-      if (el) el.style.display = '';
+      if (el) { el.style.display = ''; el.style.height = ''; }
     });
+    var tva = document.getElementById('tabletViewArea');
+    if (tva) tva.style.height = '';
+    var nc = document.getElementById('notesColumn');
+    if (nc) nc.style.height = '';
   }
 }
 
+/* ── JS 높이 직접 계산 (CSS 체인 대신 실측 px 세팅) ── */
+function setTabletHeight() {
+  if (!tabletMode) return;
+  requestAnimationFrame(function() {
+    var ph   = document.querySelector('.page-header');
+    var ic   = document.querySelector('.page-wrap > .card');
+    var tabs = document.getElementById('axTabs');
+    var pw   = document.querySelector('.page-wrap');
+    var wh   = window.innerHeight;
+
+    var used = 0;
+    /* page-wrap padding top+bottom */
+    if (pw) {
+      var cs = window.getComputedStyle(pw);
+      used += parseFloat(cs.paddingTop||0) + parseFloat(cs.paddingBottom||0);
+    } else { used += 44; }
+    /* 페이지 헤더 */
+    if (ph) used += ph.offsetHeight + 20;
+    /* 점검자 카드 */
+    if (ic) used += ic.offsetHeight + 12;
+    /* 탭 버튼 */
+    if (tabs && tabs.offsetParent) used += tabs.offsetHeight + 14;
+
+    var h   = Math.max(260, wh - used);
+    var hpx = h + 'px';
+
+    var tva = document.getElementById('tabletViewArea');
+    if (tva) tva.style.height = hpx;
+
+    var notesCol = document.getElementById('notesColumn');
+    if (notesCol) notesCol.style.height = hpx;
+
+    ['sec-outdoor','col2Wrap','col3Wrap'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.style.height = hpx;
+    });
+  });
+}
+window.addEventListener('resize', setTabletHeight);
+
 function showAxTab(id, btn) {
-  // comp 탭은 sec-comp가 아닌 col2Wrap을 show/hide
-  var idMap = {outdoor:'sec-outdoor', comp:'col2Wrap', n2gas:'sec-n2gas'};
+  var idMap = {outdoor:'sec-outdoor', comp:'col2Wrap', n2gas:'col3Wrap'};
   ['outdoor','comp','n2gas'].forEach(function(s) {
     var el = document.getElementById(idMap[s]);
     if (el) el.style.display = s === id ? '' : 'none';
@@ -437,7 +533,7 @@ function buildOutdoorTable() {
       h += '<td'+rs+' class="left" style="font-size:10px">'+row.std+'</td>';
     }
     /* 서브 */
-    h += '<td style="font-size:10px;color:#718096">'+(row.sub||'')+'</td>';
+    h += '<td class="sub-cell">'+(row.sub||'')+'</td>';
     /* 주/야 입력 */
     h += '<td>'+makeOxCell(row.key,'day')+'</td>';
     h += '<td>'+makeOxCell(row.key,'night')+'</td>';
