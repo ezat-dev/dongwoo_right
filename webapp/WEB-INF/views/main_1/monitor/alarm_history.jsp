@@ -47,13 +47,13 @@
       <div class="kpi-icon">🔴</div>
       <div><div class="kpi-val" id="kpiActive" style="color:var(--red)">-</div><div class="kpi-lbl">현재 활성 알람</div></div>
     </div>
-    <div class="kpi-card" style="border-left:4px solid #7B2D8B">
-      <div class="kpi-icon">⚡</div>
-      <div><div class="kpi-val" id="kpiLv1" style="color:#7B2D8B">-</div><div class="kpi-lbl">위험(Lv1) 발생</div></div>
+    <div class="kpi-card" style="border-left:4px solid #2B6CB0">
+      <div class="kpi-icon">📅</div>
+      <div><div class="kpi-val" id="kpiToday" style="color:#2B6CB0">-</div><div class="kpi-lbl">오늘 발생</div></div>
     </div>
     <div class="kpi-card" style="border-left:4px solid var(--orange)">
-      <div class="kpi-icon">⚠️</div>
-      <div><div class="kpi-val" id="kpiLv2" style="color:var(--orange)">-</div><div class="kpi-lbl">경고(Lv2) 발생</div></div>
+      <div class="kpi-icon">🔔</div>
+      <div><div class="kpi-val" id="kpiUnack" style="color:var(--orange)">-</div><div class="kpi-lbl">미인지 알람</div></div>
     </div>
     <div class="kpi-card" style="border-left:4px solid var(--green)">
       <div class="kpi-icon">✅</div>
@@ -64,16 +64,16 @@
   <!-- 차트 행 -->
   <div class="chart-row">
     <div class="chart-box">
-      <div class="chart-title">등급별 분포</div>
-      <canvas id="chartLevel" height="180"></canvas>
+      <div class="chart-title">상태별 분포</div>
+      <canvas id="chartState" height="180"></canvas>
     </div>
     <div class="chart-box">
       <div class="chart-title">PLC별 알람 수</div>
       <canvas id="chartPlc" height="180"></canvas>
     </div>
-    <div class="chart-box">
+    <div class="chart-box" style="position:relative;">
       <div class="chart-title">시간대별 발생 추이 (최근 24h)</div>
-      <canvas id="chartTrend" height="180"></canvas>
+      <canvas id="chartTrend" style="position:absolute;top:36px;left:0;right:0;bottom:0;width:100%;height:calc(100% - 36px)"></canvas>
     </div>
   </div>
 
@@ -87,16 +87,6 @@
       <div class="form-field">
         <label class="form-label">종료일</label>
         <input class="form-input" type="date" id="dateTo" style="width:140px">
-      </div>
-      <div class="form-field">
-        <label class="form-label">등급</label>
-        <select class="form-select" id="selLevel" style="width:110px">
-          <option value="">전체</option>
-          <option value="1">위험(Lv1)</option>
-          <option value="2">경고(Lv2)</option>
-          <option value="3">주의(Lv3)</option>
-          <option value="4">정보(Lv4)</option>
-        </select>
       </div>
       <div class="form-field">
         <label class="form-label">PLC</label>
@@ -147,11 +137,7 @@ var filtered   = [];
 var PAGE_SIZE  = 20;
 var curPage    = 1;
 
-var chartLevel, chartPlc, chartTrend;
-
-var LV_LABEL = {1:'위험',2:'경고',3:'주의',4:'정보'};
-var LV_COLOR = {1:'#7B2D8B',2:'#DD6B20',3:'#ECC94B',4:'#4299E1'};
-var LV_BADGE = {1:'badge-alarm',2:'badge-warn',3:'badge-warn',4:'badge-blue'};
+var chartState, chartPlc, chartTrend;
 
 /* ── 데이터 로드 ── */
 function loadAll(){
@@ -174,9 +160,15 @@ function loadAll(){
 
 /* ── KPI ── */
 function updateKpi(){
+  var todayStr = new Date().toISOString().slice(0,10);
+  var combined = allHistory.slice();
+  allActive.forEach(function(a){
+    var dup = combined.some(function(h){ return h.tagName===a.tagName && h.occurTime===a.occurTime; });
+    if(!dup) combined.push(a);
+  });
   document.getElementById('kpiActive').textContent  = allActive.length;
-  document.getElementById('kpiLv1').textContent     = allHistory.filter(function(r){ return r.level===1||r.level==='1'; }).length;
-  document.getElementById('kpiLv2').textContent     = allHistory.filter(function(r){ return r.level===2||r.level==='2'; }).length;
+  document.getElementById('kpiToday').textContent   = combined.filter(function(r){ return (r.occurTime||'').slice(0,10) === todayStr; }).length;
+  document.getElementById('kpiUnack').textContent   = allActive.filter(function(r){ return !r.ackTime; }).length;
   document.getElementById('kpiCleared').textContent = allHistory.filter(function(r){ return r.clearTime; }).length;
 }
 
@@ -193,18 +185,18 @@ function populatePlcFilter(){
 
 /* ── 차트 ── */
 function buildCharts(){
-  /* 등급별 도넛 */
-  var lvCnt = {1:0,2:0,3:0,4:0};
-  allHistory.forEach(function(r){ var l=parseInt(r.level)||0; if(lvCnt[l]!==undefined) lvCnt[l]++; });
+  /* 상태별 도넛 */
+  var activeCnt  = allActive.length;
+  var clearedCnt = allHistory.filter(function(r){ return r.clearTime; }).length;
 
-  if(chartLevel){ chartLevel.destroy(); }
-  chartLevel = new Chart(document.getElementById('chartLevel'), {
+  if(chartState){ chartState.destroy(); }
+  chartState = new Chart(document.getElementById('chartState'), {
     type:'doughnut',
     data:{
-      labels:['위험(Lv1)','경고(Lv2)','주의(Lv3)','정보(Lv4)'],
+      labels:['활성','해제'],
       datasets:[{
-        data:[lvCnt[1],lvCnt[2],lvCnt[3],lvCnt[4]],
-        backgroundColor:['#7B2D8B','#DD6B20','#ECC94B','#4299E1'],
+        data:[activeCnt, clearedCnt],
+        backgroundColor:['#E53E3E','#38A169'],
         borderWidth:2, borderColor:'#fff'
       }]
     },
@@ -242,13 +234,18 @@ function buildCharts(){
 
   /* 시간대별 추이 — 최근 24h, 1시간 단위 */
   var now = new Date();
+  var bucketStart = new Date(now.getTime() - 23*3600000);
+  bucketStart.setMinutes(0,0,0);
   var buckets = [];
-  for(var h=23;h>=0;h--){
-    var t = new Date(now.getTime() - h*3600000);
+  for(var h=0;h<24;h++){
+    var t = new Date(bucketStart.getTime() + h*3600000);
     buckets.push({ label: String(t.getHours()).padStart(2,'0')+'시', ts: t.getTime(), cnt:0 });
   }
+  var cutoff = bucketStart.getTime();
   allHistory.forEach(function(r){
-    var ts = new Date(r.occurTime||r.occurrTime||0).getTime();
+    var raw = r.occurTime || '';
+    var ts  = new Date(raw.replace(' ','T')).getTime();
+    if(!ts || isNaN(ts) || ts < cutoff) return;
     for(var i=buckets.length-1;i>=0;i--){
       if(ts >= buckets[i].ts){ buckets[i].cnt++; break; }
     }
@@ -267,11 +264,11 @@ function buildCharts(){
       }]
     },
     options:{
-      responsive:false, maintainAspectRatio:false, animation:false,
+      responsive:true, maintainAspectRatio:false, animation:false,
       plugins:{ legend:{display:false} },
       scales:{
         x:{ ticks:{font:{size:10}, maxTicksLimit:12} },
-        y:{ beginAtZero:true, grid:{color:'#F0F4F8'}, ticks:{font:{size:10}} }
+        y:{ beginAtZero:true, grid:{color:'#F0F4F8'}, ticks:{font:{size:10}, stepSize:1} }
       }
     }
   });
@@ -282,14 +279,12 @@ function applyFilter(){
   curPage = 1;
   var from  = document.getElementById('dateFrom').value;
   var to    = document.getElementById('dateTo').value + 'T23:59:59';
-  var lvF   = document.getElementById('selLevel').value;
   var plcF  = document.getElementById('selPlc').value;
   var stF   = document.getElementById('selState').value;
 
   // active + history 합본 (active는 clearTime이 없음)
   var combined = allHistory.slice();
   allActive.forEach(function(a){
-    // history에 없는 활성 알람 추가
     var dup = combined.some(function(h){ return h.tagName===a.tagName && h.occurTime===a.occurTime; });
     if(!dup){ combined.push(a); }
   });
@@ -297,7 +292,6 @@ function applyFilter(){
   filtered = combined.filter(function(r){
     if(from && (r.occurTime||'') < from) return false;
     if(to   && (r.occurTime||'') > to  ) return false;
-    if(lvF  && String(r.level) !== lvF ) return false;
     if(plcF && r.plcId !== plcF        ) return false;
     if(stF === 'active'  && r.clearTime) return false;
     if(stF === 'cleared' && !r.clearTime) return false;
@@ -319,10 +313,7 @@ function renderPage(page){
   var rows  = filtered.slice(start, start+PAGE_SIZE);
   var html  = '';
   rows.forEach(function(r, i){
-    var lv     = parseInt(r.level)||0;
     var isActive = !r.clearTime;
-    var lvLabel  = LV_LABEL[lv] || 'Lv'+lv;
-    var lvBadge  = LV_BADGE[lv] || 'badge-off';
     html += '<tr'+(isActive?' class="alarm-row-active"':'')+'>'
           + '<td>'+(start+i+1)+'</td>'
           + '<td style="font-size:12px;font-family:monospace">'+(r.occurTime||'-')+'</td>'
@@ -366,8 +357,6 @@ var BCF_MACHINES = [
   {plcId:'dongwoo_11', label:'BCF_11'},
   {plcId:'dongwoo_12', label:'BCF_12'}
 ];
-var LV_TEXT = {1:'위험(Lv1)',2:'경고(Lv2)',3:'주의(Lv3)',4:'정보(Lv4)'};
-
 function downloadExcel(){
   if(typeof XLSX === 'undefined'){ alert('라이브러리 로드 중입니다. 잠시 후 다시 시도해주세요.'); return; }
 
@@ -390,7 +379,7 @@ function downloadExcel(){
   });
 
   var wb = XLSX.utils.book_new();
-  var HEADER = ['No','발생시각','설비','태그명','알람내용','발생값','해제시각','상태','등급'];
+  var HEADER = ['No','발생시각','설비','태그명','알람내용','발생값','해제시각','상태'];
 
   BCF_MACHINES.forEach(function(m){
     var rows = data.filter(function(r){ return r.plcId === m.plcId; });
@@ -398,7 +387,6 @@ function downloadExcel(){
 
     var wsData = [HEADER];
     rows.forEach(function(r, i){
-      var lv = parseInt(r.level)||0;
       wsData.push([
         i+1,
         r.occurTime  || '-',
@@ -407,14 +395,13 @@ function downloadExcel(){
         r.alarmMsg   || '-',
         r.valueAtOccur != null ? r.valueAtOccur : '-',
         r.clearTime  || '',
-        r.clearTime  ? '해제' : '활성',
-        LV_TEXT[lv]  || ('Lv'+lv)
+        r.clearTime  ? '해제' : '활성'
       ]);
     });
 
     var ws = XLSX.utils.aoa_to_sheet(wsData);
     ws['!cols'] = [
-      {wch:5},{wch:22},{wch:10},{wch:28},{wch:45},{wch:12},{wch:22},{wch:8},{wch:14}
+      {wch:5},{wch:22},{wch:10},{wch:28},{wch:45},{wch:12},{wch:22},{wch:8}
     ];
     XLSX.utils.book_append_sheet(wb, ws, m.label);
   });
@@ -433,7 +420,7 @@ var m1 = new Date(today); m1.setDate(1);
 document.getElementById('dateFrom').value = m1.toISOString().slice(0,10);
 
 loadAll();
-setInterval(loadAll, 10000);
+setInterval(loadAll, 300000); // 5분 주기 자동 갱신
 </script>
 </body>
 </html>

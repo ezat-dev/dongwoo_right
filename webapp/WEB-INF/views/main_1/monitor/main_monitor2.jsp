@@ -61,21 +61,98 @@
      position: absolute;
      height: 26px;
      display: flex; align-items: center; justify-content: center;
-     font-size: 13px; font-weight: 800; letter-spacing: 1.2px;
-     background: #e8d84a; color: #1a1000;
-     border: 2px solid #b8a812; border-radius: 4px;
+     font-size: 13px; font-weight: 900; letter-spacing: .8px;
+     background: linear-gradient(160deg, #f8fafc 0%, #eff6ff 100%);
+     color: #1d4ed8;
+     border: 1px solid #bfdbfe;
+     border-radius: 6px 6px 0 0;
      top: 18px; z-index: 200;
      font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+     box-shadow: 0 1px 4px rgba(59,130,246,.12), inset 0 1px 0 rgba(255,255,255,.85);
+     text-shadow: 0 1px 0 rgba(255,255,255,.85);
    }
    .bcf-mode-lbl {
      position: absolute;
      height: 26px;
      display: flex; align-items: center; justify-content: center;
-     font-size: 12px; font-weight: 700; color: #fff;
-     background: #22c55e; border-radius: 4px;
-     top: 48px; z-index: 200;
+     font-size: 12px; font-weight: 800;
+     background: linear-gradient(160deg, #f0fdf4 0%, #dcfce7 100%);
+     color: #15803d;
+     border: 1px solid #bbf7d0;
+     border-top: none;
+     border-radius: 0 0 6px 6px;
+     top: 44px; z-index: 200;
      font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
-     transition: background .2s;
+     letter-spacing: .2px;
+     transition: background .2s, box-shadow .2s;
+     box-shadow: 0 1px 4px rgba(16,185,129,.12), inset 0 1px 0 rgba(255,255,255,.7);
+     text-shadow: 0 1px 0 rgba(255,255,255,.7);
+   }
+
+   .group-3 [class*="-jogging-"],
+   .group-3 [class*="-open-"],
+   .group-3 [class*="-close-"],
+   .group-3 [class$="-stop"],
+   .group-3 [class*="-stop "],
+   .group-3 [class$="-up"],
+   .group-3 [class*="-up "],
+   .group-3 [class$="-down"],
+   .group-3 [class*="-down "] {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     text-align: center;
+     font-family: 'Malgun Gothic', 'Segoe UI', Arial, sans-serif;
+     font-size: 12px;
+     font-weight: 800;
+     line-height: 1;
+     letter-spacing: 0;
+     white-space: nowrap;
+     overflow: hidden;
+     color: #111827;
+     border-color: rgba(17, 24, 39, .72) !important;
+     border-radius: 3px;
+     box-shadow: inset 0 1px 0 rgba(255,255,255,.45), 0 1px 3px rgba(15,23,42,.22);
+     text-shadow: 0 1px 0 rgba(255,255,255,.45);
+   }
+
+   .group-3 [class*="-jogging-"] {
+     background: linear-gradient(180deg, #d9f99d 0%, #86efac 100%) !important;
+   }
+   .group-3 [class*="-close-"] {
+     background: linear-gradient(180deg, #bbf7d0 0%, #22c55e 100%) !important;
+     font-size: 11px !important;
+   }
+   .group-3 [class*="-open-"] {
+     color: #fff;
+     background: linear-gradient(180deg, #fb7185 0%, #dc2626 100%) !important;
+     text-shadow: 0 1px 1px rgba(0,0,0,.35);
+   }
+   .group-3 [class$="-down"],
+   .group-3 [class*="-down "] {
+     background: linear-gradient(180deg, #fef08a 0%, #facc15 100%) !important;
+   }
+   .group-3 [class$="-up"],
+   .group-3 [class*="-up "],
+   .group-3 [class$="-stop"],
+   .group-3 [class*="-stop "] {
+     background: linear-gradient(180deg, #e0f2fe 0%, #60a5fa 100%) !important;
+   }
+
+   @keyframes penSpinRight {
+     from { transform: rotate(0deg); }
+     to   { transform: rotate(360deg); }
+   }
+   .group-3 img[class*="-pen-"] {
+     transform-origin: 50% 50%;
+     animation: penSpinRight 5.5s linear infinite;
+     will-change: transform;
+   }
+   .group-3 img[class*="-pen-"].pen-rotating {
+     animation-play-state: running;
+   }
+   .group-3 img[class*="-pen-"].pen-stopped {
+     animation-play-state: paused;
    }
    </style>
   <title>Document</title>
@@ -123,8 +200,8 @@
         <img class="bcf-11-heat-on-1" src="<%= ctx %>/img/main_monitor_2/bcf-11-heat-on-10.png" />
         <img class="bcf-11-heat-off-2" src="<%= ctx %>/img/main_monitor_2/bcf-11-heat-off-20.png" />
         <img class="bcf-11-heat-on-2 bcf11_97" src="<%= ctx %>/img/main_monitor_2/bcf-11-heat-on-20.png" />
-        <div class="bcf-11-jogging-1 bcf11_163"></div>
-        <div class="bcf-11-jogging-2 bcf11_162"></div>
+        <div class="bcf-11-jogging-1 bcf11_163">조깅</div>
+        <div class="bcf-11-jogging-2 bcf11_162">조깅</div>
         <img class="bcf-11-tray-1 bcf11_40008" src="<%= ctx %>/img/main_monitor_2/bcf-11-tray-10.png" />
         <img class="bcf-11-tray-2 bcf11_40010" src="<%= ctx %>/img/main_monitor_2/bcf-11-tray-20.png" />
         <img class="bcf-11-tray-3 bcf11_40027" src="<%= ctx %>/img/main_monitor_2/bcf-11-tray-30.png" />
@@ -135,40 +212,40 @@
         <div class="bcf-11-dt-3 bcf11_40027"></div>
         <div class="bcf-11-dt-4 bcf11_40044"></div>
         <div class="bcf-11-dt-5 bcf11_40053"></div>
-        <div class="bcf-11-open-1 bcf11_3"></div>
-        <div class="bcf-11-close-1"></div>
-        <div class="bcf-11-open-2 bcf11_5"></div>
-        <div class="bcf-11-close-2"></div>
-        <div class="bcf-11-open-3 bcf11_7"></div>
-        <div class="bcf-11-close-3"></div>
-        <div class="bcf-11-open-4 bcf11_9"></div>
-        <div class="bcf-11-close-4"></div>
-        <img class="bcf-11-pen-1 bcf11_98" src="<%= ctx %>/img/main_monitor_2/bcf-11-pen-10.png" />
-        <img class="bcf-11-pen-2 bcf11_100" src="<%= ctx %>/img/main_monitor_2/bcf-11-pen-20.png" />
-        <img class="bcf-11-pen-3 bcf11_117" src="<%= ctx %>/img/main_monitor_2/bcf-11-pen-30.png" />
+        <div class="bcf-11-open-1 bcf11_3">열림</div>
+        <div class="bcf-11-close-1">닫힘</div>
+        <div class="bcf-11-open-2 bcf11_5">열림</div>
+        <div class="bcf-11-close-2">닫힘</div>
+        <div class="bcf-11-open-3 bcf11_7">열림</div>
+        <div class="bcf-11-close-3">닫힘</div>
+        <div class="bcf-11-open-4 bcf11_9">열림</div>
+        <div class="bcf-11-close-4">닫힘</div>
+        <img class="bcf-11-pen-1 bcf11_98" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-11-pen-2 bcf11_100" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-11-pen-3 bcf11_117" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
       </div>
       <div class="bcf-8">
         <img class="bcf-82" src="<%= ctx %>/img/main_monitor_2/bcf-81.png" />
         <img class="bcf-8-alarm bcf8_93" src="<%= ctx %>/img/main_monitor_2/bcf-8-alarm0.png" />
         <img class="bcf-8-moter-off-1" src="<%= ctx %>/img/main_monitor_2/bcf-8-moter-off-10.png" />
-        <img class="bcf-8-moter-on-1" src="<%= ctx %>/img/main_monitor_2/bcf-8-moter-on-10.png" />
+        <img class="bcf-8-moter-on-1 bcf8_87 bcf8_88" src="<%= ctx %>/img/main_monitor_2/bcf-8-moter-on-10.png" />
         <img class="bcf-8-moter-off-2" src="<%= ctx %>/img/main_monitor_2/bcf-8-moter-off-20.png" />
-        <img class="bcf-8-moter-on-2" src="<%= ctx %>/img/main_monitor_2/bcf-8-moter-on-20.png" />
+        <img class="bcf-8-moter-on-2 bcf8_85 bcf8_86" src="<%= ctx %>/img/main_monitor_2/bcf-8-moter-on-20.png" />
         <img class="bcf-8-heat-off-2" src="<%= ctx %>/img/main_monitor_2/bcf-8-heat-off-20.png" />
         <img class="bcf-8-heat-on-2" src="<%= ctx %>/img/main_monitor_2/bcf-8-heat-on-20.png" />
-        <div class="bcf-8-open-1"></div>
-        <div class="bcf-8-close-1"></div>
-        <div class="bcf-8-open-2"></div>
-        <div class="bcf-8-close-2"></div>
-        <div class="bcf-8-open-3"></div>
-        <div class="bcf-8-close-3"></div>
+        <div class="bcf-8-open-1 bcf8_11">열림</div>
+        <div class="bcf-8-close-1">닫힘</div>
+        <div class="bcf-8-open-2 bcf8_13">열림</div>
+        <div class="bcf-8-close-2">닫힘</div>
+        <div class="bcf-8-open-3 bcf8_18">열림</div>
+        <div class="bcf-8-close-3">닫힘</div>
         <img class="bcf-8-tray-1 bcf8_23" src="<%= ctx %>/img/main_monitor_2/bcf-8-tray-10.png" />
         <img class="bcf-8-tray-2 bcf8_7" src="<%= ctx %>/img/main_monitor_2/bcf-8-tray-20.png" />
         <img class="bcf-8-tray-3 bcf8_116" src="<%= ctx %>/img/main_monitor_2/bcf-8-tray-30.png" />
         <img class="bcf-8-tray-4 bcf8_117" src="<%= ctx %>/img/main_monitor_2/bcf-8-tray-40.png" />
         <img class="bcf-8-tray-5 bcf8_19" src="<%= ctx %>/img/main_monitor_2/bcf-8-tray-50.png" />
-        <img class="bcf-8-pen-1" src="<%= ctx %>/img/main_monitor_2/bcf-8-pen-10.png" />
-        <img class="bcf-8-pen-2" src="<%= ctx %>/img/main_monitor_2/bcf-8-pen-20.png" />
+        <img class="bcf-8-pen-1 bcf8_113" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-8-pen-2 bcf8_113" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <div class="bcf-8-dt-1"></div>
         <div class="bcf-8-dt-2"></div>
         <img class="bcf-8-box-on-1" src="<%= ctx %>/img/main_monitor_2/bcf-8-box-on-10.png" />
@@ -179,32 +256,32 @@
         <img class="bcf-8-box-off-3" src="<%= ctx %>/img/main_monitor_2/bcf-8-box-off-30.png" />
         <img class="bcf-8-box-on-4" src="<%= ctx %>/img/main_monitor_2/bcf-8-box-on-40.png" />
         <img class="bcf-8-box-off-4" src="<%= ctx %>/img/main_monitor_2/bcf-8-box-off-40.png" />
-        <div class="bcf-8-stop"></div>
-        <div class="bcf-8-up"></div>
-        <div class="bcf-8-down"></div>
+        <div class="bcf-8-stop">정지</div>
+        <div class="bcf-8-up bcf8_14">상승</div>
+        <div class="bcf-8-down bcf8_15">하강</div>
       </div>
       <div class="bcf-9">
         <img class="bcf-92" src="<%= ctx %>/img/main_monitor_2/bcf-91.png" />
         <img class="bcf-9-alarm" src="<%= ctx %>/img/main_monitor_2/bcf-9-alarm0.png" />
         <img class="bcf-9-moter-off-1" src="<%= ctx %>/img/main_monitor_2/bcf-9-moter-off-10.png" />
-        <img class="bcf-9-moter-on-1" src="<%= ctx %>/img/main_monitor_2/bcf-9-moter-on-10.png" />
+        <img class="bcf-9-moter-on-1 bcf9_110 bcf9_111" src="<%= ctx %>/img/main_monitor_2/bcf-9-moter-on-10.png" />
         <img class="bcf-9-moter-off-2" src="<%= ctx %>/img/main_monitor_2/bcf-9-moter-off-20.png" />
         <img class="bcf-9-moter-on-2" src="<%= ctx %>/img/main_monitor_2/bcf-9-moter-on-20.png" />
         <img class="bcf-9-heat-off-2" src="<%= ctx %>/img/main_monitor_2/bcf-9-heat-off-20.png" />
         <img class="bcf-9-heat-on-2" src="<%= ctx %>/img/main_monitor_2/bcf-9-heat-on-20.png" />
-        <div class="bcf-9-open-1"></div>
-        <div class="bcf-9-close-1"></div>
-        <div class="bcf-9-open-2"></div>
-        <div class="bcf-9-close-2"></div>
-        <div class="bcf-9-open-3"></div>
-        <div class="bcf-9-close-3"></div>
-        <img class="bcf-9-tray-1" src="<%= ctx %>/img/main_monitor_2/bcf-9-tray-10.png" />
-        <img class="bcf-9-tray-2" src="<%= ctx %>/img/main_monitor_2/bcf-9-tray-20.png" />
-        <img class="bcf-9-tray-3" src="<%= ctx %>/img/main_monitor_2/bcf-9-tray-30.png" />
-        <img class="bcf-9-tray-4" src="<%= ctx %>/img/main_monitor_2/bcf-9-tray-40.png" />
-        <img class="bcf-9-tray-5" src="<%= ctx %>/img/main_monitor_2/bcf-9-tray-50.png" />
-        <img class="bcf-9-pen-1" src="<%= ctx %>/img/main_monitor_2/bcf-9-pen-10.png" />
-        <img class="bcf-9-pen-2" src="<%= ctx %>/img/main_monitor_2/bcf-9-pen-20.png" />
+        <div class="bcf-9-open-1 bcf9_12">열림</div>
+        <div class="bcf-9-close-1">닫힘</div>
+        <div class="bcf-9-open-2 bcf9_14">열림</div>
+        <div class="bcf-9-close-2">닫힘</div>
+        <div class="bcf-9-open-3 bcf9_19">열림</div>
+        <div class="bcf-9-close-3">닫힘</div>
+        <img class="bcf-9-tray-1 bcf9_2" src="<%= ctx %>/img/main_monitor_2/bcf-9-tray-10.png" />
+        <img class="bcf-9-tray-2 bcf9_1" src="<%= ctx %>/img/main_monitor_2/bcf-9-tray-20.png" />
+        <img class="bcf-9-tray-3 bcf9_144" src="<%= ctx %>/img/main_monitor_2/bcf-9-tray-30.png" />
+        <img class="bcf-9-tray-4 bcf9_145" src="<%= ctx %>/img/main_monitor_2/bcf-9-tray-40.png" />
+        <img class="bcf-9-tray-5 bcf9_22" src="<%= ctx %>/img/main_monitor_2/bcf-9-tray-50.png" />
+        <img class="bcf-9-pen-1 bcf9_157" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-9-pen-2 bcf9_157" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <div class="bcf-9-dt-1"></div>
         <div class="bcf-9-dt-2"></div>
         <img class="bcf-9-box-on-1" src="<%= ctx %>/img/main_monitor_2/bcf-9-box-on-10.png" />
@@ -215,32 +292,32 @@
         <img class="bcf-9-box-off-3" src="<%= ctx %>/img/main_monitor_2/bcf-9-box-off-30.png" />
         <img class="bcf-9-box-on-4" src="<%= ctx %>/img/main_monitor_2/bcf-9-box-on-40.png" />
         <img class="bcf-9-box-off-4" src="<%= ctx %>/img/main_monitor_2/bcf-9-box-off-40.png" />
-        <div class="bcf-9-stop"></div>
-        <div class="bcf-9-up"></div>
-        <div class="bcf-9-down"></div>
+        <div class="bcf-9-stop">정지</div>
+        <div class="bcf-9-up">상승</div>
+        <div class="bcf-9-down bcf9_18">하강</div>
       </div>
       <div class="bcf-7">
         <img class="bcf-72" src="<%= ctx %>/img/main_monitor_2/bcf-71.png" />
-        <img class="bcf-7-alarm" src="<%= ctx %>/img/main_monitor_2/bcf-7-alarm0.png" />
+        <img class="bcf-7-alarm bcf7_40038" src="<%= ctx %>/img/main_monitor_2/bcf-7-alarm0.png" />
         <img class="bcf-7-moter-off-1" src="<%= ctx %>/img/main_monitor_2/bcf-7-moter-off-10.png" />
-        <img class="bcf-7-moter-on-1" src="<%= ctx %>/img/main_monitor_2/bcf-7-moter-on-10.png" />
+        <img class="bcf-7-moter-on-1 bcf7_110 bcf7_111" src="<%= ctx %>/img/main_monitor_2/bcf-7-moter-on-10.png" />
         <img class="bcf-7-moter-off-2" src="<%= ctx %>/img/main_monitor_2/bcf-7-moter-off-20.png" />
-        <img class="bcf-7-moter-on-2" src="<%= ctx %>/img/main_monitor_2/bcf-7-moter-on-20.png" />
+        <img class="bcf-7-moter-on-2 bcf7_88 bcf7_89" src="<%= ctx %>/img/main_monitor_2/bcf-7-moter-on-20.png" />
         <img class="bcf-7-heat-off-2" src="<%= ctx %>/img/main_monitor_2/bcf-7-heat-off-20.png" />
         <img class="bcf-7-heat-on-2" src="<%= ctx %>/img/main_monitor_2/bcf-7-heat-on-20.png" />
-        <div class="bcf-7-open-1"></div>
-        <div class="bcf-7-close-1"></div>
-        <div class="bcf-7-open-2"></div>
-        <div class="bcf-7-close-2"></div>
-        <div class="bcf-7-open-3"></div>
-        <div class="bcf-7-close-3"></div>
-        <img class="bcf-7-tray-1" src="<%= ctx %>/img/main_monitor_2/bcf-7-tray-10.png" />
-        <img class="bcf-7-tray-2" src="<%= ctx %>/img/main_monitor_2/bcf-7-tray-20.png" />
-        <img class="bcf-7-tray-3" src="<%= ctx %>/img/main_monitor_2/bcf-7-tray-30.png" />
-        <img class="bcf-7-tray-4" src="<%= ctx %>/img/main_monitor_2/bcf-7-tray-40.png" />
-        <img class="bcf-7-tray-5" src="<%= ctx %>/img/main_monitor_2/bcf-7-tray-50.png" />
-        <img class="bcf-7-pen-1" src="<%= ctx %>/img/main_monitor_2/bcf-7-pen-10.png" />
-        <img class="bcf-7-pen-2" src="<%= ctx %>/img/main_monitor_2/bcf-7-pen-20.png" />
+        <div class="bcf-7-open-1 bcf7_12">열림</div>
+        <div class="bcf-7-close-1">닫힘</div>
+        <div class="bcf-7-open-2 bcf7_14">열림</div>
+        <div class="bcf-7-close-2">닫힘</div>
+        <div class="bcf-7-open-3 bcf7_19">열림</div>
+        <div class="bcf-7-close-3">닫힘</div>
+        <img class="bcf-7-tray-1 bcf7_2" src="<%= ctx %>/img/main_monitor_2/bcf-7-tray-10.png" />
+        <img class="bcf-7-tray-2 bcf7_1" src="<%= ctx %>/img/main_monitor_2/bcf-7-tray-20.png" />
+        <img class="bcf-7-tray-3 bcf7_144" src="<%= ctx %>/img/main_monitor_2/bcf-7-tray-30.png" />
+        <img class="bcf-7-tray-4 bcf7_145" src="<%= ctx %>/img/main_monitor_2/bcf-7-tray-40.png" />
+        <img class="bcf-7-tray-5 bcf7_22" src="<%= ctx %>/img/main_monitor_2/bcf-7-tray-50.png" />
+        <img class="bcf-7-pen-1 bcf7_157" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-7-pen-2 bcf7_157" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <div class="bcf-7-dt-1"></div>
         <div class="bcf-7-dt-2"></div>
         <img class="bcf-7-box-on-1" src="<%= ctx %>/img/main_monitor_2/bcf-7-box-on-10.png" />
@@ -251,75 +328,75 @@
         <img class="bcf-7-box-off-3" src="<%= ctx %>/img/main_monitor_2/bcf-7-box-off-30.png" />
         <img class="bcf-7-box-on-4" src="<%= ctx %>/img/main_monitor_2/bcf-7-box-on-40.png" />
         <img class="bcf-7-box-off-4" src="<%= ctx %>/img/main_monitor_2/bcf-7-box-off-40.png" />
-        <div class="bcf-7-stop"></div>
-        <div class="bcf-7-up"></div>
-        <div class="bcf-7-down"></div>
+        <div class="bcf-7-stop">정지</div>
+        <div class="bcf-7-up bcf7_17">상승</div>
+        <div class="bcf-7-down bcf7_18">하강</div>
       </div>
       <div class="bcf-6">
         <img class="bcf-62" src="<%= ctx %>/img/main_monitor_2/bcf-61.png" />
         <img class="bcf-6-alarm" src="<%= ctx %>/img/main_monitor_2/bcf-6-alarm0.png" />
         <div class="bcf-6-back-1"></div>
         <div class="bcf-6-back-2"></div>
-        <div class="bcf-6-jogging-1"></div>
-        <div class="bcf-6-jogging-2"></div>
-        <div class="bcf-6-jogging-3"></div>
-        <div class="bcf-6-jogging-4"></div>
-        <div class="bcf-6-jogging-5"></div>
-        <div class="bcf-6-jogging-6"></div>
-        <div class="bcf-6-jogging-7"></div>
+        <div class="bcf-6-jogging-1 bcf6_303 bcf6_304">조깅</div>
+        <!-- <div class="bcf-6-jogging-2">조깅</div> -->
+        <div class="bcf-6-jogging-3 bcf6_305 bcf6_306">조깅</div>
+        <div class="bcf-6-jogging-4 bcf6_307 bcf6_308">조깅</div>
+        <div class="bcf-6-jogging-5 bcf6_309 bcf6_310">조깅</div>
+        <div class="bcf-6-jogging-6 bcf6_311 bcf6_312">조깅</div>
+        <div class="bcf-6-jogging-7 bcf6_313 bcf6_314">조깅</div>
         <img class="bcf-6-moter-off-1" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-off-10.png" />
-        <img class="bcf-6-moter-on-1" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-on-10.png" />
+        <img class="bcf-6-moter-on-1 bcf6_244 bcf6_245" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-on-10.png" />
         <img class="bcf-6-moter-off-2" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-off-20.png" />
-        <img class="bcf-6-moter-on-2" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-on-20.png" />
+        <img class="bcf-6-moter-on-2 bcf6_187" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-on-20.png" />
         <img class="bcf-6-moter-off-3" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-off-30.png" />
-        <img class="bcf-6-moter-on-3" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-on-30.png" />
+        <img class="bcf-6-moter-on-3 bcf6_248 bcf6_249" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-on-30.png" />
         <img class="bcf-6-moter-off-4" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-off-40.png" />
-        <img class="bcf-6-moter-on-4" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-on-40.png" />
+        <img class="bcf-6-moter-on-4 bcf6_252 bcf6_253" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-on-40.png" />
         <img class="bcf-6-moter-off-5" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-off-50.png" />
-        <img class="bcf-6-moter-on-5" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-on-50.png" />
+        <img class="bcf-6-moter-on-5 bcf6_256 bcf6_257" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-on-50.png" />
         <img class="bcf-6-moter-off-6" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-off-60.png" />
-        <img class="bcf-6-moter-on-6" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-on-60.png" />
+        <img class="bcf-6-moter-on-6 bcf6_260 bcf6_261" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-on-60.png" />
         <img class="bcf-6-moter-off-7" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-off-70.png" />
-        <img class="bcf-6-moter-on-7" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-on-70.png" />
-        <img class="bcf-6-tray-1" src="<%= ctx %>/img/main_monitor_2/bcf-6-tray-10.png" />
-        <img class="bcf-6-tray-2" src="<%= ctx %>/img/main_monitor_2/bcf-6-tray-20.png" />
-        <img class="bcf-6-tray-3" src="<%= ctx %>/img/main_monitor_2/bcf-6-tray-30.png" />
-        <img class="bcf-6-tray-4" src="<%= ctx %>/img/main_monitor_2/bcf-6-tray-40.png" />
-        <img class="bcf-6-tray-5" src="<%= ctx %>/img/main_monitor_2/bcf-6-tray-50.png" />
-        <img class="bcf-6-tray-6" src="<%= ctx %>/img/main_monitor_2/bcf-6-tray-60.png" />
-        <img class="bcf-6-tray-7" src="<%= ctx %>/img/main_monitor_2/bcf-6-tray-70.png" />
-        <img class="bcf-6-tray-8" src="<%= ctx %>/img/main_monitor_2/bcf-6-tray-80.png" />
-        <img class="bcf-6-tray-9" src="<%= ctx %>/img/main_monitor_2/bcf-6-tray-90.png" />
-        <img class="bcf-6-tray-10" src="<%= ctx %>/img/main_monitor_2/bcf-6-tray-100.png" />
+        <img class="bcf-6-moter-on-7 bcf6_264 bcf6_265" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-on-70.png" />
+        <img class="bcf-6-tray-1 bcf6_8" src="<%= ctx %>/img/main_monitor_2/bcf-6-tray-10.png" />
+        <img class="bcf-6-tray-2 bcf6_291" src="<%= ctx %>/img/main_monitor_2/bcf-6-tray-20.png" />
+        <img class="bcf-6-tray-3 bcf6_39" src="<%= ctx %>/img/main_monitor_2/bcf-6-tray-30.png" />
+        <img class="bcf-6-tray-4 bcf6_293" src="<%= ctx %>/img/main_monitor_2/bcf-6-tray-40.png" />
+        <img class="bcf-6-tray-5 bcf6_294" src="<%= ctx %>/img/main_monitor_2/bcf-6-tray-50.png" />
+        <img class="bcf-6-tray-6 bcf6_295" src="<%= ctx %>/img/main_monitor_2/bcf-6-tray-60.png" />
+        <img class="bcf-6-tray-7 bcf6_296" src="<%= ctx %>/img/main_monitor_2/bcf-6-tray-70.png" />
+        <img class="bcf-6-tray-8 bcf6_297" src="<%= ctx %>/img/main_monitor_2/bcf-6-tray-80.png" />
+        <img class="bcf-6-tray-9 bcf6_298" src="<%= ctx %>/img/main_monitor_2/bcf-6-tray-90.png" />
+        <img class="bcf-6-tray-10 bcf6_43" src="<%= ctx %>/img/main_monitor_2/bcf-6-tray-100.png" />
         <img class="bcf-6-fire-off-1" src="<%= ctx %>/img/main_monitor_2/bcf-6-fire-off-10.png" />
         <img class="bcf-6-fire-on-1" src="<%= ctx %>/img/main_monitor_2/bcf-6-fire-on-10.png" />
         <img class="bcf-6-fire-off-2" src="<%= ctx %>/img/main_monitor_2/bcf-6-fire-off-20.png" />
         <img class="bcf-6-fire-on-2" src="<%= ctx %>/img/main_monitor_2/bcf-6-fire-on-20.png" />
         <img class="bcf-6-circle-off" src="<%= ctx %>/img/main_monitor_2/bcf-6-circle-off0.png" />
         <img class="bcf-6-circle-on" src="<%= ctx %>/img/main_monitor_2/bcf-6-circle-on0.png" />
-        <div class="bcf-6-open-1"></div>
-        <div class="bcf-6-close-1"></div>
-        <div class="bcf-6-open-2"></div>
-        <div class="bcf-6-close-2"></div>
-        <div class="bcf-6-open-3"></div>
-        <div class="bcf-6-close-3"></div>
-        <div class="bcf-6-open-4"></div>
-        <div class="bcf-6-close-4"></div>
-        <div class="bcf-6-open-5"></div>
-        <div class="bcf-6-close-5"></div>
-        <div class="bcf-6-open-6"></div>
-        <div class="bcf-6-close-6"></div>
-        <div class="bcf-6-open-7"></div>
-        <div class="bcf-6-close-7"></div>
-        <img class="bcf-6-pen-1" src="<%= ctx %>/img/main_monitor_2/bcf-6-pen-10.png" />
-        <img class="bcf-6-pen-2" src="<%= ctx %>/img/main_monitor_2/bcf-6-pen-20.png" />
-        <img class="bcf-6-pen-3" src="<%= ctx %>/img/main_monitor_2/bcf-6-pen-30.png" />
-        <img class="bcf-6-pen-4" src="<%= ctx %>/img/main_monitor_2/bcf-6-pen-40.png" />
-        <img class="bcf-6-pen-5" src="<%= ctx %>/img/main_monitor_2/bcf-6-pen-50.png" />
-        <img class="bcf-6-pen-6" src="<%= ctx %>/img/main_monitor_2/bcf-6-pen-60.png" />
-        <div class="bcf-6-stop"></div>
-        <div class="bcf-6-up"></div>
-        <div class="bcf-6-down"></div>
+        <div class="bcf-6-open-1 bcf6_14">열림</div>
+        <div class="bcf-6-close-1">닫힘</div>
+        <div class="bcf-6-open-2 bcf6_16">열림</div>
+        <div class="bcf-6-close-2">닫힘</div>
+        <div class="bcf-6-open-3 bcf6_20">열림</div>
+        <div class="bcf-6-close-3">닫힘</div>
+        <div class="bcf-6-open-4 bcf6_22">열림</div>
+        <div class="bcf-6-close-4">닫힘</div>
+        <div class="bcf-6-open-5 bcf6_24">열림</div>
+        <div class="bcf-6-close-5">닫힘</div>
+        <div class="bcf-6-open-6 bcf6_26">열림</div>
+        <div class="bcf-6-close-6">닫힘</div>
+        <div class="bcf-6-open-7 bcf6_30">열림</div>
+        <div class="bcf-6-close-7">닫힘</div>
+        <img class="bcf-6-pen-1 bcf6_224" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-6-pen-2 bcf6_225" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-6-pen-3 bcf6_84" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-6-pen-4 bcf6_226" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-6-pen-5 bcf6_234" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-6-pen-6 bcf6_234" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <div class="bcf-6-stop">정지</div>
+        <div class="bcf-6-up">상승</div>
+        <div class="bcf-6-down bcf6_37">하강</div>
       </div>
     </div>
   </div>
@@ -453,28 +530,28 @@
       <!-- BCF-11 그룹: 초록 -->
       <div class="tm-item tm-green">
         <div class="tm-item-name">1실11</div>
-        <div class="tm-cell tm-cur">DT</div>
-        <div class="tm-cell tm-set">DT</div>
+        <div class="tm-cell tm-cur bcf11_s_40077">DT</div>
+        <div class="tm-cell tm-set bcf11_s_40001">DT</div>
       </div>
       <div class="tm-item tm-green">
         <div class="tm-item-name">2실11</div>
-        <div class="tm-cell tm-cur">DT</div>
-        <div class="tm-cell tm-set">DT</div>
+        <div class="tm-cell tm-cur bcf11_s_40078">DT</div>
+        <div class="tm-cell tm-set bcf11_s_40002">DT</div>
       </div>
       <div class="tm-item tm-green">
         <div class="tm-item-name">냉각</div>
-        <div class="tm-cell tm-cur">DT</div>
-        <div class="tm-cell tm-set">DT</div>
+        <div class="tm-cell tm-cur bcf11_s_40079">DT</div>
+        <div class="tm-cell tm-set bcf11_s_40003">DT</div>
       </div>
       <div class="tm-item tm-green">
         <div class="tm-item-name">1실CP</div>
-        <div class="tm-cell tm-cur">0.000</div>
-        <div class="tm-cell tm-set">0.000</div>
+        <div class="tm-cell tm-cur bcf11_s_40080">0.000</div>
+        <div class="tm-cell tm-set bcf11_s_40004">0.000</div>
       </div>
       <div class="tm-item tm-green">
         <div class="tm-item-name">2실CP</div>
-        <div class="tm-cell tm-cur">0.000</div>
-        <div class="tm-cell tm-set">0.000</div>
+        <div class="tm-cell tm-cur bcf11_s_40081">0.000</div>
+        <div class="tm-cell tm-set bcf11_s_40005">0.000</div>
       </div>
 
       <!-- BCF-8 그룹: 파랑 -->
@@ -531,43 +608,43 @@
       <!-- BCF-6 그룹: 초록 -->
       <div class="tm-item tm-green">
         <div class="tm-item-name">예열6</div>
-        <div class="tm-cell tm-cur">DT</div>
-        <div class="tm-cell tm-set">DT</div>
+        <div class="tm-cell tm-cur bcf6_s_40033">DT</div>
+        <div class="tm-cell tm-set bcf6_s_40039">DT</div>
       </div>
       <div class="tm-item tm-green">
         <div class="tm-item-name">가열6</div>
-        <div class="tm-cell tm-cur">DT</div>
-        <div class="tm-cell tm-set">DT</div>
+        <div class="tm-cell tm-cur bcf6_s_40034">DT</div>
+        <div class="tm-cell tm-set bcf6_s_40040">DT</div>
       </div>
       <div class="tm-item tm-green">
         <div class="tm-item-name">1침탄</div>
-        <div class="tm-cell tm-cur">DT</div>
-        <div class="tm-cell tm-set">DT</div>
+        <div class="tm-cell tm-cur bcf6_s_40035">DT</div>
+        <div class="tm-cell tm-set bcf6_s_40041">DT</div>
       </div>
       <div class="tm-item tm-green">
         <div class="tm-item-name">2침탄6</div>
-        <div class="tm-cell tm-cur">DT</div>
-        <div class="tm-cell tm-set">DT</div>
+        <div class="tm-cell tm-cur bcf6_s_40036">DT</div>
+        <div class="tm-cell tm-set bcf6_s_40042">DT</div>
       </div>
       <div class="tm-item tm-green">
         <div class="tm-item-name">강온6</div>
-        <div class="tm-cell tm-cur">DT</div>
-        <div class="tm-cell tm-set">DT</div>
+        <div class="tm-cell tm-cur bcf6_s_40037">DT</div>
+        <div class="tm-cell tm-set bcf6_s_40043">DT</div>
       </div>
       <div class="tm-item tm-green">
         <div class="tm-item-name">유조</div>
-        <div class="tm-cell tm-cur">DT</div>
-        <div class="tm-cell tm-set">DT</div>
+        <div class="tm-cell tm-cur bcf6_s_40038">DT</div>
+        <div class="tm-cell tm-set bcf6_s_40044">DT</div>
       </div>
       <div class="tm-item tm-green">
         <div class="tm-item-name">가열CP</div>
-        <div class="tm-cell tm-cur">0.000</div>
-        <div class="tm-cell tm-set">0.000</div>
+        <div class="tm-cell tm-cur bcf6_s_40045">0.000</div>
+        <div class="tm-cell tm-set bcf6_s_40048">0.000</div>
       </div>
       <div class="tm-item tm-green">
         <div class="tm-item-name">침탄CP</div>
-        <div class="tm-cell tm-cur">0.000</div>
-        <div class="tm-cell tm-set">0.000</div>
+        <div class="tm-cell tm-cur bcf6_s_40046">0.000</div>
+        <div class="tm-cell tm-set bcf6_s_40049">0.000</div>
       </div>
       <div class="tm-item tm-green">
         <div class="tm-item-name">강온CP</div>
@@ -583,7 +660,8 @@
 (function () {
   'use strict';
   const ctx = '<%= ctx %>';
-  const INTERVAL = 1500;
+  var POLL_INTERVAL = 6000;   // 정상 폴링 주기 (ms)
+  var FAIL_COOLDOWN = 12000;  // 통신 실패 후 대기 (ms)
 
   const wordElMap = {};
   const bitElMap  = {};
@@ -602,6 +680,27 @@
 
   const allTags = Object.keys(wordElMap).concat(Object.keys(bitElMap));
 
+  // 초기 상태: 비트 요소 모두 숨김 (첫 폴링 후 실제 값으로 반영)
+  Object.keys(bitElMap).forEach(function(tag) {
+    bitElMap[tag].forEach(function(el) { el.style.visibility = 'hidden'; });
+  });
+
+  const penEls = Array.prototype.slice.call(document.querySelectorAll('img[class*="-pen-"]'));
+
+  penEls.forEach(function(el) {
+    el.classList.add('pen-rotating');
+  });
+
+  function isPenElement(el) {
+    return /\b\S*-pen-\S*\b/.test(el.className || '');
+  }
+
+  function bitTagsOf(el) {
+    return (el.className || '').split(/\s+/).filter(function(cls) {
+      return /^bcf\d+_\d+$/.test(cls);
+    });
+  }
+
   /* 운전모드 라벨 (data-mode-tag) → allTags 에 추가 */
   const modeLblEls = document.querySelectorAll('[data-mode-tag]');
   modeLblEls.forEach(function(el) {
@@ -611,7 +710,7 @@
 
   if (!allTags.length) return;
 
-  var CP_TAG = /_(40052|40071|D1081|D1087)$/;
+  var CP_TAG = /_(40052|40071|D1081|D1087)$|bcf6_s_4004[5689]|bcf11_s_(4008[01]|4000[45])/;
 
   function applyData(data) {
     Object.keys(wordElMap).forEach(function (tag) {
@@ -632,8 +731,21 @@
       if (data[tag] == null) return;
       var show = (data[tag] === 1 || data[tag] === true);
       bitElMap[tag].forEach(function (el) {
+        if (isPenElement(el)) return;
         el.style.visibility = show ? 'visible' : 'hidden';
       });
+    });
+
+    penEls.forEach(function(el) {
+      var tags = bitTagsOf(el);
+      var known = tags.filter(function(tag) { return data[tag] != null; });
+      var rotate = known.length === 0 || known.some(function(tag) {
+        return data[tag] === 1 || data[tag] === true;
+      });
+
+      el.classList.toggle('pen-rotating', rotate);
+      el.classList.toggle('pen-stopped', !rotate);
+      el.style.visibility = 'visible';
     });
 
     // 운전모드 라벨 업데이트
@@ -641,29 +753,112 @@
       var tag = el.getAttribute('data-mode-tag');
       if (data[tag] == null) return;
       var isAuto = (data[tag] === 1 || data[tag] === true);
-      el.textContent      = isAuto ? '자동운전' : '수동운전';
-      el.style.background = isAuto ? '#22c55e'  : '#ef4444';
+      el.textContent       = isAuto ? '자동운전' : '수동운전';
+      el.style.background  = isAuto ? 'linear-gradient(160deg,#f0fdf4,#bbf7d0)' : 'linear-gradient(160deg,#fff7ed,#fed7aa)';
+      el.style.color       = isAuto ? '#166534' : '#9a3412';
+      el.style.borderColor = isAuto ? '#86efac' : '#fdba74';
     });
   }
 
-  var busy = false;
+  /* ── 설비별 통신 로그 ── */
+  var BCF_IDS2 = ['bcf6', 'bcf7', 'bcf8', 'bcf9', 'bcf11'];
+  var pollCount2 = 0;
+
+  function logByDevice2(data) {
+    pollCount2++;
+    var now = new Date().toLocaleTimeString('ko-KR', {hour12: false, hour:'2-digit', minute:'2-digit', second:'2-digit'});
+    console.groupCollapsed('[MON-2] 폴링 #' + pollCount2 + '  ' + now);
+
+    BCF_IDS2.forEach(function(id) {
+      var prefix = id + '_';
+      var wordTags = Object.keys(wordElMap).filter(function(t){ return t.indexOf(prefix) === 0; });
+      var bitTags  = Object.keys(bitElMap ).filter(function(t){ return t.indexOf(prefix) === 0; });
+      var modeTags = allTags.filter(function(t){
+        return t.indexOf(prefix) === 0 && !wordElMap[t] && !bitElMap[t];
+      });
+
+      var nullWord = wordTags.filter(function(t){ return data[t] == null; });
+      var nullBit  = bitTags .filter(function(t){ return data[t] == null; });
+      var hasNull  = nullWord.length + nullBit.length > 0;
+
+      var style = hasNull ? 'color:#e53e3e;font-weight:700' : 'color:#38a169;font-weight:700';
+      console.groupCollapsed('%c' + id.toUpperCase()
+        + '  워드:' + wordTags.length + '  비트:' + bitTags.length
+        + (hasNull ? '  ⚠ 미응답:' + (nullWord.length + nullBit.length) : '  ✓'), style);
+
+      if (wordTags.length) {
+        console.group('▶ 워드(온도/CP)');
+        wordTags.forEach(function(t) {
+          var v = data[t];
+          if (v == null) { console.warn('  ' + t + ' → null (미응답)'); }
+          else {
+            var disp = CP_TAG.test(t) ? (Number(v)*0.001).toFixed(3)+' %' : Number(v).toFixed(0)+' ℃';
+            console.log('  ' + t + ' → ' + v + '  (' + disp + ')');
+          }
+        });
+        console.groupEnd();
+      }
+
+      if (bitTags.length) {
+        var onBits      = bitTags.filter(function(t){ return data[t] === 1 || data[t] === true; });
+        var nullBitList = bitTags.filter(function(t){ return data[t] == null; });
+        console.group('▶ 비트  ON:' + onBits.length + '  OFF:' + (bitTags.length - onBits.length - nullBitList.length) + (nullBitList.length ? '  NULL:'+nullBitList.length : ''));
+        if (onBits.length)      console.log('  ON  →', onBits.join(', '));
+        if (nullBitList.length) console.warn('  NULL→', nullBitList.join(', '));
+        console.groupEnd();
+      }
+
+      // 팬(pen) 요소: 태그 값 + 현재 회전/정지 상태
+      var bcfPenEls = penEls.filter(function(el) {
+        return bitTagsOf(el).some(function(t){ return t.indexOf(prefix) === 0; });
+      });
+      if (bcfPenEls.length) {
+        console.group('▶ 팬  (' + bcfPenEls.length + '개)');
+        bcfPenEls.forEach(function(el) {
+          var tags = bitTagsOf(el).filter(function(t){ return t.indexOf(prefix) === 0; });
+          var rotating = el.classList.contains('pen-rotating');
+          var state = rotating ? '▶ 회전중' : '■ 정지';
+          tags.forEach(function(t) {
+            var v = data[t];
+            var vStr = v == null ? '❌ null' : String(v);
+            console.log('  ' + t + ' = ' + vStr + '  [' + state + ']');
+          });
+        });
+        console.groupEnd();
+      }
+
+      if (modeTags.length) {
+        modeTags.forEach(function(t) {
+          var v = data[t];
+          console.log('  운전모드 ' + t + ' →', v == null ? '❌ null' : (v ? '자동운전' : '수동운전'));
+        });
+      }
+
+      console.groupEnd();
+    });
+
+    console.groupEnd();
+  }
+
+  function scheduleNext(delay) {
+    setTimeout(fetchData, delay);
+  }
 
   function fetchData() {
-    if (busy) return;
-    busy = true;
-    fetch(ctx + '/monitor/main-data', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify(allTags)
-    })
+    fetch(ctx + '/monitor/snapshot')
     .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
-    .then(function (data) { applyData(data); })
-    .catch(function (err) { console.warn('[monitor2] PLC fetch 실패:', err); })
-    .finally(function () { busy = false; });
+    .then(function (data) {
+      applyData(data);
+      logByDevice2(data);
+      scheduleNext(POLL_INTERVAL);
+    })
+    .catch(function (err) {
+      console.warn('[MON-2] PLC fetch 실패:', err);
+      scheduleNext(FAIL_COOLDOWN);
+    });
   }
 
   fetchData();
-  setInterval(fetchData, INTERVAL);
 })();
 </script>
 </body>

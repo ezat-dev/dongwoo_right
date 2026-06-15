@@ -590,43 +590,59 @@
     <div class="bcf6-auto-panel">
       <div class="bcf6-auto-title">자동운전 조건</div>
       <div class="bcf6-auto-grid">
-        <%-- 사진 기준 2열: 좌항목(bcf6_태그) | 우항목(bcf6_태그) --%>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_8"  data-text-0="처리품 없음"           data-text-1="입구리프터2 상승+처리품">입구리프터2 상승+처리품</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_51" data-text-0="비상정지"               data-text-1="비상정지 해제">비상정지</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_57" data-text-0="보조롤러 미하강"        data-text-1="예열입구 보조롤러 하강">예열입구 보조롤러 하강</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_50" data-text-0="예열 자동스탭 미준비"   data-text-1="예열 자동스탭 준비완료">예열 자동스탭 준비완료</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_59" data-text-0="예열 입구문 열림"       data-text-1="예열 입구문 닫힘">예열 입구문 닫힘</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_23" data-text-0="예열→가열 준비미완"     data-text-1="예열→가열 자동준비완료">예열→가열 자동준비완료</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_53" data-text-0="예열 출구문 열림"       data-text-1="예열 출구문 닫힘">예열 출구문 닫힘</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_40" data-text-0="가열→침탄1 준비미완"    data-text-1="가열→침탄1 자동준비완료">가열→침탄1 자동준비완료</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_54" data-text-0="예열 수동조건"          data-text-1="예열 수동조건 아님">예열 수동조건 아님</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_22" data-text-0="침탄1→침탄2 준비미완"   data-text-1="침탄1→침탄2 자동준비완료">침탄1→침탄2 자동준비완료</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_39" data-text-0="가열입구 처리품 있음"   data-text-1="가열입구리프터 처리품X">가열입구리프터 처리품X</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_44" data-text-0="침탄2→침탄3 준비미완"   data-text-1="침탄2→침탄3 자동준비완료">침탄2→침탄3 자동준비완료</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_55" data-text-0="가열 입구문 열림"       data-text-1="가열 입구문 닫힘">가열 입구문 닫힘</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_29" data-text-0="강온→유조 준비미완"     data-text-1="강온→유조 자동준비완료">강온→유조 자동준비완료</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_40" data-text-0="침탄 입구문 열림"       data-text-1="침탄 입구문 닫힘">침탄 입구문 닫힘</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_34" data-text-0="유조 자동스탭 미준비"   data-text-1="유조 자동스탭 준비완료">유조 자동스탭 준비완료</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_46" data-text-0="강온 입구문 열림"       data-text-1="강온 입구문 닫힘">강온 입구문 닫힘</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_33" data-text-0="가열입구 커튼SW OFF"    data-text-1="가열입구 커튼SW ON">가열입구 커튼SW ON</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_44" data-text-0="유조 입구문 열림"       data-text-1="유조 입구문 닫힘">유조 입구문 닫힘</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_38" data-text-0="가열입구 염 미검출"     data-text-1="가열입구 염검출">가열입구 염검출</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_39" data-text-0="유조 E/V 하강"          data-text-1="유조 E/V 상승">유조 E/V 상승</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_25" data-text-0="가열배기 염 미검출"     data-text-1="가열배기 염검출">가열배기 염검출</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_50" data-text-0="보조체인 미하강"        data-text-1="유조 보조체인 하강">유조 보조체인 하강</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_26" data-text-0="유조출구 커튼SW OFF"    data-text-1="유조출구 커튼SW ON">유조출구 커튼SW ON</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_51" data-text-0="유조 출구문 열림"       data-text-1="유조 출구문 닫힘">유조 출구문 닫힘</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_27" data-text-0="유조출구 염 미검출"     data-text-1="유조출구 염검출">유조출구 염검출</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_57" data-text-0="리프터 미하강"          data-text-1="유조출구 리프터 하강">유조출구 리프터 하강</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_20" data-text-0="유조배기 염 미검출"     data-text-1="유조배기 염검출">유조배기 염검출</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_59" data-text-0="자동선택 안됨"          data-text-1="제어반 자동선택(터치)">제어반 자동선택(터치)</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_35" data-text-0="O2 제어전원 꺼짐"       data-text-1="O2 제어전원 켜짐">O2 제어전원 켜짐</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_53" data-text-0="예열OP 수동SS"          data-text-1="예열OP 자동SS">예열OP 자동SS</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_36" data-text-0="O2 제어 이상"           data-text-1="O2 제어정상">O2 제어정상</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_54" data-text-0="침탄입구OP 수동SS"      data-text-1="침탄입구OP 자동SS">침탄입구OP 자동SS</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_45" data-text-0="MASSFLOW 전원 꺼짐"     data-text-1="MASSFLOW 전원켜짐">MASSFLOW 전원켜짐</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_55" data-text-0="침탄출구OP 수동SS"      data-text-1="침탄출구OP 자동SS">침탄출구OP 자동SS</div>
-        <div class="bcf6-auto-item state-red"  data-tag="bcf6_30" data-text-0="엔리치가스 OFF"         data-text-1="엔리치가스 ON(터치)">엔리치가스 ON(터치)</div>
+        <div class="bcf6-auto-item state-red"  data-tag="bcf6_8"   data-text-0="입구리프터2 상승+처리품" data-text-1="입구리프터2 상승+처리품">입구리프터2 상승+처리품</div>
+        <div class="bcf6-auto-item state-green">비상정지</div>
+
+        <div class="bcf6-auto-item state-red"  data-tag="bcf6_11"  data-text-0="예열입구 보조롤러 하강"  data-text-1="예열입구 보조롤러 하강">예열입구 보조롤러 하강</div>
+        <div class="bcf6-auto-item state-green">예열 자동스탭 준비완료</div>
+
+        <div class="bcf6-auto-item state-red"  data-tag="bcf6_13"  data-text-0="예열 입구문 닫힘"        data-text-1="예열 입구문 닫힘">예열 입구문 닫힘</div>
+        <div class="bcf6-auto-item state-green">예열→가열 자동준비완료</div>
+
+        <div class="bcf6-auto-item state-red"  data-tag="bcf6_15"  data-text-0="예열 출구문 닫힘"        data-text-1="예열 출구문 닫힘">예열 출구문 닫힘</div>
+        <div class="bcf6-auto-item state-green">가열→침탄1 자동준비완료</div>
+
+        <div class="bcf6-auto-item state-green">예열 수동조깅 아님</div>
+        <div class="bcf6-auto-item state-green">침탄1→침탄2 자동준비완료</div>
+
+        <div class="bcf6-auto-item state-red"  data-tag="bcf6_39"  data-text-0="가열입구리프터 처리품X"  data-text-1="가열입구리프터 처리품X">가열입구리프터 처리품X</div>
+        <div class="bcf6-auto-item state-green">침탄2→침탄3 자동준비완료</div>
+
+        <div class="bcf6-auto-item state-red"  data-tag="bcf6_19"  data-text-0="가열 입구문 닫힘"        data-text-1="가열 입구문 닫힘">가열 입구문 닫힘</div>
+        <div class="bcf6-auto-item state-green">강온→유조 자동준비완료</div>
+
+        <div class="bcf6-auto-item state-red"  data-tag="bcf6_21"  data-text-0="침탄 입구문 닫힘"        data-text-1="침탄 입구문 닫힘">침탄 입구문 닫힘</div>
+        <div class="bcf6-auto-item state-green">유조 자동스탭 준비완료</div>
+
+        <div class="bcf6-auto-item state-red"  data-tag="bcf6_23"  data-text-0="강온 입구문 닫힘"        data-text-1="강온 입구문 닫힘">강온 입구문 닫힘</div>
+        <div class="bcf6-auto-item state-red"  data-tag="bcf6_97"  data-text-0="가열입구 커튼SW ON"      data-text-1="가열입구 커튼SW ON">가열입구 커튼SW ON</div>
+
+        <div class="bcf6-auto-item state-red"  data-tag="bcf6_25"  data-text-0="유조 입구문 닫힘"        data-text-1="유조 입구문 닫힘">유조 입구문 닫힘</div>
+        <div class="bcf6-auto-item state-green">가열입구 열검출</div>
+
+        <div class="bcf6-auto-item state-red"  data-tag="bcf6_38"  data-text-0="유조 E/V 상승"           data-text-1="유조 E/V 상승">유조 E/V 상승</div>
+        <div class="bcf6-auto-item state-green">가열배기 열검출</div>
+
+        <div class="bcf6-auto-item state-red"  data-tag="bcf6_27"  data-text-0="유조 보조체인 하강"      data-text-1="유조 보조체인 하강">유조 보조체인 하강</div>
+        <div class="bcf6-auto-item state-red"  data-tag="bcf6_98"  data-text-0="유조출구 커튼SW ON"      data-text-1="유조출구 커튼SW ON">유조출구 커튼SW ON</div>
+
+        <div class="bcf6-auto-item state-red"  data-tag="bcf6_29"  data-text-0="유조 출구문 닫힘"        data-text-1="유조 출구문 닫힘">유조 출구문 닫힘</div>
+        <div class="bcf6-auto-item state-green">유조출구 열검출</div>
+
+        <div class="bcf6-auto-item state-red"  data-tag="bcf6_32"  data-text-0="유조출구 리프터 하강"    data-text-1="유조출구 리프터 하강">유조출구 리프터 하강</div>
+        <div class="bcf6-auto-item state-green">유조배기 열검출</div>
+
+        <div class="bcf6-auto-item state-green">제어반 자동선택(터치)</div>
+        <div class="bcf6-auto-item state-red"  data-tag="bcf6_116" data-text-0="O2 제어전원 켜짐"        data-text-1="O2 제어전원 켜짐">O2 제어전원 켜짐</div>
+
+        <div class="bcf6-auto-item state-red"  data-tag="bcf6_145" data-text-0="예열OP 자동SS"           data-text-1="예열OP 자동SS">예열OP 자동SS</div>
+        <div class="bcf6-auto-item state-red"  data-tag="bcf6_117" data-text-0="O2 제어정상"             data-text-1="O2 제어정상">O2 제어정상</div>
+
+        <div class="bcf6-auto-item state-red"  data-tag="bcf6_146" data-text-0="침탄입구OP 자동SS"       data-text-1="침탄입구OP 자동SS">침탄입구OP 자동SS</div>
+        <div class="bcf6-auto-item state-red"  data-tag="bcf6_120" data-text-0="MASSFLOW 전원켜짐"        data-text-1="MASSFLOW 전원켜짐">MASSFLOW 전원켜짐</div>
+
+        <div class="bcf6-auto-item state-red"  data-tag="bcf6_147" data-text-0="침탄출구OP 자동SS"       data-text-1="침탄출구OP 자동SS">침탄출구OP 자동SS</div>
+        <div class="bcf6-auto-item state-red"  data-tag="bcf6_137" data-text-0="앤리치가스 ON(터치)"     data-text-1="앤리치가스 ON(터치)">앤리치가스 ON(터치)</div>
       </div>
     </div>
 
@@ -884,14 +900,10 @@
   var busy = false;
   var pollCount6 = 0;
   function fetchData() {
-    if (busy || !allTags.length) { if (!allTags.length) console.warn('[BCF6] allTags 비어있음 - DOM 클래스 스캔 실패'); return; }
+    if (busy) return;
     busy = true;
     pollCount6++;
-    fetch(ctx + '/monitor/main-data', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify(allTags)
-    })
+    fetch(ctx + '/monitor/snapshot')
     .then(function(r) { return r.ok ? r.json() : Promise.reject(r.status); })
     .then(function(data) {
       if (pollCount6 <= 3) {

@@ -760,17 +760,21 @@
 
   function applyData(data) {
     Object.keys(wordElMap).forEach(function(tag) {
-      if (data[tag] == null) return;
-      var raw = Number(data[tag]);
-      var text = isNaN(raw) ? data[tag] : raw.toFixed(0);
+      var key = tag.replace(/^bcf12_d(\d+)$/i, 'bcf12_s_D$1');
+      var val = data[key] != null ? data[key] : data[tag];
+      if (val == null) return;
+      var raw = Number(val);
+      var text = isNaN(raw) ? val : raw.toFixed(0);
       wordElMap[tag].forEach(function(el) { el.textContent = text; });
     });
     Object.keys(tpElMap).forEach(function(tag) {
-      if (data[tag] == null) return;
-      var raw = Number(data[tag]);
+      var key = tag.replace(/^bcf12_d(\d+)$/i, 'bcf12_s_D$1');
+      var val = data[key] != null ? data[key] : data[tag];
+      if (val == null) return;
+      var raw = Number(val);
       var text;
       if (isNaN(raw)) {
-        text = data[tag];
+        text = val;
       } else if (tag === 'bcf12_d1081') {
         text = (raw * 0.001).toFixed(3);
       } else {
@@ -782,13 +786,9 @@
 
   var busy = false;
   function fetchData() {
-    if (busy || !allTags.length) return;
+    if (busy) return;
     busy = true;
-    fetch(ctx + '/monitor/main-data', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(allTags)
-    })
+    fetch(ctx + '/monitor/snapshot')
     .then(function(r) { return r.ok ? r.json() : Promise.reject(r.status); })
     .then(function(data) { applyData(data); })
     .catch(function(err) { console.warn('[BCF12] PLC fetch 실패:', err); })

@@ -1,0 +1,322 @@
+package com.sample_pro.service.monitor;
+
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+
+/**
+ * 서버 사이드 PLC 캐시 — 2초마다 전체 BCF 폴링 후 스냅샷 유지.
+ *
+ * BCF1~11  : Modbus TCP  (코일 readBits / 워드 read)
+ * BCF12    : Mitsubishi   (D레지스터 word, X/Y/M 비트 — device 파라미터)
+ */
+@Service
+public class MonitorCacheService {
+
+    private static final String CSHARP = "http://localhost:5050";
+
+    private final RestTemplate rest;
+    private final ConcurrentHashMap<String, Object> snapshot = new ConcurrentHashMap<>();
+
+    public MonitorCacheService() {
+        SimpleClientHttpRequestFactory f = new SimpleClientHttpRequestFactory();
+        f.setConnectTimeout(1000);
+        f.setReadTimeout(8000);
+        rest = new RestTemplate(f);
+    }
+
+    // ── Modbus 워드 주소 (per-BCF): 메인 모니터 + 상세 페이지 모두 포함 ─────
+    private static final Map<Integer, int[]> WORD_DETAIL_ADDRS = new HashMap<>();
+
+    // ── Modbus 코일 비트 주소 (< 40000) ────────────────────────────────────
+    private static final Map<Integer, int[]> COIL_ADDRS = new HashMap<>();
+    // ── 40xxx: FC03 워드 읽기 후 0/1 변환 (BCF7 알람, BCF11 트레이) ─────────
+    private static final Map<Integer, int[]> WORD_FLAG_ADDRS = new HashMap<>();
+
+    static {
+        // BCF1~5, 10: 침탄로 — 상세 페이지 40015~40071 전체 커버
+        int[] bcf1to5 = {
+            40015, 40016, 40017, 40018, 40019, 40020, 40021, 40023, 40025,
+            40028, 40029, 40030, 40031, 40032, 40033, 40034, 40035, 40036,
+            40038, 40039, 40040, 40041, 40042, 40043, 40044,
+            40046, 40047, 40048, 40049, 40050, 40051, 40052,
+            40069, 40070, 40071
+        };
+        WORD_DETAIL_ADDRS.put(1,  bcf1to5);
+        WORD_DETAIL_ADDRS.put(2,  bcf1to5);
+        WORD_DETAIL_ADDRS.put(3,  bcf1to5);
+        WORD_DETAIL_ADDRS.put(4,  bcf1to5);
+        WORD_DETAIL_ADDRS.put(5,  bcf1to5);
+        WORD_DETAIL_ADDRS.put(10, bcf1to5);
+
+        // BCF6: 40018~40049 범위
+        WORD_DETAIL_ADDRS.put(6, new int[]{
+            40018, 40025, 40033, 40034, 40035, 40036, 40037, 40038,
+            40039, 40040, 40041, 40042, 40043, 40044, 40045, 40046,
+            40048, 40049
+        });
+
+        // BCF7, 8, 9: 메인 모니터(40046~40071) + 상세 페이지(44611~44613)
+        int[] bcf789 = {40046, 40047, 40052, 40069, 40070, 40071, 44611, 44612, 44613};
+        WORD_DETAIL_ADDRS.put(7, bcf789);
+        WORD_DETAIL_ADDRS.put(8, bcf789);
+        WORD_DETAIL_ADDRS.put(9, bcf789);
+
+        // ── 코일 비트 ──────────────────────────────────────────────────────
+        COIL_ADDRS.put(1,  new int[]{2, 3, 8, 25, 39, 40, 44, 46, 50, 51, 56, 60});
+        COIL_ADDRS.put(2,  new int[]{2, 3, 8, 25, 39, 40, 44, 46, 50, 51, 56, 60});
+        COIL_ADDRS.put(3,  new int[]{2, 3, 8, 25, 39, 40, 44, 46, 51, 56, 60, 96, 97, 98});
+        COIL_ADDRS.put(4,  new int[]{2, 3, 8, 25, 44, 46, 50, 51, 56, 60, 85, 86});
+        COIL_ADDRS.put(5,  new int[]{2, 8, 25, 38, 39, 46, 49, 52, 53, 54, 58, 62});
+        COIL_ADDRS.put(6,  new int[]{8, 14, 16, 20, 22, 24, 25, 26, 30, 37, 39, 43, 84,
+                                      187, 224, 225, 226, 234, 244, 245, 248, 249,
+                                      252, 253, 256, 257, 260, 261, 264, 265,
+                                      291, 293, 294, 295, 296, 297, 298,
+                                      303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314});
+        COIL_ADDRS.put(7,  new int[]{1, 2, 12, 14, 17, 18, 19, 22, 25, 88, 89, 110, 111, 144, 145, 157});
+        COIL_ADDRS.put(8,  new int[]{7, 11, 13, 14, 15, 18, 19, 23, 25, 85, 86, 87, 88, 93, 113, 116, 117});
+        COIL_ADDRS.put(9,  new int[]{1, 2, 12, 14, 18, 19, 22, 25, 110, 111, 144, 145, 157});
+        COIL_ADDRS.put(10, new int[]{2, 8, 25, 38, 39, 46, 49, 52, 53, 54, 58, 62});
+        COIL_ADDRS.put(11, new int[]{3, 5, 7, 9, 25, 56, 57, 60, 62, 65, 79, 80, 83, 84, 97, 98, 100, 117, 162, 163});
+
+        // BCF11: 온도 + CP 워드 (설정 40001~40005, 현재 40077~40081)
+        WORD_DETAIL_ADDRS.put(11, new int[]{40001, 40002, 40003, 40004, 40005,
+                                             40077, 40078, 40079, 40080, 40081});
+
+        WORD_FLAG_ADDRS.put(7,  new int[]{40038});
+        WORD_FLAG_ADDRS.put(11, new int[]{40008, 40010, 40027, 40044, 40053});
+    }
+
+    // ── BCF12 Mitsubishi D레지스터 주소 ────────────────────────────────────
+    private static final int   BCF12_D_START = 1010;
+    private static final int   BCF12_D_COUNT = 78;   // 1010~1087
+    private static final int[] BCF12_D_ADDRS = {1010, 1020, 1051, 1061, 1081, 1083, 1085, 1087};
+
+    // ── 스케줄러: 2초마다 전체 BCF 읽기 ───────────────────────────────────
+    @Scheduled(fixedDelay = 2000)
+    public void refresh() {
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
+
+        // 모든 BCF 워드 (per-BCF 주소 맵)
+        for (Integer n : WORD_DETAIL_ADDRS.keySet()) {
+            final int plcNum = n;
+            futures.add(CompletableFuture.runAsync(() -> readModbusWords(plcNum)));
+        }
+
+        // BCF1~11 코일 비트
+        for (int n = 1; n <= 11; n++) {
+            if (!COIL_ADDRS.containsKey(n)) continue;
+            final int plcNum = n;
+            futures.add(CompletableFuture.runAsync(() -> readModbusCoils(plcNum)));
+        }
+
+        // BCF7/11 워드-플래그 (40xxx → 0/1)
+        for (Map.Entry<Integer, int[]> e : WORD_FLAG_ADDRS.entrySet()) {
+            final int plcNum = e.getKey();
+            final int[] addrs = e.getValue();
+            futures.add(CompletableFuture.runAsync(() -> readWordFlags(plcNum, addrs)));
+        }
+
+        // BCF12 Mitsubishi D레지스터
+        futures.add(CompletableFuture.runAsync(this::readBcf12Words));
+
+        // BCF12 Mitsubishi X/Y/M 비트
+        futures.add(CompletableFuture.runAsync(this::readBcf12Bits));
+
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+    }
+
+    // ── 개별 읽기 메서드 ───────────────────────────────────────────────────
+
+    /** Modbus 워드: 갭 > 200 레지스터 구간마다 분할 호출 */
+    private void readModbusWords(int plcNum) {
+        int[] addrs = WORD_DETAIL_ADDRS.get(plcNum);
+        if (addrs == null || addrs.length == 0) return;
+        int chunkStart = 0;
+        for (int i = 1; i <= addrs.length; i++) {
+            boolean flush = (i == addrs.length) || (addrs[i] - addrs[i - 1] > 200);
+            if (flush) {
+                int[] chunk = Arrays.copyOfRange(addrs, chunkStart, i);
+                readModbusWordsChunk(plcNum, chunk);
+                chunkStart = i;
+            }
+        }
+    }
+
+    private void readModbusWordsChunk(int plcNum, int[] addrs) {
+        int start = addrs[0];
+        int count = addrs[addrs.length - 1] - start + 1;
+        String url = CSHARP + "/api/plc/read/" + plcId(plcNum)
+                   + "?start=" + start + "&count=" + count;
+        try {
+            Map<?, ?> res = rest.getForObject(url, Map.class);
+            if (res != null && Boolean.TRUE.equals(res.get("success"))) {
+                List<?> vals = (List<?>) res.get("values");
+                for (int addr : addrs) {
+                    int idx = addr - start;
+                    if (idx >= 0 && idx < vals.size() && vals.get(idx) != null)
+                        snapshot.put("bcf" + plcNum + "_s_" + addr, vals.get(idx));
+                }
+            }
+        } catch (Exception ignored) {}
+    }
+
+    /** Modbus 코일: 최소~최대 주소 범위로 한 번 호출 */
+    private void readModbusCoils(int plcNum) {
+        int[] sorted = Arrays.stream(COIL_ADDRS.get(plcNum))
+                             .filter(a -> a < 40000)
+                             .sorted().toArray();
+        if (sorted.length == 0) return;
+
+        int start = sorted[0];
+        int count = sorted[sorted.length - 1] - start + 1;
+        String url = CSHARP + "/api/plc/readBits/" + plcId(plcNum)
+                   + "?start=" + start + "&count=" + count;
+        try {
+            Map<?, ?> res = rest.getForObject(url, Map.class);
+            if (res != null && Boolean.TRUE.equals(res.get("success"))) {
+                List<?> vals = (List<?>) res.get("values");
+                for (int addr : sorted) {
+                    int idx = addr - start;
+                    if (idx >= 0 && idx < vals.size()) {
+                        Object v = vals.get(idx);
+                        snapshot.put("bcf" + plcNum + "_" + addr,
+                            Boolean.TRUE.equals(v) ? 1 : 0);
+                    }
+                }
+            }
+        } catch (Exception ignored) {}
+    }
+
+    /** 40xxx 주소: FC03 워드 읽기 → 0 이면 0, 그 외 1 */
+    private void readWordFlags(int plcNum, int[] addrs) {
+        for (int addr : addrs) {
+            String url = CSHARP + "/api/plc/read/" + plcId(plcNum)
+                       + "?start=" + addr + "&count=1";
+            try {
+                Map<?, ?> res = rest.getForObject(url, Map.class);
+                if (res != null && Boolean.TRUE.equals(res.get("success"))) {
+                    List<?> vals = (List<?>) res.get("values");
+                    if (!vals.isEmpty()) {
+                        Object v = vals.get(0);
+                        int flag = (v instanceof Number && ((Number) v).intValue() != 0) ? 1 : 0;
+                        snapshot.put("bcf" + plcNum + "_" + addr, flag);
+                    }
+                }
+            } catch (Exception ignored) {}
+        }
+    }
+
+    /** BCF12 D레지스터: D1051~D1087 범위 단일 호출 */
+    private void readBcf12Words() {
+        String url = CSHARP + "/api/plc/read/dongwoo_12"
+                   + "?start=" + BCF12_D_START + "&count=" + BCF12_D_COUNT + "&device=D";
+        try {
+            Map<?, ?> res = rest.getForObject(url, Map.class);
+            if (res != null && Boolean.TRUE.equals(res.get("success"))) {
+                List<?> vals = (List<?>) res.get("values");
+                for (int dAddr : BCF12_D_ADDRS) {
+                    int idx = dAddr - BCF12_D_START;
+                    if (idx >= 0 && idx < vals.size() && vals.get(idx) != null)
+                        snapshot.put("bcf12_s_D" + dAddr, vals.get(idx));
+                }
+            }
+        } catch (Exception ignored) {}
+    }
+
+    /** BCF12 X/Y/M 비트: Mitsubishi bit device read (device 파라미터 사용) */
+    private void readBcf12Bits() {
+        // ── 오버레이 패널용 기존 비트 ─────────────────────────────────────────
+        // X144(0x90)~X151(0x97)
+        readMitBitRange("X", 144, 8,
+            new int[]   {144,           146,           149,           151},
+            new String[]{"bcf12_X090H", "bcf12_X092H", "bcf12_X095H", "bcf12_X097H"});
+
+        // Y240(0xF0)~Y244(0xF4)
+        readMitBitRange("Y", 240, 5,
+            new int[]   {240,          241,          244},
+            new String[]{"bcf12_Y0f0", "bcf12_Y0F1", "bcf12_Y0F4"});
+
+        // M25(운전모드), M6824(조깅)
+        readMitBitSingle("M", 25,   "bcf12_25");
+        readMitBitSingle("M", 6824, "bcf12_M6824");
+
+        // ── 존 테이블 X 비트 ──────────────────────────────────────────────────
+        // X43(0x2B) 단독
+        readMitBitSingle("X", 43, "bcf12_x02b");
+
+        // X121(0x79)~X183(0xB7): 63비트
+        readMitBitRange("X", 121, 63,
+            new int[]   {121,          122,          124,          125,          128,          129,          130,          131,          132,          133,          134,          135,          137,          139,          155,          156,          157,          158,          183},
+            new String[]{"bcf12_x079","bcf12_x07a","bcf12_x07c","bcf12_x07d","bcf12_x080","bcf12_x081","bcf12_x082","bcf12_x083","bcf12_x084","bcf12_x085","bcf12_x086","bcf12_x087h","bcf12_x089","bcf12_x08b","bcf12_x09b","bcf12_x09c","bcf12_x09d","bcf12_x09e","bcf12_x0b7"});
+
+        // ── 존 테이블 Y 비트 ──────────────────────────────────────────────────
+        // Y208(0xD0)~Y247(0xF7): 40비트
+        readMitBitRange("Y", 208, 40,
+            new int[]   {208,          209,          211,          212,          214,          216,          217,          218,          219,          220,          221,          222,          223,          245,          246,          247},
+            new String[]{"bcf12_y0d0h","bcf12_y0d1h","bcf12_y0d3h","bcf12_y0d4h","bcf12_y0d6h","bcf12_y0d8h","bcf12_y0d9h","bcf12_y0dah","bcf12_y0dbh","bcf12_y0dch","bcf12_y0ddh","bcf12_y0deh","bcf12_y0dfh","bcf12_y0f5h","bcf12_y0f6h","bcf12_y0f7h"});
+
+        // Y256(0x100) 단독
+        readMitBitSingle("Y", 256, "bcf12_y100h");
+
+        // Y267(0x10B)~Y269(0x10D): 3비트
+        readMitBitRange("Y", 267, 3,
+            new int[]   {267,          269},
+            new String[]{"bcf12_y10bh","bcf12_y10dh"});
+
+        // Y304(0x130)~Y309(0x135): 6비트
+        readMitBitRange("Y", 304, 6,
+            new int[]   {304,          305,          306,          307,          308,          309},
+            new String[]{"bcf12_y130h","bcf12_y131h","bcf12_y132h","bcf12_y133h","bcf12_y134h","bcf12_y135h"});
+    }
+
+    private void readMitBitRange(String device, int startAddr, int count,
+                                  int[] addrMap, String[] tagMap) {
+        String url = CSHARP + "/api/plc/read/dongwoo_12"
+                   + "?start=" + startAddr + "&count=" + count + "&device=" + device;
+        try {
+            Map<?, ?> res = rest.getForObject(url, Map.class);
+            if (res != null && Boolean.TRUE.equals(res.get("success"))) {
+                List<?> vals = (List<?>) res.get("values");
+                for (int i = 0; i < addrMap.length && i < tagMap.length; i++) {
+                    int idx = addrMap[i] - startAddr;
+                    if (idx >= 0 && idx < vals.size()) {
+                        Object v = vals.get(idx);
+                        snapshot.put(tagMap[i],
+                            (v instanceof Number && ((Number) v).intValue() != 0) ? 1 : 0);
+                    }
+                }
+            }
+        } catch (Exception ignored) {}
+    }
+
+    private void readMitBitSingle(String device, int addr, String tag) {
+        String url = CSHARP + "/api/plc/read/dongwoo_12"
+                   + "?start=" + addr + "&count=1&device=" + device;
+        try {
+            Map<?, ?> res = rest.getForObject(url, Map.class);
+            if (res != null && Boolean.TRUE.equals(res.get("success"))) {
+                List<?> vals = (List<?>) res.get("values");
+                if (!vals.isEmpty()) {
+                    Object v = vals.get(0);
+                    snapshot.put(tag,
+                        (v instanceof Number && ((Number) v).intValue() != 0) ? 1 : 0);
+                }
+            }
+        } catch (Exception ignored) {}
+    }
+
+    // ── 스냅샷 반환 (컨트롤러에서 호출) ──────────────────────────────────
+    public Map<String, Object> getSnapshot() {
+        return new HashMap<>(snapshot);
+    }
+
+    private static String plcId(int n) {
+        return n < 10 ? "dongwoo_0" + n : "dongwoo_" + n;
+    }
+}

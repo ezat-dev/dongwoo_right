@@ -61,22 +61,114 @@
      position: absolute;
      width: 183px; height: 26px;
      display: flex; align-items: center; justify-content: center;
-     font-size: 13px; font-weight: 800; letter-spacing: 1.2px;
-     background: #e8d84a; color: #1a1000;
-     border: 2px solid #b8a812; border-radius: 4px;
+     font-size: 13px; font-weight: 900; letter-spacing: .8px;
+     background: linear-gradient(160deg, #f8fafc 0%, #eff6ff 100%);
+     color: #1d4ed8;
+     border: 1px solid #bfdbfe;
+     border-radius: 6px 6px 0 0;
      top: 62px; z-index: 200;
      font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+     box-shadow: 0 1px 4px rgba(59,130,246,.12), inset 0 1px 0 rgba(255,255,255,.85);
+     text-shadow: 0 1px 0 rgba(255,255,255,.85);
    }
    .bcf-mode-lbl {
      position: absolute;
      width: 183px; height: 26px;
      display: flex; align-items: center; justify-content: center;
-     font-size: 12px; font-weight: 700; color: #fff;
-     background: #22c55e; border-radius: 4px;
-     top: 92px; z-index: 200;
+     font-size: 12px; font-weight: 800;
+     background: linear-gradient(160deg, #f0fdf4 0%, #dcfce7 100%);
+     color: #15803d;
+     border: 1px solid #bbf7d0;
+     border-top: none;
+     border-radius: 0 0 6px 6px;
+     top: 88px; z-index: 200;
      font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
-     transition: background .2s;
+     letter-spacing: .2px;
+     transition: background .2s, box-shadow .2s;
+     box-shadow: 0 1px 4px rgba(16,185,129,.12), inset 0 1px 0 rgba(255,255,255,.7);
+     text-shadow: 0 1px 0 rgba(255,255,255,.7);
    }
+
+   .group-1 [class*="-jogging"],
+   .group-1 [class*="-open-"],
+   .group-1 [class*="-close-"],
+   .group-1 [class$="-stop"],
+   .group-1 [class*="-stop "],
+   .group-1 [class$="-up"],
+   .group-1 [class*="-up "],
+   .group-1 [class$="-down"],
+   .group-1 [class*="-down "] {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     text-align: center;
+     font-family: 'Malgun Gothic', 'Segoe UI', Arial, sans-serif;
+     font-size: 12px;
+     font-weight: 800;
+     line-height: 1;
+     letter-spacing: 0;
+     white-space: nowrap;
+     overflow: hidden;
+     color: #111827;
+     border-color: rgba(17, 24, 39, .72) !important;
+     border-radius: 3px;
+     box-shadow: inset 0 1px 0 rgba(255,255,255,.45), 0 1px 3px rgba(15,23,42,.22);
+     text-shadow: 0 1px 0 rgba(255,255,255,.45);
+   }
+
+   .group-1 [class*="-jogging"] {
+     background: linear-gradient(180deg, #d9f99d 0%, #86efac 100%) !important;
+   }
+   .group-1 [class*="-close-"] {
+     background: linear-gradient(180deg, #bbf7d0 0%, #22c55e 100%) !important;
+     font-size: 11px !important;
+   }
+   .group-1 [class*="-open-"] {
+     color: #fff;
+     background: linear-gradient(180deg, #fb7185 0%, #dc2626 100%) !important;
+     text-shadow: 0 1px 1px rgba(0,0,0,.35);
+   }
+   .group-1 [class$="-down"],
+   .group-1 [class*="-down "] {
+     background: linear-gradient(180deg, #fef08a 0%, #facc15 100%) !important;
+   }
+   .group-1 [class$="-up"],
+   .group-1 [class*="-up "],
+   .group-1 [class$="-stop"],
+   .group-1 [class*="-stop "] {
+     background: linear-gradient(180deg, #e0f2fe 0%, #60a5fa 100%) !important;
+   }
+
+   @keyframes penSpinRight {
+     from { transform: rotate(0deg); }
+     to   { transform: rotate(360deg); }
+   }
+   .group-1 img[class*="-pen-"] {
+     transform-origin: 50% 50%;
+     animation: penSpinRight 5.5s linear infinite;
+     will-change: transform;
+   }
+   .group-1 img[class*="-pen-"].pen-rotating {
+     animation-play-state: running;
+   }
+   .group-1 img[class*="-pen-"].pen-stopped {
+     animation-play-state: paused;
+   }
+
+   .bcf-12-pen-2 { width: 43.72px !important; height: 43.72px !important; left: 244.56px !important; top: 377.33px !important; }
+   .bcf-12-pen-1 { width: 43.72px !important; height: 43.72px !important; left: 113.16px !important; top: 377.33px !important; }
+   .bcf-1-pen-2  { width: 43.72px !important; height: 43.72px !important; left: 494.41px !important; top: 377.33px !important; }
+   .bcf-1-pen-1  { width: 43.72px !important; height: 43.72px !important; left: 363px     !important; top: 377.33px !important; }
+   .bcf-2-pen-2  { width: 43.72px !important; height: 43.72px !important; left: 744.25px !important; top: 377.33px !important; }
+   .bcf-2-pen-1  { width: 43.72px !important; height: 43.72px !important; left: 612.85px !important; top: 377.33px !important; }
+   .bcf-3-pen-2  { width: 43.72px !important; height: 43.72px !important; left: 994.1px  !important; top: 377.33px !important; }
+   .bcf-3-pen-1  { width: 43.72px !important; height: 43.72px !important; left: 862.69px !important; top: 377.33px !important; }
+   .bcf-4-pen-2  { width: 43.72px !important; height: 43.72px !important; left: 1243.95px !important; top: 377.33px !important; }
+   .bcf-4-pen-1  { width: 43.72px !important; height: 43.72px !important; left: 1112.54px !important; top: 377.33px !important; }
+   .bcf-10-pen-2 { width: 43.72px !important; height: 43.72px !important; left: 1493.79px !important; top: 377.33px !important; }
+   .bcf-10-pen-1 { width: 43.72px !important; height: 43.72px !important; left: 1362.39px !important; top: 377.33px !important; }
+   .bcf-5-pen-2  { width: 43.72px !important; height: 43.72px !important; left: 1743.64px !important; top: 377.33px !important; }
+   .bcf-5-pen-1  { width: 43.72px !important; height: 43.72px !important; left: 1612.23px !important; top: 377.33px !important; }
    </style>
   <title>Document</title>
 </head>
@@ -125,24 +217,24 @@
         <img class="bcf-12-tray-2" src="<%= ctx %>/img/main_monitor_1/bcf-12-tray-20.png" />
         <img class="bcf-12-tray-1" src="<%= ctx %>/img/main_monitor_1/bcf-12-tray-10.png" />
         <div class="back-12"></div>
-        <div class="bcf-12-open-1"></div>
-        <div class="bcf-12-close-1"></div>
-        <div class="bcf-12-open-2"></div>
-        <div class="bcf-12-close-2"></div>
-        <div class="bcf-12-open-3"></div>
-        <div class="bcf-12-close-3"></div>
-        <div class="bcf-12-stop"></div>
-        <div class="bcf-12-up"></div>
-        <div class="bcf-12-down"></div>
+        <div class="bcf-12-open-1 bcf12_X097H">열림</div>
+        <div class="bcf-12-close-1">닫힘</div>
+        <div class="bcf-12-open-2 bcf12_X095H">열림</div>
+        <div class="bcf-12-close-2">닫힘</div>
+        <div class="bcf-12-open-3 bcf12_X090H">열림</div>
+        <div class="bcf-12-close-3">닫힘</div>
+        <div class="bcf-12-stop">정지</div>
+        <div class="bcf-12-up">상승</div>
+        <div class="bcf-12-down bcf12_X092H">하강</div>
         <img class="bcf-12-heat-off" src="<%= ctx %>/img/main_monitor_1/bcf-12-heat-off0.png" />
         <img class="bcf-12-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-12-heat-on0.png" />
         <img class="bcf-12-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-12-obj-off0.png" />
         <img class="bcf-12-obj-on" src="<%= ctx %>/img/main_monitor_1/bcf-12-obj-on0.png" />
-        <img class="bcf-12-pen-2" src="<%= ctx %>/img/main_monitor_1/bcf-12-pen-20.png" />
-        <img class="bcf-12-pen-1" src="<%= ctx %>/img/main_monitor_1/bcf-12-pen-10.png" />
-        <div class="bcf-12-jogging"></div>
+        <img class="bcf-12-pen-2 bcf12_Y0F4" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-12-pen-1 bcf12_Y0F4" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <div class="bcf-12-jogging bcf12_M6824">조깅</div>
         <img class="bcf-12-moter-off" src="<%= ctx %>/img/main_monitor_1/bcf-12-moter-off0.png" />
-        <img class="bcf-12-moter-on" src="<%= ctx %>/img/main_monitor_1/bcf-12-moter-on0.png" />
+        <img class="bcf-12-moter-on bcf12_Y0f0 bcf12_Y0F1" src="<%= ctx %>/img/main_monitor_1/bcf-12-moter-on0.png" />
       </div>
       <div class="hogi-1">
         <img class="bcf-1" src="<%= ctx %>/img/main_monitor_1/bcf-10.png" />
@@ -159,21 +251,21 @@
         <img class="bcf-1-tray-2 bcf1_51" src="<%= ctx %>/img/main_monitor_1/bcf-1-tray-20.png" />
         <img class="bcf-1-tray-1 bcf1_50" src="<%= ctx %>/img/main_monitor_1/bcf-1-tray-10.png" />
         <div class="back-1"></div>
-        <div class="bcf-1-open-1 bcf1_8"></div>
-        <div class="bcf-1-close-1"></div>
-        <div class="bcf-1-open-2 bcf1_2"></div>
-        <div class="bcf-1-close-2"></div>
-        <div class="bcf-1-stop"></div>
-        <div class="bcf-1-up"></div>
-        <div class="bcf-1-down bcf1_3"></div>
+        <div class="bcf-1-open-1 bcf1_8">열림</div>
+        <div class="bcf-1-close-1">닫힘</div>
+        <div class="bcf-1-open-2 bcf1_2">열림</div>
+        <div class="bcf-1-close-2">닫힘</div>
+        <div class="bcf-1-stop">정지</div>
+        <div class="bcf-1-up">상승</div>
+        <div class="bcf-1-down bcf1_3">하강</div>
         <div class="bcf-1-dt-ez-50 bcf1_50"></div>
         <img class="bcf-1-heat-off" src="<%= ctx %>/img/main_monitor_1/bcf-1-heat-off0.png" />
         <img class="bcf-1-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-1-heat-on0.png" />
         <img class="bcf-1-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-1-obj-off0.png" />
         <img class="bcf-1-obj-on bcf1_46" src="<%= ctx %>/img/main_monitor_1/bcf-1-obj-on0.png" />
-        <img class="bcf-1-pen-2 bcf1_60" src="<%= ctx %>/img/main_monitor_1/bcf-1-pen-20.png" />
-        <img class="bcf-1-pen-1 bcf1_60" src="<%= ctx %>/img/main_monitor_1/bcf-1-pen-10.png" />
-        <div class="bcf-1-jogging bcf1_56"></div>
+        <img class="bcf-1-pen-2 bcf1_60" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-1-pen-1 bcf1_60" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <div class="bcf-1-jogging bcf1_56">조깅</div>
         <img class="bcf-1-moter-off" src="<%= ctx %>/img/main_monitor_1/bcf-1-moter-off0.png" />
         <img class="bcf-1-moter-on bcf1_39 bcf1_40" src="<%= ctx %>/img/main_monitor_1/bcf-1-moter-on0.png" />
       </div>
@@ -192,21 +284,21 @@
         <img class="bcf-2-tray-2 bcf2_51" src="<%= ctx %>/img/main_monitor_1/bcf-2-tray-20.png" />
         <img class="bcf-2-tray-1 bcf2_50" src="<%= ctx %>/img/main_monitor_1/bcf-2-tray-10.png" />
         <div class="back-2"></div>
-        <div class="bcf-2-open-1 bcf2_8"></div>
-        <div class="bcf-2-close-1"></div>
-        <div class="bcf-2-open-2 bcf2_2"></div>
-        <div class="bcf-2-close-2"></div>
-        <div class="bcf-2-stop"></div>
-        <div class="bcf-2-up"></div>
-        <div class="bcf-2-down bcf2_3"></div>
+        <div class="bcf-2-open-1 bcf2_8">열림</div>
+        <div class="bcf-2-close-1">닫힘</div>
+        <div class="bcf-2-open-2 bcf2_2">열림</div>
+        <div class="bcf-2-close-2">닫힘</div>
+        <div class="bcf-2-stop">정지</div>
+        <div class="bcf-2-up">상승</div>
+        <div class="bcf-2-down bcf2_3">하강</div>
         <div class="bcf-2-dt bcf2_50"></div>
         <img class="bcf-2-heat-off" src="<%= ctx %>/img/main_monitor_1/bcf-2-heat-off0.png" />
         <img class="bcf-2-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-2-heat-on0.png" />
         <img class="bcf-2-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-2-obj-off0.png" />
         <img class="bcf-2-obj-on bcf2_46" src="<%= ctx %>/img/main_monitor_1/bcf-2-obj-on0.png" />
-        <img class="bcf-2-pen-2 bcf2_60" src="<%= ctx %>/img/main_monitor_1/bcf-2-pen-20.png" />
-        <img class="bcf-2-pen-1 bcf2_60" src="<%= ctx %>/img/main_monitor_1/bcf-2-pen-10.png" />
-        <div class="bcf-2-jogging bcf2_56"></div>
+        <img class="bcf-2-pen-2 bcf2_60" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-2-pen-1 bcf2_60" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <div class="bcf-2-jogging bcf2_56">조깅</div>
         <img class="bcf-2-moter-off" src="<%= ctx %>/img/main_monitor_1/bcf-2-moter-off0.png" />
         <img class="bcf-2-moter-on bcf2_39 bcf2_40" src="<%= ctx %>/img/main_monitor_1/bcf-2-moter-on0.png" />
       </div>
@@ -225,21 +317,21 @@
         <img class="bcf-3-tray-2 bcf3_51" src="<%= ctx %>/img/main_monitor_1/bcf-3-tray-20.png" />
         <img class="bcf-3-tray-1 bcf3_98" src="<%= ctx %>/img/main_monitor_1/bcf-3-tray-10.png" />
         <div class="back-3"></div>
-        <div class="bcf-3-open-1 bcf3_8"></div>
-        <div class="bcf-3-close-1"></div>
-        <div class="bcf-3-open-2 bcf3_2"></div>
-        <div class="bcf-3-close-2"></div>
-        <div class="bcf-3-stop"></div>
-        <div class="bcf-3-up"></div>
-        <div class="bcf-3-down bcf3_3"></div>
+        <div class="bcf-3-open-1 bcf3_8">열림</div>
+        <div class="bcf-3-close-1">닫힘</div>
+        <div class="bcf-3-open-2 bcf3_2">열림</div>
+        <div class="bcf-3-close-2">닫힘</div>
+        <div class="bcf-3-stop">정지</div>
+        <div class="bcf-3-up">상승</div>
+        <div class="bcf-3-down bcf3_3">하강</div>
         <div class="bcf-3-dt bcf3_96 bcf3_97 bcf3_98"></div>
         <img class="bcf-3-heat-off" src="<%= ctx %>/img/main_monitor_1/bcf-3-heat-off0.png" />
         <img class="bcf-3-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-3-heat-on0.png" />
         <img class="bcf-3-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-3-obj-off0.png" />
         <img class="bcf-3-obj-on bcf3_46" src="<%= ctx %>/img/main_monitor_1/bcf-3-obj-on0.png" />
-        <img class="bcf-3-pen-2 bcf3_60" src="<%= ctx %>/img/main_monitor_1/bcf-3-pen-20.png" />
-        <img class="bcf-3-pen-1 bcf3_60" src="<%= ctx %>/img/main_monitor_1/bcf-3-pen-10.png" />
-        <div class="bcf-3-jogging bcf3_56"></div>
+        <img class="bcf-3-pen-2 bcf3_60" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-3-pen-1 bcf3_60" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <div class="bcf-3-jogging bcf3_56">조깅</div>
         <img class="bcf-3-moter-off" src="<%= ctx %>/img/main_monitor_1/bcf-3-moter-off0.png" />
         <img class="bcf-3-moter-on bcf3_39 bcf3_40" src="<%= ctx %>/img/main_monitor_1/bcf-3-moter-on0.png" />
       </div>
@@ -258,21 +350,21 @@
         <img class="bcf-4-tray-2 bcf4_51" src="<%= ctx %>/img/main_monitor_1/bcf-4-tray-20.png" />
         <img class="bcf-4-tray-1 bcf4_50" src="<%= ctx %>/img/main_monitor_1/bcf-4-tray-10.png" />
         <div class="back-4"></div>
-        <div class="bcf-4-open-1 bcf4_8"></div>
-        <div class="bcf-4-close-1"></div>
-        <div class="bcf-4-open-2 bcf4_2"></div>
-        <div class="bcf-4-close-2"></div>
-        <div class="bcf-4-stop"></div>
-        <div class="bcf-4-up"></div>
-        <div class="bcf-4-down bcf4_3"></div>
+        <div class="bcf-4-open-1 bcf4_8">열림</div>
+        <div class="bcf-4-close-1">닫힘</div>
+        <div class="bcf-4-open-2 bcf4_2">열림</div>
+        <div class="bcf-4-close-2">닫힘</div>
+        <div class="bcf-4-stop">정지</div>
+        <div class="bcf-4-up">상승</div>
+        <div class="bcf-4-down bcf4_3">하강</div>
         <div class="bcf-4-dt bcf4_50"></div>
         <img class="bcf-4-heat-off" src="<%= ctx %>/img/main_monitor_1/bcf-4-heat-off0.png" />
         <img class="bcf-4-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-4-heat-on0.png" />
         <img class="bcf-4-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-4-obj-off0.png" />
         <img class="bcf-4-obj-on bcf4_46" src="<%= ctx %>/img/main_monitor_1/bcf-4-obj-on0.png" />
-        <img class="bcf-4-pen-2 bcf4_60" src="<%= ctx %>/img/main_monitor_1/bcf-4-pen-20.png" />
-        <img class="bcf-4-pen-1 bcf4_60" src="<%= ctx %>/img/main_monitor_1/bcf-4-pen-10.png" />
-        <div class="bcf-4-jogging bcf4_56"></div>
+        <img class="bcf-4-pen-2 bcf4_60" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-4-pen-1 bcf4_60" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <div class="bcf-4-jogging bcf4_56">조깅</div>
         <img class="bcf-4-moter-off" src="<%= ctx %>/img/main_monitor_1/bcf-4-moter-off0.png" />
         <img class="bcf-4-moter-on bcf4_85 bcf4_86" src="<%= ctx %>/img/main_monitor_1/bcf-4-moter-on0.png" />
       </div>
@@ -291,21 +383,21 @@
         <img class="bcf-10-tray-2 bcf10_54" src="<%= ctx %>/img/main_monitor_1/bcf-10-tray-20.png" />
         <img class="bcf-10-tray-1 bcf10_53" src="<%= ctx %>/img/main_monitor_1/bcf-10-tray-10.png" />
         <div class="back-10"></div>
-        <div class="bcf-10-open-1 bcf10_8"></div>
-        <div class="bcf-10-close-1"></div>
-        <div class="bcf-10-open-2 bcf10_2"></div>
-        <div class="bcf-10-close-2"></div>
-        <div class="bcf-10-stop"></div>
-        <div class="bcf-10-up"></div>
-        <div class="bcf-10-down bcf10_52"></div>
+        <div class="bcf-10-open-1 bcf10_8">열림</div>
+        <div class="bcf-10-close-1">닫힘</div>
+        <div class="bcf-10-open-2 bcf10_2">열림</div>
+        <div class="bcf-10-close-2">닫힘</div>
+        <div class="bcf-10-stop">정지</div>
+        <div class="bcf-10-up">상승</div>
+        <div class="bcf-10-down bcf10_52">하강</div>
         <div class="bcf-10-dt bcf10_53"></div>
         <img class="bcf-10-heat-off" src="<%= ctx %>/img/main_monitor_1/bcf-10-heat-off0.png" />
         <img class="bcf-10-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-10-heat-on0.png" />
         <img class="bcf-10-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-10-obj-off0.png" />
         <img class="bcf-10-obj-on bcf10_49" src="<%= ctx %>/img/main_monitor_1/bcf-10-obj-on0.png" />
-        <img class="bcf-10-pen-2 bcf10_62" src="<%= ctx %>/img/main_monitor_1/bcf-10-pen-20.png" />
-        <img class="bcf-10-pen-1 bcf10_62" src="<%= ctx %>/img/main_monitor_1/bcf-10-pen-10.png" />
-        <div class="bcf-10-jogging bcf10_58"></div>
+        <img class="bcf-10-pen-2 bcf10_62" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-10-pen-1 bcf10_62" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <div class="bcf-10-jogging bcf10_58">조깅</div>
         <img class="bcf-10-moter-off" src="<%= ctx %>/img/main_monitor_1/bcf-10-moter-off0.png" />
         <img class="bcf-10-moter-on bcf10_38 bcf10_39" src="<%= ctx %>/img/main_monitor_1/bcf-10-moter-on0.png" />
       </div>
@@ -324,23 +416,23 @@
         <img class="bcf-5-tray-2 bcf5_54" src="<%= ctx %>/img/main_monitor_1/bcf-5-tray-20.png" />
         <img class="bcf-5-tray-1 bcf5_53" src="<%= ctx %>/img/main_monitor_1/bcf-5-tray-10.png" />
         <div class="back-5"></div>
-        <div class="bcf-5-open-1 bcf5_8"></div>
-        <div class="bcf-5-close-1"></div>
-        <div class="bcf-5-open-2 bcf5_2"></div>
-        <div class="bcf-5-close-2"></div>
-        <div class="bcf-5-open-3"></div>
-        <div class="bcf-5-close-3"></div>
-        <div class="bcf-5-stop"></div>
-        <div class="bcf-5-up"></div>
-        <div class="bcf-5-down bcf5_52"></div>
+        <div class="bcf-5-open-1 bcf5_8">열림</div>
+        <div class="bcf-5-close-1">닫힘</div>
+        <div class="bcf-5-open-2 bcf5_2">열림</div>
+        <div class="bcf-5-close-2">닫힘</div>
+        <div class="bcf-5-open-3">열림</div>
+        <div class="bcf-5-close-3">닫힘</div>
+        <div class="bcf-5-stop">정지</div>
+        <div class="bcf-5-up">상승</div>
+        <div class="bcf-5-down bcf5_52">하강</div>
         <div class="bcf-5-dt bcf5_53"></div>
         <img class="bcf-5-heat-off" src="<%= ctx %>/img/main_monitor_1/bcf-5-heat-off0.png" />
         <img class="bcf-5-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-5-heat-on0.png" />
         <img class="bcf-5-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-5-obj-off0.png" />
         <img class="bcf-5-obj-on bcf5_49" src="<%= ctx %>/img/main_monitor_1/bcf-5-obj-on0.png" />
-        <img class="bcf-5-pen-2 bcf5_62" src="<%= ctx %>/img/main_monitor_1/bcf-5-pen-20.png" />
-        <img class="bcf-5-pen-1 bcf5_62" src="<%= ctx %>/img/main_monitor_1/bcf-5-pen-10.png" />
-        <div class="bcf-5-jogging bcf5_58"></div>
+        <img class="bcf-5-pen-2 bcf5_62" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-5-pen-1 bcf5_62" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <div class="bcf-5-jogging bcf5_58">조깅</div>
         <img class="bcf-5-moter-off" src="<%= ctx %>/img/main_monitor_1/bcf-5-moter-off0.png" />
         <img class="bcf-5-moter-on bcf5_38 bcf5_39" src="<%= ctx %>/img/main_monitor_1/bcf-5-moter-on0.png" />
       </div>
@@ -595,7 +687,8 @@
 (function () {
   'use strict';
   const ctx = '<%= ctx %>';
-  const INTERVAL = 1500; // ms
+  var POLL_INTERVAL = 6000;   // 정상 폴링 주기 (ms)
+  var FAIL_COOLDOWN = 12000;  // 통신 실패 후 대기 (ms)
 
   /* ── 1. DOM에서 bcfN_s_ADDR(온도) / bcfN_ADDR(신호) 클래스 수집 ── */
   const wordElMap = {}; // 'bcf1_s_40045' → [el, ...]
@@ -606,7 +699,7 @@
       if (/^bcf\d+_s_/.test(cls)) {
         if (!wordElMap[cls]) wordElMap[cls] = [];
         wordElMap[cls].push(el);
-      } else if (/^bcf\d+_\d+$/.test(cls)) {
+      } else if (/^bcf\d+_\d+$/.test(cls) || /^bcf12_[XYM][0-9A-Fa-fH]+$/.test(cls)) {
         if (!bitElMap[cls]) bitElMap[cls] = [];
         bitElMap[cls].push(el);
       }
@@ -614,6 +707,27 @@
   });
 
   const allTags = Object.keys(wordElMap).concat(Object.keys(bitElMap));
+
+  // 초기 상태: 비트 요소 모두 숨김 (첫 폴링 후 실제 값으로 반영)
+  Object.keys(bitElMap).forEach(function(tag) {
+    bitElMap[tag].forEach(function(el) { el.style.visibility = 'hidden'; });
+  });
+
+  const penEls = Array.prototype.slice.call(document.querySelectorAll('img[class*="-pen-"]'));
+
+  penEls.forEach(function(el) {
+    el.classList.add('pen-rotating');
+  });
+
+  function isPenElement(el) {
+    return /\b\S*-pen-\S*\b/.test(el.className || '');
+  }
+
+  function bitTagsOf(el) {
+    return (el.className || '').split(/\s+/).filter(function(cls) {
+      return /^bcf\d+_\d+$/.test(cls) || /^bcf12_[XYM][0-9A-Fa-fH]+$/.test(cls);
+    });
+  }
 
   /* 운전모드 라벨 (data-mode-tag) → allTags 에 추가 */
   const modeLblEls = document.querySelectorAll('[data-mode-tag]');
@@ -649,8 +763,21 @@
       if (data[tag] == null) return;
       var show = (data[tag] === 1 || data[tag] === true);
       bitElMap[tag].forEach(function (el) {
+        if (isPenElement(el)) return;
         el.style.visibility = show ? 'visible' : 'hidden';
       });
+    });
+
+    penEls.forEach(function(el) {
+      var tags = bitTagsOf(el);
+      var known = tags.filter(function(tag) { return data[tag] != null; });
+      var rotate = known.length === 0 || known.some(function(tag) {
+        return data[tag] === 1 || data[tag] === true;
+      });
+
+      el.classList.toggle('pen-rotating', rotate);
+      el.classList.toggle('pen-stopped', !rotate);
+      el.style.visibility = 'visible';
     });
 
     // 운전모드 라벨 업데이트
@@ -658,8 +785,10 @@
       var tag = el.getAttribute('data-mode-tag');
       if (data[tag] == null) return;
       var isAuto = (data[tag] === 1 || data[tag] === true);
-      el.textContent        = isAuto ? '자동운전' : '수동운전';
-      el.style.background   = isAuto ? '#22c55e'  : '#ef4444';
+      el.textContent       = isAuto ? '자동운전' : '수동운전';
+      el.style.background  = isAuto ? 'linear-gradient(160deg,#f0fdf4,#bbf7d0)' : 'linear-gradient(160deg,#fff7ed,#fed7aa)';
+      el.style.color       = isAuto ? '#166534' : '#9a3412';
+      el.style.borderColor = isAuto ? '#86efac' : '#fdba74';
     });
   }
 
@@ -670,7 +799,7 @@
   function logByDevice(data) {
     pollCount++;
     var now = new Date().toLocaleTimeString('ko-KR', {hour12: false, hour:'2-digit', minute:'2-digit', second:'2-digit'});
-    console.groupCollapsed('[MONITOR] 폴링 #' + pollCount + '  ' + now);
+    console.groupCollapsed('[MON-1] 폴링 #' + pollCount + '  ' + now);
 
     BCF_IDS.forEach(function(id) {
       // 이 설비에 해당하는 태그만 추출
@@ -713,6 +842,25 @@
         console.groupEnd();
       }
 
+      // 팬(pen) 요소: 태그 값 + 현재 회전/정지 상태
+      var bcfPenEls = penEls.filter(function(el) {
+        return bitTagsOf(el).some(function(t){ return t.indexOf(prefix) === 0; });
+      });
+      if (bcfPenEls.length) {
+        console.group('▶ 팬  (' + bcfPenEls.length + '개)');
+        bcfPenEls.forEach(function(el) {
+          var tags = bitTagsOf(el).filter(function(t){ return t.indexOf(prefix) === 0; });
+          var rotating = el.classList.contains('pen-rotating');
+          var state = rotating ? '▶ 회전중' : '■ 정지';
+          tags.forEach(function(t) {
+            var v = data[t];
+            var vStr = v == null ? '❌ null' : String(v);
+            console.log('  ' + t + ' = ' + vStr + '  [' + state + ']');
+          });
+        });
+        console.groupEnd();
+      }
+
       if (modeTags.length) {
         modeTags.forEach(function(t) {
           var v = data[t];
@@ -726,26 +874,27 @@
     console.groupEnd(); // 전체
   }
 
-  /* ── 4. 폴링: 직전 요청이 끝나야 다음 요청 시작 (중첩 방지) ── */
-  var busy = false;
-
-  function fetchData() {
-    if (busy) return;
-    busy = true;
-    fetch(ctx + '/monitor/main-data', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify(allTags)
-    })
-    .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
-    .then(function (data) { applyData(data); logByDevice(data); })
-    .catch(function (err) { console.warn('[monitor] PLC fetch 실패:', err); })
-    .finally(function () { busy = false; });
+  /* ── 4. 폴링: 응답 완료 후 다음 요청 예약 (중첩·연속 방지) ── */
+  function scheduleNext(delay) {
+    setTimeout(fetchData, delay);
   }
 
-  // 페이지 로드 즉시 1회 + 이후 주기 폴링
+  function fetchData() {
+    fetch(ctx + '/monitor/snapshot')
+    .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+    .then(function (data) {
+      applyData(data);
+      logByDevice(data);
+      scheduleNext(POLL_INTERVAL);
+    })
+    .catch(function (err) {
+      console.warn('[MON-1] PLC fetch 실패:', err);
+      scheduleNext(FAIL_COOLDOWN);
+    });
+  }
+
+  // 페이지 로드 즉시 1회 시작
   fetchData();
-  setInterval(fetchData, INTERVAL);
 })();
 </script>
 </body>

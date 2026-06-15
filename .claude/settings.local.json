@@ -62,7 +62,22 @@
       "Bash(rm -f 'd:/sample_pro/webapp/WEB-INF/classes/com/sample_pro/controller/*.class' 'd:/sample_pro/webapp/WEB-INF/classes/com/sample_pro/controller/*$*.class')",
       "Bash(rm -f 'd:/sample_pro/webapp/WEB-INF/classes/com/sample_pro/service/*.class' 'd:/sample_pro/webapp/WEB-INF/classes/com/sample_pro/service/*$*.class')",
       "Bash(rm -f 'd:/sample_pro/webapp/WEB-INF/classes/com/sample_pro/dao/*.class' 'd:/sample_pro/webapp/WEB-INF/classes/com/sample_pro/dao/*$*.class')",
-      "Bash(mvn package *)"
+      "Bash(mvn package *)",
+      "PowerShell($env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; $env:CATALINA_BASE = \"D:\\\\apache-tomcat-9.0.115\"; $env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; & \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\shutdown.bat\")",
+      "PowerShell(Stop-Process -Id 14800, 28192 -Force)",
+      "PowerShell(Get-Process -Id 392, 27520)",
+      "PowerShell(Stop-Process -Id 392, 27520 -Force -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-Process -Id 17316, 22936 | Select-Object Id, StartTime; \\(Get-WmiObject Win32_Process -Filter \"ProcessId=17316\"\\).CommandLine; \\(Get-WmiObject Win32_Process -Filter \"ProcessId=22936\"\\).CommandLine)",
+      "PowerShell(Get-WmiObject Win32_Process | Where-Object { $_.Name -eq \"java.exe\" } | Select-Object ProcessId, @{Name=\"Cmd\";Expression={$_.CommandLine.Substring\\(0, [Math]::Min\\(200, $_.CommandLine.Length\\)\\)}})",
+      "PowerShell(Copy-Item \"D:\\\\sample_pro\\\\webapp\" \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\" -Recurse -Force)",
+      "PowerShell($env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; $env:CATALINA_BASE = \"D:\\\\apache-tomcat-9.0.115\"; $env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; Start-Process -FilePath \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\startup.bat\" -WorkingDirectory \"D:\\\\apache-tomcat-9.0.115\\\\bin\" -WindowStyle Normal; Write-Host \"Tomcat 시작 중...\")",
+      "PowerShell(& \"C:\\\\Program Files\\\\dotnet\\\\dotnet.exe\" build \"C:\\\\PlcApiServer\\\\PlcApiServer.csproj\" -c Release --nologo 2>&1)",
+      "PowerShell(Get-Process -Name \"PlcApiServer\")",
+      "PowerShell(& \"D:\\\\apache-maven-3.9.15\\\\bin\\\\mvn.cmd\" clean package -f \"d:\\\\sample_pro\\\\pom.xml\" -DskipTests 2>&1)",
+      "PowerShell(Copy-Item \"D:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\classes\" \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\classes\" -Recurse -Force)",
+      "PowerShell($env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; $env:CATALINA_BASE = \"D:\\\\apache-tomcat-9.0.115\"; $env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; Start-Process -FilePath \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\startup.bat\" -WorkingDirectory \"D:\\\\apache-tomcat-9.0.115\\\\bin\" -WindowStyle Normal; Write-Host \"Tomcat 재시작\")",
+      "PowerShell(Stop-Process -Id 14608 -Force)",
+      "PowerShell($env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; $env:CATALINA_BASE = \"D:\\\\apache-tomcat-9.0.115\"; $env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; Start-Process -FilePath \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\startup.bat\" -WorkingDirectory \"D:\\\\apache-tomcat-9.0.115\\\\bin\" -WindowStyle Normal; Start-Sleep -Seconds 12; Get-Content \"D:\\\\apache-tomcat-9.0.115\\\\logs\\\\catalina.2026-06-15.log\" -Tail 5)"
     ],
     "additionalDirectories": [
       "D:\\apache-tomcat-9.0.115\\webapps",

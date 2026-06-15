@@ -383,26 +383,26 @@
     <div class="bcf7-auto-panel">
       <div class="bcf7-auto-title">자동운전 조건</div>
       <div class="bcf7-auto-grid">
-        <div class="bcf7-auto-item state-gray" data-tag="bcf8_145" data-gray="true" data-text-0="추출포크 후진"      data-text-1="추출포크 후진"     >추출포크 후진</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf8_140" data-gray="true" data-text-0="입구 커튼 S/W ON"  data-text-1="입구 커튼 S/W ON" >입구 커튼 S/W ON</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf8_144" data-gray="true" data-text-0="포크베이스 하강"    data-text-1="포크베이스 하강"   >포크베이스 하강</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf8_139" data-gray="true" data-text-0="출구 커튼 S/W ON"  data-text-1="출구 커튼 S/W ON" >출구 커튼 S/W ON</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf8_142" data-gray="true" data-text-0="보조롤러 하강"      data-text-1="보조롤러 하강"     >보조롤러 하강</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf8_235" data-gray="true" data-text-0="출구 FLAME ON"     data-text-1="출구 FLAME ON"    >출구 FLAME ON</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf8_143" data-gray="true" data-text-0="입구문 닫힘"        data-text-1="입구문 닫힘"       >입구문 닫힘</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf8_6"   data-gray="true" data-text-0="배기 FLAME ON"     data-text-1="배기 FLAME ON"    >배기 FLAME ON</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf8_141" data-gray="true" data-text-0="중간문 닫힘"        data-text-1="중간문 닫힘"       >중간문 닫힘</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf8_146" data-gray="true" data-text-0="비상정지(판넬)"     data-text-1="비상정지(판넬)"    >비상정지(판넬)</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf8_17"  data-gray="true" data-text-0="E/V 상승"          data-text-1="E/V 상승"         >E/V 상승</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf8_147" data-gray="true" data-text-0="비상정지(입구)"     data-text-1="비상정지(입구)"    >비상정지(입구)</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf8_20"  data-gray="true" data-text-0="출구문 닫힘"        data-text-1="출구문 닫힘"       >출구문 닫힘</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf8_148" data-gray="true" data-text-0="비상정지(출구)"     data-text-1="비상정지(출구)"    >비상정지(출구)</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf8_152" data-gray="true" data-text-0="자동스텝1 준비완료" data-text-1="자동스텝1 준비완료">자동스텝1 준비완료</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf8_149" data-gray="true" data-text-0="자동SS(입구)"       data-text-1="자동SS(입구)"      >자동SS(입구)</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf8_153" data-gray="true" data-text-0="자동스텝2 준비완료" data-text-1="자동스텝2 준비완료">자동스텝2 준비완료</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf8_150" data-gray="true" data-text-0="자동SS(출구)"       data-text-1="자동SS(출구)"      >자동SS(출구)</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf8_151" data-gray="true" data-text-0="PLC 컨트롤 (PC OFF)" data-text-1="PLC 컨트롤 (PC OFF)">PLC 컨트롤 (PC OFF)</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf8_145" data-gray="true" data-text-0="유조 처리품 없음"   data-text-1="유조 처리품 없음"  >유조 처리품 없음</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf8_8"  data-gray="true" data-text-0="추출포크 후진"        data-text-1="추출포크 후진"       >추출포크 후진</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf8_38" data-gray="true" data-text-0="입구 커튼 S/W ON"    data-text-1="입구 커튼 S/W ON"   >입구 커튼 S/W ON</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf8_10" data-gray="true" data-text-0="포크베이스 하강"      data-text-1="포크베이스 하강"     >포크베이스 하강</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf8_44" data-gray="true" data-text-0="출구 커튼 S/W ON"    data-text-1="출구 커튼 S/W ON"   >출구 커튼 S/W ON</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf8_11" data-gray="true" data-text-0="보조롤러 하강"        data-text-1="보조롤러 하강"       >보조롤러 하강</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf8_78" data-gray="true" data-text-0="출구 FLAME ON"       data-text-1="출구 FLAME ON"      >출구 FLAME ON</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf8_13" data-gray="true" data-text-0="입구문 닫힘"          data-text-1="입구문 닫힘"         >입구문 닫힘</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf8_80" data-gray="true" data-text-0="배기 FLAME ON"       data-text-1="배기 FLAME ON"      >배기 FLAME ON</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf8_15" data-gray="true" data-text-0="중간문 닫힘"          data-text-1="중간문 닫힘"         >중간문 닫힘</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf8_64" data-gray="true" data-text-0="비상정지(판넬)"       data-text-1="비상정지(판넬)"      >비상정지(판넬)</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf8_17" data-gray="true" data-text-0="E/V 상승"            data-text-1="E/V 상승"           >E/V 상승</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf8_65" data-gray="true" data-text-0="비상정지(입구)"       data-text-1="비상정지(입구)"      >비상정지(입구)</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf8_20" data-gray="true" data-text-0="출구문 닫힘"          data-text-1="출구문 닫힘"         >출구문 닫힘</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf8_66" data-gray="true" data-text-0="비상정지(출구)"       data-text-1="비상정지(출구)"      >비상정지(출구)</div>
+        <div class="bcf7-auto-item state-green">자동스텝1 준비완료</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf8_25" data-gray="true" data-text-0="자동SS(입구)"         data-text-1="자동SS(입구)"        >자동SS(입구)</div>
+        <div class="bcf7-auto-item state-green">자동스텝2 준비완료</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf8_39" data-gray="true" data-text-0="자동SS(출구)"         data-text-1="자동SS(출구)"        >자동SS(출구)</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf8_54" data-gray="true" data-text-0="PLC 컨트롤 (PC OFF)" data-text-1="PLC 컨트롤 (PC OFF)" >PLC 컨트롤 (PC OFF)</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf8_16" data-gray="true" data-text-0="유조 처리품 없음"     data-text-1="유조 처리품 없음"    >유조 처리품 없음</div>
       </div>
     </div>
 
@@ -620,13 +620,9 @@
 
   var busy = false;
   function fetchData() {
-    if (busy || !allTags.length) return;
+    if (busy) return;
     busy = true;
-    fetch(ctx + '/monitor/main-data', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(allTags)
-    })
+    fetch(ctx + '/monitor/snapshot')
     .then(function(r) { return r.ok ? r.json() : Promise.reject(r.status); })
     .then(function(data) { applyData(data); })
     .catch(function(err) { console.warn('[BCF8] PLC fetch 실패:', err); })

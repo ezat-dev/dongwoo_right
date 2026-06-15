@@ -756,13 +756,9 @@
 
   var busy = false;
   function fetchData() {
-    if (busy || !allTags.length) return;
+    if (busy) return;
     busy = true;
-    fetch(ctx + '/monitor/main-data', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(allTags)
-    })
+    fetch(ctx + '/monitor/snapshot')
     .then(function(r) { return r.ok ? r.json() : Promise.reject(r.status); })
     .then(function(data) { applyData(data); })
     .catch(function(err) { console.warn('[BCF10] PLC fetch 실패:', err); })

@@ -413,38 +413,28 @@
           <div class="bcf11-auto-title">자동운전 조건</div>
         <div class="bcf11-auto-grid">
 
-        <div class="bcf11-auto-item state-gray" data-tag="bcf11_170">제어전원</div>
-        <div class="bcf11-auto-item state-gray" data-tag="bcf11_192">입구 조작반 비상정지</div>
-
-        <div class="bcf11-auto-item state-gray" data-tag="bcf11_171">1실 온도 750도 이상</div>
-        <div class="bcf11-auto-item state-gray" data-tag="bcf11_51">출구 조작반 비상정지</div>
-
-        <div class="bcf11-auto-item state-gray" data-tag="bcf11_185">2실 온도 750도 이상</div>
-        <div class="bcf11-auto-item state-gray" data-tag="bcf11_52">입구조작반 수동</div>
-
-        <div class="bcf11-auto-item state-gray" data-tag="bcf11_186">온도저하 가스차단 컷</div>
-        <div class="bcf11-auto-item state-gray" data-tag="bcf11_53">출구조작반 수동</div>
-
-        <div class="bcf11-auto-item state-gray" data-tag="bcf11_187">입구 보조 리프트 상승</div>
-        <div class="bcf11-auto-item state-gray" data-tag="bcf11_54">1실 입구문 화염감지 S/W</div>
-
-        <div class="bcf11-auto-item state-gray" data-tag="bcf11_188">1실 입구문 닫힘</div>
-        <div class="bcf11-auto-item state-gray" data-tag="bcf11_55">냉각실 배기변 화염감지</div>
-
-        <div class="bcf11-auto-item state-gray" data-tag="bcf11_189">2실 입구문 닫힘</div>
-        <div class="bcf11-auto-item state-gray" data-tag="bcf11_56">냉각실 배기변 화염감지 S/W</div>
-
-        <div class="bcf11-auto-item state-gray" data-tag="bcf11_190">냉각실 입구문 닫힘</div>
-        <div class="bcf11-auto-item state-gray" data-tag="bcf11_58">1실 자동 스텝 준비</div>
-
-        <div class="bcf11-auto-item state-gray" data-tag="bcf11_191">냉각실 출구문 닫힘</div>
-        <div class="bcf11-auto-item state-gray" data-tag="bcf11_118">2실 자동스텝 준비</div>
-
-        <div class="bcf11-auto-item state-gray" data-tag="bcf11_162">1실 자동 조깅</div>
-        <div class="bcf11-auto-item state-gray" data-tag="bcf11_72">냉각실 자동 스텝 준비</div>
-
-        <div class="bcf11-auto-item state-gray" data-tag="bcf11_163">2실 자동 조깅</div>
-        <div class="bcf11-auto-item state-gray" data-tag="bcf11_57">GOT 자동운전 선택 S/W</div>
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_22" data-text-0="제어전원"                   data-text-1="제어전원"                  >제어전원</div>
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_29" data-text-0="입구 조작반 비상정지"        data-text-1="입구 조작반 비상정지"       >입구 조작반 비상정지</div>
+        <div class="bcf11-auto-item state-green">1실 온도 750도 이상</div>
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_38" data-text-0="출구 조작반 비상정지"        data-text-1="출구 조작반 비상정지"       >출구 조작반 비상정지</div>
+        <div class="bcf11-auto-item state-green">2실 온도 750도 이상</div>
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_34" data-text-0="입구조작반 수동"             data-text-1="입구조작반 수동"            >입구조작반 수동</div>
+        <div class="bcf11-auto-item state-green">온도저하 가스차단 경보</div>
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_42" data-text-0="출구 조작반 수동"            data-text-1="출구 조작반 수동"           >출구 조작반 수동</div>
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_37" data-text-0="입구 보조 리프터 상승"       data-text-1="입구 보조 리프터 상승"      >입구 보조 리프터 상승</div>
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_31" data-text-0="1실 입구문 화염감지 S/W"    data-text-1="1실 입구문 화염감지 S/W"   >1실 입구문 화염감지 S/W</div>
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_2"  data-text-0="1실 입구문 닫힘"            data-text-1="1실 입구문 닫힘"           >1실 입구문 닫힘</div>
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_26" data-text-0="냉각실 배기변 화염감지"      data-text-1="냉각실 배기변 화염감지"     >냉각실 배기변 화염감지</div>
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_4"  data-text-0="2실 입구문 닫힘"            data-text-1="2실 입구문 닫힘"           >2실 입구문 닫힘</div>
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_40" data-text-0="냉각실 배기변 화염감지 S/W"  data-text-1="냉각실 배기변 화염감지 S/W" >냉각실 배기변 화염감지 S/W</div>
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_6"  data-text-0="냉각실 입구문 닫힘"         data-text-1="냉각실 입구문 닫힘"        >냉각실 입구문 닫힘</div>
+        <div class="bcf11-auto-item state-green">1실 자동 스텝 준비</div>
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_8"  data-text-0="냉각실 출구문 닫힘"         data-text-1="냉각실 출구문 닫힘"        >냉각실 출구문 닫힘</div>
+        <div class="bcf11-auto-item state-green">2실 자동 스텝 준비</div>
+        <div class="bcf11-auto-item state-green">1실 자동 조깅</div>
+        <div class="bcf11-auto-item state-green">냉각실 자동 스텝 준비</div>
+        <div class="bcf11-auto-item state-green">2실 자동 조깅</div>
+        <div class="bcf11-auto-item state-gray" data-tag="bcf11_33" data-text-0="GOT 자동운전 선택 S/W"      data-text-1="GOT 자동운전 선택 S/W"     >GOT 자동운전 선택 S/W</div>
 
     </div>
     </div>
@@ -661,13 +651,9 @@
 
   var busy = false;
   function fetchData() {
-    if (busy || !allTags.length) return;
+    if (busy) return;
     busy = true;
-    fetch(ctx + '/monitor/main-data', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(allTags)
-    })
+    fetch(ctx + '/monitor/snapshot')
     .then(function(r) { return r.ok ? r.json() : Promise.reject(r.status); })
     .then(function(data) { applyData(data); })
     .catch(function(err) { console.warn('[BCF11] PLC fetch 실패:', err); })

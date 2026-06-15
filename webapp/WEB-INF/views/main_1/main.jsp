@@ -454,8 +454,6 @@ function goOverview(num) {
   document.getElementById('pageFrame').src = OV_URLS[num];
   document.getElementById('pageTitle').textContent = 'OVERVIEW-' + num;
   document.querySelectorAll('.sb-item').forEach(function(i){ i.classList.remove('active'); });
-  document.querySelectorAll('.ov-tab').forEach(function(b){ b.classList.remove('active'); });
-  document.getElementById('ovTab' + num).classList.add('active');
 }
 
 function doLogout(){

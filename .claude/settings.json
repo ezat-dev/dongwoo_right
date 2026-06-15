@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\views\\\\main_1\\\\monitor\\\\alarm_history.jsp\" -Destination \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\views\\\\main_1\\\\monitor\\\\alarm_history.jsp\" -Force)",
+      "PowerShell(\\(Get-Item \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\views\\\\main_1\\\\monitor\\\\alarm_history.jsp\"\\).LastWriteTime)",
+      "PowerShell(Invoke-WebRequest -Uri \"https://code.highcharts.com/9.3.3/modules/offline-exporting.js\" -OutFile \"d:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\resources\\\\js\\\\highchart\\\\offline-exporting.js\")",
+      "PowerShell(\\(Get-Item \"d:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\resources\\\\js\\\\highchart\\\\offline-exporting.js\"\\).Length)",
+      "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\views\\\\main_1\\\\monitor\\\\trend.jsp\" -Destination \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\views\\\\main_1\\\\monitor\\\\trend.jsp\" -Force)",
+      "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\resources\\\\js\\\\highchart\\\\offline-exporting.js\" -Destination \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\resources\\\\js\\\\highchart\\\\offline-exporting.js\" -Force)",
+      "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\views\\\\main_1\\\\main.jsp\" -Destination \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\views\\\\main_1\\\\main.jsp\" -Force)",
+      "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\views\\\\main_1\\\\monitor\\\\main_monitor.jsp\" -Destination \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\views\\\\main_1\\\\monitor\\\\main_monitor.jsp\" -Force)",
+      "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\views\\\\main_1\\\\monitor\\\\main_monitor2.jsp\" -Destination \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\views\\\\main_1\\\\monitor\\\\main_monitor2.jsp\" -Force)"
+    ]
+  }
+}

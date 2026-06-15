@@ -413,6 +413,7 @@ var base = '${pageContext.request.contextPath}';
 </script>
 <script src="${pageContext.request.contextPath}/js/highchart/highcharts.js"></script>
 <script src="${pageContext.request.contextPath}/js/highchart/exporting.js"></script>
+<script src="${pageContext.request.contextPath}/js/highchart/offline-exporting.js"></script>
 <script src="${pageContext.request.contextPath}/js/highchart/export-data.js"></script>
 <script>
 var tags       = [];
@@ -911,6 +912,7 @@ function buildMainChart(selList, rows) {
     plotOptions: { spline: { turboThreshold: 10000 } },
     exporting: {
       enabled: true,
+      fallbackToExportServer: false,
       buttons: { contextButton: { menuItems: ['downloadPNG','downloadSVG','separator','downloadCSV','downloadXLS'] } }
     },
     credits: { enabled: false },
