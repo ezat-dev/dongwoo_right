@@ -688,17 +688,4 @@
 })();
 </script>
 </body>
-
-    </div><!-- /bcf11-bottom-panel -->
-
-  </div><!-- /group-2 -->
-</div><!-- /page-wrap -->
-
-<script>
-var cur = location.pathname.split('/').pop();
-document.querySelectorAll('.bcf-tab').forEach(function(a){
-  if(a.getAttribute('href').split('/').pop() === cur) a.classList.add('active');
-});
-</script>
-</body>
 </html>

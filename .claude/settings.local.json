@@ -77,7 +77,14 @@
       "PowerShell(Copy-Item \"D:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\classes\" \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\classes\" -Recurse -Force)",
       "PowerShell($env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; $env:CATALINA_BASE = \"D:\\\\apache-tomcat-9.0.115\"; $env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; Start-Process -FilePath \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\startup.bat\" -WorkingDirectory \"D:\\\\apache-tomcat-9.0.115\\\\bin\" -WindowStyle Normal; Write-Host \"Tomcat 재시작\")",
       "PowerShell(Stop-Process -Id 14608 -Force)",
-      "PowerShell($env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; $env:CATALINA_BASE = \"D:\\\\apache-tomcat-9.0.115\"; $env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; Start-Process -FilePath \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\startup.bat\" -WorkingDirectory \"D:\\\\apache-tomcat-9.0.115\\\\bin\" -WindowStyle Normal; Start-Sleep -Seconds 12; Get-Content \"D:\\\\apache-tomcat-9.0.115\\\\logs\\\\catalina.2026-06-15.log\" -Tail 5)"
+      "PowerShell($env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; $env:CATALINA_BASE = \"D:\\\\apache-tomcat-9.0.115\"; $env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; Start-Process -FilePath \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\startup.bat\" -WorkingDirectory \"D:\\\\apache-tomcat-9.0.115\\\\bin\" -WindowStyle Normal; Start-Sleep -Seconds 12; Get-Content \"D:\\\\apache-tomcat-9.0.115\\\\logs\\\\catalina.2026-06-15.log\" -Tail 5)",
+      "PowerShell(Stop-Process -Id 23332 -Force)",
+      "PowerShell(Copy-Item \"D:\\\\sample_pro\\\\target\\\\classes\\\\com\\\\sample_pro\\\\service\\\\monitor\\\\MonitorCacheService.class\" \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\classes\\\\com\\\\sample_pro\\\\service\\\\monitor\\\\MonitorCacheService.class\" -Force)",
+      "PowerShell(Start-Process \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\startup.bat\")",
+      "PowerShell(& \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\startup.bat\" 2>&1)",
+      "Bash(cd /d \"d:\\\\sample_pro\")",
+      "Bash(\"D:\\\\apache-maven-3.9.15\\\\bin\\\\mvn.cmd\" compile *)",
+      "PowerShell($src = \"d:\\\\sample_pro\\\\target\\\\classes\\\\com\\\\sample_pro\"; $dst = \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\classes\\\\com\\\\sample_pro\"; Copy-Item -Path \"$src\\\\service\\\\monitor\\\\MonitorCacheService.class\" -Destination \"$dst\\\\service\\\\monitor\\\\\" -Force; Write-Host \"Done\")"
     ],
     "additionalDirectories": [
       "D:\\apache-tomcat-9.0.115\\webapps",

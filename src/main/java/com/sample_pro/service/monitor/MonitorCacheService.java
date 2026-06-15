@@ -54,18 +54,36 @@ public class MonitorCacheService {
         WORD_DETAIL_ADDRS.put(5,  bcf1to5);
         WORD_DETAIL_ADDRS.put(10, bcf1to5);
 
-        // BCF6: 40018~40049 범위
+        // BCF6: 시간PV/SP 소주소(2~48) + 온도/CP 40xxx 주소
         WORD_DETAIL_ADDRS.put(6, new int[]{
+            2, 3, 8, 9, 10, 12, 13, 14, 16, 17, 21, 22, 41, 48,
             40018, 40025, 40033, 40034, 40035, 40036, 40037, 40038,
             40039, 40040, 40041, 40042, 40043, 40044, 40045, 40046,
             40048, 40049
         });
 
-        // BCF7, 8, 9: 메인 모니터(40046~40071) + 상세 페이지(44611~44613)
-        int[] bcf789 = {40046, 40047, 40052, 40069, 40070, 40071, 44611, 44612, 44613};
-        WORD_DETAIL_ADDRS.put(7, bcf789);
-        WORD_DETAIL_ADDRS.put(8, bcf789);
-        WORD_DETAIL_ADDRS.put(9, bcf789);
+        // BCF7, 9: 존테이블 소주소 + 온도CP 패널(40003~40071) + 상세(44610~44613)
+        // main_monitor2: DT=44610, 온도PV=44611/44612/44613, SP=40003/40004/40007
+        int[] bcf79 = {
+            11, 13, 15, 19, 21, 23, 25, 26, 27, 29, 32,
+            115, 130, 145, 193, 232, 233, 390,
+            40003, 40004, 40007, 40046, 40047, 40052, 40069, 40070, 40071,
+            44610, 44611, 44612, 44613
+        };
+        WORD_DETAIL_ADDRS.put(7, bcf79);
+        WORD_DETAIL_ADDRS.put(9, bcf79);
+
+        // BCF8: 온도 주소가 BCF7/9와 전혀 다른 노형
+        // main_monitor2: DT=40063/40005, 온도PV=40049/40050/40055, SP=40071/40073/40074
+        int[] bcf8 = {
+            11, 13, 15, 19, 21, 23, 25, 26, 27, 29, 32,
+            115, 130, 145, 193, 232, 233, 390,
+            40003, 40004, 40005, 40007,
+            40046, 40047, 40049, 40050, 40052, 40055,
+            40063, 40069, 40070, 40071, 40073, 40074,
+            44611, 44612, 44613
+        };
+        WORD_DETAIL_ADDRS.put(8, bcf8);
 
         // ── 코일 비트 ──────────────────────────────────────────────────────
         COIL_ADDRS.put(1,  new int[]{2, 3, 8, 25, 39, 40, 44, 46, 50, 51, 56, 60});
@@ -84,9 +102,15 @@ public class MonitorCacheService {
         COIL_ADDRS.put(10, new int[]{2, 8, 25, 38, 39, 46, 49, 52, 53, 54, 58, 62});
         COIL_ADDRS.put(11, new int[]{3, 5, 7, 9, 25, 56, 57, 60, 62, 65, 79, 80, 83, 84, 97, 98, 100, 117, 162, 163});
 
-        // BCF11: 온도 + CP 워드 (설정 40001~40005, 현재 40077~40081)
-        WORD_DETAIL_ADDRS.put(11, new int[]{40001, 40002, 40003, 40004, 40005,
-                                             40077, 40078, 40079, 40080, 40081});
+        // BCF11: 존테이블 + 온도 패널 + main_monitor2 DT 아날로그(40007/40009/40026/40043/40051)
+        WORD_DETAIL_ADDRS.put(11, new int[]{
+            1, 2, 3, 4, 6, 7, 8, 10, 19,
+            73, 74, 75, 76, 77, 78, 79, 80, 81, 82,
+            101, 103, 106, 137, 141, 142, 143, 145,
+            40001, 40002, 40003, 40004, 40005, 40007, 40009,
+            40026, 40043, 40051,
+            40077, 40078, 40079, 40080, 40081
+        });
 
         WORD_FLAG_ADDRS.put(7,  new int[]{40038});
         WORD_FLAG_ADDRS.put(11, new int[]{40008, 40010, 40027, 40044, 40053});
@@ -133,14 +157,15 @@ public class MonitorCacheService {
 
     // ── 개별 읽기 메서드 ───────────────────────────────────────────────────
 
-    /** Modbus 워드: 갭 > 200 레지스터 구간마다 분할 호출 */
+    /** Modbus 워드: 갭 > 200 또는 범위 >= 120 레지스터 구간마다 분할 호출 */
     private void readModbusWords(int plcNum) {
         int[] addrs = WORD_DETAIL_ADDRS.get(plcNum);
         if (addrs == null || addrs.length == 0) return;
         int chunkStart = 0;
         for (int i = 1; i <= addrs.length; i++) {
-            boolean flush = (i == addrs.length) || (addrs[i] - addrs[i - 1] > 200);
-            if (flush) {
+            boolean gapFlush  = (i < addrs.length) && (addrs[i] - addrs[i - 1] > 200);
+            boolean sizeFlush = (i < addrs.length) && (addrs[i] - addrs[chunkStart] >= 120);
+            if (i == addrs.length || gapFlush || sizeFlush) {
                 int[] chunk = Arrays.copyOfRange(addrs, chunkStart, i);
                 readModbusWordsChunk(plcNum, chunk);
                 chunkStart = i;

@@ -207,11 +207,11 @@
         <img class="bcf-11-tray-3 bcf11_40027" src="<%= ctx %>/img/main_monitor_2/bcf-11-tray-30.png" />
         <img class="bcf-11-tray-4 bcf11_40044" src="<%= ctx %>/img/main_monitor_2/bcf-11-tray-40.png" />
         <img class="bcf-11-tray-5 bcf11_40053" src="<%= ctx %>/img/main_monitor_2/bcf-11-tray-50.png" />
-        <div class="bcf-11-dt-1 bcf11_40008"></div>
-        <div class="bcf-11-dt-2 bcf11_40010"></div>
-        <div class="bcf-11-dt-3 bcf11_40027"></div>
-        <div class="bcf-11-dt-4 bcf11_40044"></div>
-        <div class="bcf-11-dt-5 bcf11_40053"></div>
+        <div class="bcf-11-dt-1 bcf11_s_40007"></div>
+        <div class="bcf-11-dt-2 bcf11_s_40009"></div>
+        <div class="bcf-11-dt-3 bcf11_s_40026"></div>
+        <div class="bcf-11-dt-4 bcf11_s_40043"></div>
+        <div class="bcf-11-dt-5 bcf11_s_40051"></div>
         <div class="bcf-11-open-1 bcf11_3">열림</div>
         <div class="bcf-11-close-1">닫힘</div>
         <div class="bcf-11-open-2 bcf11_5">열림</div>
@@ -246,8 +246,8 @@
         <img class="bcf-8-tray-5 bcf8_19" src="<%= ctx %>/img/main_monitor_2/bcf-8-tray-50.png" />
         <img class="bcf-8-pen-1 bcf8_113" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <img class="bcf-8-pen-2 bcf8_113" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
-        <div class="bcf-8-dt-1"></div>
-        <div class="bcf-8-dt-2"></div>
+        <div class="bcf-8-dt-1 bcf8_s_40063"></div>
+        <div class="bcf-8-dt-2 bcf8_s_40005"></div>
         <img class="bcf-8-box-on-1" src="<%= ctx %>/img/main_monitor_2/bcf-8-box-on-10.png" />
         <img class="bcf-8-box-off-1" src="<%= ctx %>/img/main_monitor_2/bcf-8-box-off-10.png" />
         <img class="bcf-8-box-on-2" src="<%= ctx %>/img/main_monitor_2/bcf-8-box-on-20.png" />
@@ -282,8 +282,8 @@
         <img class="bcf-9-tray-5 bcf9_22" src="<%= ctx %>/img/main_monitor_2/bcf-9-tray-50.png" />
         <img class="bcf-9-pen-1 bcf9_157" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <img class="bcf-9-pen-2 bcf9_157" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
-        <div class="bcf-9-dt-1"></div>
-        <div class="bcf-9-dt-2"></div>
+        <div class="bcf-9-dt-1 bcf9_s_44610"></div>
+        <div class="bcf-9-dt-2 bcf9_s_44610"></div>
         <img class="bcf-9-box-on-1" src="<%= ctx %>/img/main_monitor_2/bcf-9-box-on-10.png" />
         <img class="bcf-9-box-off-1" src="<%= ctx %>/img/main_monitor_2/bcf-9-box-off-10.png" />
         <img class="bcf-9-box-on-2" src="<%= ctx %>/img/main_monitor_2/bcf-9-box-on-20.png" />
@@ -318,8 +318,8 @@
         <img class="bcf-7-tray-5 bcf7_22" src="<%= ctx %>/img/main_monitor_2/bcf-7-tray-50.png" />
         <img class="bcf-7-pen-1 bcf7_157" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <img class="bcf-7-pen-2 bcf7_157" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
-        <div class="bcf-7-dt-1"></div>
-        <div class="bcf-7-dt-2"></div>
+        <div class="bcf-7-dt-1 bcf7_s_44610"></div>
+        <div class="bcf-7-dt-2 bcf7_s_44610"></div>
         <img class="bcf-7-box-on-1" src="<%= ctx %>/img/main_monitor_2/bcf-7-box-on-10.png" />
         <img class="bcf-7-box-off-1" src="<%= ctx %>/img/main_monitor_2/bcf-7-box-off-10.png" />
         <img class="bcf-7-box-on-2" src="<%= ctx %>/img/main_monitor_2/bcf-7-box-on-20.png" />
@@ -557,53 +557,54 @@
       <!-- BCF-8 그룹: 파랑 -->
       <div class="tm-item tm-blue">
         <div class="tm-item-name">침탄8</div>
-        <div class="tm-cell tm-cur bcf8_s_40046">DT</div>
-        <div class="tm-cell tm-set bcf8_s_40069">DT</div>
+        <div class="tm-cell tm-cur bcf8_s_40049">DT</div>
+        <div class="tm-cell tm-set bcf8_s_40071">DT</div>
       </div>
       <div class="tm-item tm-blue">
         <div class="tm-item-name">유조8</div>
-        <div class="tm-cell tm-cur bcf8_s_40047">DT</div>
-        <div class="tm-cell tm-set bcf8_s_40070">DT</div>
+        <div class="tm-cell tm-cur bcf8_s_40050">DT</div>
+        <div class="tm-cell tm-set bcf8_s_40073">DT</div>
       </div>
       <div class="tm-item tm-blue">
         <div class="tm-item-name">CP8</div>
-        <div class="tm-cell tm-cur bcf8_s_40052">0.000</div>
-        <div class="tm-cell tm-set bcf8_s_40071">0.000</div>
+        <div class="tm-cell tm-cur bcf8_s_40055">0.000</div>
+        <div class="tm-cell tm-set bcf8_s_40074">0.000</div>
       </div>
 
       <!-- BCF-9 그룹: 초록 -->
       <div class="tm-item tm-green">
         <div class="tm-item-name">침탄9</div>
-        <div class="tm-cell tm-cur bcf9_s_40046">DT</div>
-        <div class="tm-cell tm-set bcf9_s_40069">DT</div>
+        <div class="tm-cell tm-cur bcf9_s_44611">DT</div>
+        <div class="tm-cell tm-set bcf9_s_40003">DT</div>
       </div>
       <div class="tm-item tm-green">
         <div class="tm-item-name">유조9</div>
-        <div class="tm-cell tm-cur bcf9_s_40047">DT</div>
-        <div class="tm-cell tm-set bcf9_s_40070">DT</div>
+        <div class="tm-cell tm-cur bcf9_s_44612">DT</div>
+        <div class="tm-cell tm-set bcf9_s_40004">DT</div>
       </div>
       <div class="tm-item tm-green">
         <div class="tm-item-name">CP9</div>
-        <div class="tm-cell tm-cur bcf9_s_40052">0.000</div>
-        <div class="tm-cell tm-set bcf9_s_40071">0.000</div>
+        <div class="tm-cell tm-cur bcf9_s_44613">0.000</div>
+        <div class="tm-cell tm-set bcf9_s_40007">0.000</div>
       </div>
 
       <!-- BCF-7 그룹: 파랑 -->
       <div class="tm-item tm-blue">
         <div class="tm-item-name">침탄7</div>
-        <div class="tm-cell tm-cur bcf7_s_40046">DT</div>
-        <div class="tm-cell tm-set bcf7_s_40069">DT</div>
+        <div class="tm-cell tm-cur bcf7_s_44611">DT</div>
+        <div class="tm-cell tm-set bcf7_s_40003">DT</div>
       </div>
       <div class="tm-item tm-blue">
         <div class="tm-item-name">유조7</div>
-        <div class="tm-cell tm-cur bcf7_s_40047">DT</div>
-        <div class="tm-cell tm-set bcf7_s_40070">DT</div>
+        <div class="tm-cell tm-cur bcf7_s_44612">DT</div>
+        <div class="tm-cell tm-set bcf7_s_40004">DT</div>
       </div>
       <div class="tm-item tm-blue">
         <div class="tm-item-name">CP7</div>
-        <div class="tm-cell tm-cur bcf7_s_40052">0.000</div>
-        <div class="tm-cell tm-set bcf7_s_40071">0.000</div>
+        <div class="tm-cell tm-cur bcf7_s_44613">0.000</div>
+        <div class="tm-cell tm-set bcf7_s_40007">0.000</div>
       </div>
+
 
       <!-- BCF-6 그룹: 초록 -->
       <div class="tm-item tm-green">
