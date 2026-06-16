@@ -723,7 +723,7 @@
       } else if (CP_TAG.test(tag)) {
         text = (raw * 0.001).toFixed(3);  // CP: ×0.001
       } else {
-        text = raw.toFixed(0);            // 온도: 그대로
+        text = raw >= 1000 ? (raw / 10).toFixed(1) : raw.toFixed(1);  // 4자리: ÷10 소수점 1자리
       }
       wordElMap[tag].forEach(function (el) { el.textContent = text; });
     });
@@ -793,7 +793,8 @@
           var v = data[t];
           if (v == null) { console.warn('  ' + t + ' → null (미응답)'); }
           else {
-            var disp = CP_TAG.test(t) ? (Number(v)*0.001).toFixed(3)+' %' : Number(v).toFixed(0)+' ℃';
+            var nv = Number(v);
+            var disp = CP_TAG.test(t) ? (nv*0.001).toFixed(3)+' %' : (nv >= 1000 ? (nv/10).toFixed(1) : nv.toFixed(1))+' ℃';
             console.log('  ' + t + ' → ' + v + '  (' + disp + ')');
           }
         });

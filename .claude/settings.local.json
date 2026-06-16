@@ -84,7 +84,19 @@
       "PowerShell(& \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\startup.bat\" 2>&1)",
       "Bash(cd /d \"d:\\\\sample_pro\")",
       "Bash(\"D:\\\\apache-maven-3.9.15\\\\bin\\\\mvn.cmd\" compile *)",
-      "PowerShell($src = \"d:\\\\sample_pro\\\\target\\\\classes\\\\com\\\\sample_pro\"; $dst = \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\classes\\\\com\\\\sample_pro\"; Copy-Item -Path \"$src\\\\service\\\\monitor\\\\MonitorCacheService.class\" -Destination \"$dst\\\\service\\\\monitor\\\\\" -Force; Write-Host \"Done\")"
+      "PowerShell($src = \"d:\\\\sample_pro\\\\target\\\\classes\\\\com\\\\sample_pro\"; $dst = \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\classes\\\\com\\\\sample_pro\"; Copy-Item -Path \"$src\\\\service\\\\monitor\\\\MonitorCacheService.class\" -Destination \"$dst\\\\service\\\\monitor\\\\\" -Force; Write-Host \"Done\")",
+      "PowerShell(Stop-Process -Force)",
+      "PowerShell(Start-Process -FilePath \"dotnet\" -ArgumentList \"C:\\\\PlcApiServer\\\\bin\\\\Release\\\\net8.0\\\\PlcApiServer.dll\" -WorkingDirectory \"C:\\\\PlcApiServer\" -WindowStyle Normal)",
+      "PowerShell($env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; $env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; Start-Process -FilePath \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\startup.bat\" -WorkingDirectory \"D:\\\\apache-tomcat-9.0.115\" -WindowStyle Normal; Write-Host \"Tomcat 시작 완료\")",
+      "PowerShell(Get-Process -Name \"PlcApiServer\",\"dotnet\" -ErrorAction SilentlyContinue)",
+      "PowerShell(& \"C:\\\\Program Files\\\\MySQL\\\\MySQL Server 8.0\\\\bin\\\\mysql.exe\" -u root -pezat1234 ez_scada -e \"DESCRIBE tb_jacup;\" 2>&1)",
+      "PowerShell($m = \"C:\\\\Program Files\\\\MariaDB 10.2\\\\bin\\\\mysql.exe\"; & $m -u root -pezat1234 ez_scada -e \"SHOW COLUMNS FROM tb_jacup;\" 2>&1)",
+      "PowerShell(Start-Process -FilePath \"dotnet\" -ArgumentList \"C:\\\\PlcApiServer\\\\bin\\\\Release\\\\net8.0\\\\PlcApiServer.dll\" -WindowStyle Hidden)",
+      "PowerShell(Get-Process -Name \"dotnet\" -ErrorAction SilentlyContinue)",
+      "PowerShell(dotnet \"C:\\\\PlcApiServer\\\\bin\\\\Release\\\\net8.0\\\\PlcApiServer.dll\" 2>&1)",
+      "PowerShell(Start-Process -FilePath \"dotnet\" -ArgumentList \"PlcApiServer.dll\" -WorkingDirectory \"C:\\\\PlcApiServer\\\\bin\\\\Release\\\\net8.0\" -WindowStyle Hidden)",
+      "PowerShell(Stop-Process -Force -ErrorAction SilentlyContinue)",
+      "PowerShell(Start-Process -FilePath \"dotnet\" -ArgumentList \"PlcApiServer.dll\" -WorkingDirectory \"C:\\\\PlcApiServer\\\\bin\\\\Release\\\\net8.0\" -WindowStyle Normal)"
     ],
     "additionalDirectories": [
       "D:\\apache-tomcat-9.0.115\\webapps",

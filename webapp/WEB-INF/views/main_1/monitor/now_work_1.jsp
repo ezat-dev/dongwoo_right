@@ -113,6 +113,10 @@
     background: #8DC34A;
     border-color: #6FAA2C;
   }
+  td.st.active {
+    background: #BAE6FD;
+    border-color: #7DD3FC;
+  }
 
   tr.sep td { border-top: 2px solid #CBD5E1 !important; }
 
@@ -147,7 +151,11 @@
           <td class="data" data-col="cust"></td>
           <td class="data" data-col="prod"></td>
           <td class="data" data-col="lot"></td>
-          <td class="st"></td><td class="st"></td><td class="st"></td><td class="st"></td><td class="st"></td>
+          <td class="st" data-tags="bcf1_96"></td>
+          <td class="st" data-tags="bcf1_97"></td>
+          <td class="st" data-tags="bcf1_98"></td>
+          <td class="st" data-tags="bcf1_51"></td>
+          <td class="st" data-tags="bcf1_50,bcf1_51"></td>
         </tr>
         <!-- 침탄 2호 -->
         <tr data-equip-cd="dongwoo_02" data-row-sort="1">
@@ -155,7 +163,11 @@
           <td class="data" data-col="cust"></td>
           <td class="data" data-col="prod"></td>
           <td class="data" data-col="lot"></td>
-          <td class="st"></td><td class="st"></td><td class="st"></td><td class="st"></td><td class="st"></td>
+          <td class="st" data-tags="bcf2_96"></td>
+          <td class="st" data-tags="bcf2_96"></td>
+          <td class="st" data-tags="bcf2_98"></td>
+          <td class="st" data-tags="bcf2_51"></td>
+          <td class="st" data-tags="bcf2_50,bcf2_51"></td>
         </tr>
         <!-- 침탄 3호 -->
         <tr data-equip-cd="dongwoo_03" data-row-sort="1">
@@ -163,7 +175,11 @@
           <td class="data" data-col="cust"></td>
           <td class="data" data-col="prod"></td>
           <td class="data" data-col="lot"></td>
-          <td class="st"></td><td class="st"></td><td class="st"></td><td class="st"></td><td class="st"></td>
+          <td class="st" data-tags="bcf3_96"></td>
+          <td class="st" data-tags="bcf3_96"></td>
+          <td class="st" data-tags="bcf3_98"></td>
+          <td class="st" data-tags="bcf3_51"></td>
+          <td class="st"></td>
         </tr>
         <!-- 침탄 4호 -->
         <tr data-equip-cd="dongwoo_04" data-row-sort="1">
@@ -171,7 +187,11 @@
           <td class="data" data-col="cust"></td>
           <td class="data" data-col="prod"></td>
           <td class="data" data-col="lot"></td>
-          <td class="st"></td><td class="st"></td><td class="st"></td><td class="st"></td><td class="st"></td>
+          <td class="st" data-tags="bcf4_96"></td>
+          <td class="st" data-tags="bcf4_96"></td>
+          <td class="st" data-tags="bcf4_98"></td>
+          <td class="st" data-tags="bcf4_51"></td>
+          <td class="st" data-tags="bcf4_50,bcf4_51"></td>
         </tr>
         <!-- 침탄 5호 -->
         <tr data-equip-cd="dongwoo_05" data-row-sort="1">
@@ -179,7 +199,11 @@
           <td class="data" data-col="cust"></td>
           <td class="data" data-col="prod"></td>
           <td class="data" data-col="lot"></td>
-          <td class="st"></td><td class="st"></td><td class="st"></td><td class="st"></td><td class="st"></td>
+          <td class="st" data-tags="bcf5_98"></td>
+          <td class="st" data-tags="bcf5_99"></td>
+          <td class="st" data-tags="bcf5_100"></td>
+          <td class="st" data-tags="bcf5_54"></td>
+          <td class="st" data-tags="bcf5_53,bcf5_54"></td>
         </tr>
 
         <!-- 침탄 7호 -->
@@ -189,14 +213,22 @@
           <td class="data" data-col="cust"></td>
           <td class="data" data-col="prod"></td>
           <td class="data" data-col="lot"></td>
-          <td class="st"></td><td class="st"></td><td class="st"></td><td class="st"></td><td class="st"></td>
+          <td class="st" data-tags="bcf7_272,bcf7_273,bcf7_274,bcf7_275"></td>
+          <td class="st" data-tags="bcf7_276,bcf7_277,bcf7_278"></td>
+          <td class="st" data-tags="bcf7_279"></td>
+          <td class="st"></td>
+          <td class="st" data-tags="bcf7_144"></td>
         </tr>
         <tr data-equip-cd="dongwoo_07" data-row-sort="2">
           <td class="room">냉각실</td>
           <td class="data" data-col="cust"></td>
           <td class="data" data-col="prod"></td>
           <td class="data" data-col="lot"></td>
-          <td class="st"></td><td class="st"></td><td class="st"></td><td class="st"></td><td class="st"></td>
+          <td class="st"></td>
+          <td class="st"></td>
+          <td class="st"></td>
+          <td class="st" data-tags="bcf7_145"></td>
+          <td class="st" data-tags="bcf7_145"></td>
         </tr>
 
         <!-- 침탄 8호 -->
@@ -206,14 +238,22 @@
           <td class="data" data-col="cust"></td>
           <td class="data" data-col="prod"></td>
           <td class="data" data-col="lot"></td>
-          <td class="st"></td><td class="st"></td><td class="st"></td><td class="st"></td><td class="st"></td>
+          <td class="st" data-tags="bcf8_164"></td>
+          <td class="st" data-tags="bcf8_165"></td>
+          <td class="st" data-tags="bcf8_166"></td>
+          <td class="st"></td>
+          <td class="st" data-tags="bcf8_116"></td>
         </tr>
         <tr data-equip-cd="dongwoo_08" data-row-sort="2">
           <td class="room">냉각실</td>
           <td class="data" data-col="cust"></td>
           <td class="data" data-col="prod"></td>
           <td class="data" data-col="lot"></td>
-          <td class="st"></td><td class="st"></td><td class="st"></td><td class="st"></td><td class="st"></td>
+          <td class="st"></td>
+          <td class="st"></td>
+          <td class="st"></td>
+          <td class="st" data-tags="bcf8_117"></td>
+          <td class="st" data-tags="bcf8_117"></td>
         </tr>
 
         <!-- 침탄 9호 -->
@@ -223,14 +263,22 @@
           <td class="data" data-col="cust"></td>
           <td class="data" data-col="prod"></td>
           <td class="data" data-col="lot"></td>
-          <td class="st"></td><td class="st"></td><td class="st"></td><td class="st"></td><td class="st"></td>
+          <td class="st" data-tags="bcf9_272,bcf9_273,bcf9_274,bcf9_275"></td>
+          <td class="st" data-tags="bcf9_276,bcf9_277,bcf9_278"></td>
+          <td class="st" data-tags="bcf9_279"></td>
+          <td class="st"></td>
+          <td class="st" data-tags="bcf9_144"></td>
         </tr>
         <tr data-equip-cd="dongwoo_09" data-row-sort="2">
           <td class="room">냉각실</td>
           <td class="data" data-col="cust"></td>
           <td class="data" data-col="prod"></td>
           <td class="data" data-col="lot"></td>
-          <td class="st"></td><td class="st"></td><td class="st"></td><td class="st"></td><td class="st"></td>
+          <td class="st"></td>
+          <td class="st"></td>
+          <td class="st"></td>
+          <td class="st" data-tags="bcf9_145"></td>
+          <td class="st" data-tags="bcf9_145"></td>
         </tr>
 
         <!-- 침탄 10호 -->
@@ -239,7 +287,11 @@
           <td class="data" data-col="cust"></td>
           <td class="data" data-col="prod"></td>
           <td class="data" data-col="lot"></td>
-          <td class="st"></td><td class="st"></td><td class="st"></td><td class="st"></td><td class="st"></td>
+          <td class="st" data-tags="bcf10_98"></td>
+          <td class="st" data-tags="bcf10_99"></td>
+          <td class="st" data-tags="bcf10_100"></td>
+          <td class="st" data-tags="bcf10_54"></td>
+          <td class="st" data-tags="bcf10_53,bcf10_54"></td>
         </tr>
         <!-- 침탄 12호 -->
         <tr data-equip-cd="dongwoo_12" data-row-sort="1">
@@ -247,7 +299,11 @@
           <td class="data" data-col="cust"></td>
           <td class="data" data-col="prod"></td>
           <td class="data" data-col="lot"></td>
-          <td class="st"></td><td class="st"></td><td class="st"></td><td class="st"></td><td class="st"></td>
+          <td class="st" data-tags="bcf12_L0301"></td>
+          <td class="st" data-tags="bcf12_L0302,bcf12_L0303,bcf12_L0304,bcf12_L0305"></td>
+          <td class="st" data-tags="bcf12_L0306"></td>
+          <td class="st" data-tags="bcf12_Y119H"></td>
+          <td class="st" data-tags="bcf12_Y119H,bcf12_M0925"></td>
         </tr>
       </tbody>
     </table>
@@ -286,7 +342,57 @@
   fit();
   fetchData();
   window.addEventListener('resize', fit);
+  document.querySelectorAll('td.st[data-tags]').forEach(function(td) {
+    td.title = td.getAttribute('data-tags').replace(/,/g, '\n');
+  });
   setInterval(fetchData, 5000);
+
+  /* PLC 공정현황 상태 — 스냅샷 캐시 폴링 */
+  var plcBusy = false;
+
+  function fetchPlcStatus() {
+    if (plcBusy) return;
+    plcBusy = true;
+    fetch(ROOT + '/monitor/snapshot')
+    .then(function(r) { return r.ok ? r.json() : Promise.reject(r.status); })
+    .then(function(data) {
+      var changed  = [];
+      var equipMap = {};
+
+      document.querySelectorAll('td.st[data-tags]').forEach(function(td) {
+        var tags    = td.getAttribute('data-tags').split(',').map(function(t){ return t.trim(); });
+        var wasOn   = td.classList.contains('active');
+        var anyOn   = tags.some(function(t){ return data[t] == 1; });
+        var tr      = td.closest('tr');
+        var equip   = tr ? (tr.getAttribute('data-equip-cd') || '?') : '?';
+        var rowSort = tr ? (tr.getAttribute('data-row-sort') || '1') : '1';
+        var key     = equip + (rowSort !== '1' ? '[' + rowSort + ']' : '');
+
+        if (!equipMap[key]) equipMap[key] = [];
+        equipMap[key].push(tags.join('+') + (anyOn ? '=●ON' : '=○'));
+
+        if (anyOn !== wasOn) {
+          changed.push('[' + key + '] ' + tags.join('+') + ' ' + (anyOn ? 'OFF→ON' : 'ON→OFF'));
+        }
+        td.classList.toggle('active', anyOn);
+      });
+
+      var ts    = new Date().toLocaleTimeString('ko-KR', {hour12: false});
+      var lines = ['[NowWork1 ' + ts + '] 공정현황 비트 상태'];
+      Object.keys(equipMap).forEach(function(k) {
+        lines.push('  ' + k + ' │ ' + equipMap[k].join('  '));
+      });
+      if (changed.length) {
+        lines.push('  ▶ 변경 ' + changed.length + '건: ' + changed.join(' / '));
+      }
+      console.log(lines.join('\n'));
+    })
+    .catch(function(e) { console.warn('[NowWork1] 스냅샷 fetch 실패:', e); })
+    .finally(function() { plcBusy = false; });
+  }
+
+  fetchPlcStatus();
+  setInterval(fetchPlcStatus, 3000);
 </script>
 </body>
 </html>

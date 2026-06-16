@@ -42,19 +42,24 @@
 
     <select id="selectJacupByRange" parameterType="map" resultType="java.util.HashMap">
         SELECT
-            WORK_INDCT_NUM,
-            CUST_NUM,
-            EQUT_CD,
-            PROD_CD,
-            DATE_FORMAT(START_DTTM, '%Y-%m-%d %H:%i:%s') AS START_DTTM,
-            DATE_FORMAT(END_DTTM,   '%Y-%m-%d %H:%i:%s') AS END_DTTM
-        FROM tb_jacup
-        WHERE START_DTTM IS NOT NULL
-          AND START_DTTM BETWEEN #{from} AND #{to}
+            j.WORK_INDCT_NUM,
+            j.CUST_NUM,
+            j.EQUT_CD,
+            j.PROD_CD,
+            p.PROD_MM         AS PROD_NM,
+            p.CUST_PROD_NUM   AS PROD_NUM,
+            c.CUST_COMP_NM    AS CUST_NM,
+            DATE_FORMAT(j.START_DTTM, '%Y-%m-%d %H:%i:%s') AS START_DTTM,
+            DATE_FORMAT(j.END_DTTM,   '%Y-%m-%d %H:%i:%s') AS END_DTTM
+        FROM tb_jacup j
+        LEFT JOIN sat_prod p ON p.PROD_CD  = j.PROD_CD
+        LEFT JOIN sat_cust c ON c.CUST_NUM = j.CUST_NUM
+        WHERE j.START_DTTM IS NOT NULL
+          AND j.START_DTTM BETWEEN #{from} AND #{to}
         <if test="equtCd != null and equtCd != ''">
-          AND EQUT_CD = #{equtCd}
+          AND j.EQUT_CD = #{equtCd}
         </if>
-        ORDER BY START_DTTM ASC
+        ORDER BY j.START_DTTM ASC
     </select>
 
 </mapper>

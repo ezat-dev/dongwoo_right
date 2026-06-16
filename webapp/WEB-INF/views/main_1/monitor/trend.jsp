@@ -1083,7 +1083,9 @@ function renderLotList(rows) {
   var frag = document.createDocumentFragment();
   rows.forEach(function(r, i) {
     var num      = lotVal(r, 'WORK_INDCT_NUM');
-    var prod     = lotVal(r, 'PROD_CD');
+    var prodNm   = lotVal(r, 'PROD_NM');
+    var prodNum  = lotVal(r, 'PROD_NUM');
+    var custNm   = lotVal(r, 'CUST_NM');
     var equtCd   = lotVal(r, 'EQUT_CD');
     var equtTag  = EQUT_REV[equtCd] || equtCd;
     var startRaw = lotVal(r, 'START_DTTM');
@@ -1099,10 +1101,10 @@ function renderLotList(rows) {
     div.dataset.equt  = equtCd;
     div.dataset.idx   = i;
 
-    var timeHtml = start16 + ' ~ ' + (end16 || '<span class="lot-running">진행중</span>');
-    div.innerHTML = '<div class="lot-num">' + esc(num) + '</div>'
-      + '<div class="lot-prod">' + esc(prod) + (equtTag ? ' · <b>' + esc(equtTag) + '</b>' : '') + '</div>'
-      + '<div class="lot-time">' + timeHtml + '</div>';
+    div.innerHTML = (custNm ? '<div class="lot-prod" style="color:var(--orange);font-weight:700">' + esc(custNm) + '</div>' : '')
+      + '<div class="lot-num">' + esc(num) + (equtTag ? ' <span style="font-size:10px;font-weight:600;color:var(--primary)">· ' + esc(equtTag) + '</span>' : '') + '</div>'
+      + (prodNm  ? '<div class="lot-prod">' + esc(prodNm) + '</div>' : '');
+      /* 하단 2줄 제거: 품번(prodNum), 시간(lot-time) */
 
     div.addEventListener('click', function() { selectLot(this); });
     frag.appendChild(div);
@@ -1202,8 +1204,10 @@ function applyJacupToChart() {
         useHTML: true,
         text: '<span style="display:inline-block;background:#DD6B20;color:#fff;font-size:10px;font-weight:700;padding:4px 8px;border-radius:5px;line-height:1.6;box-shadow:0 2px 6px rgba(221,107,32,.35)">'
             + esc(key||'')
-            + (j.PROD_CD ? '<br><span style="font-weight:400;font-size:9px;opacity:.92">' + esc(j.PROD_CD) + '</span>' : '')
-            + (j.EQUT_CD ? '<br><span style="font-weight:500;font-size:9px;opacity:.75">&#128295; ' + esc(j.EQUT_CD) + '</span>' : '')
+            + (j.CUST_NM   ? '<br><span style="font-weight:600;font-size:9px;opacity:.95">&#127968; ' + esc(j.CUST_NM) + '</span>' : '')
+            + (j.PROD_NM   ? '<br><span style="font-weight:400;font-size:9px;opacity:.92">' + esc(j.PROD_NM) + '</span>' : '')
+            + (j.PROD_NUM  ? '<br><span style="font-weight:400;font-size:9px;opacity:.75">품번 ' + esc(j.PROD_NUM) + '</span>' : '')
+            + (j.EQUT_CD   ? '<br><span style="font-weight:500;font-size:9px;opacity:.75">&#128295; ' + esc(j.EQUT_CD) + '</span>' : '')
             + '</span>',
         rotation: 0, align: 'left', x: 3, y: 14
       }
