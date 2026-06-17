@@ -154,6 +154,15 @@
    .group-1 img[class*="-pen-"].pen-stopped {
      animation-play-state: paused;
    }
+   
+    .bcf-12-pen-3 { width: 43.72px; height: 43.72px; position: absolute; left: 178px; top: 238px; object-fit: cover; aspect-ratio: 1; }
+    .bcf-1-pen-3 { width: 43.72px; height: 43.72px; position: absolute; left: 428px; top: 238px; object-fit: cover; aspect-ratio: 1; }
+    .bcf-2-pen-3 { width: 43.72px; height: 43.72px; position: absolute; left: 678px; top: 238px; object-fit: cover; aspect-ratio: 1; }
+    .bcf-3-pen-3 { width: 43.72px; height: 43.72px; position: absolute; left: 928px; top: 238px; object-fit: cover; aspect-ratio: 1; }
+    .bcf-4-pen-3 { width: 43.72px; height: 43.72px; position: absolute; left: 1177px; top: 238px; object-fit: cover; aspect-ratio: 1; }
+    .bcf-10-pen-3 { width: 43.72px; height: 43.72px; position: absolute; left: 1428px; top: 238px; object-fit: cover; aspect-ratio: 1; }
+    .bcf-5-pen-3 { width: 43.72px; height: 43.72px; position: absolute; left: 1677px; top: 238px; object-fit: cover; aspect-ratio: 1; }
+
 
    .bcf-12-pen-2 { width: 43.72px !important; height: 43.72px !important; left: 244.56px !important; top: 377.33px !important; }
    .bcf-12-pen-1 { width: 43.72px !important; height: 43.72px !important; left: 113.16px !important; top: 377.33px !important; }
@@ -181,25 +190,25 @@
 
     <!-- BCF 명칭 / 운전모드 라벨 (절대좌표, 각 작화 정중앙 정렬) -->
     <div class="bcf-name-lbl" style="left:107.65px">NO.12</div>
-    <div class="bcf-mode-lbl" data-mode-tag="bcf12_25" style="left:107.65px">확인중</div>
+    <div class="bcf-mode-lbl" data-mode-tag="bcf12_Y112H" style="left:107.65px">확인중</div>
 
     <div class="bcf-name-lbl" style="left:357.49px">NO.1</div>
-    <div class="bcf-mode-lbl" data-mode-tag="bcf1_25" style="left:357.49px">확인중</div>
+    <div class="bcf-mode-lbl" data-mode-tag="bcf1_106" style="left:357.49px">확인중</div>
 
     <div class="bcf-name-lbl" style="left:607.34px">NO.2</div>
-    <div class="bcf-mode-lbl" data-mode-tag="bcf2_25" style="left:607.34px">확인중</div>
+    <div class="bcf-mode-lbl" data-mode-tag="bcf2_106" style="left:607.34px">확인중</div>
 
     <div class="bcf-name-lbl" style="left:857.18px">NO.3</div>
-    <div class="bcf-mode-lbl" data-mode-tag="bcf3_25" style="left:857.18px">확인중</div>
+    <div class="bcf-mode-lbl" data-mode-tag="bcf3_106" style="left:857.18px">확인중</div>
 
     <div class="bcf-name-lbl" style="left:1107.03px">NO.4</div>
-    <div class="bcf-mode-lbl" data-mode-tag="bcf4_25" style="left:1107.03px">확인중</div>
+    <div class="bcf-mode-lbl" data-mode-tag="bcf4_106" style="left:1107.03px">확인중</div>
 
     <div class="bcf-name-lbl" style="left:1356.88px">NO.10</div>
-    <div class="bcf-mode-lbl" data-mode-tag="bcf10_25" style="left:1356.88px">확인중</div>
+    <div class="bcf-mode-lbl" data-mode-tag="bcf10_133" style="left:1356.88px">확인중</div>
 
     <div class="bcf-name-lbl" style="left:1606.72px">NO.5</div>
-    <div class="bcf-mode-lbl" data-mode-tag="bcf5_25" style="left:1606.72px">확인중</div>
+    <div class="bcf-mode-lbl" data-mode-tag="bcf5_108" style="left:1606.72px">확인중</div>
 
     <div class="over-view-1">
       <div class="hogi-12">
@@ -230,11 +239,12 @@
         <img class="bcf-12-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-12-heat-on0.png" />
         <img class="bcf-12-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-12-obj-off0.png" />
         <img class="bcf-12-obj-on" src="<%= ctx %>/img/main_monitor_1/bcf-12-obj-on0.png" />
-        <img class="bcf-12-pen-2 bcf12_Y0F4" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
-        <img class="bcf-12-pen-1 bcf12_Y0F4" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-12-pen-2 bcf12_Y0F4H" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-12-pen-1 bcf12_Y0F4H" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-12-pen-3 bcf12_Y0F8H" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <div class="bcf-12-jogging bcf12_M6824">조깅</div>
         <img class="bcf-12-moter-off" src="<%= ctx %>/img/main_monitor_1/bcf-12-moter-off0.png" />
-        <img class="bcf-12-moter-on bcf12_Y0f0 bcf12_Y0F1" src="<%= ctx %>/img/main_monitor_1/bcf-12-moter-on0.png" />
+        <img class="bcf-12-moter-on bcf12_Y0F0H bcf12_Y0F1H" src="<%= ctx %>/img/main_monitor_1/bcf-12-moter-on0.png" />
       </div>
       <div class="hogi-1">
         <img class="bcf-1" src="<%= ctx %>/img/main_monitor_1/bcf-10.png" />
@@ -265,6 +275,7 @@
         <img class="bcf-1-obj-on bcf1_46" src="<%= ctx %>/img/main_monitor_1/bcf-1-obj-on0.png" />
         <img class="bcf-1-pen-2 bcf1_60" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <img class="bcf-1-pen-1 bcf1_60" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-1-pen-3 bcf1_22" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <div class="bcf-1-jogging bcf1_56">조깅</div>
         <img class="bcf-1-moter-off" src="<%= ctx %>/img/main_monitor_1/bcf-1-moter-off0.png" />
         <img class="bcf-1-moter-on bcf1_39 bcf1_40" src="<%= ctx %>/img/main_monitor_1/bcf-1-moter-on0.png" />
@@ -298,6 +309,7 @@
         <img class="bcf-2-obj-on bcf2_46" src="<%= ctx %>/img/main_monitor_1/bcf-2-obj-on0.png" />
         <img class="bcf-2-pen-2 bcf2_60" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <img class="bcf-2-pen-1 bcf2_60" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-2-pen-3 bcf2_22" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <div class="bcf-2-jogging bcf2_56">조깅</div>
         <img class="bcf-2-moter-off" src="<%= ctx %>/img/main_monitor_1/bcf-2-moter-off0.png" />
         <img class="bcf-2-moter-on bcf2_39 bcf2_40" src="<%= ctx %>/img/main_monitor_1/bcf-2-moter-on0.png" />
@@ -331,6 +343,7 @@
         <img class="bcf-3-obj-on bcf3_46" src="<%= ctx %>/img/main_monitor_1/bcf-3-obj-on0.png" />
         <img class="bcf-3-pen-2 bcf3_60" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <img class="bcf-3-pen-1 bcf3_60" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-3-pen-3 bcf3_45" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <div class="bcf-3-jogging bcf3_56">조깅</div>
         <img class="bcf-3-moter-off" src="<%= ctx %>/img/main_monitor_1/bcf-3-moter-off0.png" />
         <img class="bcf-3-moter-on bcf3_39 bcf3_40" src="<%= ctx %>/img/main_monitor_1/bcf-3-moter-on0.png" />
@@ -364,6 +377,7 @@
         <img class="bcf-4-obj-on bcf4_46" src="<%= ctx %>/img/main_monitor_1/bcf-4-obj-on0.png" />
         <img class="bcf-4-pen-2 bcf4_60" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <img class="bcf-4-pen-1 bcf4_60" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-4-pen-3 bcf4_45" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <div class="bcf-4-jogging bcf4_56">조깅</div>
         <img class="bcf-4-moter-off" src="<%= ctx %>/img/main_monitor_1/bcf-4-moter-off0.png" />
         <img class="bcf-4-moter-on bcf4_85 bcf4_86" src="<%= ctx %>/img/main_monitor_1/bcf-4-moter-on0.png" />
@@ -397,6 +411,7 @@
         <img class="bcf-10-obj-on bcf10_49" src="<%= ctx %>/img/main_monitor_1/bcf-10-obj-on0.png" />
         <img class="bcf-10-pen-2 bcf10_62" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <img class="bcf-10-pen-1 bcf10_62" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-10-pen-3 bcf10_42" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <div class="bcf-10-jogging bcf10_58">조깅</div>
         <img class="bcf-10-moter-off" src="<%= ctx %>/img/main_monitor_1/bcf-10-moter-off0.png" />
         <img class="bcf-10-moter-on bcf10_38 bcf10_39" src="<%= ctx %>/img/main_monitor_1/bcf-10-moter-on0.png" />
@@ -432,6 +447,7 @@
         <img class="bcf-5-obj-on bcf5_49" src="<%= ctx %>/img/main_monitor_1/bcf-5-obj-on0.png" />
         <img class="bcf-5-pen-2 bcf5_62" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <img class="bcf-5-pen-1 bcf5_62" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-5-pen-3 bcf5_48" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <div class="bcf-5-jogging bcf5_58">조깅</div>
         <img class="bcf-5-moter-off" src="<%= ctx %>/img/main_monitor_1/bcf-5-moter-off0.png" />
         <img class="bcf-5-moter-on bcf5_38 bcf5_39" src="<%= ctx %>/img/main_monitor_1/bcf-5-moter-on0.png" />

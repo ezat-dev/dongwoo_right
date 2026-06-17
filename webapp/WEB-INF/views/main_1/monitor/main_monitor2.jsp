@@ -154,6 +154,12 @@
    .group-3 img[class*="-pen-"].pen-stopped {
      animation-play-state: paused;
    }
+
+   .bcf-8-pen-3 { width: 33px; height: 33px; position: absolute; left: 674px; top: 501px; object-fit: cover; aspect-ratio: 1; }
+   .bcf-9-pen-3 { width: 33px; height: 33px; position: absolute; left: 674px; top: 501px; object-fit: cover; aspect-ratio: 1; }
+   .bcf-7-pen-3 { width: 33px; height: 33px; position: absolute; left: 674px; top: 501px; object-fit: cover; aspect-ratio: 1; }
+
+
    </style>
   <title>Document</title>
 </head>
@@ -166,19 +172,19 @@
 
     <!-- BCF 명칭 / 운전모드 라벨 -->
     <div class="bcf-name-lbl" style="left:345px;width:113px">NO.11</div>
-    <div class="bcf-mode-lbl" data-mode-tag="bcf11_25" style="left:345px;width:113px">확인중</div>
+    <div class="bcf-mode-lbl" data-mode-tag="bcf11_133" style="left:345px;width:113px">확인중</div>
 
     <div class="bcf-name-lbl" style="left:563px;width:152px">NO.8</div>
-    <div class="bcf-mode-lbl" data-mode-tag="bcf8_25" style="left:563px;width:152px">확인중</div>
+    <div class="bcf-mode-lbl" data-mode-tag="bcf8_174" style="left:563px;width:152px">확인중</div>
 
     <div class="bcf-name-lbl" style="left:809px;width:152px">NO.9</div>
-    <div class="bcf-mode-lbl" data-mode-tag="bcf9_25" style="left:809px;width:152px">확인중</div>
+    <div class="bcf-mode-lbl" data-mode-tag="bcf9_264" style="left:809px;width:152px">확인중</div>
 
     <div class="bcf-name-lbl" style="left:1055px;width:152px">NO.7</div>
-    <div class="bcf-mode-lbl" data-mode-tag="bcf7_25" style="left:1055px;width:152px">확인중</div>
+    <div class="bcf-mode-lbl" data-mode-tag="bcf7_264" style="left:1055px;width:152px">확인중</div>
 
     <div class="bcf-name-lbl" style="left:1314px;width:222px">NO.6</div>
-    <div class="bcf-mode-lbl" data-mode-tag="bcf6_25" style="left:1314px;width:222px">확인중</div>
+    <div class="bcf-mode-lbl" data-mode-tag="bcf6_386" style="left:1314px;width:222px">확인중</div>
 
     <div class="group-2">
       <div class="bcf-11">
@@ -246,6 +252,7 @@
         <img class="bcf-8-tray-5 bcf8_19" src="<%= ctx %>/img/main_monitor_2/bcf-8-tray-50.png" />
         <img class="bcf-8-pen-1 bcf8_113" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <img class="bcf-8-pen-2 bcf8_113" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-8-pen-3 bcf8_96" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <div class="bcf-8-dt-1 bcf8_s_40063"></div>
         <div class="bcf-8-dt-2 bcf8_s_40005"></div>
         <img class="bcf-8-box-on-1" src="<%= ctx %>/img/main_monitor_2/bcf-8-box-on-10.png" />
@@ -282,6 +289,7 @@
         <img class="bcf-9-tray-5 bcf9_22" src="<%= ctx %>/img/main_monitor_2/bcf-9-tray-50.png" />
         <img class="bcf-9-pen-1 bcf9_157" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <img class="bcf-9-pen-2 bcf9_157" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-9-pen-3 bcf9_155" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <div class="bcf-9-dt-1 bcf9_s_44610"></div>
         <div class="bcf-9-dt-2 bcf9_s_44610"></div>
         <img class="bcf-9-box-on-1" src="<%= ctx %>/img/main_monitor_2/bcf-9-box-on-10.png" />
@@ -318,6 +326,7 @@
         <img class="bcf-7-tray-5 bcf7_22" src="<%= ctx %>/img/main_monitor_2/bcf-7-tray-50.png" />
         <img class="bcf-7-pen-1 bcf7_157" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <img class="bcf-7-pen-2 bcf7_157" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-7-pen-3 bcf7_155" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <div class="bcf-7-dt-1 bcf7_s_44610"></div>
         <div class="bcf-7-dt-2 bcf7_s_44610"></div>
         <img class="bcf-7-box-on-1" src="<%= ctx %>/img/main_monitor_2/bcf-7-box-on-10.png" />
