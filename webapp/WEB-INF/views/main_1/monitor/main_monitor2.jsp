@@ -159,7 +159,20 @@
    .bcf-9-pen-3 { width: 33px; height: 33px; position: absolute; left: 674px; top: 501px; object-fit: cover; aspect-ratio: 1; }
    .bcf-7-pen-3 { width: 33px; height: 33px; position: absolute; left: 674px; top: 501px; object-fit: cover; aspect-ratio: 1; }
 
-
+   /* DT 요소 공통 스타일 */
+   .group-2 [class*="-dt-"] {
+     background: #e8f5e9 !important;
+     border: 1px solid #a5d6a7 !important;
+     border-radius: 4px;
+     display: flex !important;
+     align-items: center;
+     justify-content: center;
+     font-family: 'Malgun Gothic', 'Segoe UI', Arial, sans-serif;
+     font-size: 10px;
+     font-weight: 700;
+     color: #2e7d32;
+     letter-spacing: .2px;
+   }
    </style>
   <title>Document</title>
 </head>
@@ -690,9 +703,18 @@
 
   const allTags = Object.keys(wordElMap).concat(Object.keys(bitElMap));
 
-  // 초기 상태: 비트 요소 모두 숨김 (첫 폴링 후 실제 값으로 반영)
+  // 초기 상태: 비트 요소 모두 숨김 (jogging은 항상 표시)
   Object.keys(bitElMap).forEach(function(tag) {
-    bitElMap[tag].forEach(function(el) { el.style.visibility = 'hidden'; });
+    bitElMap[tag].forEach(function(el) {
+      if (el.className.indexOf('-jogging') !== -1) return;
+      el.style.visibility = 'hidden';
+    });
+  });
+
+  // 조깅 요소 초기 상태: 정지
+  document.querySelectorAll('div[class*="-jogging"]').forEach(function(el) {
+    el.textContent = '정지';
+    el.style.background = 'linear-gradient(180deg,#e0f2fe 0%,#60a5fa 100%)';
   });
 
   const penEls = Array.prototype.slice.call(document.querySelectorAll('img[class*="-pen-"]'));
@@ -720,21 +742,31 @@
 
   if (!allTags.length) return;
 
-  var CP_TAG = /_(40052|40071|D1081|D1087)$|bcf6_s_4004[5689]|bcf11_s_(4008[01]|4000[45])/;
+  var CP_TAG  = /_(40052|40071|D1081|D1087)$|bcf6_s_4004[5689]|bcf11_s_(4008[01]|4000[45])|bcf8_s_(40055|40074)|bcf[79]_s_(44613|40007)/;
+  // BCF7·BCF9 44613 레지스터: PLC가 실제값의 절반을 저장 → 화면에서 ×2 보정 (×0.001×2 = ×0.002)
+  var CP2_TAG = /bcf[79]_s_44613/;
 
   function applyData(data) {
+    // 온도 ×10 / CP ×0.001 / DT 정수
+    // CP2_TAG(bcf7·bcf9 _44613): raw×0.002 — PLC 저장값이 실제의 절반이므로 화면에서 ×2 보정
     Object.keys(wordElMap).forEach(function (tag) {
       if (data[tag] == null) return;
-      var raw  = Number(data[tag]);
-      var text;
-      if (isNaN(raw)) {
-        text = data[tag];
-      } else if (CP_TAG.test(tag)) {
-        text = (raw * 0.001).toFixed(3);  // CP: ×0.001
-      } else {
-        text = raw >= 1000 ? (raw / 10).toFixed(1) : raw.toFixed(1);  // 4자리: ÷10 소수점 1자리
-      }
-      wordElMap[tag].forEach(function (el) { el.textContent = text; });
+      var raw = Number(data[tag]);
+      wordElMap[tag].forEach(function (el) {
+        var text;
+        if (isNaN(raw)) {
+          text = data[tag];
+        } else if (CP2_TAG.test(tag)) {
+          text = (raw * 0.002).toFixed(3);   // ×2 보정: bcf7_s_44613, bcf9_s_44613 전용
+        } else if (CP_TAG.test(tag)) {
+          text = (raw * 0.001).toFixed(3);
+        } else if (el.className.indexOf('-dt-') !== -1) {
+          text = String(Math.round(raw));
+        } else {
+          text = raw >= 1000 ? (raw / 10).toFixed(1) : raw.toFixed(1);
+        }
+        el.textContent = text;
+      });
     });
 
     Object.keys(bitElMap).forEach(function (tag) {
@@ -742,6 +774,12 @@
       var show = (data[tag] === 1 || data[tag] === true);
       bitElMap[tag].forEach(function (el) {
         if (isPenElement(el)) return;
+        if (el.className.indexOf('-jogging') !== -1) {
+          el.textContent = show ? '조깅' : '정지';
+          el.style.background = show ? '' : 'linear-gradient(180deg,#e0f2fe 0%,#60a5fa 100%)';
+          el.style.visibility = 'visible';
+          return;
+        }
         el.style.visibility = show ? 'visible' : 'hidden';
       });
     });
@@ -803,7 +841,7 @@
           if (v == null) { console.warn('  ' + t + ' → null (미응답)'); }
           else {
             var nv = Number(v);
-            var disp = CP_TAG.test(t) ? (nv*0.001).toFixed(3)+' %' : (nv >= 1000 ? (nv/10).toFixed(1) : nv.toFixed(1))+' ℃';
+            var disp = CP2_TAG.test(t) ? (nv*0.002).toFixed(3)+' %' : CP_TAG.test(t) ? (nv*0.001).toFixed(3)+' %' : (nv >= 1000 ? (nv/10).toFixed(1) : nv.toFixed(1))+' ℃';
             console.log('  ' + t + ' → ' + v + '  (' + disp + ')');
           }
         });

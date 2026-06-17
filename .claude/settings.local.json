@@ -100,7 +100,9 @@
       "Bash(find src *)",
       "Bash(find . -path \"*/monitor/MonitorCacheService*\")",
       "Bash(sed -n '558,580p' webapp/WEB-INF/resources/img/main_monitor_1/style.css)",
-      "Bash(sed -n '859,880p' webapp/WEB-INF/resources/img/main_monitor_1/style.css)"
+      "Bash(sed -n '859,880p' webapp/WEB-INF/resources/img/main_monitor_1/style.css)",
+      "PowerShell(Start-Process \"\" -ArgumentList \"/D\",\"C:\\\\PlcApiServer\",\"dotnet\",\"run\",\"--project\",\"C:\\\\PlcApiServer\\\\PlcApiServer.csproj\" -WindowStyle Normal)",
+      "PowerShell(Start-Process \"cmd.exe\" -ArgumentList \"/c\",\"cd /d C:\\\\PlcApiServer && dotnet run --project C:\\\\PlcApiServer\\\\PlcApiServer.csproj\" -WindowStyle Normal)"
     ],
     "additionalDirectories": [
       "D:\\apache-tomcat-9.0.115\\webapps",

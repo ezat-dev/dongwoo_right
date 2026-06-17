@@ -268,7 +268,7 @@
         <div class="bcf-1-stop">정지</div>
         <div class="bcf-1-up">상승</div>
         <div class="bcf-1-down bcf1_3">하강</div>
-        <div class="bcf-1-dt-ez-50 bcf1_50"></div>
+        <div class="bcf-1-dt-ez-50 dt-indicator bcf1_50">단품</div>
         <img class="bcf-1-heat-off" src="<%= ctx %>/img/main_monitor_1/bcf-1-heat-off0.png" />
         <img class="bcf-1-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-1-heat-on0.png" />
         <img class="bcf-1-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-1-obj-off0.png" />
@@ -302,7 +302,7 @@
         <div class="bcf-2-stop">정지</div>
         <div class="bcf-2-up">상승</div>
         <div class="bcf-2-down bcf2_3">하강</div>
-        <div class="bcf-2-dt bcf2_50"></div>
+        <div class="bcf-2-dt dt-indicator bcf2_50">단품</div>
         <img class="bcf-2-heat-off" src="<%= ctx %>/img/main_monitor_1/bcf-2-heat-off0.png" />
         <img class="bcf-2-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-2-heat-on0.png" />
         <img class="bcf-2-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-2-obj-off0.png" />
@@ -336,7 +336,7 @@
         <div class="bcf-3-stop">정지</div>
         <div class="bcf-3-up">상승</div>
         <div class="bcf-3-down bcf3_3">하강</div>
-        <div class="bcf-3-dt bcf3_96 bcf3_97 bcf3_98"></div>
+        <div class="bcf-3-dt dt-indicator bcf3_96 bcf3_97 bcf3_98">단품</div>
         <img class="bcf-3-heat-off" src="<%= ctx %>/img/main_monitor_1/bcf-3-heat-off0.png" />
         <img class="bcf-3-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-3-heat-on0.png" />
         <img class="bcf-3-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-3-obj-off0.png" />
@@ -370,7 +370,7 @@
         <div class="bcf-4-stop">정지</div>
         <div class="bcf-4-up">상승</div>
         <div class="bcf-4-down bcf4_3">하강</div>
-        <div class="bcf-4-dt bcf4_50"></div>
+        <div class="bcf-4-dt dt-indicator bcf4_50">단품</div>
         <img class="bcf-4-heat-off" src="<%= ctx %>/img/main_monitor_1/bcf-4-heat-off0.png" />
         <img class="bcf-4-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-4-heat-on0.png" />
         <img class="bcf-4-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-4-obj-off0.png" />
@@ -404,7 +404,7 @@
         <div class="bcf-10-stop">정지</div>
         <div class="bcf-10-up">상승</div>
         <div class="bcf-10-down bcf10_52">하강</div>
-        <div class="bcf-10-dt bcf10_53"></div>
+        <div class="bcf-10-dt dt-indicator bcf10_53">단품</div>
         <img class="bcf-10-heat-off" src="<%= ctx %>/img/main_monitor_1/bcf-10-heat-off0.png" />
         <img class="bcf-10-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-10-heat-on0.png" />
         <img class="bcf-10-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-10-obj-off0.png" />
@@ -440,7 +440,7 @@
         <div class="bcf-5-stop">정지</div>
         <div class="bcf-5-up">상승</div>
         <div class="bcf-5-down bcf5_52">하강</div>
-        <div class="bcf-5-dt bcf5_53"></div>
+        <div class="bcf-5-dt dt-indicator bcf5_53">단품</div>
         <img class="bcf-5-heat-off" src="<%= ctx %>/img/main_monitor_1/bcf-5-heat-off0.png" />
         <img class="bcf-5-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-5-heat-on0.png" />
         <img class="bcf-5-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-5-obj-off0.png" />
@@ -724,12 +724,23 @@
 
   const allTags = Object.keys(wordElMap).concat(Object.keys(bitElMap));
 
-  // 초기 상태: 비트 요소 모두 숨김 (첫 폴링 후 실제 값으로 반영)
+  // 초기 상태: 비트 요소 모두 숨김 (dt-indicator, jogging은 항상 표시)
   Object.keys(bitElMap).forEach(function(tag) {
-    bitElMap[tag].forEach(function(el) { el.style.visibility = 'hidden'; });
+    bitElMap[tag].forEach(function(el) {
+      if (el.classList.contains('dt-indicator')) return;
+      if (el.className.indexOf('-jogging') !== -1) return;
+      el.style.visibility = 'hidden';
+    });
   });
 
   const penEls = Array.prototype.slice.call(document.querySelectorAll('img[class*="-pen-"]'));
+  const dtEls  = Array.prototype.slice.call(document.querySelectorAll('.dt-indicator'));
+
+  // 조깅 요소 초기 상태: 정지
+  document.querySelectorAll('div[class*="-jogging"]').forEach(function(el) {
+    el.textContent = '정지';
+    el.style.background = 'linear-gradient(180deg,#e0f2fe 0%,#60a5fa 100%)';
+  });
 
   penEls.forEach(function(el) {
     el.classList.add('pen-rotating');
@@ -759,29 +770,50 @@
   var CP_TAG = /_(40052|40071|D1081|D1087)$/;
 
   function applyData(data) {
-    // 온도 ×10 / CP ×0.01
+    // 온도 ×10 / CP ×0.001 / DT 정수
     Object.keys(wordElMap).forEach(function (tag) {
       if (data[tag] == null) return;
-      var raw  = Number(data[tag]);
-      var text;
-      if (isNaN(raw)) {
-        text = data[tag];
-      } else if (CP_TAG.test(tag)) {
-        text = (raw * 0.001).toFixed(3);  // CP: ×0.001
-      } else {
-        text = raw >= 1000 ? (raw / 10).toFixed(1) : raw.toFixed(1);  // 4자리: ÷10 소수점 1자리
-      }
-      wordElMap[tag].forEach(function (el) { el.textContent = text; });
+      var raw = Number(data[tag]);
+      wordElMap[tag].forEach(function (el) {
+        var text;
+        if (isNaN(raw)) {
+          text = data[tag];
+        } else if (CP_TAG.test(tag)) {
+          text = (raw * 0.001).toFixed(3);
+        } else if (el.className.indexOf('-dt-') !== -1) {
+          text = String(Math.round(raw));
+        } else {
+          text = raw >= 1000 ? (raw / 10).toFixed(1) : raw.toFixed(1);
+        }
+        el.textContent = text;
+      });
     });
 
-    // 신호: 1이면 표시(visible), 0이면 숨김(hidden)
+    // 신호: 1이면 표시(visible), 0이면 숨김(hidden) — dt-indicator, jogging은 별도 처리
     Object.keys(bitElMap).forEach(function (tag) {
       if (data[tag] == null) return;
       var show = (data[tag] === 1 || data[tag] === true);
       bitElMap[tag].forEach(function (el) {
         if (isPenElement(el)) return;
+        if (el.classList.contains('dt-indicator')) return;
+        if (el.className.indexOf('-jogging') !== -1) {
+          el.textContent = show ? '조깅' : '정지';
+          el.style.background = show ? '' : 'linear-gradient(180deg,#e0f2fe 0%,#60a5fa 100%)';
+          el.style.visibility = 'visible';
+          return;
+        }
         el.style.visibility = show ? 'visible' : 'hidden';
       });
+    });
+
+    // 단품(DT) 인디케이터: 비트 하나라도 ON이면 활성(진녹색), 아니면 비활성(연녹색)
+    dtEls.forEach(function(el) {
+      var tags = el.className.split(/\s+/).filter(function(c) { return /^bcf\d+_\d+$/.test(c); });
+      var active = tags.some(function(t) { return data[t] === 1 || data[t] === true; });
+      el.style.background   = active ? '#43a047' : '#e8f5e9';
+      el.style.color        = active ? '#ffffff'  : '#388e3c';
+      el.style.borderColor  = active ? '#2e7d32'  : '#a5d6a7';
+      el.style.fontWeight   = active ? '900'      : '700';
     });
 
     penEls.forEach(function(el) {
