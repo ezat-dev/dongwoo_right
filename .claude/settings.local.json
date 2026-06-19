@@ -111,7 +111,20 @@
       "PowerShell(Stop-Process -Name \"java\" -Force -ErrorAction SilentlyContinue)",
       "PowerShell(Stop-Process -Name \"PlcApiServer\" -Force -ErrorAction SilentlyContinue)",
       "PowerShell(Start-Process \"cmd.exe\" -ArgumentList \"/k D:\\\\apache-tomcat-9.0.115\\\\bin\\\\startup.bat\" -WindowStyle Normal)",
-      "PowerShell(Start-Process \"cmd.exe\" -ArgumentList \"/k C:\\\\PlcApiServer\\\\bin\\\\Release\\\\net8.0\\\\PlcApiServer.exe\" -WindowStyle Normal)"
+      "PowerShell(Start-Process \"cmd.exe\" -ArgumentList \"/k C:\\\\PlcApiServer\\\\bin\\\\Release\\\\net8.0\\\\PlcApiServer.exe\" -WindowStyle Normal)",
+      "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\views\\\\main_1\\\\quality\\\\fproof.jsp\" \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\views\\\\main_1\\\\quality\\\\fproof.jsp\" -Force)",
+      "PowerShell(cmd /c \"cd /d d:\\\\sample_pro && echo. | redeploy.cmd\")",
+      "PowerShell(netstat -ano)",
+      "PowerShell(& \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\shutdown.bat\"; Start-Sleep -Seconds 5; Get-Process | Where-Object { $_.Id -eq 31308 } | ForEach-Object { Stop-Process -Id $_.Id -Force }; Start-Sleep -Seconds 2; netstat -ano | findstr \":8080\" | findstr \"LISTENING\")",
+      "PowerShell($env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; $env:JAVA_HOME = \"C:\\\\Program Files\\\\Eclipse Adoptium\\\\jdk-11.0.30.7-hotspot\"; & \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\shutdown.bat\")",
+      "PowerShell($env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; $env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; & \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\shutdown.bat\"; Start-Sleep -Seconds 6; taskkill /PID 31308 /F 2>$null; Start-Sleep -Seconds 2; netstat -ano | findstr \":8080\" | findstr \"LISTENING\")",
+      "PowerShell(taskkill /PID 31308 /F; Start-Sleep -Seconds 3; $still = netstat -ano | findstr \":8080\" | findstr \"LISTENING\"; if \\($still\\) { Write-Host \"Still running: $still\" } else { Write-Host \"Port 8080 free\" })",
+      "PowerShell($env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; $env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; $env:JRE_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; Start-Process -FilePath \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\startup.bat\" -NoNewWindow; Write-Host \"Tomcat starting...\")",
+      "PowerShell($env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; $env:PATH = \"$env:JAVA_HOME\\\\bin;$env:PATH\"; & \"D:\\\\apache-maven-3.9.15\\\\bin\\\\mvn.cmd\" -f \"d:\\\\sample_pro\\\\pom.xml\" -DskipTests clean package 2>&1 | Tee-Object \"d:\\\\sample_pro\\\\redeploy-build.log\" | Select-Object -Last 10)",
+      "PowerShell($env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; $env:PATH = \"$env:JAVA_HOME\\\\bin;$env:PATH\"; & \"D:\\\\apache-maven-3.9.15\\\\bin\\\\mvn.cmd\" -f \"d:\\\\sample_pro\\\\pom.xml\" -DskipTests clean package 2>&1 | Select-Object -Last 8)",
+      "PowerShell(taskkill /PID 11412 /F; Start-Sleep -Seconds 3; Remove-Item \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro.war\" -Force -ErrorAction SilentlyContinue; Remove-Item \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\" -Recurse -Force -ErrorAction SilentlyContinue; Copy-Item \"d:\\\\sample_pro\\\\target\\\\sample_pro.war\" \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro.war\"; $env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; $env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; $env:JRE_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; Start-Process \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\startup.bat\"; Start-Sleep -Seconds 15; netstat -ano | findstr \":8080\" | findstr \"LISTENING\")",
+      "PowerShell($r = Invoke-WebRequest -Uri \"http://localhost:8080/sample_pro/fprooflist/sessions?from=2026-06-15&to=2026-06-19\" -UseBasicParsing; $r.StatusCode; $r.Content)",
+      "PowerShell($cookies = \"JSESSIONID=dummy\"; $r = Invoke-WebRequest -Uri \"http://localhost:8080/sample_pro/fprooflist/sessions?from=2026-06-15&to=2026-06-19\" -UseBasicParsing -Headers @{Cookie=$cookies}; $r.Content.Substring\\(0,500\\))"
     ],
     "additionalDirectories": [
       "D:\\apache-tomcat-9.0.115\\webapps",

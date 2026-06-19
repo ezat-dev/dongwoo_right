@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="FProofMapper">
+
+    <resultMap id="alarmTagMap" type="com.sample_pro.domain.AlarmTag">
+        <id     property="tagId"    column="tag_id"/>
+        <result property="folderId" column="folder_id"/>
+        <result property="tagName"  column="tag_name"/>
+        <result property="address"  column="address"/>
+        <result property="plcId"    column="plc_id"/>
+        <result property="alarmMsg" column="alarm_msg"/>
+        <result property="level"    column="level"/>
+        <result property="enabled"  column="enabled"/>
+    </resultMap>
+
+    <!-- 설비의 전체 알람 태그 -->
+    <select id="selectAllTags" parameterType="string" resultMap="alarmTagMap">
+        SELECT tag_id, folder_id, tag_name, address, plc_id, alarm_msg, level, enabled
+        FROM   tb_alarm_tag
+        WHERE  plc_id  = #{plcId}
+          AND  enabled = 1
+        ORDER  BY tag_id ASC
+    </select>
+
+    <!-- 설비의 지정된 tag_id 목록 -->
+    <select id="selectSelectedTagIds" parameterType="string" resultType="int">
+        SELECT tag_id
+        FROM   tb_fproof_alarm
+        WHERE  plc_id = #{plcId}
+    </select>
+
+    <!-- F/PROOF 지정 추가 (중복 무시) -->
+    <insert id="insertSelected" parameterType="map">
+        INSERT IGNORE INTO tb_fproof_alarm (tag_id, plc_id)
+        VALUES (#{tagId}, #{plcId})
+    </insert>
+
+    <!-- F/PROOF 지정 해제 -->
+    <delete id="deleteSelected" parameterType="map">
+        DELETE FROM tb_fproof_alarm
+        WHERE  tag_id = #{tagId}
+          AND  plc_id = #{plcId}
+    </delete>
+
+</mapper>

@@ -34,6 +34,7 @@ public class MainController {
     @RequestMapping(value = "/inspect/daily",        method = RequestMethod.GET) public String inspectDaily()       { return "/main_1/facility/daily_inspect.jsp"; }
     @RequestMapping(value = "/inspect/daily/tablet", method = RequestMethod.GET) public String inspectDailyTablet() { return "/main_1/facility/daily_inspect_tablet.jsp"; }
     @RequestMapping(value = "/inspect/fproof",       method = RequestMethod.GET) public String inspectFproof()      { return "/main_1/quality/fproof.jsp"; }
+    @RequestMapping(value = "/inspect/fprooflist",  method = RequestMethod.GET) public String inspectFproofList()  { return "/main_1/quality/fprooflist.jsp"; }
 
     // ìžìž¬
     @RequestMapping(value = "/spare/parts",    method = RequestMethod.GET) public String spareParts()    { return "/main_1/facility/spare_parts.jsp"; }

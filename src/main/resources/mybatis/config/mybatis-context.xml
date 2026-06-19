@@ -30,6 +30,8 @@
     <mapper resource="mybatis/mapper/facility/PartsMapper.xml"/>
     <mapper resource="mybatis/mapper/facility/ConsumableLedgerMapper.xml"/>
     <mapper resource="mybatis/mapper/facility/AuxiliaryInspectionMapper.xml"/>
+    <mapper resource="mybatis/mapper/facility/FProofMapper.xml"/>
+    <mapper resource="mybatis/mapper/facility/FProofListMapper.xml"/>
     <!-- management -->
     <mapper resource="mybatis/mapper/management/EzInOutMapper.xml"/>
     <mapper resource="mybatis/mapper/management/EzInOutAttendMapper.xml"/>

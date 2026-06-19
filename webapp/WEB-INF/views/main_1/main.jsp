@@ -329,8 +329,11 @@ html, body { height: 100%; font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
         <span class="sb-group-chevron">▼</span>
       </div>
       <div class="sb-group-body open">
-        <a class="sb-item" href="#" onclick="go('${pageContext.request.contextPath}/main_1/inspect/fproof','F/PROOF',this);return false;">
-          <div class="sb-icon">🛡️</div><span class="sb-label">F/PROOF</span>
+        <a class="sb-item" href="#" onclick="go('${pageContext.request.contextPath}/main_1/inspect/fproof','F/PROOF SAVE',this);return false;">
+          <div class="sb-icon">🛡️</div><span class="sb-label">F/PROOF SAVE</span>
+        </a>
+        <a class="sb-item" href="#" onclick="go('${pageContext.request.contextPath}/main_1/inspect/fprooflist','F/PROOF LIST',this);return false;">
+          <div class="sb-icon">📋</div><span class="sb-label">F/PROOF LIST</span>
         </a>
       </div>
 
