@@ -155,7 +155,7 @@
           <td class="st" data-tags="bcf1_97"></td>
           <td class="st" data-tags="bcf1_98"></td>
           <td class="st" data-tags="bcf1_51"></td>
-          <td class="st" data-tags="bcf1_50,bcf1_51"></td>
+          <td class="st" data-tags="bcf1_50,bcf1_51" data-logic="alloff"></td>
         </tr>
         <!-- 침탄 2호 -->
         <tr data-equip-cd="dongwoo_02" data-row-sort="1">
@@ -164,10 +164,10 @@
           <td class="data" data-col="prod"></td>
           <td class="data" data-col="lot"></td>
           <td class="st" data-tags="bcf2_96"></td>
-          <td class="st" data-tags="bcf2_96"></td>
+          <td class="st" data-tags="bcf2_97"></td>
           <td class="st" data-tags="bcf2_98"></td>
           <td class="st" data-tags="bcf2_51"></td>
-          <td class="st" data-tags="bcf2_50,bcf2_51"></td>
+          <td class="st" data-tags="bcf2_50,bcf2_51" data-logic="alloff"></td>
         </tr>
         <!-- 침탄 3호 -->
         <tr data-equip-cd="dongwoo_03" data-row-sort="1">
@@ -176,7 +176,7 @@
           <td class="data" data-col="prod"></td>
           <td class="data" data-col="lot"></td>
           <td class="st" data-tags="bcf3_96"></td>
-          <td class="st" data-tags="bcf3_96"></td>
+          <td class="st" data-tags="bcf3_97"></td>
           <td class="st" data-tags="bcf3_98"></td>
           <td class="st" data-tags="bcf3_51"></td>
           <td class="st"></td>
@@ -188,10 +188,10 @@
           <td class="data" data-col="prod"></td>
           <td class="data" data-col="lot"></td>
           <td class="st" data-tags="bcf4_96"></td>
-          <td class="st" data-tags="bcf4_96"></td>
+          <td class="st" data-tags="bcf4_97"></td>
           <td class="st" data-tags="bcf4_98"></td>
           <td class="st" data-tags="bcf4_51"></td>
-          <td class="st" data-tags="bcf4_50,bcf4_51"></td>
+          <td class="st" data-tags="bcf4_50,bcf4_51" data-logic="alloff"></td>
         </tr>
         <!-- 침탄 5호 -->
         <tr data-equip-cd="dongwoo_05" data-row-sort="1">
@@ -203,7 +203,7 @@
           <td class="st" data-tags="bcf5_99"></td>
           <td class="st" data-tags="bcf5_100"></td>
           <td class="st" data-tags="bcf5_54"></td>
-          <td class="st" data-tags="bcf5_53,bcf5_54"></td>
+          <td class="st" data-tags="bcf5_53,bcf5_54" data-logic="alloff"></td>
         </tr>
 
         <!-- 침탄 7호 -->
@@ -217,7 +217,7 @@
           <td class="st" data-tags="bcf7_276,bcf7_277,bcf7_278"></td>
           <td class="st" data-tags="bcf7_279"></td>
           <td class="st"></td>
-          <td class="st" data-tags="bcf7_144"></td>
+          <td class="st" data-tags="bcf7_144" data-logic="alloff"></td>
         </tr>
         <tr data-equip-cd="dongwoo_07" data-row-sort="2">
           <td class="room">냉각실</td>
@@ -228,7 +228,7 @@
           <td class="st"></td>
           <td class="st"></td>
           <td class="st" data-tags="bcf7_145"></td>
-          <td class="st" data-tags="bcf7_145"></td>
+          <td class="st" data-tags="bcf7_145" data-logic="alloff"></td>
         </tr>
 
         <!-- 침탄 8호 -->
@@ -242,7 +242,7 @@
           <td class="st" data-tags="bcf8_165"></td>
           <td class="st" data-tags="bcf8_166"></td>
           <td class="st"></td>
-          <td class="st" data-tags="bcf8_116"></td>
+          <td class="st" data-tags="bcf8_116" data-logic="alloff"></td>
         </tr>
         <tr data-equip-cd="dongwoo_08" data-row-sort="2">
           <td class="room">냉각실</td>
@@ -253,7 +253,7 @@
           <td class="st"></td>
           <td class="st"></td>
           <td class="st" data-tags="bcf8_117"></td>
-          <td class="st" data-tags="bcf8_117"></td>
+          <td class="st" data-tags="bcf8_117" data-logic="alloff"></td>
         </tr>
 
         <!-- 침탄 9호 -->
@@ -267,7 +267,7 @@
           <td class="st" data-tags="bcf9_276,bcf9_277,bcf9_278"></td>
           <td class="st" data-tags="bcf9_279"></td>
           <td class="st"></td>
-          <td class="st" data-tags="bcf9_144"></td>
+          <td class="st" data-tags="bcf9_144" data-logic="alloff"></td>
         </tr>
         <tr data-equip-cd="dongwoo_09" data-row-sort="2">
           <td class="room">냉각실</td>
@@ -278,7 +278,7 @@
           <td class="st"></td>
           <td class="st"></td>
           <td class="st" data-tags="bcf9_145"></td>
-          <td class="st" data-tags="bcf9_145"></td>
+          <td class="st" data-tags="bcf9_145" data-logic="alloff"></td>
         </tr>
 
         <!-- 침탄 10호 -->
@@ -291,7 +291,7 @@
           <td class="st" data-tags="bcf10_99"></td>
           <td class="st" data-tags="bcf10_100"></td>
           <td class="st" data-tags="bcf10_54"></td>
-          <td class="st" data-tags="bcf10_53,bcf10_54"></td>
+          <td class="st" data-tags="bcf10_53,bcf10_54" data-logic="alloff"></td>
         </tr>
         <!-- 침탄 12호 -->
         <tr data-equip-cd="dongwoo_12" data-row-sort="1">
@@ -361,20 +361,25 @@
 
       document.querySelectorAll('td.st[data-tags]').forEach(function(td) {
         var tags    = td.getAttribute('data-tags').split(',').map(function(t){ return t.trim(); });
+        var logic   = td.getAttribute('data-logic');
         var wasOn   = td.classList.contains('active');
-        var anyOn   = tags.some(function(t){ return data[t] == 1; });
+        // alloff: 태그 전부 0일 때만 활성 (공로 - 로 비어있을 때)
+        // 기본:   태그 하나라도 1이면 활성
+        var isActive = (logic === 'alloff')
+          ? tags.every(function(t){ return data[t] == 0; })
+          : tags.some(function(t){ return data[t] == 1; });
         var tr      = td.closest('tr');
         var equip   = tr ? (tr.getAttribute('data-equip-cd') || '?') : '?';
         var rowSort = tr ? (tr.getAttribute('data-row-sort') || '1') : '1';
         var key     = equip + (rowSort !== '1' ? '[' + rowSort + ']' : '');
 
         if (!equipMap[key]) equipMap[key] = [];
-        equipMap[key].push(tags.join('+') + (anyOn ? '=●ON' : '=○'));
+        equipMap[key].push(tags.join('+') + (isActive ? '=●ON' : '=○'));
 
-        if (anyOn !== wasOn) {
-          changed.push('[' + key + '] ' + tags.join('+') + ' ' + (anyOn ? 'OFF→ON' : 'ON→OFF'));
+        if (isActive !== wasOn) {
+          changed.push('[' + key + '] ' + tags.join('+') + ' ' + (isActive ? 'OFF→ON' : 'ON→OFF'));
         }
-        td.classList.toggle('active', anyOn);
+        td.classList.toggle('active', isActive);
       });
 
       var ts    = new Date().toLocaleTimeString('ko-KR', {hour12: false});

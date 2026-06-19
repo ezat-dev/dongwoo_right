@@ -402,7 +402,7 @@ html, body { height: 100%; font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
     </header>
 
     <div class="frame-wrap">
-      <iframe id="pageFrame" src="${pageContext.request.contextPath}/main_1/equip/monitor"></iframe>
+      <iframe id="pageFrame" src="${pageContext.request.contextPath}/main_1/equip/monitor" allowfullscreen allow="fullscreen"></iframe>
     </div>
   </div>
 
@@ -462,6 +462,53 @@ function doLogout(){
     .finally(function(){
       location.href = '${pageContext.request.contextPath}/main_1/login';
     });
+}
+
+/* ── AUTO 키오스크 ── */
+var _autoRunning = false;
+var _autoTimer   = null;
+var _autoIdx     = 0;
+var AUTO_KIOSK_URLS = [
+  '${pageContext.request.contextPath}/main_1/main/monitor',
+  '${pageContext.request.contextPath}/main_1/main/monitor2',
+  '${pageContext.request.contextPath}/main_1/work/now1',
+  '${pageContext.request.contextPath}/main_1/work/now2',
+  '${pageContext.request.contextPath}/main_1/work/list'
+];
+
+function startAutoKiosk() {
+  if (_autoRunning) return;
+  _autoRunning = true;
+  _autoIdx = 0;
+  var frame = document.getElementById('pageFrame');
+
+  /* pageFrame 자체를 fullscreen → 사이드바/헤더 자동 가려짐 */
+  if (frame.requestFullscreen)            frame.requestFullscreen().catch(function(){});
+  else if (frame.webkitRequestFullscreen) frame.webkitRequestFullscreen();
+
+  /* 첫 페이지 로드 */
+  frame.src = AUTO_KIOSK_URLS[0];
+
+  /* 10초마다 순환 */
+  _autoTimer = setInterval(function() {
+    _autoIdx = (_autoIdx + 1) % AUTO_KIOSK_URLS.length;
+    document.getElementById('pageFrame').src = AUTO_KIOSK_URLS[_autoIdx];
+  }, 10000);
+
+  /* ESC로 전체화면 해제 시 자동 정지 */
+  document.addEventListener('fullscreenchange', _onFscChange);
+}
+
+function stopAutoKiosk() {
+  _autoRunning = false;
+  if (_autoTimer) { clearInterval(_autoTimer); _autoTimer = null; }
+  document.removeEventListener('fullscreenchange', _onFscChange);
+  try { if (document.exitFullscreen) document.exitFullscreen(); } catch(e) {}
+  document.getElementById('pageFrame').src = AUTO_KIOSK_URLS[0];
+}
+
+function _onFscChange() {
+  if (!document.fullscreenElement && _autoRunning) stopAutoKiosk();
 }
 </script>
 </body>

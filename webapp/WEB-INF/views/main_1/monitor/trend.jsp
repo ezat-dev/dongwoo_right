@@ -775,10 +775,11 @@ function buildKpiCards(selList, rows) {
       return parseFloat(getSnapshotValue(row, t));
     }).filter(function(v){ return !isNaN(v); });
 
-    var color = COLORS[tagIdxOf(t)];
-    var name  = esc(t.trendName || t.tagName || t.colName);
-    var cp    = isCpTag(t);
-    var dec   = cp ? 3 : 1;
+    var color  = COLORS[tagIdxOf(t)];
+    var name   = esc(t.trendName || t.tagName || t.colName);
+    var isFlow = isFlowTag(t);
+    var cp     = !isFlow && isCpTag(t);
+    var dec    = cp ? 3 : (isFlow ? 2 : 1);
 
     if (!vals.length) {
       html += '<div class="kpi-card" style="border-top-color:'+color+'">'
@@ -806,17 +807,24 @@ function buildKpiCards(selList, rows) {
   document.getElementById('kpiCards').innerHTML = html;
 }
 
-/* ── CP 태그 판별 (tagName/trendName/colName 에 'cp' 포함 여부) ── */
+/* ── CP 태그 판별 ── */
 function isCpTag(t) {
   var name = (t.trendName || t.tagName || t.colName || '').toLowerCase();
   return name.split(/[_\s]+/).indexOf('cp') !== -1;
 }
 
+/* ── 유량 태그 판별 (tagName/trendName/colName 에 유량 관련 키워드 포함) ── */
+function isFlowTag(t) {
+  var name = (t.trendName || t.tagName || t.colName || '').toLowerCase();
+  return /flow|gas|유량|n2|nh3|rx|flw|air/.test(name);
+}
+
 /* ── 메인 차트 ── */
 function buildMainChart(selList, rows) {
   var series = selList.map(function(t, i) {
-    var color = COLORS[tagIdxOf(t)];
-    var isCp  = isCpTag(t);
+    var color  = COLORS[tagIdxOf(t)];
+    var isFlow = isFlowTag(t);
+    var isCp   = !isFlow && isCpTag(t);
     var data = [];
     rows.forEach(function(row) {
       var ts = parseTs(row.record_time || row.recordTime);
@@ -827,8 +835,8 @@ function buildMainChart(selList, rows) {
     return {
       name: t.trendName || t.tagName || t.colName,
       data: data, color: color, lineWidth: 2,
-      yAxis: isCp ? 1 : 0,
-      isCp: isCp,
+      yAxis: isFlow ? 2 : (isCp ? 1 : 0),
+      isCp: isCp, isFlow: isFlow,
       marker: { enabled: data.length < 80, radius: 3 },
       states: { hover: { lineWidth: 3 } }
     };
@@ -869,7 +877,7 @@ function buildMainChart(selList, rows) {
     },
     yAxis: [
       {
-        /* 좌측: 온도 계열  0~1000, step 50 */
+        /* 좌측: 온도  0~1000°C */
         title: { text: null },
         min: 0, max: 1000, tickInterval: 50,
         gridLineColor: '#1a2840',
@@ -877,11 +885,19 @@ function buildMainChart(selList, rows) {
         opposite: false
       },
       {
-        /* 우측: CP 계열  0~2.0 기준, step 0.1, 데이터 초과 시 자동 확장 */
+        /* 우측1: CP  0~2.0 */
         title: { text: null },
         min: 0, softMax: 2.0, tickInterval: 0.1,
         gridLineColor: 'transparent',
-        labels: { format: '{value:.1f}', style: { fontSize:'10px', color:'#4ADE80' } },
+        labels: { format: '{value:.2f}', style: { fontSize:'10px', color:'#4ADE80' } },
+        opposite: true
+      },
+      {
+        /* 우측2: 유량  0~10 */
+        title: { text: null },
+        min: 0, max: 10, tickInterval: 0.5,
+        gridLineColor: 'transparent',
+        labels: { format: '{value:.1f}', style: { fontSize:'10px', color:'#22D3EE' } },
         opposite: true
       }
     ],
@@ -896,7 +912,7 @@ function buildMainChart(selList, rows) {
               + Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x)
               + '</span><br/>';
         this.points.forEach(function(p) {
-          var dec = p.series.options.isCp ? 3 : 1;
+          var dec = p.series.options.isCp ? 3 : (p.series.options.isFlow ? 2 : 1);
           s += '<span style="color:' + p.series.color + '">●</span> '
              + p.series.name + ': <b>' + p.y.toFixed(dec) + '</b><br/>';
         });

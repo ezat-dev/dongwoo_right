@@ -36,7 +36,7 @@
        margin: 0;
        padding: 0;
    }
-   html, body { height: 100%; overflow: hidden; }
+   html, body { height: 100%; overflow: hidden; background: #fff; }
    .ov-tab-group {
      position: fixed; top: 10px; right: 14px; z-index: 9999;
      display: flex; align-items: center;
@@ -55,6 +55,9 @@
    .ov-tab:not(:last-child) { border-right: 1px solid #CBD5E0; }
    .ov-tab:hover { background: #EBF8FF; color: #3182CE; }
    .ov-tab.active { background: #3182CE; color: #fff; }
+   .ov-tab-auto { color: #276749; border-left: 1px solid #CBD5E0; }
+   .ov-tab-auto:hover:not(.running) { background: #C6F6D5; color: #276749; }
+   .ov-tab-auto.running { background: #276749; color: #fff; }
 
    /* ── BCF 명칭 / 운전모드 라벨 ── */
    .bcf-name-lbl {
@@ -117,7 +120,9 @@
    }
 
    .group-1 [class*="-jogging"] {
-     background: linear-gradient(180deg, #d9f99d 0%, #86efac 100%) !important;
+     background: linear-gradient(180deg, #e0f2fe 0%, #7dd3fc 100%) !important;
+     color: #0c4a6e !important;
+     font-weight: 800 !important;
    }
    .group-1 [class*="-close-"] {
      background: linear-gradient(180deg, #bbf7d0 0%, #22c55e 100%) !important;
@@ -143,6 +148,9 @@
      from { transform: rotate(0deg); }
      to   { transform: rotate(360deg); }
    }
+   .group-1 img[class*="-alarm"] {
+     top: 114.62px !important;
+   }
    .group-1 img[class*="-pen-"] {
      transform-origin: 50% 50%;
      animation: penSpinRight 5.5s linear infinite;
@@ -154,8 +162,93 @@
    .group-1 img[class*="-pen-"].pen-stopped {
      animation-play-state: paused;
    }
-   
-    .bcf-12-pen-3 { width: 43.72px; height: 43.72px; position: absolute; left: 178px; top: 238px; object-fit: cover; aspect-ratio: 1; }
+   .group-1 [class*="-conn"] {
+     width: 183px; height: 43px;
+     border-radius: 8px;
+     border: 1px solid #e2e8f0;
+     display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 16px;
+     font-family: 'Malgun Gothic', sans-serif;
+     font-size: 13px; font-weight: 700; letter-spacing: .5px;
+     background: rgba(248,250,252,.95);
+     box-shadow: 0 3px 10px rgba(0,0,0,.08);
+   }
+   .conn-indicator {
+     width: 26px; height: 26px; border-radius: 50%;
+     display: inline-block; position: relative; flex-shrink: 0;
+   }
+   .conn-indicator::before,
+   .conn-indicator::after {
+     content: ''; width: 100%; height: 100%;
+     border-radius: 50%; position: absolute; top: 0; left: 0;
+   }
+   @keyframes conn-ok-ring {
+     0%   { transform: scale(1);    opacity: .85; }
+     62%  { transform: scale(1.48); opacity: 0;   }
+     100% { transform: scale(1.48); opacity: 0;   }
+   }
+   @keyframes conn-ok-inner {
+     0%   { transform: scale(1);    opacity: 1;  }
+     48%  { transform: scale(0.80); opacity: .78; }
+     100% { transform: scale(1);    opacity: 1;  }
+   }
+   @keyframes conn-load-ring {
+     0%   { transform: scale(1);    opacity: .9; }
+     55%  { transform: scale(1.42); opacity: 0;  }
+     100% { transform: scale(1.42); opacity: 0;  }
+   }
+   @keyframes conn-load-inner {
+     0%   { transform: scale(1);    }
+     45%  { transform: scale(0.63); }
+     100% { transform: scale(1);    }
+   }
+   .group-1 .conn-ok {
+     background: linear-gradient(135deg,rgba(220,252,231,.97) 0%,rgba(187,247,208,.97) 100%) !important;
+     border: 1px solid rgba(34,197,94,.45) !important; color: #14532d !important;
+     box-shadow: 0 4px 20px rgba(34,197,94,.32), inset 0 1px 0 rgba(255,255,255,.7);
+   }
+   .group-1 .conn-ok .conn-indicator::before {
+     border: 1.5px solid #22c55e; top: -1.5px; left: -1.5px; opacity: 0;
+     animation: conn-ok-ring 2.4s cubic-bezier(.15,.5,.3,1) infinite;
+     animation-delay: .2s;
+   }
+   .group-1 .conn-ok .conn-indicator::after {
+     background: #22c55e;
+     animation: conn-ok-inner 2.4s ease-in-out infinite;
+   }
+   .group-1 .conn-loading {
+     background: linear-gradient(135deg,rgba(255,251,235,.97) 0%,rgba(254,249,195,.97) 100%) !important;
+     border: 1px solid rgba(245,158,11,.45) !important; color: #78350f !important;
+     box-shadow: 0 4px 20px rgba(245,158,11,.28), inset 0 1px 0 rgba(255,255,255,.7);
+   }
+   .group-1 .conn-loading .conn-indicator::before {
+     border: 1px solid #f59e0b; top: -1px; left: -1px; opacity: 0;
+     animation: conn-load-ring 1.1s cubic-bezier(.2,.5,.35,1) infinite;
+   }
+   .group-1 .conn-loading .conn-indicator::after {
+     background: #f59e0b;
+     animation: conn-load-inner 1.1s ease-in-out infinite;
+   }
+
+    /* DT 단품 카운터 박스 — main_monitor2 동일 스타일, 박스 확대 */
+   .group-1 [class*="-dt"] {
+     background: #e8f5e9 !important;
+     border: 1px solid #a5d6a7 !important;
+     border-radius: 5px;
+     width: 66px !important;
+     height: 30px !important;
+     display: flex !important;
+     align-items: center;
+     justify-content: center;
+     font-family: 'Malgun Gothic', 'Segoe UI', Arial, sans-serif;
+     font-size: 13px;
+     font-weight: 800;
+     color: #2e7d32;
+     letter-spacing: .3px;
+     box-shadow: 0 1px 3px rgba(46,125,50,.12);
+     transform: translate(-3px, -25px);
+   }
+
+   .bcf-12-pen-3 { width: 43.72px; height: 43.72px; position: absolute; left: 178px; top: 238px; object-fit: cover; aspect-ratio: 1; }
     .bcf-1-pen-3 { width: 43.72px; height: 43.72px; position: absolute; left: 428px; top: 238px; object-fit: cover; aspect-ratio: 1; }
     .bcf-2-pen-3 { width: 43.72px; height: 43.72px; position: absolute; left: 678px; top: 238px; object-fit: cover; aspect-ratio: 1; }
     .bcf-3-pen-3 { width: 43.72px; height: 43.72px; position: absolute; left: 928px; top: 238px; object-fit: cover; aspect-ratio: 1; }
@@ -185,6 +278,7 @@
   <div class="ov-tab-group">
     <button class="ov-tab active">OVERVIEW-1</button>
     <button class="ov-tab" onclick="window.parent.goOverview(2)">OVERVIEW-2</button>
+    <button class="ov-tab ov-tab-auto" id="btnAuto" onclick="toggleAutoSlideshow()">▶ AUTO</button>
   </div>
   <div class="group-1">
 
@@ -209,6 +303,15 @@
 
     <div class="bcf-name-lbl" style="left:1606.72px">NO.5</div>
     <div class="bcf-mode-lbl" data-mode-tag="bcf5_108" style="left:1606.72px">확인중</div>
+
+    <!-- 통신 상태 표기 -->
+    <div class="bcf-12-conn" style="position:absolute;left:107.65px;top:645.22px;"></div>
+    <div class="bcf-1-conn"  style="position:absolute;left:357.49px;top:645.22px;"></div>
+    <div class="bcf-2-conn"  style="position:absolute;left:607.34px;top:645.22px;"></div>
+    <div class="bcf-3-conn"  style="position:absolute;left:857.18px;top:645.22px;"></div>
+    <div class="bcf-4-conn"  style="position:absolute;left:1107.03px;top:645.22px;"></div>
+    <div class="bcf-10-conn" style="position:absolute;left:1356.88px;top:645.22px;"></div>
+    <div class="bcf-5-conn"  style="position:absolute;left:1606.72px;top:645.22px;"></div>
 
     <div class="over-view-1">
       <div class="hogi-12">
@@ -268,7 +371,7 @@
         <div class="bcf-1-stop">정지</div>
         <div class="bcf-1-up">상승</div>
         <div class="bcf-1-down bcf1_3">하강</div>
-        <div class="bcf-1-dt-ez-50 dt-indicator bcf1_50">단품</div>
+        <div class="bcf-1-dt bcf1_dt_40060" style="position:absolute;left:420.6px;top:185.22px;"></div>
         <img class="bcf-1-heat-off" src="<%= ctx %>/img/main_monitor_1/bcf-1-heat-off0.png" />
         <img class="bcf-1-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-1-heat-on0.png" />
         <img class="bcf-1-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-1-obj-off0.png" />
@@ -302,7 +405,7 @@
         <div class="bcf-2-stop">정지</div>
         <div class="bcf-2-up">상승</div>
         <div class="bcf-2-down bcf2_3">하강</div>
-        <div class="bcf-2-dt dt-indicator bcf2_50">단품</div>
+        <div class="bcf-2-dt bcf2_dt_40060"></div>
         <img class="bcf-2-heat-off" src="<%= ctx %>/img/main_monitor_1/bcf-2-heat-off0.png" />
         <img class="bcf-2-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-2-heat-on0.png" />
         <img class="bcf-2-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-2-obj-off0.png" />
@@ -336,7 +439,7 @@
         <div class="bcf-3-stop">정지</div>
         <div class="bcf-3-up">상승</div>
         <div class="bcf-3-down bcf3_3">하강</div>
-        <div class="bcf-3-dt dt-indicator bcf3_96 bcf3_97 bcf3_98">단품</div>
+        <div class="bcf-3-dt bcf3_dt_40060"></div>
         <img class="bcf-3-heat-off" src="<%= ctx %>/img/main_monitor_1/bcf-3-heat-off0.png" />
         <img class="bcf-3-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-3-heat-on0.png" />
         <img class="bcf-3-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-3-obj-off0.png" />
@@ -370,7 +473,7 @@
         <div class="bcf-4-stop">정지</div>
         <div class="bcf-4-up">상승</div>
         <div class="bcf-4-down bcf4_3">하강</div>
-        <div class="bcf-4-dt dt-indicator bcf4_50">단품</div>
+        <div class="bcf-4-dt bcf4_dt_40060"></div>
         <img class="bcf-4-heat-off" src="<%= ctx %>/img/main_monitor_1/bcf-4-heat-off0.png" />
         <img class="bcf-4-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-4-heat-on0.png" />
         <img class="bcf-4-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-4-obj-off0.png" />
@@ -404,7 +507,7 @@
         <div class="bcf-10-stop">정지</div>
         <div class="bcf-10-up">상승</div>
         <div class="bcf-10-down bcf10_52">하강</div>
-        <div class="bcf-10-dt dt-indicator bcf10_53">단품</div>
+        <div class="bcf-10-dt bcf10_dt_40060" style="top:187.22px;"></div>
         <img class="bcf-10-heat-off" src="<%= ctx %>/img/main_monitor_1/bcf-10-heat-off0.png" />
         <img class="bcf-10-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-10-heat-on0.png" />
         <img class="bcf-10-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-10-obj-off0.png" />
@@ -440,7 +543,7 @@
         <div class="bcf-5-stop">정지</div>
         <div class="bcf-5-up">상승</div>
         <div class="bcf-5-down bcf5_52">하강</div>
-        <div class="bcf-5-dt dt-indicator bcf5_53">단품</div>
+        <div class="bcf-5-dt bcf5_dt_40060"></div>
         <img class="bcf-5-heat-off" src="<%= ctx %>/img/main_monitor_1/bcf-5-heat-off0.png" />
         <img class="bcf-5-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-5-heat-on0.png" />
         <img class="bcf-5-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-5-obj-off0.png" />
@@ -712,7 +815,7 @@
 
   document.querySelectorAll('[class]').forEach(function (el) {
     el.className.split(/\s+/).forEach(function (cls) {
-      if (/^bcf\d+_s_/.test(cls)) {
+      if (/^bcf\d+_s_/.test(cls) || /^bcf\d+_dt_/.test(cls)) {
         if (!wordElMap[cls]) wordElMap[cls] = [];
         wordElMap[cls].push(el);
       } else if (/^bcf\d+_\d+$/.test(cls) || /^bcf12_[XYM][0-9A-Fa-fH]+$/.test(cls)) {
@@ -724,22 +827,22 @@
 
   const allTags = Object.keys(wordElMap).concat(Object.keys(bitElMap));
 
-  // 초기 상태: 비트 요소 모두 숨김 (dt-indicator, jogging은 항상 표시)
+  // 초기 상태: 비트 요소 모두 숨김 (jogging은 항상 표시)
   Object.keys(bitElMap).forEach(function(tag) {
     bitElMap[tag].forEach(function(el) {
-      if (el.classList.contains('dt-indicator')) return;
       if (el.className.indexOf('-jogging') !== -1) return;
       el.style.visibility = 'hidden';
     });
   });
 
   const penEls = Array.prototype.slice.call(document.querySelectorAll('img[class*="-pen-"]'));
-  const dtEls  = Array.prototype.slice.call(document.querySelectorAll('.dt-indicator'));
 
-  // 조깅 요소 초기 상태: 정지
+  // 조깅 요소 초기 상태: 정지(오렌지)
   document.querySelectorAll('div[class*="-jogging"]').forEach(function(el) {
     el.textContent = '정지';
-    el.style.background = 'linear-gradient(180deg,#e0f2fe 0%,#60a5fa 100%)';
+    el.style.background = 'linear-gradient(180deg,#fed7aa 0%,#fdba74 100%)';
+    el.style.color = '#7c2d12';
+    el.style.fontWeight = '800';
   });
 
   penEls.forEach(function(el) {
@@ -780,7 +883,7 @@
           text = data[tag];
         } else if (CP_TAG.test(tag)) {
           text = (raw * 0.001).toFixed(3);
-        } else if (el.className.indexOf('-dt-') !== -1) {
+        } else if (/-dt/.test(el.className)) {
           text = String(Math.round(raw));
         } else {
           text = raw >= 1000 ? (raw / 10).toFixed(1) : raw.toFixed(1);
@@ -789,31 +892,27 @@
       });
     });
 
-    // 신호: 1이면 표시(visible), 0이면 숨김(hidden) — dt-indicator, jogging은 별도 처리
+    // 신호: 1이면 표시(visible), 0이면 숨김(hidden) — jogging은 별도 처리
     Object.keys(bitElMap).forEach(function (tag) {
       if (data[tag] == null) return;
       var show = (data[tag] === 1 || data[tag] === true);
       bitElMap[tag].forEach(function (el) {
         if (isPenElement(el)) return;
-        if (el.classList.contains('dt-indicator')) return;
         if (el.className.indexOf('-jogging') !== -1) {
           el.textContent = show ? '조깅' : '정지';
-          el.style.background = show ? '' : 'linear-gradient(180deg,#e0f2fe 0%,#60a5fa 100%)';
+          if (show) {
+            el.style.background = '';
+            el.style.color = '';
+          } else {
+            el.style.background = 'linear-gradient(180deg,#fed7aa 0%,#fdba74 100%)';
+            el.style.color = '#7c2d12';
+          }
+          el.style.fontWeight = '800';
           el.style.visibility = 'visible';
           return;
         }
         el.style.visibility = show ? 'visible' : 'hidden';
       });
-    });
-
-    // 단품(DT) 인디케이터: 비트 하나라도 ON이면 활성(진녹색), 아니면 비활성(연녹색)
-    dtEls.forEach(function(el) {
-      var tags = el.className.split(/\s+/).filter(function(c) { return /^bcf\d+_\d+$/.test(c); });
-      var active = tags.some(function(t) { return data[t] === 1 || data[t] === true; });
-      el.style.background   = active ? '#43a047' : '#e8f5e9';
-      el.style.color        = active ? '#ffffff'  : '#388e3c';
-      el.style.borderColor  = active ? '#2e7d32'  : '#a5d6a7';
-      el.style.fontWeight   = active ? '900'      : '700';
     });
 
     penEls.forEach(function(el) {
@@ -837,6 +936,21 @@
       el.style.background  = isAuto ? 'linear-gradient(160deg,#f0fdf4,#bbf7d0)' : 'linear-gradient(160deg,#fff7ed,#fed7aa)';
       el.style.color       = isAuto ? '#166534' : '#9a3412';
       el.style.borderColor = isAuto ? '#86efac' : '#fdba74';
+    });
+
+    // 통신 상태 업데이트 (60초 이내 성공 = 연결)
+    var now = Date.now();
+    [12,1,2,3,4,10,5].forEach(function(n) {
+      var el = document.querySelector('.bcf-' + n + '-conn');
+      if (!el) return;
+      var ts = data['bcf' + n + '_conn'];
+      var ok = typeof ts === 'number' && (now - ts) < 60000;
+      el.classList.remove('conn-ok', 'conn-loading');
+      el.classList.add(ok ? 'conn-ok' : 'conn-loading');
+      el.innerHTML = '<span class="conn-indicator"></span>' + (ok ? '연결' : '연결중');
+      el.style.background = '';
+      el.style.color = '';
+      el.style.borderColor = '';
     });
   }
 
@@ -928,12 +1042,29 @@
     setTimeout(fetchData, delay);
   }
 
+  // DT 값 확인 로그 — 처음 3회만 출력 후 자동 중단
+  var dtDbgFired = 0;
+  function debugDtOnly(data) {
+    if (dtDbgFired >= 3) return;
+    dtDbgFired++;
+    // DOM에서 -dt 클래스 포함 요소의 _s_ 태그값만 출력
+    var dtEls = document.querySelectorAll('[class*="-dt"]');
+    console.group('[DT-DBG] 단품 값 확인 (' + dtDbgFired + '/3)');
+    dtEls.forEach(function(el) {
+      var sTag = (el.className || '').split(/\s+/).find(function(c) { return /^bcf\d+_s_/.test(c) || /^bcf\d+_dt_/.test(c); });
+      if (!sTag) return;
+      console.log(el.className.split(/\s+/)[0] + '  →  ' + sTag + ' = ' + data[sTag]);
+    });
+    console.groupEnd();
+  }
+
   function fetchData() {
     fetch(ctx + '/monitor/snapshot')
     .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
     .then(function (data) {
       applyData(data);
       logByDevice(data);
+      debugDtOnly(data);   // DT 주소·값 확인 (3회 후 자동 중단)
       scheduleNext(POLL_INTERVAL);
     })
     .catch(function (err) {
@@ -944,6 +1075,47 @@
 
   // 페이지 로드 즉시 1회 시작
   fetchData();
+})();
+// 페이지 로드 시 좌측 메뉴 자동 접기
+(function() {
+  try {
+    var p = window.parent;
+    if (p && p !== window) {
+      var sb = p.document.getElementById('sidebar');
+      if (sb && !sb.classList.contains('collapsed')) sb.classList.add('collapsed');
+    }
+  } catch(e) {}
+})();
+
+/* ── AUTO 슬라이드쇼 ── */
+(function() {
+  window.toggleAutoSlideshow = function() {
+    var url = '<%= request.getContextPath() %>/auto_kiosk.jsp';
+    // 사용자 제스처 내에서 top document 전체화면 요청 (same-origin 네비게이션 시 유지됨)
+    try {
+      var topDoc = window.top.document;
+      if (!topDoc.fullscreenElement) {
+        topDoc.documentElement.requestFullscreen().catch(function(){});
+      }
+    } catch(e) {}
+    setTimeout(function() {
+      try { window.top.location.href = url; } catch(e) { window.location.href = url; }
+    }, 80);
+  };
+})();
+
+/* ── 화면 맞춤 스케일 ── */
+(function() {
+  var W = 1918, H = 878;
+  function scaleToFit() {
+    var el = document.querySelector('.group-1');
+    if (!el) return;
+    var s = Math.min(window.innerWidth / W, window.innerHeight / H);
+    el.style.transform       = 'scale(' + s + ')';
+    el.style.transformOrigin = 'top left';
+  }
+  window.addEventListener('resize', scaleToFit);
+  scaleToFit();
 })();
 </script>
 </body>

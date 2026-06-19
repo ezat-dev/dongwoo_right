@@ -102,7 +102,16 @@
       "Bash(sed -n '558,580p' webapp/WEB-INF/resources/img/main_monitor_1/style.css)",
       "Bash(sed -n '859,880p' webapp/WEB-INF/resources/img/main_monitor_1/style.css)",
       "PowerShell(Start-Process \"\" -ArgumentList \"/D\",\"C:\\\\PlcApiServer\",\"dotnet\",\"run\",\"--project\",\"C:\\\\PlcApiServer\\\\PlcApiServer.csproj\" -WindowStyle Normal)",
-      "PowerShell(Start-Process \"cmd.exe\" -ArgumentList \"/c\",\"cd /d C:\\\\PlcApiServer && dotnet run --project C:\\\\PlcApiServer\\\\PlcApiServer.csproj\" -WindowStyle Normal)"
+      "PowerShell(Start-Process \"cmd.exe\" -ArgumentList \"/c\",\"cd /d C:\\\\PlcApiServer && dotnet run --project C:\\\\PlcApiServer\\\\PlcApiServer.csproj\" -WindowStyle Normal)",
+      "PowerShell(Get-Process -Name \"java\" -ErrorAction SilentlyContinue)",
+      "PowerShell(Start-Process \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\startup.bat\" -WorkingDirectory \"D:\\\\apache-tomcat-9.0.115\\\\bin\")",
+      "PowerShell(Get-Command mvn -ErrorAction SilentlyContinue; $env:MAVEN_HOME; $env:M2_HOME; \\(Get-Command java -ErrorAction SilentlyContinue\\).Source)",
+      "PowerShell(Start-Process \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\startup.bat\" -WindowStyle Normal)",
+      "PowerShell(Start-Process \"C:\\\\PlcApiServer\\\\bin\\\\Release\\\\net8.0\\\\PlcApiServer.exe\" -WindowStyle Normal)",
+      "PowerShell(Stop-Process -Name \"java\" -Force -ErrorAction SilentlyContinue)",
+      "PowerShell(Stop-Process -Name \"PlcApiServer\" -Force -ErrorAction SilentlyContinue)",
+      "PowerShell(Start-Process \"cmd.exe\" -ArgumentList \"/k D:\\\\apache-tomcat-9.0.115\\\\bin\\\\startup.bat\" -WindowStyle Normal)",
+      "PowerShell(Start-Process \"cmd.exe\" -ArgumentList \"/k C:\\\\PlcApiServer\\\\bin\\\\Release\\\\net8.0\\\\PlcApiServer.exe\" -WindowStyle Normal)"
     ],
     "additionalDirectories": [
       "D:\\apache-tomcat-9.0.115\\webapps",

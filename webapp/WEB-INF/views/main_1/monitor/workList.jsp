@@ -95,6 +95,62 @@
 
 .machine-card.refreshed { animation: flash .4s ease; }
 @keyframes flash { 0%{background:#EBF8FF} 100%{background:var(--white)} }
+
+/* ── 쓰레기통 버튼 ── */
+.btn-trash {
+  display: flex; align-items: center; gap: 5px;
+  padding: 4px 13px; border-radius: 20px;
+  border: 1px solid var(--border); background: var(--white);
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  color: var(--muted); transition: all .15s;
+  user-select: none;
+}
+.btn-trash svg { flex-shrink: 0; }
+.btn-trash:disabled { opacity: .35; cursor: not-allowed; }
+.btn-trash.has-sel { border-color: #E53E3E; color: #E53E3E; background: #FFF5F5; }
+.btn-trash.has-sel:hover { background: #FED7D7; }
+
+/* ── 삭제 모달 ── */
+.del-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.45);
+  z-index: 2000; display: none; align-items: center; justify-content: center;
+}
+.del-overlay.open { display: flex; }
+.del-modal {
+  background: #fff; border-radius: 14px;
+  padding: 28px 32px; width: 340px; max-width: 92vw;
+  box-shadow: 0 8px 40px rgba(0,0,0,.22);
+  display: flex; flex-direction: column; gap: 18px;
+}
+.del-modal-hd {
+  font-size: 15px; font-weight: 800; color: #1A202C;
+  display: flex; align-items: center; gap: 8px;
+}
+.del-modal-lot {
+  font-size: 12px; color: #718096;
+  background: #F7FAFC; border: 1px solid #E2E8F0;
+  border-radius: 8px; padding: 8px 12px; word-break: break-all;
+}
+.del-modal-btns {
+  display: flex; flex-direction: column; gap: 8px;
+}
+.del-btn-main {
+  width: 100%; padding: 11px 0; border-radius: 9px; border: none;
+  font-size: 14px; font-weight: 700; cursor: pointer; transition: all .13s;
+}
+.del-btn-transfer {
+  background: #EBF8FF; color: #2B6CB0; border: 1px solid #BEE3F8;
+}
+.del-btn-transfer:hover { background: #BEE3F8; }
+.del-btn-end {
+  background: #FFF5F5; color: #C53030; border: 1px solid #FED7D7;
+}
+.del-btn-end:hover { background: #FED7D7; }
+.del-btn-cancel {
+  background: transparent; color: #A0AEC0; border: 1px solid #E2E8F0;
+  font-size: 13px;
+}
+.del-btn-cancel:hover { background: #F7FAFC; color: #718096; }
 </style>
 <body>
 <div class="page-wrap">
@@ -105,7 +161,31 @@
       <span>10초 자동 갱신</span>
     </div>
     <div class="update-time" id="updateTime">--:--:--</div>
+    <button class="btn-trash" id="btnTrash" disabled onclick="openDelModal()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
+      </svg>
+      삭제
+    </button>
   </div>
+
+<!-- 삭제 확인 모달 -->
+<div class="del-overlay" id="delOverlay" onclick="if(event.target===this)closeDelModal()">
+  <div class="del-modal">
+    <div class="del-modal-hd">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E53E3E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
+      </svg>
+      작업지시 처리
+    </div>
+    <div class="del-modal-lot" id="delModalLot">-</div>
+    <div class="del-modal-btns">
+      <button class="del-btn-main del-btn-transfer" onclick="handleDelAction('transfer')">프로그램 전환시 작동</button>
+      <button class="del-btn-main del-btn-end"      onclick="handleDelAction('end')">끝내기</button>
+      <button class="del-btn-main del-btn-cancel"   onclick="closeDelModal()">취소</button>
+    </div>
+  </div>
+</div>
 
   <div class="work-grid" id="workGrid"></div>
 
@@ -226,6 +306,49 @@ function toggleRow(tr, key) {
   } else {
     selectedKey = null;
   }
+  updateTrashBtn();
+}
+
+function updateTrashBtn() {
+  var btn = document.getElementById('btnTrash');
+  if (!btn) return;
+  if (selectedKey) {
+    btn.disabled = false;
+    btn.classList.add('has-sel');
+  } else {
+    btn.disabled = true;
+    btn.classList.remove('has-sel');
+  }
+}
+
+/* ── 삭제 모달 ── */
+function openDelModal() {
+  if (!selectedKey) return;
+  var parts   = selectedKey.split('|');
+  var machine = parts[0] || '';
+  var lot     = parts[1] || '';
+  document.getElementById('delModalLot').textContent = machine + '  /  ' + lot;
+  document.getElementById('delOverlay').classList.add('open');
+}
+
+function closeDelModal() {
+  document.getElementById('delOverlay').classList.remove('open');
+}
+
+function handleDelAction(action) {
+  if (!selectedKey) { closeDelModal(); return; }
+  var parts   = selectedKey.split('|');
+  var machine = parts[0] || '';
+  var lot     = parts[1] || '';
+  var label   = action === 'transfer' ? '프로그램 전환시 작동' : '끝내기';
+  console.log('[worklist] delete action:', action, machine, lot);
+  // TODO: API 호출
+  // fetch(ROOT + '/work/delete', { method:'POST', headers:{'Content-Type':'application/json'},
+  //   body: JSON.stringify({ action: action, workIndctNum: lot, equtCd: machine }) })
+  closeDelModal();
+  selectedKey = null;
+  updateTrashBtn();
+  loadData();
 }
 
 /* ── HTML 이스케이프 ── */

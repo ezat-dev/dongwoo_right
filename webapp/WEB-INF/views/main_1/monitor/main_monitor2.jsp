@@ -36,7 +36,7 @@
        margin: 0;
        padding: 0;
    }
-   html, body { height: 100%; overflow: hidden; }
+   html, body { height: 100%; overflow: hidden; background: #fff; }
    .ov-tab-group {
      position: fixed; top: 10px; right: 14px; z-index: 9999;
      display: flex; align-items: center;
@@ -55,6 +55,9 @@
    .ov-tab:not(:last-child) { border-right: 1px solid #CBD5E0; }
    .ov-tab:hover { background: #EBF8FF; color: #3182CE; }
    .ov-tab.active { background: #3182CE; color: #fff; }
+   .ov-tab-auto { color: #276749; border-left: 1px solid #CBD5E0; }
+   .ov-tab-auto:hover:not(.running) { background: #C6F6D5; color: #276749; }
+   .ov-tab-auto.running { background: #276749; color: #fff; }
 
    /* ── BCF 명칭 / 운전모드 라벨 ── */
    .bcf-name-lbl {
@@ -118,6 +121,8 @@
 
    .group-3 [class*="-jogging-"] {
      background: linear-gradient(180deg, #d9f99d 0%, #86efac 100%) !important;
+     color: #14532d !important;
+     font-weight: 800 !important;
    }
    .group-3 [class*="-close-"] {
      background: linear-gradient(180deg, #bbf7d0 0%, #22c55e 100%) !important;
@@ -163,15 +168,87 @@
    .group-2 [class*="-dt-"] {
      background: #e8f5e9 !important;
      border: 1px solid #a5d6a7 !important;
-     border-radius: 4px;
+     border-radius: 5px;
      display: flex !important;
      align-items: center;
      justify-content: center;
      font-family: 'Malgun Gothic', 'Segoe UI', Arial, sans-serif;
-     font-size: 10px;
-     font-weight: 700;
+     font-size: 13px;
+     font-weight: 800;
      color: #2e7d32;
-     letter-spacing: .2px;
+     letter-spacing: .3px;
+     box-shadow: 0 1px 3px rgba(46,125,50,.12);
+   }
+
+   .group-3 img[class*="-alarm"] {
+     top: 82px !important;
+   }
+
+   .group-3 [class*="-conn"] {
+     height: 43px;
+     border-radius: 8px;
+     border: 1px solid #e2e8f0;
+     display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 16px;
+     font-family: 'Malgun Gothic', sans-serif;
+     font-size: 13px; font-weight: 700; letter-spacing: .5px;
+     background: rgba(248,250,252,.95);
+     box-shadow: 0 3px 10px rgba(0,0,0,.08);
+   }
+   .conn-indicator {
+     width: 26px; height: 26px; border-radius: 50%;
+     display: inline-block; position: relative; flex-shrink: 0;
+   }
+   .conn-indicator::before,
+   .conn-indicator::after {
+     content: ''; width: 100%; height: 100%;
+     border-radius: 50%; position: absolute; top: 0; left: 0;
+   }
+   @keyframes conn-ok-ring {
+     0%   { transform: scale(1);    opacity: .85; }
+     62%  { transform: scale(1.48); opacity: 0;   }
+     100% { transform: scale(1.48); opacity: 0;   }
+   }
+   @keyframes conn-ok-inner {
+     0%   { transform: scale(1);    opacity: 1;  }
+     48%  { transform: scale(0.80); opacity: .78; }
+     100% { transform: scale(1);    opacity: 1;  }
+   }
+   @keyframes conn-load-ring {
+     0%   { transform: scale(1);    opacity: .9; }
+     55%  { transform: scale(1.42); opacity: 0;  }
+     100% { transform: scale(1.42); opacity: 0;  }
+   }
+   @keyframes conn-load-inner {
+     0%   { transform: scale(1);    }
+     45%  { transform: scale(0.63); }
+     100% { transform: scale(1);    }
+   }
+   .group-3 .conn-ok {
+     background: linear-gradient(135deg,rgba(220,252,231,.97) 0%,rgba(187,247,208,.97) 100%) !important;
+     border: 1px solid rgba(34,197,94,.45) !important; color: #14532d !important;
+     box-shadow: 0 4px 20px rgba(34,197,94,.32), inset 0 1px 0 rgba(255,255,255,.7);
+   }
+   .group-3 .conn-ok .conn-indicator::before {
+     border: 1.5px solid #22c55e; top: -1.5px; left: -1.5px; opacity: 0;
+     animation: conn-ok-ring 2.4s cubic-bezier(.15,.5,.3,1) infinite;
+     animation-delay: .2s;
+   }
+   .group-3 .conn-ok .conn-indicator::after {
+     background: #22c55e;
+     animation: conn-ok-inner 2.4s ease-in-out infinite;
+   }
+   .group-3 .conn-loading {
+     background: linear-gradient(135deg,rgba(255,251,235,.97) 0%,rgba(254,249,195,.97) 100%) !important;
+     border: 1px solid rgba(245,158,11,.45) !important; color: #78350f !important;
+     box-shadow: 0 4px 20px rgba(245,158,11,.28), inset 0 1px 0 rgba(255,255,255,.7);
+   }
+   .group-3 .conn-loading .conn-indicator::before {
+     border: 1px solid #f59e0b; top: -1px; left: -1px; opacity: 0;
+     animation: conn-load-ring 1.1s cubic-bezier(.2,.5,.35,1) infinite;
+   }
+   .group-3 .conn-loading .conn-indicator::after {
+     background: #f59e0b;
+     animation: conn-load-inner 1.1s ease-in-out infinite;
    }
    </style>
   <title>Document</title>
@@ -180,12 +257,13 @@
   <div class="ov-tab-group">
     <button class="ov-tab" onclick="window.parent.goOverview(1)">OVERVIEW-1</button>
     <button class="ov-tab active">OVERVIEW-2</button>
+    <button class="ov-tab ov-tab-auto" id="btnAuto" onclick="toggleAutoSlideshow()">▶ AUTO</button>
   </div>
   <div class="group-3">
 
     <!-- BCF 명칭 / 운전모드 라벨 -->
-    <div class="bcf-name-lbl" style="left:345px;width:113px">NO.11</div>
-    <div class="bcf-mode-lbl" data-mode-tag="bcf11_133" style="left:345px;width:113px">확인중</div>
+    <div class="bcf-name-lbl" style="left:325px;width:152px">NO.11</div>
+    <div class="bcf-mode-lbl" data-mode-tag="bcf11_133" style="left:325px;width:152px">확인중</div>
 
     <div class="bcf-name-lbl" style="left:563px;width:152px">NO.8</div>
     <div class="bcf-mode-lbl" data-mode-tag="bcf8_174" style="left:563px;width:152px">확인중</div>
@@ -196,8 +274,15 @@
     <div class="bcf-name-lbl" style="left:1055px;width:152px">NO.7</div>
     <div class="bcf-mode-lbl" data-mode-tag="bcf7_264" style="left:1055px;width:152px">확인중</div>
 
-    <div class="bcf-name-lbl" style="left:1314px;width:222px">NO.6</div>
-    <div class="bcf-mode-lbl" data-mode-tag="bcf6_386" style="left:1314px;width:222px">확인중</div>
+    <div class="bcf-name-lbl" style="left:1364px;width:152px">NO.6</div>
+    <div class="bcf-mode-lbl" data-mode-tag="bcf6_386" style="left:1364px;width:152px">확인중</div>
+
+    <!-- 통신 상태 표기 -->
+    <div class="bcf-11-conn" style="position:absolute;left:325px;top:656px;width:152px;"></div>
+    <div class="bcf-8-conn"  style="position:absolute;left:563px;top:656px;width:152px;"></div>
+    <div class="bcf-9-conn"  style="position:absolute;left:809px;top:656px;width:152px;"></div>
+    <div class="bcf-7-conn"  style="position:absolute;left:1055px;top:656px;width:152px;"></div>
+    <div class="bcf-6-conn"  style="position:absolute;left:1568px;top:637px;width:152px;"></div>
 
     <div class="group-2">
       <div class="bcf-11">
@@ -361,11 +446,12 @@
         <div class="bcf-6-back-2"></div>
         <div class="bcf-6-jogging-1 bcf6_303 bcf6_304">조깅</div>
         <!-- <div class="bcf-6-jogging-2">조깅</div> -->
-        <div class="bcf-6-jogging-3 bcf6_305 bcf6_306">조깅</div>
-        <div class="bcf-6-jogging-4 bcf6_307 bcf6_308">조깅</div>
-        <div class="bcf-6-jogging-5 bcf6_309 bcf6_310">조깅</div>
-        <div class="bcf-6-jogging-6 bcf6_311 bcf6_312">조깅</div>
-        <div class="bcf-6-jogging-7 bcf6_313 bcf6_314">조깅</div>
+        <!-- <div class="bcf-6-jogging-3 bcf6_305 bcf6_306">조깅</div> -->
+        <div class="bcf-6-jogging-3 bcf6_305 bcf6_305">조깅</div>
+        <div class="bcf-6-jogging-4 bcf6_307 bcf6_307">조깅</div>
+        <div class="bcf-6-jogging-5 bcf6_309 bcf6_309">조깅</div>
+        <div class="bcf-6-jogging-6 bcf6_311 bcf6_311">조깅</div>
+        <div class="bcf-6-jogging-7 bcf6_313 bcf6_313">조깅</div>
         <img class="bcf-6-moter-off-1" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-off-10.png" />
         <img class="bcf-6-moter-on-1 bcf6_244 bcf6_245" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-on-10.png" />
         <img class="bcf-6-moter-off-2" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-off-20.png" />
@@ -711,10 +797,12 @@
     });
   });
 
-  // 조깅 요소 초기 상태: 정지
+  // 조깅 요소 초기 상태: 정지(연한 하늘색)
   document.querySelectorAll('div[class*="-jogging"]').forEach(function(el) {
     el.textContent = '정지';
-    el.style.background = 'linear-gradient(180deg,#e0f2fe 0%,#60a5fa 100%)';
+    el.style.background = 'linear-gradient(180deg,#e0f2fe 0%,#7dd3fc 100%)';
+    el.style.color = '#0c4a6e';
+    el.style.fontWeight = '800';
   });
 
   const penEls = Array.prototype.slice.call(document.querySelectorAll('img[class*="-pen-"]'));
@@ -776,7 +864,14 @@
         if (isPenElement(el)) return;
         if (el.className.indexOf('-jogging') !== -1) {
           el.textContent = show ? '조깅' : '정지';
-          el.style.background = show ? '' : 'linear-gradient(180deg,#e0f2fe 0%,#60a5fa 100%)';
+          if (show) {
+            el.style.background = '';
+            el.style.color = '';
+          } else {
+            el.style.background = 'linear-gradient(180deg,#e0f2fe 0%,#7dd3fc 100%)';
+            el.style.color = '#0c4a6e';
+          }
+          el.style.fontWeight = '800';
           el.style.visibility = 'visible';
           return;
         }
@@ -805,6 +900,21 @@
       el.style.background  = isAuto ? 'linear-gradient(160deg,#f0fdf4,#bbf7d0)' : 'linear-gradient(160deg,#fff7ed,#fed7aa)';
       el.style.color       = isAuto ? '#166534' : '#9a3412';
       el.style.borderColor = isAuto ? '#86efac' : '#fdba74';
+    });
+
+    // 통신 상태 업데이트 (60초 이내 성공 = 연결)
+    var now = Date.now();
+    [11,8,9,7,6].forEach(function(n) {
+      var el = document.querySelector('.bcf-' + n + '-conn');
+      if (!el) return;
+      var ts = data['bcf' + n + '_conn'];
+      var ok = typeof ts === 'number' && (now - ts) < 60000;
+      el.classList.remove('conn-ok', 'conn-loading');
+      el.classList.add(ok ? 'conn-ok' : 'conn-loading');
+      el.innerHTML = '<span class="conn-indicator"></span>' + (ok ? '연결' : '연결중');
+      el.style.background = '';
+      el.style.color = '';
+      el.style.borderColor = '';
     });
   }
 
@@ -908,6 +1018,47 @@
   }
 
   fetchData();
+})();
+// 페이지 로드 시 좌측 메뉴 자동 접기
+(function() {
+  try {
+    var p = window.parent;
+    if (p && p !== window) {
+      var sb = p.document.getElementById('sidebar');
+      if (sb && !sb.classList.contains('collapsed')) sb.classList.add('collapsed');
+    }
+  } catch(e) {}
+})();
+
+/* ── AUTO 슬라이드쇼 ── */
+(function() {
+  window.toggleAutoSlideshow = function() {
+    var url = '<%= request.getContextPath() %>/auto_kiosk.jsp';
+    // 사용자 제스처 내에서 top document 전체화면 요청 (same-origin 네비게이션 시 유지됨)
+    try {
+      var topDoc = window.top.document;
+      if (!topDoc.fullscreenElement) {
+        topDoc.documentElement.requestFullscreen().catch(function(){});
+      }
+    } catch(e) {}
+    setTimeout(function() {
+      try { window.top.location.href = url; } catch(e) { window.location.href = url; }
+    }, 80);
+  };
+})();
+
+/* ── 화면 맞춤 스케일 ── */
+(function() {
+  var W = 1918, H = 878;
+  function scaleToFit() {
+    var el = document.querySelector('.group-3');
+    if (!el) return;
+    var s = Math.min(window.innerWidth / W, window.innerHeight / H);
+    el.style.transform       = 'scale(' + s + ')';
+    el.style.transformOrigin = 'top left';
+  }
+  window.addEventListener('resize', scaleToFit);
+  scaleToFit();
 })();
 </script>
 </body>

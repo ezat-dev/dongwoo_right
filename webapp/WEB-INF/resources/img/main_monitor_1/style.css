@@ -2,6 +2,14 @@
 .group-1 * {
   box-sizing: border-box;
 }
+/* 통신 상태 위치 */
+.bcf-12-conn { position: absolute; left: 170.76px; top: 645.22px; }
+.bcf-1-conn  { position: absolute; left: 420.60px; top: 645.22px; }
+.bcf-2-conn  { position: absolute; left: 670.45px; top: 645.22px; }
+.bcf-3-conn  { position: absolute; left: 920.29px; top: 645.22px; }
+.bcf-4-conn  { position: absolute; left: 1170.14px; top: 645.22px; }
+.bcf-10-conn { position: absolute; left: 1419.99px; top: 645.22px; }
+.bcf-5-conn  { position: absolute; left: 1669.83px; top: 645.22px; }
 .group-1 {
   height: 878px;
   position: relative;
@@ -54,7 +62,7 @@
   height: 47.43px;
   position: absolute;
   left: 175.94px;
-  top: 131.62px;
+  top: 114.62px;
   object-fit: cover;
   aspect-ratio: 48.53/47.43;
 }
@@ -367,7 +375,7 @@
   height: 47.43px;
   position: absolute;
   left: 425.79px;
-  top: 131.62px;
+  top: 114.62px;
   object-fit: cover;
   aspect-ratio: 48.53/47.43;
 }
@@ -555,6 +563,11 @@
   left: 432.7px;
   top: 391.84px;
 }
+.bcf-1-dt {
+  position: absolute;
+  left: 420.6px;
+  top: 185.22px;
+}
 .bcf-1-dt-ez-50 {
   background: #e8f5e9;
   border: 1px solid #a5d6a7;
@@ -675,7 +688,7 @@
   height: 47.43px;
   position: absolute;
   left: 675.63px;
-  top: 131.62px;
+  top: 114.62px;
   object-fit: cover;
   aspect-ratio: 48.53/47.43;
 }
@@ -983,7 +996,7 @@
   height: 47.43px;
   position: absolute;
   left: 926.35px;
-  top: 131.62px;
+  top: 114.62px;
   object-fit: cover;
   aspect-ratio: 48.53/47.43;
 }
@@ -1291,7 +1304,7 @@
   height: 47.43px;
   position: absolute;
   left: 1176.19px;
-  top: 131.62px;
+  top: 114.62px;
   object-fit: cover;
   aspect-ratio: 48.53/47.43;
 }
@@ -1599,7 +1612,7 @@
   height: 47.43px;
   position: absolute;
   left: 1426.04px;
-  top: 131.62px;
+  top: 114.62px;
   object-fit: cover;
   aspect-ratio: 48.53/47.43;
 }
@@ -1795,7 +1808,7 @@
   height: 24.21px;
   position: absolute;
   left: 1419.99px;
-  top: 185.22px;
+  top: 187.22px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1907,7 +1920,7 @@
   height: 47.43px;
   position: absolute;
   left: 1675.02px;
-  top: 131.62px;
+  top: 114.62px;
   object-fit: cover;
   aspect-ratio: 48.53/47.43;
 }

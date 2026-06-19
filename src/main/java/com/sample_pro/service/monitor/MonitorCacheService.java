@@ -23,6 +23,7 @@ public class MonitorCacheService {
     private final RestTemplate rest;
     private final ConcurrentHashMap<String, Object> snapshot = new ConcurrentHashMap<>();
 
+
     public MonitorCacheService() {
         SimpleClientHttpRequestFactory f = new SimpleClientHttpRequestFactory();
         f.setConnectTimeout(1000);
@@ -45,6 +46,7 @@ public class MonitorCacheService {
             40028, 40029, 40030, 40031, 40032, 40033, 40034, 40035, 40036,
             40038, 40039, 40040, 40041, 40042, 40043, 40044,
             40046, 40047, 40048, 40049, 40050, 40051, 40052,
+            40060,
             40069, 40070, 40071
         };
         WORD_DETAIL_ADDRS.put(1,  bcf1to5);
@@ -188,9 +190,15 @@ public class MonitorCacheService {
                 List<?> vals = (List<?>) res.get("values");
                 for (int addr : addrs) {
                     int idx = addr - start;
-                    if (idx >= 0 && idx < vals.size() && vals.get(idx) != null)
+                    if (idx >= 0 && idx < vals.size() && vals.get(idx) != null) {
                         snapshot.put("bcf" + plcNum + "_s_" + addr, vals.get(idx));
+                        // BCF1~5, BCF10 단품(DT) 아날로그 키 alias: bcfX_dt_40060
+                        if (addr == 40060 && (plcNum >= 1 && plcNum <= 5 || plcNum == 10)) {
+                            snapshot.put("bcf" + plcNum + "_dt_40060", vals.get(idx));
+                        }
+                    }
                 }
+                snapshot.put("bcf" + plcNum + "_conn", System.currentTimeMillis());
             }
         } catch (Exception ignored) {}
     }
@@ -254,6 +262,7 @@ public class MonitorCacheService {
                     if (idx >= 0 && idx < vals.size() && vals.get(idx) != null)
                         snapshot.put("bcf12_s_D" + dAddr, vals.get(idx));
                 }
+                snapshot.put("bcf12_conn", System.currentTimeMillis());
             }
         } catch (Exception ignored) {}
     }

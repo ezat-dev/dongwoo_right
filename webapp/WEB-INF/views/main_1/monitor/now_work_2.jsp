@@ -156,7 +156,7 @@
           <td class="st" data-tags="bcf6_291"></td>
           <td class="st"></td>
           <td class="st"></td>
-          <td class="st" data-tags="bcf6_291"></td>
+          <td class="st" data-tags="bcf6_291" data-logic="alloff"></td>
         </tr>
         <tr data-equip-cd="dongwoo_06" data-row-sort="2">
           <td class="room">가열실</td>
@@ -167,7 +167,7 @@
           <td class="st" data-tags="bcf6_293"></td>
           <td class="st"></td>
           <td class="st"></td>
-          <td class="st" data-tags="bcf6_293"></td>
+          <td class="st" data-tags="bcf6_293" data-logic="alloff"></td>
         </tr>
         <tr data-equip-cd="dongwoo_06" data-row-sort="3">
           <td class="room">침탄1실</td>
@@ -178,7 +178,7 @@
           <td class="st" data-tags="bcf6_294"></td>
           <td class="st"></td>
           <td class="st"></td>
-          <td class="st" data-tags="bcf6_294"></td>
+          <td class="st" data-tags="bcf6_294" data-logic="alloff"></td>
         </tr>
         <tr data-equip-cd="dongwoo_06" data-row-sort="4">
           <td class="room">침탄2실</td>
@@ -189,7 +189,7 @@
           <td class="st" data-tags="bcf6_295"></td>
           <td class="st"></td>
           <td class="st"></td>
-          <td class="st" data-tags="bcf6_295"></td>
+          <td class="st" data-tags="bcf6_295" data-logic="alloff"></td>
         </tr>
         <tr data-equip-cd="dongwoo_06" data-row-sort="5">
           <td class="room">침탄3실</td>
@@ -200,7 +200,7 @@
           <td class="st" data-tags="bcf6_296"></td>
           <td class="st"></td>
           <td class="st"></td>
-          <td class="st" data-tags="bcf6_296"></td>
+          <td class="st" data-tags="bcf6_296" data-logic="alloff"></td>
         </tr>
         <tr data-equip-cd="dongwoo_06" data-row-sort="6">
           <td class="room">강온실</td>
@@ -211,7 +211,7 @@
           <td class="st"></td>
           <td class="st" data-tags="bcf6_297"></td>
           <td class="st"></td>
-          <td class="st" data-tags="bcf6_297"></td>
+          <td class="st" data-tags="bcf6_297" data-logic="alloff"></td>
         </tr>
         <tr data-equip-cd="dongwoo_06" data-row-sort="7">
           <td class="room">냉각실</td>
@@ -222,7 +222,7 @@
           <td class="st"></td>
           <td class="st"></td>
           <td class="st" data-tags="bcf6_298"></td>
-          <td class="st" data-tags="bcf6_298"></td>
+          <td class="st" data-tags="bcf6_298" data-logic="alloff"></td>
         </tr>
 
         <!-- 침탄 11호 -->
@@ -236,7 +236,7 @@
           <td class="st" data-tags="bcf11_166,bcf11_167"></td>
           <td class="st"></td>
           <td class="st"></td>
-          <td class="st" data-tags="bcf11_40010"></td>
+          <td class="st" data-tags="bcf11_40010" data-logic="alloff"></td>
         </tr>
         <tr data-equip-cd="dongwoo_11" data-row-sort="2">
           <td class="room">침탄2실</td>
@@ -247,7 +247,7 @@
           <td class="st" data-tags="bcf11_40027"></td>
           <td class="st"></td>
           <td class="st"></td>
-          <td class="st" data-tags="bcf11_40027"></td>
+          <td class="st" data-tags="bcf11_40027" data-logic="alloff"></td>
         </tr>
         <tr data-equip-cd="dongwoo_11" data-row-sort="3">
           <td class="room">냉각실</td>
@@ -258,7 +258,7 @@
           <td class="st"></td>
           <td class="st"></td>
           <td class="st" data-tags="bcf11_40044"></td>
-          <td class="st" data-tags="bcf11_40044"></td>
+          <td class="st" data-tags="bcf11_40044" data-logic="alloff"></td>
         </tr>
       </tbody>
     </table>
@@ -317,20 +317,25 @@
 
       document.querySelectorAll('td.st[data-tags]').forEach(function(td) {
         var tags    = td.getAttribute('data-tags').split(',').map(function(t){ return t.trim(); });
+        var logic   = td.getAttribute('data-logic');
         var wasOn   = td.classList.contains('active');
-        var anyOn   = tags.some(function(t){ return data[t] == 1; });
+        // alloff: 태그 전부 0일 때만 활성 (공로 - 비어있을 때)
+        // 기본:   태그 하나라도 1이면 활성
+        var isActive = (logic === 'alloff')
+          ? tags.every(function(t){ return data[t] == 0; })
+          : tags.some(function(t){ return data[t] == 1; });
         var tr      = td.closest('tr');
         var equip   = tr ? (tr.getAttribute('data-equip-cd') || '?') : '?';
         var rowSort = tr ? (tr.getAttribute('data-row-sort') || '1') : '1';
         var key     = equip + (rowSort !== '1' ? '[' + rowSort + ']' : '');
 
         if (!equipMap[key]) equipMap[key] = [];
-        equipMap[key].push(tags.join('+') + (anyOn ? '=●ON' : '=○'));
+        equipMap[key].push(tags.join('+') + (isActive ? '=●ON' : '=○'));
 
-        if (anyOn !== wasOn) {
-          changed.push('[' + key + '] ' + tags.join('+') + ' ' + (anyOn ? 'OFF→ON' : 'ON→OFF'));
+        if (isActive !== wasOn) {
+          changed.push('[' + key + '] ' + tags.join('+') + ' ' + (isActive ? 'OFF→ON' : 'ON→OFF'));
         }
-        td.classList.toggle('active', anyOn);
+        td.classList.toggle('active', isActive);
       });
 
       var ts    = new Date().toLocaleTimeString('ko-KR', {hour12: false});
