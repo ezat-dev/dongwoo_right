@@ -22,6 +22,9 @@
   cursor: pointer; font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
 }
 .fl-btn:hover { filter: brightness(.9); }
+.fl-btn-excel { background: #38A169; }
+.fl-btn-excel:hover { filter: brightness(.9); }
+.fl-btn-excel:disabled { background: #A0AEC0; cursor: not-allowed; filter: none; }
 
 /* panels */
 .fl-panels { display: flex; gap: 14px; height: calc(100vh - 120px); }
@@ -53,8 +56,16 @@
   background: #FAFBFC;
   transition: border-color .12s, background .12s;
 }
-.fl-session:hover  { border-color: var(--primary); background: #EBF8FF; }
-.fl-session.active { border-color: var(--primary); background: #EBF8FF; }
+.fl-session:hover  { border-color: var(--primary); background: #EBF8FF !important; }
+.fl-session.active { border-color: var(--primary); background: #EBF8FF !important; }
+
+/* 날짜별 색 구분 (6색 순환) */
+.fl-date-c0 { background: #F0FFF4; border-color: #9AE6B4; }
+.fl-date-c1 { background: #FFF5F5; border-color: #FEB2B2; }
+.fl-date-c2 { background: #FFFBEB; border-color: #FBD38D; }
+.fl-date-c3 { background: #F3E8FF; border-color: #D6BCFA; }
+.fl-date-c4 { background: #E6FFFA; border-color: #81E6D9; }
+.fl-date-c5 { background: #FFF0D6; border-color: #F6AD55; }
 
 .fl-session-row1 { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
 .fl-equip-badge  {
@@ -120,6 +131,7 @@
       <span class="fl-sep">~</span>
       <input type="date" class="fl-date-input" id="toDate">
       <button class="fl-btn" onclick="loadSessions()">조회</button>
+      <button class="fl-btn fl-btn-excel" id="excelBtn" onclick="exportExcel()">엑셀 출력</button>
     </div>
   </div>
 
@@ -162,6 +174,7 @@
   </div>
 </div>
 
+<script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 <script>
 var ROOT = '<%=request.getContextPath()%>';
 
@@ -198,7 +211,16 @@ function loadSessions() {
         return;
       }
       el.innerHTML = '';
-      list.forEach(function(s) { el.appendChild(buildSession(s)); });
+      var colorIdx = 0;
+      var lastDate = '';
+      list.forEach(function(s) {
+        var dateOnly = String(s.startTime).substring(0, 10);
+        if (dateOnly !== lastDate) {
+          if (lastDate !== '') colorIdx = (colorIdx + 1) % 6;
+          lastDate = dateOnly;
+        }
+        el.appendChild(buildSession(s, colorIdx));
+      });
     })
     .catch(function() {
       document.getElementById('sessionList').innerHTML =
@@ -207,9 +229,9 @@ function loadSessions() {
 }
 
 /* ─── 세션 아이템 ─── */
-function buildSession(s) {
+function buildSession(s, colorIdx) {
   var div = document.createElement('div');
-  div.className = 'fl-session';
+  div.className = 'fl-session fl-date-c' + (colorIdx || 0);
   var num    = parseInt(String(s.plcId).replace('dongwoo_', ''), 10);
   var cnt    = s.alarmCount || 0;
   var cntCls = cnt > 0 ? 'fl-alarm-cnt' : 'fl-alarm-cnt zero';
@@ -253,7 +275,13 @@ function loadDetail(s) {
   fetch(url)
     .then(function(r) { return r.json(); })
     .then(function(list) {
-      document.getElementById('alarmBadge').textContent = (Array.isArray(list) ? list.length : 0) + '건';
+      var cnt = Array.isArray(list) ? list.length : 0;
+      document.getElementById('alarmBadge').textContent = cnt + '건';
+      var activeEl = document.querySelector('.fl-session.active .fl-alarm-cnt');
+      if (activeEl) {
+        activeEl.textContent = '알람 ' + cnt + '건';
+        activeEl.className = cnt > 0 ? 'fl-alarm-cnt' : 'fl-alarm-cnt zero';
+      }
       var wrap = document.getElementById('detailWrap');
       if (!Array.isArray(list) || !list.length) {
         wrap.innerHTML = '<div class="fl-empty"><div class="fl-empty-icon">✅</div>' +
@@ -284,6 +312,104 @@ function loadDetail(s) {
       document.getElementById('detailWrap').innerHTML =
         '<div class="fl-empty"><div class="fl-empty-txt">로드 실패</div></div>';
     });
+}
+
+/* ─── 엑셀 출력 ─── */
+async function exportExcel() {
+  var from = document.getElementById('fromDate').value;
+  var to   = document.getElementById('toDate').value;
+  if (!from || !to) { alert('날짜를 선택하세요'); return; }
+
+  var btn = document.getElementById('excelBtn');
+  btn.disabled = true;
+
+  try {
+    /* 1. 전체 세션 조회 */
+    btn.textContent = '조회 중...';
+    var sessions = await fetch(
+        ROOT + '/fprooflist/sessions?from=' + encodeURIComponent(from)
+                                  + '&to='   + encodeURIComponent(to))
+      .then(function(r) { return r.json(); });
+
+    if (!Array.isArray(sessions)) throw new Error('세션 조회 실패');
+
+    /* 2. 설비별 그룹핑 (1~12호기) */
+    var byPlc = {};
+    for (var i = 1; i <= 12; i++) {
+      byPlc['dongwoo_' + String(i).padStart(2, '0')] = [];
+    }
+    sessions.forEach(function(s) {
+      if (byPlc[s.plcId]) byPlc[s.plcId].push(s);
+    });
+
+    /* 3. 워크북 생성 */
+    var wb = XLSX.utils.book_new();
+    var plcKeys = Object.keys(byPlc).sort();
+
+    for (var k = 0; k < plcKeys.length; k++) {
+      var plcId       = plcKeys[k];
+      var num         = parseInt(plcId.replace('dongwoo_', ''), 10);
+      var sheetName   = num + '호기';
+      var plcSessions = byPlc[plcId];
+
+      btn.textContent = '생성 중 (' + num + '/12)';
+
+      /* 헤더 행 */
+      var rows = [['호기', '세션 시작', '세션 종료', '태그명', '알람 메시지', '발생 시각', '해제 시각']];
+
+      if (plcSessions.length === 0) {
+        rows.push([sheetName, '-', '-', '(세션 없음)', '', '', '']);
+      } else {
+        for (var j = 0; j < plcSessions.length; j++) {
+          var s   = plcSessions[j];
+          var url = ROOT + '/fprooflist/detail'
+                  + '?plcId=' + encodeURIComponent(s.plcId)
+                  + '&start=' + encodeURIComponent(s.startTime);
+          if (s.endTime) url += '&end=' + encodeURIComponent(s.endTime);
+
+          var detail = await fetch(url).then(function(r) { return r.json(); });
+
+          if (!Array.isArray(detail) || detail.length === 0) {
+            rows.push([sheetName, s.startTime, s.endTime || '미종료', '(알람 없음)', '', '', '']);
+          } else {
+            detail.forEach(function(a) {
+              rows.push([
+                sheetName,
+                s.startTime,
+                s.endTime || '미종료',
+                a.tagName  || '',
+                a.alarmMsg || '',
+                a.occurTime || '',
+                a.clearTime || '미해제'
+              ]);
+            });
+          }
+        }
+      }
+
+      var ws = XLSX.utils.aoa_to_sheet(rows);
+      ws['!cols'] = [
+        {wch: 8},   /* 호기 */
+        {wch: 21},  /* 세션 시작 */
+        {wch: 21},  /* 세션 종료 */
+        {wch: 16},  /* 태그명 */
+        {wch: 32},  /* 알람 메시지 */
+        {wch: 21},  /* 발생 시각 */
+        {wch: 21}   /* 해제 시각 */
+      ];
+      XLSX.utils.book_append_sheet(wb, ws, sheetName);
+    }
+
+    /* 4. 다운로드 */
+    var filename = 'FPROOF_' + from + '_' + to + '.xlsx';
+    XLSX.writeFile(wb, filename);
+
+  } catch (e) {
+    alert('엑셀 생성 실패: ' + e.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '엑셀 출력';
+  }
 }
 
 function resetDetail() {

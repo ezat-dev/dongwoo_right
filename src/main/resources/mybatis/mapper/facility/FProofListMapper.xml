@@ -4,37 +4,21 @@
 
 <mapper namespace="FProofListMapper">
 
-    <!-- Fool Proof 세션 목록: 시작/종료 페어 + 구간 내 F/PROOF 알람 건수 -->
+    <!-- Fool Proof 세션 목록: 시작/종료 페어 -->
     <select id="selectSessions" parameterType="map" resultType="java.util.HashMap">
         SELECT
-            at.plc_id        AS plcId,
-            ah_s.history_id  AS startId,
-            ah_s.occur_time  AS startTime,
+            at.plc_id AS plcId,
+            ah_s.history_id AS startId,
+            DATE_FORMAT(ah_s.occur_time, '%Y-%m-%d %H:%i:%s') AS startTime,
             (
-                SELECT MIN(ah_e.occur_time)
+                SELECT DATE_FORMAT(MIN(ah_e.occur_time), '%Y-%m-%d %H:%i:%s')
                 FROM   tb_alarm_history ah_e
                 JOIN   tb_alarm_tag     at_e ON at_e.tag_id = ah_e.tag_id
                 WHERE  at_e.plc_id    = at.plc_id
                   AND  at_e.alarm_msg = 'Fool Proof 종료'
-                  AND  ah_e.occur_time >= ah_s.occur_time
+                  AND  ah_e.occur_time &gt; ah_s.occur_time
             ) AS endTime,
-            (
-                SELECT COUNT(*)
-                FROM   tb_alarm_history ah_c
-                JOIN   tb_fproof_alarm  fa  ON fa.tag_id = ah_c.tag_id
-                                           AND fa.plc_id = at.plc_id
-                WHERE  ah_c.occur_time >= ah_s.occur_time
-                  AND  ah_c.occur_time &lt;= COALESCE(
-                        (
-                            SELECT MIN(ah_e2.occur_time)
-                            FROM   tb_alarm_history ah_e2
-                            JOIN   tb_alarm_tag     at_e2 ON at_e2.tag_id = ah_e2.tag_id
-                            WHERE  at_e2.plc_id    = at.plc_id
-                              AND  at_e2.alarm_msg = 'Fool Proof 종료'
-                              AND  ah_e2.occur_time >= ah_s.occur_time
-                        ), NOW()
-                    )
-            ) AS alarmCount
+            0 AS alarmCount
         FROM   tb_alarm_history ah_s
         JOIN   tb_alarm_tag     at ON at.tag_id = ah_s.tag_id
         WHERE  at.alarm_msg = 'Fool Proof 시작'
@@ -49,9 +33,9 @@
             ah.history_id  AS historyId,
             at.tag_name    AS tagName,
             at.alarm_msg   AS alarmMsg,
-            ah.occur_time  AS occurTime,
-            ah.clear_time  AS clearTime,
-            ah.ack_time    AS ackTime,
+            DATE_FORMAT(ah.occur_time, '%Y-%m-%d %H:%i:%s') AS occurTime,
+            DATE_FORMAT(ah.clear_time, '%Y-%m-%d %H:%i:%s') AS clearTime,
+            DATE_FORMAT(ah.ack_time,   '%Y-%m-%d %H:%i:%s') AS ackTime,
             ah.ack_user    AS ackUser
         FROM   tb_alarm_history ah
         JOIN   tb_alarm_tag     at ON at.tag_id = ah.tag_id
