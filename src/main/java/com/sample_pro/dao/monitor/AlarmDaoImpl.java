@@ -76,4 +76,9 @@ public class AlarmDaoImpl implements AlarmDao {
     public List<AlarmHistory> selectAlarmHistory(Map<String, Object> params) {
         return sqlSession.selectList("AlarmMapper.selectAlarmHistory", params);
     }
+
+    @Override
+    public List<AlarmHistory> selectAlarmHistoryRange(Map<String, Object> params) {
+        return sqlSession.selectList("AlarmMapper.selectAlarmHistoryRange", params);
+    }
 }

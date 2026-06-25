@@ -20,6 +20,11 @@ public class WorkListDaoImpl implements WorkListDao {
     }
 
     @Override
+    public List<WorkListItem> selectAllPendingWorkList() {
+        return sqlSession.selectList("WorkListMapper.selectAllPendingWorkList");
+    }
+
+    @Override
     public List<Map<String, Object>> selectJacupByRange(Map<String, Object> params) {
         return sqlSession.selectList("WorkListMapper.selectJacupByRange", params);
     }

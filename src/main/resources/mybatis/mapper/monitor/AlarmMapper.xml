@@ -159,4 +159,18 @@
         LIMIT  #{limit}
     </select>
 
+    <!-- Alarm history by date range -->
+    <select id="selectAlarmHistoryRange" parameterType="map" resultMap="alarmHistoryMap">
+        SELECT h.history_id, h.tag_id, t.tag_name, t.address, t.alarm_msg, t.level, t.plc_id,
+               DATE_FORMAT(h.occur_time, '%Y-%m-%d %H:%i:%s') AS occur_time,
+               DATE_FORMAT(h.clear_time, '%Y-%m-%d %H:%i:%s') AS clear_time,
+               DATE_FORMAT(h.ack_time, '%Y-%m-%d %H:%i:%s') AS ack_time,
+               h.ack_user, h.value_at_occur
+        FROM   tb_alarm_history h
+        JOIN   tb_alarm_tag t ON h.tag_id = t.tag_id
+        WHERE  h.occur_time >= #{from}
+          AND  h.occur_time &lt;  DATE_ADD(#{to}, INTERVAL 1 DAY)
+        ORDER  BY h.occur_time DESC
+    </select>
+
 </mapper>

@@ -130,7 +130,19 @@
       "PowerShell(& \"C:\\\\Program Files\\\\MariaDB 10.2\\\\bin\\\\mysql.exe\" -h 127.0.0.1 -u root -pezat6695 -e \"SHOW DATABASES;\" 2>&1)",
       "PowerShell(& \"C:\\\\Program Files\\\\MariaDB 10.2\\\\bin\\\\mysql.exe\" -h 127.0.0.1 -u root \"-pezat6695!\" ez_scada -e \"SELECT ah.history_id, at.tag_name, at.alarm_msg, ah.occur_time, ah.clear_time FROM tb_alarm_history ah JOIN tb_alarm_tag at ON at.tag_id = ah.tag_id WHERE at.plc_id = 'dongwoo_01' AND ah.occur_time BETWEEN '2026-06-15 00:00:00' AND '2026-06-15 23:59:59' ORDER BY ah.occur_time;\" 2>&1)",
       "PowerShell(& \"C:\\\\Program Files\\\\MariaDB 10.2\\\\bin\\\\mysql.exe\" -h 127.0.0.1 -u root \"-pezat6695!\" ez_scada -e \"SELECT fa.tag_id, at.tag_name, at.alarm_msg FROM tb_fproof_alarm fa JOIN tb_alarm_tag at ON at.tag_id = fa.tag_id WHERE fa.plc_id = 'dongwoo_01' ORDER BY fa.tag_id;\" 2>&1)",
-      "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\views\\\\main_1\\\\quality\\\\fprooflist.jsp\" \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\views\\\\main_1\\\\quality\\\\fprooflist.jsp\" -Force)"
+      "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\views\\\\main_1\\\\quality\\\\fprooflist.jsp\" \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\views\\\\main_1\\\\quality\\\\fprooflist.jsp\" -Force)",
+      "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\src\\\\main\\\\resources\\\\mybatis\\\\mapper\\\\facility\\\\FProofListMapper.xml\" \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\classes\\\\mybatis\\\\mapper\\\\facility\\\\FProofListMapper.xml\" -Force)",
+      "PowerShell(& \"C:\\\\Program Files\\\\MariaDB 10.2\\\\bin\\\\mysql.exe\" -h 127.0.0.1 -u root \"-pezat6695!\" ez_scada -e \"SELECT VERSION\\(\\);\" 2>&1)",
+      "Bash(find / -name \"mvn\" 2>/dev/null | head -5 || find /c /d -name \"mvn.cmd\" 2>/dev/null | head -5)",
+      "Read(//d//**)",
+      "PowerShell($env:JAVA_HOME = \"C:\\\\Program Files\\\\Eclipse Adoptium\\\\jdk-11.0.30.7-hotspot\"; $env:PATH = \"$env:JAVA_HOME\\\\bin;$env:PATH\"; cd d:\\\\sample_pro; & \"D:\\\\apache-maven-3.9.15\\\\bin\\\\mvn.cmd\" -DskipTests clean package 2>&1 | Select-Object -Last 15)",
+      "PowerShell($env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; $env:PATH = \"$env:JAVA_HOME\\\\bin;$env:PATH\"; cd d:\\\\sample_pro; & \"D:\\\\apache-maven-3.9.15\\\\bin\\\\mvn.cmd\" -DskipTests clean package 2>&1 | Select-Object -Last 15)",
+      "PowerShell(& \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\shutdown.bat\" 2>$null)",
+      "PowerShell($env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; $env:JRE_HOME = $env:JAVA_HOME; $env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; $env:CATALINA_BASE = \"D:\\\\apache-tomcat-9.0.115\"; $env:PATH = \"$env:JAVA_HOME\\\\bin;$env:PATH\"; & \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\startup.bat\"; echo \"Tomcat started\")",
+      "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\views\\\\main_1\\\\main.jsp\" \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\views\\\\main_1\\\\main.jsp\" -Force)",
+      "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\views\\\\main_1\\\\facility\\\\backup_data.jsp\" \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\views\\\\main_1\\\\facility\\\\backup_data.jsp\" -Force)",
+      "Bash(xargs grep -l \"cols\\\\|trendName\\\\|tagName\\\\|colName\")",
+      "Bash(xargs grep -l \"TREND_NAME\\\\|TAG_NAME\\\\|COL_NAME\\\\|temp_tag\\\\|TEMP_TAG\")"
     ],
     "additionalDirectories": [
       "D:\\apache-tomcat-9.0.115\\webapps",

@@ -48,13 +48,12 @@
   width:100%; height:34px; border:none; background:transparent;
   text-align:center; font-size:12px; font-weight:600;
   color:var(--text); outline:none;
-  -moz-appearance:textfield;
 }
-.val-input::-webkit-outer-spin-button,
-.val-input::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
 .val-input:focus { background:#EBF8FF; border-radius:3px; }
 .val-input.has-val { background:#F0FFF4; color:#276749; }
 .val-input[data-shift="N"].has-val { background:#FEFCBF; color:#744210; }
+.val-input.is-check { font-size:17px !important; font-weight:900 !important;
+  color:var(--green) !important; background:#F0FFF4 !important; }
 
 /* 편집 모드 */
 .edit-item-btns { display:none; gap:4px; padding:2px 4px; }
@@ -327,16 +326,36 @@ function renderMatrix(d){
 }
 
 function mkCell(itemId, day, shift, val, extraCls){
-  var hasCls = (val !== '' && val != null) ? ' has-val' : '';
+  var disp    = (val === 99 || val === '99') ? '√' : (val !== '' && val != null ? String(val) : '');
+  var hasCls  = disp !== '' ? ' has-val' : '';
+  var chkCls  = disp === '√' ? ' is-check' : '';
   return '<td class="sh-cell' + extraCls + '">'
-    + '<input type="number" step="any" class="val-input' + hasCls + '"'
+    + '<input type="text" inputmode="numeric" class="val-input' + hasCls + chkCls + '"'
     + ' data-item="' + itemId + '" data-day="' + day + '" data-shift="' + shift + '"'
-    + ' value="' + esc(String(val)) + '" placeholder="—"'
-    + ' onblur="saveCell(this)" oninput="this.classList.toggle(\'has-val\',this.value!==\'\')">'
+    + ' value="' + esc(disp) + '" placeholder="—"'
+    + ' onfocus="onInspFocus(this)" oninput="onInspInput(this)" onblur="saveCell(this)">'
     + '</td>';
 }
 
+function onInspFocus(input){
+  if(input.value === '√'){ input.value = '99'; input.select(); }
+}
+function onInspInput(input){
+  var v = input.value;
+  if(v === '99'){
+    input.value = '√';
+    input.classList.add('is-check', 'has-val');
+    input.classList.remove('is-check'); /* force repaint */
+    input.classList.add('is-check');
+  } else {
+    input.classList.remove('is-check');
+    input.classList.toggle('has-val', v !== '');
+  }
+}
 function saveCell(input){
+  /* 포커스 떠날 때 99 → √ 변환 보장 */
+  if(input.value === '99'){ input.value='√'; input.classList.add('is-check','has-val'); }
+  var rawVal = input.value === '√' ? '99' : input.value;
   fetch(base + '/inspect/result/cell', {
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({
@@ -344,7 +363,7 @@ function saveCell(input){
       day:     parseInt(input.dataset.day),
       itemId:  parseInt(input.dataset.item),
       shift:   input.dataset.shift,
-      val:     input.value
+      val:     rawVal
     })
   }).then(function(r){ return r.json(); })
     .then(function(d){ if(d.success){ showSavedMsg(); setStatusBadge('TEMP'); } });

@@ -188,68 +188,43 @@
      height: 43px;
      border-radius: 8px;
      border: 1px solid #e2e8f0;
-     display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 16px;
+     display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 10px;
      font-family: 'Malgun Gothic', sans-serif;
      font-size: 13px; font-weight: 700; letter-spacing: .5px;
      background: rgba(248,250,252,.95);
      box-shadow: 0 3px 10px rgba(0,0,0,.08);
+     overflow: hidden; white-space: nowrap;
    }
    .conn-indicator {
-     width: 26px; height: 26px; border-radius: 50%;
-     display: inline-block; position: relative; flex-shrink: 0;
+     width: 24px; height: 24px;
+     display: inline-flex; align-items: center; justify-content: center;
+     flex-shrink: 0;
    }
-   .conn-indicator::before,
-   .conn-indicator::after {
-     content: ''; width: 100%; height: 100%;
-     border-radius: 50%; position: absolute; top: 0; left: 0;
+   @keyframes breathe-ok {
+     0%,100% { transform: scale(1)    rotate(0deg);   border-radius: 3px;  background: #16a34a; box-shadow: 0 0 6px rgba(22,163,74,.55); }
+     25%      { transform: scale(1.22) rotate(45deg);  border-radius: 1px;  background: #4ade80; box-shadow: 0 0 10px rgba(74,222,128,.4); }
+     50%      { transform: scale(0.80) rotate(90deg);  border-radius: 50%; background: #bbf7d0; box-shadow: 0 0 4px rgba(134,239,172,.2); }
+     75%      { transform: scale(1.12) rotate(135deg); border-radius: 1px;  background: #4ade80; box-shadow: 0 0 8px rgba(74,222,128,.35); }
    }
-   @keyframes conn-ok-ring {
-     0%   { transform: scale(1);    opacity: .85; }
-     62%  { transform: scale(1.48); opacity: 0;   }
-     100% { transform: scale(1.48); opacity: 0;   }
+   @keyframes breathe-load {
+     0%,100% { transform: scale(1)    rotate(0deg);   border-radius: 3px;  background: #d97706; box-shadow: 0 0 6px rgba(217,119,6,.6); }
+     25%      { transform: scale(1.22) rotate(45deg);  border-radius: 1px;  background: #fbbf24; box-shadow: 0 0 10px rgba(251,191,36,.45); }
+     50%      { transform: scale(0.80) rotate(90deg);  border-radius: 50%; background: #fde68a; box-shadow: 0 0 4px rgba(253,230,138,.25); }
+     75%      { transform: scale(1.12) rotate(135deg); border-radius: 1px;  background: #fbbf24; box-shadow: 0 0 8px rgba(251,191,36,.4); }
    }
-   @keyframes conn-ok-inner {
-     0%   { transform: scale(1);    opacity: 1;  }
-     48%  { transform: scale(0.80); opacity: .78; }
-     100% { transform: scale(1);    opacity: 1;  }
-   }
-   @keyframes conn-load-ring {
-     0%   { transform: scale(1);    opacity: .9; }
-     55%  { transform: scale(1.42); opacity: 0;  }
-     100% { transform: scale(1.42); opacity: 0;  }
-   }
-   @keyframes conn-load-inner {
-     0%   { transform: scale(1);    }
-     45%  { transform: scale(0.63); }
-     100% { transform: scale(1);    }
-   }
+   .breath-sq { display: block; width: 11px; height: 13px; flex-shrink: 0; border-radius: 3px; }
    .group-3 .conn-ok {
      background: linear-gradient(135deg,rgba(220,252,231,.97) 0%,rgba(187,247,208,.97) 100%) !important;
      border: 1px solid rgba(34,197,94,.45) !important; color: #14532d !important;
      box-shadow: 0 4px 20px rgba(34,197,94,.32), inset 0 1px 0 rgba(255,255,255,.7);
    }
-   .group-3 .conn-ok .conn-indicator::before {
-     border: 1.5px solid #22c55e; top: -1.5px; left: -1.5px; opacity: 0;
-     animation: conn-ok-ring 2.4s cubic-bezier(.15,.5,.3,1) infinite;
-     animation-delay: .2s;
-   }
-   .group-3 .conn-ok .conn-indicator::after {
-     background: #22c55e;
-     animation: conn-ok-inner 2.4s ease-in-out infinite;
-   }
+   .group-3 .conn-ok      .breath-sq { animation: breathe-ok   3s ease-in-out infinite; }
    .group-3 .conn-loading {
      background: linear-gradient(135deg,rgba(255,251,235,.97) 0%,rgba(254,249,195,.97) 100%) !important;
      border: 1px solid rgba(245,158,11,.45) !important; color: #78350f !important;
      box-shadow: 0 4px 20px rgba(245,158,11,.28), inset 0 1px 0 rgba(255,255,255,.7);
    }
-   .group-3 .conn-loading .conn-indicator::before {
-     border: 1px solid #f59e0b; top: -1px; left: -1px; opacity: 0;
-     animation: conn-load-ring 1.1s cubic-bezier(.2,.5,.35,1) infinite;
-   }
-   .group-3 .conn-loading .conn-indicator::after {
-     background: #f59e0b;
-     animation: conn-load-inner 1.1s ease-in-out infinite;
-   }
+   .group-3 .conn-loading .breath-sq { animation: breathe-load 1.6s ease-in-out infinite; }
    </style>
   <title>Document</title>
 </head>
@@ -617,6 +592,14 @@
   /* 설정온도 */
   .tm-green .tm-set { background: #f0fdf4;  color: #16a34a; border-color: #bbf7d0; }
   .tm-blue  .tm-set { background: #eff6ff;  color: #3b82f6; border-color: #bfdbfe; }
+
+  /* AUTO 모드: 온도 패널 확장 */
+  body.auto-mode .tm-panel        { padding: 14px 14px 20px; }
+  body.auto-mode .tm-label-spacer { height: 32px; }
+  body.auto-mode .tm-label-cell .lc-title { font-size: 12px; }
+  body.auto-mode .tm-label-cell .lc-unit  { font-size: 13px; }
+  body.auto-mode .tm-item-name    { height: 32px; font-size: 12px; }
+  body.auto-mode .tm-cell         { height: 46px; font-size: 14px; }
   </style>
 
   <div class="tm-panel">
@@ -911,7 +894,7 @@
       var ok = typeof ts === 'number' && (now - ts) < 60000;
       el.classList.remove('conn-ok', 'conn-loading');
       el.classList.add(ok ? 'conn-ok' : 'conn-loading');
-      el.innerHTML = '<span class="conn-indicator"></span>' + (ok ? '연결' : '연결중');
+      el.innerHTML = '<span class="conn-indicator"><span class="breath-sq"></span></span>' + (ok ? '연결' : '연결중');
       el.style.background = '';
       el.style.color = '';
       el.style.borderColor = '';
@@ -1032,19 +1015,34 @@
 
 /* ── AUTO 슬라이드쇼 ── */
 (function() {
+  function setBtn(running) {
+    var btn = document.getElementById('btnAuto');
+    if (!btn) return;
+    if (running) { btn.textContent = '■ 종료'; btn.classList.add('running'); }
+    else         { btn.textContent = '▶ AUTO'; btn.classList.remove('running'); }
+  }
+
   window.toggleAutoSlideshow = function() {
-    var url = '<%= request.getContextPath() %>/auto_kiosk.jsp';
-    // 사용자 제스처 내에서 top document 전체화면 요청 (same-origin 네비게이션 시 유지됨)
     try {
-      var topDoc = window.top.document;
-      if (!topDoc.fullscreenElement) {
-        topDoc.documentElement.requestFullscreen().catch(function(){});
+      var par = window.parent;
+      if (!par || par === window) return;
+      if (par._autoRunning) {
+        par.stopAutoKiosk();
+        setBtn(false);
+      } else {
+        par.startAutoKiosk();
+        setBtn(true);
       }
     } catch(e) {}
-    setTimeout(function() {
-      try { window.top.location.href = url; } catch(e) { window.location.href = url; }
-    }, 80);
   };
+
+  /* 페이지 로드 시 AUTO 실행 중이면 버튼 상태 반영 */
+  try {
+    if (window.parent && window.parent !== window && window.parent._autoRunning) {
+      setBtn(true);
+      document.body.classList.add('auto-mode');
+    }
+  } catch(e) {}
 })();
 
 /* ── 화면 맞춤 스케일 ── */

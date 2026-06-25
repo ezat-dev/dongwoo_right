@@ -188,7 +188,7 @@ html, body {
           <label>시작</label>
           <input type="datetime-local" id="trend-start" value="2026-05-29T11:30">
           <label>종료</label>
-          <input type="datetime-local" id="trend-end"   value="2026-06-01T11:30" readonly>
+          <input type="datetime-local" id="trend-end"   value="2026-06-01T11:30">
           <button class="btn-primary" onclick="loadTrend()">조회</button>
           <span class="result-count" id="trend-count"></span>
         </div>
@@ -240,7 +240,7 @@ html, body {
           <label>시작일</label>
           <input type="date" id="alarm-start" value="2026-01-01">
           <label>종료일</label>
-          <input type="date" id="alarm-end"   value="2026-06-01" readonly>
+          <input type="date" id="alarm-end"   value="2026-06-01">
           <button class="btn-alarm" onclick="loadAlarms()">조회</button>
           <button class="btn-excel" onclick="exportExcel()">&#128190; 엑셀</button>
           <span class="result-count" id="alarm-count"></span>

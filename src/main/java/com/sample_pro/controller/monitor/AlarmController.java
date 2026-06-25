@@ -378,6 +378,17 @@ public class AlarmController {
         }
     }
 
+    @RequestMapping(value = "/history/range", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<?> historyRange(@RequestParam String from, @RequestParam String to) {
+        try {
+            List<AlarmHistory> list = alarmService.getAlarmHistoryRange(from, to);
+            return ResponseEntity.ok(list);
+        } catch (Exception e) {
+            return ResponseEntity.ok(err("알람 이력 조회 실패: " + e.getMessage()));
+        }
+    }
+
     private static String cellString(Row row, int idx, DataFormatter fmt) {
         if (row == null) return "";
         Cell cell = row.getCell(idx);

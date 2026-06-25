@@ -40,6 +40,26 @@
         LIMIT 5
     </select>
 
+    <!-- 전체 호기 한 번에 조회 (컨트롤러에서 Java 그룹핑) -->
+    <select id="selectAllPendingWorkList" resultMap="workListItemMap">
+        SELECT
+            status_seq,
+            TDAY,
+            WORK_INDCT_NUM,
+            CUST_NM,
+            EQUT_CD,
+            PROD_NM,
+            MAIN_WORK_INDCT_NUM,
+            DATE_FORMAT(INSERT_DTTM,     '%Y-%m-%d %H:%i') AS INSERT_DTTM,
+            DATE_FORMAT(SCAN_START_DTTM, '%Y-%m-%d %H:%i') AS SCAN_START_DTTM,
+            DATE_FORMAT(START_DTTM,      '%Y-%m-%d %H:%i') AS START_DTTM,
+            DATE_FORMAT(END_DTTM,        '%Y-%m-%d %H:%i') AS END_DTTM
+        FROM v_jacup
+        WHERE TDAY >= DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+          AND START_DTTM IS NULL
+        ORDER BY EQUT_CD, WORK_INDCT_NUM ASC
+    </select>
+
     <select id="selectJacupByRange" parameterType="map" resultType="java.util.HashMap">
         SELECT
             j.WORK_INDCT_NUM,

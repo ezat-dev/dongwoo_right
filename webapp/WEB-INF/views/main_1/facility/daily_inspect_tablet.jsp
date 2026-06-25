@@ -102,13 +102,12 @@ html, body { touch-action: manipulation; }
   width:100%; height:56px; border:none; background:transparent;
   text-align:center; font-size:20px; font-weight:700;
   color:var(--text); outline:none;
-  -moz-appearance:textfield;
 }
-.tb-input::-webkit-outer-spin-button,
-.tb-input::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
 .tb-input:focus { background:#EBF8FF; border-radius:6px; }
 .tb-input.has-val { background:#F0FFF4; color:#276749; }
 .tb-input[data-shift="N"].has-val { background:#FEFCBF; color:#744210; }
+.tb-input.is-check { font-size:28px !important; font-weight:900 !important;
+  color:var(--green) !important; background:#F0FFF4 !important; }
 
 /* 하단 */
 .tb-footer { display:flex; justify-content:flex-end; margin-top:16px; gap:12px; align-items:center; }
@@ -118,11 +117,20 @@ html, body { touch-action: manipulation; }
 }
 .tb-done-btn:hover { background:#276749; }
 
+/* ── 사진 컬럼 ── */
+.tb-table th.t-photo { min-width:110px; width:110px; }
+.tb-table td.t-photo-cell { padding:6px 8px; text-align:center; vertical-align:middle; }
+.tb-img { width:94px; height:70px; object-fit:cover; border-radius:8px;
+  border:1px solid var(--border); display:block; margin:0 auto; background:var(--bg); }
+.tb-img-none { color:#CBD5E0; font-size:22px; line-height:70px; }
+
 @media (max-width:640px) {
   .tb-nav-title { font-size:16px; }
   .tb-ctrl { flex-direction:column; }
   .tb-signer { flex-direction:column; align-items:flex-start; }
   .tb-table th.t-item { min-width:130px; }
+  .tb-table th.t-photo { min-width:80px; width:80px; }
+  .tb-img { width:68px; height:52px; }
   .tb-input { height:48px; font-size:17px; }
 }
 </style>
@@ -301,7 +309,8 @@ function renderWeek(){
   document.getElementById('btnNext').disabled = (wkEnd >= daysInMonth);
 
   /* 헤더 1행 */
-  var h1 = '<tr><th class="t-item" rowspan="2">점검 항목</th>';
+  var h1 = '<tr><th class="t-item" rowspan="2">점검 항목</th>'
+         + '<th class="t-photo" rowspan="2">사진</th>';
   for(var day=curWkStart; day<=wkEnd; day++){
     var tc = (day===todayDay) ? ' today-col' : '';
     h1 += '<th class="t-day' + tc + '" colspan="2">' + day + '일</th>';
@@ -319,7 +328,7 @@ function renderWeek(){
 
   /* 바디 */
   if(!items.length){
-    var cols = (wkEnd - curWkStart + 1) * 2 + 1;
+    var cols = (wkEnd - curWkStart + 1) * 2 + 2;
     document.getElementById('tbBody').innerHTML =
       '<tr><td colspan="'+cols+'" style="text-align:center;padding:70px;color:var(--muted);font-size:16px">점검 항목이 없습니다</td></tr>';
     return;
@@ -328,7 +337,11 @@ function renderWeek(){
   var html = '';
   items.forEach(function(item){
     var results = item.results || {};
-    html += '<tr><td class="t-name">' + esc(item.itemName) + '</td>';
+    var imgHtml = item.imgFile
+      ? '<img class="tb-img" src="' + base + '/inspect/item/image/' + esc(item.imgFile) + '" alt="' + esc(item.itemName) + '">'
+      : '<span class="tb-img-none">—</span>';
+    html += '<tr><td class="t-name">' + esc(item.itemName) + '</td>'
+          + '<td class="t-photo-cell">' + imgHtml + '</td>';
     for(var day=curWkStart; day<=wkEnd; day++){
       var dayRes = results[day] || results[String(day)] || {};
       var dVal   = dayRes.D != null ? dayRes.D : '';
@@ -343,16 +356,33 @@ function renderWeek(){
 }
 
 function mkCell(itemId, day, shift, val, extraCls){
-  var hasCls = (val !== '' && val != null) ? ' has-val' : '';
+  var disp   = (val === 99 || val === '99') ? '√' : (val !== '' && val != null ? String(val) : '');
+  var hasCls = disp !== '' ? ' has-val' : '';
+  var chkCls = disp === '√' ? ' is-check' : '';
   return '<td class="' + extraCls + '" style="padding:3px">'
-    + '<input type="number" step="any" class="tb-input' + hasCls + '"'
+    + '<input type="text" inputmode="numeric" class="tb-input' + hasCls + chkCls + '"'
     + ' data-item="' + itemId + '" data-day="' + day + '" data-shift="' + shift + '"'
-    + ' value="' + esc(String(val)) + '" placeholder="—"'
-    + ' onblur="saveCell(this)" oninput="this.classList.toggle(\'has-val\',this.value!==\'\')">'
+    + ' value="' + esc(disp) + '" placeholder="—"'
+    + ' onfocus="onInspFocus(this)" oninput="onInspInput(this)" onblur="saveCell(this)">'
     + '</td>';
 }
 
+function onInspFocus(input){
+  if(input.value === '√'){ input.value = '99'; input.select(); }
+}
+function onInspInput(input){
+  var v = input.value;
+  if(v === '99'){
+    input.value = '√';
+    input.classList.add('is-check', 'has-val');
+  } else {
+    input.classList.remove('is-check');
+    input.classList.toggle('has-val', v !== '');
+  }
+}
 function saveCell(input){
+  if(input.value === '99'){ input.value='√'; input.classList.add('is-check','has-val'); }
+  var rawVal = input.value === '√' ? '99' : input.value;
   fetch(base + '/inspect/result/cell', {
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({
@@ -360,7 +390,7 @@ function saveCell(input){
       day:    parseInt(input.dataset.day),
       itemId: parseInt(input.dataset.item),
       shift:  input.dataset.shift,
-      val:    input.value
+      val:    rawVal
     })
   }).then(function(r){ return r.json(); })
     .then(function(d){ if(d.success){ showSaved(); setStatus('TEMP'); } });

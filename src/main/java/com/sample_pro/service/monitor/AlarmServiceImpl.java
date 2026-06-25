@@ -89,4 +89,12 @@ public class AlarmServiceImpl implements AlarmService {
         p.put("limit", limit);
         return alarmDao.selectAlarmHistory(p);
     }
+
+    @Override
+    public List<AlarmHistory> getAlarmHistoryRange(String from, String to) {
+        Map<String, Object> p = new HashMap<>();
+        p.put("from", from);
+        p.put("to", to);
+        return alarmDao.selectAlarmHistoryRange(p);
+    }
 }

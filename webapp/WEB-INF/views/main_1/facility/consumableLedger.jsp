@@ -222,13 +222,13 @@ body.tablet-mode .ctrl-bar { gap:14px; }
             <tr>
               <th style="width:40px;text-align:center">No</th>
               <th style="width:100px;text-align:center">구분</th>
-              <th style="width:120px">품명/규격</th>
+              <th style="width:220px">품명/규격</th>
               <th style="width:110px;text-align:center">포장단위</th>
               <th style="width:90px;text-align:center">보유재고<br><small style="font-weight:400;color:var(--muted)">수량</small></th>
               <th style="width:70px;text-align:center">단위</th>
               <th style="width:90px;text-align:center">안전재고<br><small style="font-weight:400;color:var(--muted)">수량</small></th>
               <th style="width:70px;text-align:center">단위</th>
-              <th>비고(특이사항)</th>
+              <th style="width:160px">비고(특이사항)</th>
               <th style="width:140px" id="actColHd">관리</th>
             </tr>
           </thead>
@@ -274,9 +274,9 @@ body.tablet-mode .ctrl-bar { gap:14px; }
               <th style="width:130px">일시</th>
               <th style="width:55px;text-align:center">유형</th>
               <th style="width:100px">구분</th>
-              <th style="width:140px">품명/규격</th>
+              <th style="width:220px">품명/규격</th>
               <th style="width:80px;text-align:center">수량</th>
-              <th>비고</th>
+              <th style="width:160px">비고</th>
               <th style="width:80px">담당자</th>
               <th style="width:60px" id="histActHd">관리</th>
             </tr>
@@ -526,7 +526,7 @@ function renderStock(list) {
     html += '<tr class="' + rowCls + '">'
       + '<td style="text-align:center;color:var(--muted);font-size:12px">' + no + '</td>'
       + '<td class="cat-cell">' + esc(r.category||'') + '</td>'
-      + '<td style="font-weight:600;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="' + esc(r.itemName||'') + '">' + esc(r.itemName||'') + '</td>'
+      + '<td style="font-weight:600;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="' + esc(r.itemName||'') + '">' + esc(r.itemName||'') + '</td>'
       + '<td style="text-align:center;color:var(--muted)">' + esc(r.packageUnit||'') + '</td>'
       + '<td class="qty-cell" style="text-align:center;font-weight:600">' + esc(r.stockQty||'') + '</td>'
       + '<td style="text-align:center;color:var(--muted)">' + esc(r.stockUnit||'') + '</td>'

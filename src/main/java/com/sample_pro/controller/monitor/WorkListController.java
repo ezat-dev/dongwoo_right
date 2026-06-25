@@ -57,19 +57,29 @@ public class WorkListController {
         }
     }
 
-    // GET /work/listData → 12개 설비 미시작 작업지시 일괄 반환
+    // GET /work/listData → 12개 설비 미시작 작업지시 일괄 반환 (쿼리 1회)
     @RequestMapping(value = "/listData", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public ResponseEntity<?> listData() {
         try {
+            // DB 1번 호출로 전체 조회
+            List<WorkListItem> allItems = workListService.getAllPendingWorkList();
+
+            // equtCd별 그룹핑 (최대 5개, DB에서 이미 EQUT_CD·WORK_INDCT_NUM 순 정렬됨)
+            Map<String, List<WorkListItem>> grouped = new LinkedHashMap<>();
+            for (WorkListItem item : allItems) {
+                List<WorkListItem> list = grouped.computeIfAbsent(item.getEqutCd(), k -> new ArrayList<>());
+                if (list.size() < 5) list.add(item);
+            }
+
+            // 기존 응답 구조 그대로 유지
             List<Map<String, Object>> result = new ArrayList<>();
             for (Map<String, String> machine : MACHINES) {
                 String equtCd = machine.get("equtCd");
-                List<WorkListItem> items = workListService.getPendingWorkList(equtCd);
                 Map<String, Object> entry = new LinkedHashMap<>();
                 entry.put("machineTag", machine.get("machineTag"));
                 entry.put("equtCd",     equtCd);
-                entry.put("items",      items);
+                entry.put("items",      grouped.getOrDefault(equtCd, Collections.emptyList()));
                 result.add(entry);
             }
             return ResponseEntity.ok(result);

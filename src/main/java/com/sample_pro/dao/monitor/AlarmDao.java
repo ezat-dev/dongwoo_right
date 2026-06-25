@@ -25,4 +25,5 @@ public interface AlarmDao {
 
     List<AlarmHistory> selectActiveAlarms(Map<String, Object> params);
     List<AlarmHistory> selectAlarmHistory(Map<String, Object> params);
+    List<AlarmHistory> selectAlarmHistoryRange(Map<String, Object> params);
 }

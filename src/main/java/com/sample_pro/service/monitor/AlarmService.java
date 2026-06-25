@@ -24,4 +24,5 @@ public interface AlarmService {
 
     List<AlarmHistory> getActiveAlarms(int limit);
     List<AlarmHistory> getAlarmHistory(int limit);
+    List<AlarmHistory> getAlarmHistoryRange(String from, String to);
 }

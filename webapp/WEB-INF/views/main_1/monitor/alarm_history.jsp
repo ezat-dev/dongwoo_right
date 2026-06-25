@@ -26,6 +26,16 @@
 }
 .page-btn:hover,.page-btn.active { background:var(--primary);color:#fff;border-color:var(--primary); }
 .alarm-row-active { background:#FFF5F5 !important; }
+.th-sort {
+  cursor: pointer; user-select: none; white-space: nowrap;
+  transition: color .13s;
+}
+.th-sort:hover { color: var(--primary); }
+.th-sort::after {
+  content: ' ⇅'; font-size: 10px; opacity: .45;
+}
+.th-sort.asc::after  { content: ' ▲'; opacity: .85; color: var(--primary); }
+.th-sort.desc::after { content: ' ▼'; opacity: .85; color: var(--primary); }
 </style>
 <body>
 <div class="page-wrap">
@@ -117,8 +127,11 @@
     <table class="data-table">
       <thead>
         <tr>
-          <th>No</th><th>발생시각</th><th>PLC</th><th>태그명</th>
-          <th>내용</th><th>발생값</th><th>해제시각</th><th>상태</th>
+          <th>No</th>
+          <th class="th-sort desc" id="thOccur" onclick="toggleSort('occurTime')">발생시각</th>
+          <th>PLC</th><th>태그명</th><th>내용</th><th>발생값</th>
+          <th class="th-sort" id="thClear" onclick="toggleSort('clearTime')">해제시각</th>
+          <th>상태</th>
         </tr>
       </thead>
       <tbody id="alarmBody"></tbody>
@@ -136,6 +149,8 @@ var allActive  = [];  // active/list 결과
 var filtered   = [];
 var PAGE_SIZE  = 20;
 var curPage    = 1;
+var curSortCol = 'occurTime';
+var curSortDir = 'desc';
 
 var chartState, chartPlc, chartTrend;
 
@@ -172,6 +187,14 @@ function updateKpi(){
   document.getElementById('kpiCleared').textContent = allHistory.filter(function(r){ return r.clearTime; }).length;
 }
 
+/* ── PLC ID → 설비명 치환 ── */
+function plcLabel(plcId) {
+  if (!plcId) return '-';
+  var m = String(plcId).match(/(\d+)$/);
+  if (m) return parseInt(m[1], 10) + '호기';
+  return plcId;
+}
+
 /* ── PLC 필터 드롭다운 ── */
 function populatePlcFilter(){
   var ids = {};
@@ -179,7 +202,7 @@ function populatePlcFilter(){
   var sel = document.getElementById('selPlc');
   sel.innerHTML = '<option value="">전체</option>';
   Object.keys(ids).sort().forEach(function(id){
-    sel.innerHTML += '<option value="'+id+'">'+id+'</option>';
+    sel.innerHTML += '<option value="'+id+'">'+plcLabel(id)+'</option>';
   });
 }
 
@@ -218,7 +241,7 @@ function buildCharts(){
   chartPlc = new Chart(document.getElementById('chartPlc'), {
     type:'bar',
     data:{
-      labels:plcKeys,
+      labels:plcKeys.map(plcLabel),
       datasets:[{
         label:'알람 수',
         data:plcKeys.map(function(k){ return plcCnt[k]; }),
@@ -298,11 +321,40 @@ function applyFilter(){
     return true;
   });
 
-  filtered.sort(function(a,b){
-    return (b.occurTime||'') < (a.occurTime||'') ? -1 : 1;
-  });
+  applySortFiltered();
 
   document.getElementById('totalCount').textContent = '총 '+filtered.length+'건';
+  renderPage(1);
+}
+
+/* ── 정렬 ── */
+function applySortFiltered() {
+  var col = curSortCol, dir = curSortDir;
+  filtered.sort(function(a, b) {
+    var av = a[col] || '', bv = b[col] || '';
+    if (av === bv) return 0;
+    var cmp = av < bv ? -1 : 1;
+    return dir === 'asc' ? cmp : -cmp;
+  });
+  // 헤더 아이콘 갱신
+  ['thOccur','thClear'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.classList.remove('asc','desc');
+  });
+  var activeId = col === 'occurTime' ? 'thOccur' : 'thClear';
+  var el = document.getElementById(activeId);
+  if (el) el.classList.add(dir);
+}
+
+function toggleSort(col) {
+  if (curSortCol === col) {
+    curSortDir = curSortDir === 'desc' ? 'asc' : 'desc';
+  } else {
+    curSortCol = col;
+    curSortDir = 'desc';
+  }
+  applySortFiltered();
   renderPage(1);
 }
 
@@ -317,7 +369,7 @@ function renderPage(page){
     html += '<tr'+(isActive?' class="alarm-row-active"':'')+'>'
           + '<td>'+(start+i+1)+'</td>'
           + '<td style="font-size:12px;font-family:monospace">'+(r.occurTime||'-')+'</td>'
-          + '<td><span style="font-family:monospace;font-size:11px">'+esc(r.plcId||'-')+'</span></td>'
+          + '<td><span style="font-size:12px;font-weight:600">'+esc(plcLabel(r.plcId))+'</span></td>'
           + '<td style="font-weight:600">'+esc(r.tagName||'-')+'</td>'
           + '<td>'+esc(r.alarmMsg||'-')+'</td>'
           + '<td style="font-family:monospace;font-size:12px">'+(r.valueAtOccur!=null?r.valueAtOccur:'-')+'</td>'

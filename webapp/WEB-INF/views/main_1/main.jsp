@@ -215,6 +215,37 @@ html, body { height: 100%; font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
 /* iframe 영역 */
 .frame-wrap { flex: 1; overflow: hidden; }
 .frame-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
+
+/* ── AUTO 키오스크 전용 헤더 ── */
+.kiosk-bar {
+  height:62px; flex-shrink:0; display:none;
+  background:linear-gradient(90deg,#1a2744,#162040);
+  border-bottom:2px solid #2d4a7a;
+  align-items:center; justify-content:space-between;
+  padding:0 22px; position:relative;
+}
+.kiosk-bar.active { display:flex; }
+.k-left  { display:flex; align-items:center; gap:12px; }
+.k-right { display:flex; align-items:center; gap:10px; }
+.k-dot {
+  width:11px; height:11px; border-radius:50%; background:#38A169; flex-shrink:0;
+  animation:kpulse 1.4s ease-in-out infinite;
+}
+@keyframes kpulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+.k-name { font-size:18px; font-weight:800; color:#fff; letter-spacing:1.2px; }
+.k-time { font-size:16px; font-weight:700; color:#90CDF4; min-width:80px; text-align:right; }
+.k-divider { width:1px; height:28px; background:rgba(255,255,255,.18); margin:0 2px; }
+.k-btn {
+  padding:6px 16px; border-radius:14px;
+  background:rgba(255,255,255,.12); color:#fff;
+  border:1px solid rgba(255,255,255,.22);
+  font-size:13px; font-weight:700; cursor:pointer; transition:background .13s;
+}
+.k-btn:hover { background:rgba(255,255,255,.24); }
+.k-btn.stop { background:rgba(220,38,38,.22); border-color:rgba(220,38,38,.4); }
+.k-btn.stop:hover { background:rgba(220,38,38,.45); }
+.k-progress { position:absolute; bottom:0; left:0; right:0; height:3px; background:rgba(255,255,255,.08); }
+.k-progress-fill { height:100%; width:0%; background:#38A169; }
 </style>
 </head>
 <body>
@@ -302,8 +333,8 @@ html, body { height: 100%; font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
         <span class="sb-group-chevron">▼</span>
       </div>
       <div class="sb-group-body open">
-        <a class="sb-item" href="#" onclick="go('${pageContext.request.contextPath}/main_1/calib/status','보정현황',this);return false;">
-          <div class="sb-icon">🌡️</div><span class="sb-label">보정현황</span>
+        <a class="sb-item" href="#" onclick="go('${pageContext.request.contextPath}/main_1/calib/status','정기보전',this);return false;">
+          <div class="sb-icon">🔧</div><span class="sb-label">정기보전</span>
         </a>
         <a class="sb-item" href="#" onclick="go('${pageContext.request.contextPath}/main_1/inspect/daily','일상점검일지',this);return false;">
           <div class="sb-icon">📋</div><span class="sb-label">일상점검일지</span>
@@ -404,12 +435,29 @@ html, body { height: 100%; font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
       </div>
     </header>
 
+    <!-- AUTO 전용 헤더 (평소엔 숨김) -->
+    <div class="kiosk-bar" id="kioskBar">
+      <div class="k-left">
+        <div class="k-dot"></div>
+        <div class="k-name" id="kName">AUTO</div>
+      </div>
+      <div class="k-right">
+        <div class="k-time" id="kTime">--:--:--</div>
+        <div class="k-divider"></div>
+        <button class="k-btn" onclick="toggleKioskFs()">⛶ 전체화면</button>
+        <button class="k-btn stop" onclick="stopAutoKiosk()">&#9646; 종료</button>
+      </div>
+      <div class="k-progress"><div class="k-progress-fill" id="kBar"></div></div>
+    </div>
+
     <div class="frame-wrap">
       <iframe id="pageFrame" src="${pageContext.request.contextPath}/main_1/equip/monitor" allowfullscreen allow="fullscreen"></iframe>
     </div>
   </div>
 
 </div>
+
+
 <script>
 function go(url, title, el) {
   document.getElementById('pageFrame').src = url;
@@ -468,16 +516,57 @@ function doLogout(){
 }
 
 /* ── AUTO 키오스크 ── */
-var _autoRunning = false;
-var _autoTimer   = null;
-var _autoIdx     = 0;
-var AUTO_KIOSK_URLS = [
-  '${pageContext.request.contextPath}/main_1/main/monitor',
-  '${pageContext.request.contextPath}/main_1/main/monitor2',
-  '${pageContext.request.contextPath}/main_1/work/now1',
-  '${pageContext.request.contextPath}/main_1/work/now2',
-  '${pageContext.request.contextPath}/main_1/work/list'
+var _autoRunning    = false;
+var _autoTimer      = null;
+var _autoIdx        = 0;
+var _autoSavedSrc   = '';
+var _autoSavedTitle = '';
+var _autoRafId      = null;
+var _autoBarStart   = null;
+var _autoClockTimer = null;
+var AUTO_KIOSK_PAGES = [
+  { url:'${pageContext.request.contextPath}/main_1/main/monitor',  name:'OVERVIEW-1' },
+  { url:'${pageContext.request.contextPath}/main_1/main/monitor2', name:'OVERVIEW-2' },
+  { url:'${pageContext.request.contextPath}/main_1/work/now1',     name:'현재 작업-1' },
+  { url:'${pageContext.request.contextPath}/main_1/work/now2',     name:'현재 작업-2' },
+  { url:'${pageContext.request.contextPath}/main_1/work/list',     name:'작업 목록'   }
 ];
+var AUTO_KIOSK_URLS = AUTO_KIOSK_PAGES.map(function(p){ return p.url; });
+
+function _autoShowPage(i) {
+  var p = AUTO_KIOSK_PAGES[i];
+  document.getElementById('pageFrame').src = p.url;
+  document.getElementById('kName').textContent = p.name;
+  _startKioskBar();
+}
+
+function _startKioskBar() {
+  if (_autoRafId) cancelAnimationFrame(_autoRafId);
+  _autoBarStart = null;
+  var fill = document.getElementById('kBar');
+  fill.style.width = '0%';
+  function step(ts) {
+    if (!_autoBarStart) _autoBarStart = ts;
+    var pct = Math.min((ts - _autoBarStart) / 10000 * 100, 100);
+    fill.style.width = pct + '%';
+    if (pct < 100) _autoRafId = requestAnimationFrame(step);
+  }
+  _autoRafId = requestAnimationFrame(step);
+}
+
+function _kioskTick() {
+  var d = new Date(), p = function(n){ return String(n).padStart(2,'0'); };
+  document.getElementById('kTime').textContent =
+    p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds());
+}
+
+function toggleKioskFs() {
+  if (!document.fullscreenElement) {
+    try { document.documentElement.requestFullscreen().catch(function(){}); } catch(e) {}
+  } else {
+    try { document.exitFullscreen(); } catch(e) {}
+  }
+}
 
 function startAutoKiosk() {
   if (_autoRunning) return;
@@ -485,29 +574,55 @@ function startAutoKiosk() {
   _autoIdx = 0;
   var frame = document.getElementById('pageFrame');
 
-  /* pageFrame 자체를 fullscreen → 사이드바/헤더 자동 가려짐 */
-  if (frame.requestFullscreen)            frame.requestFullscreen().catch(function(){});
-  else if (frame.webkitRequestFullscreen) frame.webkitRequestFullscreen();
+  _autoSavedSrc   = frame.src;
+  _autoSavedTitle = document.getElementById('pageTitle').textContent;
 
-  /* 첫 페이지 로드 */
-  frame.src = AUTO_KIOSK_URLS[0];
+  /* 일반 헤더 숨김, 키오스크 헤더 표시 */
+  document.querySelector('.topbar').style.display = 'none';
+  document.getElementById('sidebar').style.display = 'none';
+  document.getElementById('kioskBar').classList.add('active');
+
+  /* 시계 시작 */
+  _kioskTick();
+  _autoClockTimer = setInterval(_kioskTick, 1000);
+
+  /* 전체화면 요청 */
+  try {
+    if (document.documentElement.requestFullscreen)
+      document.documentElement.requestFullscreen().catch(function(){});
+    else if (document.documentElement.webkitRequestFullscreen)
+      document.documentElement.webkitRequestFullscreen();
+  } catch(e) {}
+
+  /* 첫 페이지 */
+  _autoShowPage(0);
 
   /* 10초마다 순환 */
   _autoTimer = setInterval(function() {
-    _autoIdx = (_autoIdx + 1) % AUTO_KIOSK_URLS.length;
-    document.getElementById('pageFrame').src = AUTO_KIOSK_URLS[_autoIdx];
+    _autoIdx = (_autoIdx + 1) % AUTO_KIOSK_PAGES.length;
+    _autoShowPage(_autoIdx);
   }, 10000);
 
-  /* ESC로 전체화면 해제 시 자동 정지 */
   document.addEventListener('fullscreenchange', _onFscChange);
 }
 
 function stopAutoKiosk() {
   _autoRunning = false;
-  if (_autoTimer) { clearInterval(_autoTimer); _autoTimer = null; }
+  if (_autoTimer)      { clearInterval(_autoTimer);      _autoTimer = null; }
+  if (_autoClockTimer) { clearInterval(_autoClockTimer); _autoClockTimer = null; }
+  if (_autoRafId)      { cancelAnimationFrame(_autoRafId); _autoRafId = null; }
   document.removeEventListener('fullscreenchange', _onFscChange);
-  try { if (document.exitFullscreen) document.exitFullscreen(); } catch(e) {}
-  document.getElementById('pageFrame').src = AUTO_KIOSK_URLS[0];
+  try { if (document.fullscreenElement) document.exitFullscreen(); } catch(e) {}
+
+  /* 키오스크 헤더 숨김, 일반 헤더 복구 */
+  document.getElementById('kioskBar').classList.remove('active');
+  document.getElementById('sidebar').style.display = '';
+  document.querySelector('.topbar').style.display  = '';
+
+  /* 이전 페이지 복구 */
+  var frame = document.getElementById('pageFrame');
+  frame.src = _autoSavedSrc || AUTO_KIOSK_URLS[0];
+  document.getElementById('pageTitle').textContent = _autoSavedTitle || '메인 모니터링';
 }
 
 function _onFscChange() {

@@ -48,6 +48,14 @@
 .chart-box-title { font-size:12px; font-weight:700; color:var(--muted); margin-bottom:12px; }
 
 .loading-msg { text-align:center; padding:40px; color:var(--muted); font-size:13px; }
+.range-box { display:none; align-items:center; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
+.range-box.show { display:flex; }
+.range-input {
+  padding:6px 10px; border:1px solid var(--border); border-radius:8px;
+  font-size:12px; font-weight:700; color:var(--text); outline:none;
+  font-family:'Malgun Gothic','맑은 고딕',sans-serif;
+}
+.range-input:focus { border-color:var(--primary); }
 </style>
 <body>
 <div class="page-wrap">
@@ -58,7 +66,7 @@
     </div>
     <div style="display:flex;gap:8px;align-items:center">
       <span style="font-size:11px;color:var(--muted)" id="lastUpdate"></span>
-      <button class="btn-primary" onclick="loadData()">🔄 새로고침</button>
+      <button class="btn-primary" onclick="curPeriod==='range'?loadDataRange():loadData()">🔄 새로고침</button>
     </div>
   </div>
 
@@ -67,6 +75,13 @@
     <button class="tab-btn" onclick="setPeriod('week',this)">이번 주</button>
     <button class="tab-btn active" onclick="setPeriod('month',this)">이번 달</button>
     <button class="tab-btn" onclick="setPeriod('all',this)">전체</button>
+    <button class="tab-btn" onclick="setPeriod('range',this)">기간 지정</button>
+  </div>
+  <div class="range-box" id="rangeBox">
+    <input type="date" class="range-input" id="fromDate">
+    <span style="color:var(--muted);font-weight:700">~</span>
+    <input type="date" class="range-input" id="toDate">
+    <button class="btn-primary" onclick="loadDataRange()">조회</button>
   </div>
 
   <!-- KPI 미니 -->
@@ -140,11 +155,12 @@ function periodStart(p){
   if(p==='day'){   d.setHours(0,0,0,0); }
   else if(p==='week'){  var day=d.getDay(); d.setDate(d.getDate()-day); d.setHours(0,0,0,0); }
   else if(p==='month'){ d.setDate(1); d.setHours(0,0,0,0); }
-  else return null; // 'all'
+  else return null; // 'all', 'range'
   return d;
 }
 
 function filterByPeriod(data, p){
+  if(p==='range') return data; // 서버에서 이미 필터링
   var start = periodStart(p);
   if(!start) return data;
   return data.filter(function(r){
@@ -198,7 +214,35 @@ function setPeriod(p, btn){
   curPeriod = p;
   document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
   if(btn) btn.classList.add('active');
-  renderAll();
+  var rb = document.getElementById('rangeBox');
+  if(p === 'range'){
+    rb.classList.add('show');
+    /* 기간 탭은 조회 버튼을 눌러야 로드 */
+  } else {
+    rb.classList.remove('show');
+    renderAll();
+  }
+}
+
+function loadDataRange(){
+  var from = document.getElementById('fromDate').value;
+  var to   = document.getElementById('toDate').value;
+  if(!from || !to){ alert('날짜를 선택하세요'); return; }
+  document.getElementById('lastUpdate').textContent = '로딩 중…';
+  fetch(base + '/alarm/history/range?from=' + encodeURIComponent(from) + '&to=' + encodeURIComponent(to))
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      rawData = Array.isArray(d) ? d : [];
+      renderAll();
+      var now = new Date();
+      document.getElementById('lastUpdate').textContent =
+        from + ' ~ ' + to + ' (' + rawData.length + '건)';
+    })
+    .catch(function(){
+      rawData = [];
+      renderAll();
+      document.getElementById('lastUpdate').textContent = '조회 실패';
+    });
 }
 
 function renderAll(){

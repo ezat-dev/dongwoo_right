@@ -55,11 +55,6 @@ public class CalibServiceImpl implements CalibService {
             c.setDeviation(dev);
         }
 
-        // 상태 자동 계산 (저장 시 최신화)
-        if (c.getNextCalibDt() != null && !c.getNextCalibDt().isEmpty()) {
-            c.setStatus(calcStatus(c.getNextCalibDt()));
-        }
-
         if (calibId > 0) {
             c.setCalibId(calibId);
             calibDao.update(c);
@@ -93,19 +88,5 @@ public class CalibServiceImpl implements CalibService {
     /* ── 유틸 ── */
     private String str(Object o) { return o == null ? "" : o.toString().trim(); }
 
-    private String calcStatus(String nextCalibDt) {
-        try {
-            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
-            Date next = sdf.parse(nextCalibDt);
-            Date today = new Date();
-            long diffMs   = next.getTime() - today.getTime();
-            long diffDays = diffMs / (1000L * 60 * 60 * 24);
-            if (diffDays < 0)       return "초과";
-            if (diffDays <= 7)      return "보정필요";
-            if (diffDays <= 30)     return "보정예정";
-            return "정상";
-        } catch (Exception e) {
-            return "정상";
-        }
-    }
+
 }

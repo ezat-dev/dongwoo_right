@@ -20,6 +20,11 @@ public class WorkListServiceImpl implements WorkListService {
     }
 
     @Override
+    public List<WorkListItem> getAllPendingWorkList() {
+        return workListDao.selectAllPendingWorkList();
+    }
+
+    @Override
     public List<Map<String, Object>> getJacupByRange(String equtCd, String from, String to) {
         Map<String, Object> params = new HashMap<>();
         params.put("equtCd", (equtCd != null && !equtCd.isEmpty()) ? equtCd : null);

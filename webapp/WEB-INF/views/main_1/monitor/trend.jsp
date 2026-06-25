@@ -13,7 +13,7 @@
 /* ══ 레이아웃 ══ */
 .trend-layout {
   display: grid;
-  grid-template-columns: 195px 1fr;
+  grid-template-columns: 185px 1fr;
   gap: 14px;
   align-items: stretch;
   flex: 1;
@@ -68,7 +68,7 @@
 /* ══ 설비 필터 탭 ══ */
 .equip-tabs {
   display: flex; flex-wrap: wrap; gap: 5px;
-  padding: 10px 14px;
+  padding: 5px 12px;
   background: var(--white); border: 1px solid var(--border);
   border-radius: 12px; box-shadow: var(--shadow);
 }
@@ -86,13 +86,13 @@
 .tag-panel .card { flex: 1; display: flex; flex-direction: column; overflow: hidden; margin: 0; min-height: 0; }
 
 /* 패널 탭 */
-.panel-tabs { display: flex; gap: 0; margin-bottom: 10px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); flex-shrink: 0; }
+.panel-tabs { display: flex; flex-direction: column; gap: 0; margin-bottom: 10px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); flex-shrink: 0; }
 .panel-tab {
   flex: 1; padding: 7px 0; border: none; background: var(--white);
   font-size: 12px; font-weight: 700; cursor: pointer; color: var(--muted);
   transition: all .13s;
 }
-.panel-tab:not(:last-child) { border-right: 1px solid var(--border); }
+.panel-tab:not(:last-child) { border-bottom: 1px solid var(--border); }
 .panel-tab.active { background: var(--primary); color: #fff; }
 .panel-tab:hover:not(.active) { background: var(--primary-l); color: var(--primary); }
 
@@ -119,7 +119,7 @@
 .tag-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
 
 /* 로트 패널 */
-.lot-ctrl { display: flex; gap: 6px; align-items: center; margin-bottom: 8px; flex-shrink: 0; }
+.lot-ctrl { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; flex-shrink: 0; }
 .lot-date { flex: 1; padding: 6px 8px; border: 1px solid var(--border); border-radius: 7px; font-size: 12px; outline: none; }
 .lot-date:focus { border-color: var(--primary); }
 .lot-load-btn { padding: 6px 12px; border-radius: 7px; border: none; background: var(--primary); color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
@@ -276,9 +276,10 @@ body { font-family: 'Pretendard','Noto Sans KR','Segoe UI',sans-serif; }
 
 
   <!-- KPI 카드 행 (상단) -->
-  <div class="kpi-cards" id="kpiCards" style="margin-bottom:10px;flex-shrink:0"></div>
-
-  <!-- 설비 탭 -->
+  <div id="kpiWrap" style="flex-shrink:0;display:none">
+    <div class="kpi-cards" id="kpiCards" style="margin-bottom:6px"></div>
+  </div>
+  <!-- 설비 탭 + KPI 토글 (같은 행) -->
   <div class="equip-tabs" style="margin-bottom:10px;flex-shrink:0">
     <span style="font-size:11px;font-weight:700;color:var(--muted);align-self:center;margin-right:4px">설비</span>
     <button class="equip-btn active" onclick="setEquip('ALL',this)">ALL</button>
@@ -294,6 +295,14 @@ body { font-family: 'Pretendard','Noto Sans KR','Segoe UI',sans-serif; }
     <button class="equip-btn" onclick="setEquip('BCF10',this)">BCF10</button>
     <button class="equip-btn" onclick="setEquip('BCF11',this)">BCF11</button>
     <button class="equip-btn" onclick="setEquip('BCF12',this)">BCF12</button>
+    <button id="kpiToggleBtn" onclick="toggleKpi()"
+      style="margin-left:auto;padding:2px 10px;border-radius:6px;border:1px solid var(--border);
+             background:var(--white);font-size:11px;font-weight:700;color:var(--muted);
+             cursor:pointer;transition:all .13s;white-space:nowrap"
+      onmouseover="this.style.borderColor='var(--primary)';this.style.color='var(--primary)'"
+      onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">
+      ▼ KPI 펼치기
+    </button>
   </div>
 
   <div class="trend-layout">
@@ -389,8 +398,8 @@ body { font-family: 'Pretendard','Noto Sans KR','Segoe UI',sans-serif; }
   <div class="memo-modal">
     <div class="memo-modal-hd">메모 추가</div>
     <div class="memo-field">
-      <label>시간 (자동 입력)</label>
-      <input type="text" id="memoTimeVal" readonly style="background:var(--bg);color:var(--muted);cursor:default">
+      <label>시간</label>
+      <input type="datetime-local" id="memoTimeVal" step="1">
     </div>
     <div class="memo-field">
       <label>제목 <span style="color:var(--muted);font-weight:400">(최대 10자)</span></label>
@@ -564,26 +573,47 @@ function loadDemoChart() {
   if (mainChart) { mainChart.destroy(); mainChart = null; }
   startCountdown();
 }
+/* ── 기본 선택 태그 판별: 온도PV만 true, SP/CP/C3H8 제외 ── */
+function isDefaultTag(t) {
+  var name = ((t.trendName || t.tagName || t.colName) + '').toLowerCase();
+  var segs = name.split(/[\s\-_]+/);
+  if (segs.some(function(s){ return s === 'sp' || s === 'cp'; })) return false;
+  if (/c3h8/.test(name)) return false;
+  if (/온도/.test(name) && /pv/.test(name)) return true;
+  return false;
+}
+
+function applyDefaultSel(equipId) {
+  Object.keys(selTags).forEach(function(k){ selTags[k] = false; });
+  tags.forEach(function(t){
+    if (getEquipFromTag(t) === equipId) selTags[t.colName] = isDefaultTag(t);
+  });
+  // 매칭 태그가 하나도 없으면 첫 2개 fallback
+  var hasSel = tags.some(function(t){ return selTags[t.colName]; });
+  if (!hasSel) {
+    var cnt = 0;
+    tags.forEach(function(t){
+      if (getEquipFromTag(t) === equipId && cnt < 2) { selTags[t.colName] = true; cnt++; }
+    });
+  }
+}
+
 function initDefaultSelection() {
-  // 태그에서 첫 번째 설비 찾기
   var firstEquip = null;
   tags.forEach(function(t){
     var eq = getEquipFromTag(t);
     if (eq && !firstEquip) firstEquip = eq;
   });
 
-  // 첫 번째 설비 탭 활성화 (ALL 제외)
   curEquip = firstEquip || 'ALL';
   document.querySelectorAll('.equip-btn').forEach(function(b){ b.classList.remove('active'); });
   var targetBtn = document.querySelector('.equip-btn[onclick*="\''+curEquip+'\'"]');
-  if (!targetBtn) targetBtn = document.querySelector('.equip-btn'); // fallback: ALL
+  if (!targetBtn) targetBtn = document.querySelector('.equip-btn');
   if (targetBtn) targetBtn.classList.add('active');
 
-  // 해당 설비 태그 전체 선택
-  Object.keys(selTags).forEach(function(k){ selTags[k] = false; });
-  tags.forEach(function(t){
-    if (getEquipFromTag(t) === curEquip) selTags[t.colName] = true;
-  });
+  if (curEquip !== 'ALL') {
+    applyDefaultSel(curEquip);
+  }
 }
 
 /* ── 설비 필터 ── */
@@ -591,29 +621,17 @@ function setEquip(eq, btn) {
   curEquip = eq;
   document.querySelectorAll('.equip-btn').forEach(function(b){ b.classList.remove('active'); });
   if (btn) btn.classList.add('active');
-  // 해당 설비 태그만 선택
-  tags.forEach(function(t) {
-    var teq = getEquipFromTag(t);
-    if (eq === 'ALL') {
-      selTags[t.colName] = false;
-    } else {
-      selTags[t.colName] = (teq === eq);
-    }
-  });
+
   if (eq === 'ALL') {
-    // ALL이면 첫 설비(ALL 다음) 태그 2개 선택
+    Object.keys(selTags).forEach(function(k){ selTags[k] = false; });
     var firstEquip = null;
     tags.forEach(function(t){
-      var teq2 = getEquipFromTag(t);
-      if (teq2 && !firstEquip) firstEquip = teq2;
+      var teq = getEquipFromTag(t);
+      if (teq && !firstEquip) firstEquip = teq;
     });
-    var cnt = 0;
-    if (firstEquip) {
-      tags.forEach(function(t){
-        var teq2 = getEquipFromTag(t);
-        if (teq2 === firstEquip && cnt < 2) { selTags[t.colName] = true; cnt++; }
-      });
-    }
+    if (firstEquip) applyDefaultSel(firstEquip);
+  } else {
+    applyDefaultSel(eq);
   }
   renderTagList();
   reloadChart();
@@ -819,12 +837,19 @@ function isFlowTag(t) {
   return /flow|gas|유량|n2|nh3|rx|flw|air/.test(name);
 }
 
+/* ── SP 태그 판별 ── */
+function isSpTag(t) {
+  var name = (t.trendName || t.tagName || t.colName || '').toLowerCase();
+  return name.split(/[_\s]+/).indexOf('sp') !== -1;
+}
+
 /* ── 메인 차트 ── */
 function buildMainChart(selList, rows) {
   var series = selList.map(function(t, i) {
     var color  = COLORS[tagIdxOf(t)];
     var isFlow = isFlowTag(t);
     var isCp   = !isFlow && isCpTag(t);
+    var isSp   = isSpTag(t);
     var data = [];
     rows.forEach(function(row) {
       var ts = parseTs(row.record_time || row.recordTime);
@@ -837,6 +862,7 @@ function buildMainChart(selList, rows) {
       data: data, color: color, lineWidth: 2,
       yAxis: isFlow ? 2 : (isCp ? 1 : 0),
       isCp: isCp, isFlow: isFlow,
+      dashStyle: isSp ? 'Dash' : 'Solid',
       marker: { enabled: data.length < 80, radius: 3 },
       states: { hover: { lineWidth: 3 } }
     };
@@ -939,6 +965,15 @@ function buildMainChart(selList, rows) {
 
   // flex 컨테이너 높이 변화 반영
   setTimeout(function(){ if(mainChart) mainChart.reflow(); }, 50);
+}
+
+/* ── KPI 카드 접기/펼치기 ── */
+var kpiOpen = false;
+function toggleKpi() {
+  kpiOpen = !kpiOpen;
+  document.getElementById('kpiWrap').style.display = kpiOpen ? 'block' : 'none';
+  document.getElementById('kpiToggleBtn').textContent = kpiOpen ? '▲ KPI 접기' : '▼ KPI 펼치기';
+  if (mainChart) mainChart.reflow();
 }
 
 /* ── 줌 초기화 ── */
@@ -1218,12 +1253,12 @@ function applyJacupToChart() {
       value: ts, color: '#DD6B20', width: 1.5, dashStyle: 'ShortDash', zIndex: 5,
       label: {
         useHTML: true,
-        text: '<span style="display:inline-block;background:#DD6B20;color:#fff;font-size:10px;font-weight:700;padding:4px 8px;border-radius:5px;line-height:1.6;box-shadow:0 2px 6px rgba(221,107,32,.35)">'
-            + esc(key||'')
-            + (j.CUST_NM   ? '<br><span style="font-weight:600;font-size:9px;opacity:.95">&#127968; ' + esc(j.CUST_NM) + '</span>' : '')
-            + (j.PROD_NM   ? '<br><span style="font-weight:400;font-size:9px;opacity:.92">' + esc(j.PROD_NM) + '</span>' : '')
-            + (j.PROD_NUM  ? '<br><span style="font-weight:400;font-size:9px;opacity:.75">품번 ' + esc(j.PROD_NUM) + '</span>' : '')
-            + (j.EQUT_CD   ? '<br><span style="font-weight:500;font-size:9px;opacity:.75">&#128295; ' + esc(j.EQUT_CD) + '</span>' : '')
+        text: '<span style="display:inline-block;background:#DD6B20;color:#fff;font-size:12px;font-weight:700;padding:5px 10px;border-radius:6px;line-height:1.85;box-shadow:0 2px 8px rgba(221,107,32,.45);letter-spacing:.15px">'
+            + (j.CUST_NM  ? '&#127968; ' + esc(j.CUST_NM) + '<br>' : '')
+            + (j.PROD_NM  ? '<span style="font-size:11px;font-weight:500">' + esc(j.PROD_NM) + '</span><br>' : '')
+            + '<span style="font-size:10px;font-weight:600;opacity:.82;letter-spacing:.3px">' + esc(key||'') + '</span>'
+            /* + (j.PROD_NUM ? ... : '') */
+            /* + (j.EQUT_CD  ? ... : '') */
             + '</span>',
         rotation: 0, align: 'left', x: 3, y: 14
       }
@@ -1242,7 +1277,7 @@ function openMemoModal() {
   var now = new Date();
   var p = function(n){ return String(n).padStart(2,'0'); };
   var ts = now.getFullYear()+'-'+p(now.getMonth()+1)+'-'+p(now.getDate())
-          +' '+p(now.getHours())+':'+p(now.getMinutes())+':'+p(now.getSeconds());
+          +'T'+p(now.getHours())+':'+p(now.getMinutes())+':'+p(now.getSeconds());
   document.getElementById('memoTimeVal').value = ts;
   document.getElementById('memoName').value = '';
   document.getElementById('memoDesc').value = '';
@@ -1257,8 +1292,10 @@ function closeMemoModal() {
 function saveMemo() {
   var name    = document.getElementById('memoName').value.trim();
   var desc    = document.getElementById('memoDesc').value.trim();
-  var regtime = document.getElementById('memoTimeVal').value;
-  if (!name) { alert('메모 제목을 입력하세요'); return; }
+  var rawTime = document.getElementById('memoTimeVal').value;
+  if (!name)    { alert('메모 제목을 입력하세요'); return; }
+  if (!rawTime) { alert('시간을 선택하세요'); return; }
+  var regtime = rawTime.replace('T', ' ') + (rawTime.length === 16 ? ':00' : '');
   fetch(base + '/temp/memo/insert', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

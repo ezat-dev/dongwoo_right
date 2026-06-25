@@ -245,7 +245,7 @@ function cardHeaderHtml(m) {
   var cnt  = m.items ? m.items.length : 0;
   var zero = cnt === 0 ? ' zero' : '';
   return '<div class="machine-card-header">' +
-    '<div class="machine-name">' + m.machineTag + '(' + m.equtCd + ')</div>' +
+    '<div class="machine-name">' + m.machineTag + /*'(' + m.equtCd + ')'*/ '</div>' +
     '<span class="item-count' + zero + '">' + cnt + '건</span>' +
   '</div>';
 }

@@ -59,13 +59,9 @@
 .fl-session:hover  { border-color: var(--primary); background: #EBF8FF !important; }
 .fl-session.active { border-color: var(--primary); background: #EBF8FF !important; }
 
-/* 날짜별 색 구분 (6색 순환) */
-.fl-date-c0 { background: #F0FFF4; border-color: #9AE6B4; }
-.fl-date-c1 { background: #FFF5F5; border-color: #FEB2B2; }
-.fl-date-c2 { background: #FFFBEB; border-color: #FBD38D; }
-.fl-date-c3 { background: #F3E8FF; border-color: #D6BCFA; }
-.fl-date-c4 { background: #E6FFFA; border-color: #81E6D9; }
-.fl-date-c5 { background: #FFF0D6; border-color: #F6AD55; }
+/* 날짜별 색 구분 (회색/흰색 교번) */
+.fl-date-c0 { background: #F4F4F4; border-color: #DCDCDC; }
+.fl-date-c1 { background: #FFFFFF; border-color: var(--border); }
 
 .fl-session-row1 { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
 .fl-equip-badge  {
@@ -187,6 +183,7 @@ var ROOT = '<%=request.getContextPath()%>';
   var s  = yy + '-' + mm + '-' + dd;
   document.getElementById('fromDate').value = s;
   document.getElementById('toDate').value   = s;
+  loadSessions();
 })();
 
 /* ─── 세션 조회 ─── */
@@ -216,7 +213,7 @@ function loadSessions() {
       list.forEach(function(s) {
         var dateOnly = String(s.startTime).substring(0, 10);
         if (dateOnly !== lastDate) {
-          if (lastDate !== '') colorIdx = (colorIdx + 1) % 6;
+          if (lastDate !== '') colorIdx = (colorIdx + 1) % 2;
           lastDate = dateOnly;
         }
         el.appendChild(buildSession(s, colorIdx));
@@ -354,8 +351,13 @@ async function exportExcel() {
 
       btn.textContent = '생성 중 (' + num + '/12)';
 
-      /* 헤더 행 */
-      var rows = [['호기', '세션 시작', '세션 종료', '태그명', '알람 메시지', '발생 시각', '해제 시각']];
+      /* 제목 / 조회기간 / 빈줄 / 컬럼헤더 */
+      var rows = [
+        ['F/PROOF LIST - ' + sheetName, '', '', '', '', '', ''],
+        ['조회기간: ' + from + ' ~ ' + to,  '', '', '', '', '', ''],
+        [],
+        ['호기', '세션 시작', '세션 종료', '태그명', '알람 메시지', '발생 시각', '해제 시각']
+      ];
 
       if (plcSessions.length === 0) {
         rows.push([sheetName, '-', '-', '(세션 없음)', '', '', '']);
@@ -388,6 +390,10 @@ async function exportExcel() {
       }
 
       var ws = XLSX.utils.aoa_to_sheet(rows);
+      ws['!merges'] = [
+        {s:{r:0,c:0}, e:{r:0,c:6}},
+        {s:{r:1,c:0}, e:{r:1,c:6}}
+      ];
       ws['!cols'] = [
         {wch: 8},   /* 호기 */
         {wch: 21},  /* 세션 시작 */
