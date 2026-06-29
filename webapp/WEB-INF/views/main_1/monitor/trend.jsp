@@ -244,6 +244,24 @@
 .memo-pill-del { margin-left: 3px; color: var(--muted); font-size: 14px; line-height: 1; cursor: pointer; font-weight: 400; }
 .memo-pill-del:hover { color: var(--red); }
 
+/* 차트 라벨 반투명 */
+.cht-jacup-lbl {
+  display: inline-block;
+  background: rgba(221,107,32,0.45) !important;
+  backdrop-filter: blur(2px);
+  color: #fff; font-size: 12px; font-weight: 700;
+  padding: 5px 10px; border-radius: 6px; line-height: 1.85;
+  box-shadow: 0 2px 8px rgba(221,107,32,.45); letter-spacing: .15px;
+}
+.cht-memo-lbl {
+  display: inline-block;
+  background: rgba(128,90,213,0.15) !important;
+  backdrop-filter: blur(2px);
+  color: #fff; font-size: 10px; font-weight: 700;
+  padding: 4px 8px; border-radius: 5px; line-height: 1.6;
+  box-shadow: 0 2px 6px rgba(128,90,213,.35);
+}
+
 /* 메모 모달 */
 .memo-overlay {
   position: fixed; inset: 0; background: rgba(0,0,0,.45);
@@ -265,6 +283,9 @@
 .memo-field input:focus, .memo-field textarea:focus { border-color: var(--primary); }
 .memo-field textarea { resize: vertical; min-height: 70px; }
 .memo-modal-btns { display: flex; gap: 8px; justify-content: flex-end; margin-top: 18px; }
+
+/* card 패딩 오버라이드 */
+.card { padding: 12px 9px; }
 
 /* readability override */
 body { font-family: 'Pretendard','Noto Sans KR','Segoe UI',sans-serif; }
@@ -439,6 +460,7 @@ var curFrom    = '';
 var curTo      = '';
 var jacups      = [];
 var jacupVisible = {};
+var chartRows    = [];
 
 var EQUT_MAP = {
   'BCF1': '2420M001', 'BCF2': '2420M002', 'BCF3': '2420M003',
@@ -573,14 +595,11 @@ function loadDemoChart() {
   if (mainChart) { mainChart.destroy(); mainChart = null; }
   startCountdown();
 }
-/* ── 기본 선택 태그 판별: 온도PV만 true, SP/CP/C3H8 제외 ── */
+/* ── 기본 선택 태그 판별: SP/CP 제외 전체 선택 ── */
 function isDefaultTag(t) {
   var name = ((t.trendName || t.tagName || t.colName) + '').toLowerCase();
   var segs = name.split(/[\s\-_]+/);
-  if (segs.some(function(s){ return s === 'sp' || s === 'cp'; })) return false;
-  if (/c3h8/.test(name)) return false;
-  if (/온도/.test(name) && /pv/.test(name)) return true;
-  return false;
+  return !segs.some(function(s){ return s === 'sp'; });
 }
 
 function applyDefaultSel(equipId) {
@@ -655,7 +674,7 @@ function renderTagList() {
     // 검색 필터
     if (q && !displayName.toLowerCase().includes(q) && !subName.toLowerCase().includes(q) && !(t.address||'').toLowerCase().includes(q)) return;
     var isSel = selTags[t.colName];
-    var color = COLORS[i % COLORS.length];
+    var color = tagColor(t);
     html += '<div class="tag-item'+(isSel?' sel':'')+'" id="ti_'+t.colName+'"'
           + ' onclick="toggleTag(\''+t.colName+'\')">'
           + '<div class="tag-dot" style="background:'+color+'"></div>'
@@ -749,6 +768,7 @@ function reloadChart() {
     .then(function(rows){
       console.log('[trend] /temp/snapshot/range rows', rows ? rows.length : rows, rows && rows[0]);
       if (!Array.isArray(rows)) rows = [];
+      chartRows = rows;
       buildKpiCards(selList, rows);
       buildMainChart(selList, rows);
       loadMemos(curFrom, curTo);
@@ -789,13 +809,40 @@ function getSnapshotValue(row, t) {
 function buildKpiCards(selList, rows) {
   var html = '';
   selList.forEach(function(t, i) {
+    var isFlow = isFlowTag(t);
     var vals = rows.map(function(row){
-      return parseFloat(getSnapshotValue(row, t));
+      var v = parseFloat(getSnapshotValue(row, t));
+      var kpiTagName = (t.trendName || t.tagName || t.colName || '').toLowerCase();
+      if (isFlow && !isNaN(v)) {
+        if (v > 30000) { v = NaN; }
+        else {
+          var kpiBcf5 = /[_\-]5([_\-]|$)/.test(kpiTagName);
+          var kpiBcf7 = /[_\-]7([_\-]|$)/.test(kpiTagName);
+          var kpiBcf8 = /[_\-]8([_\-]|$)/.test(kpiTagName);
+          var kpiBcf9 = /[_\-]9([_\-]|$)/.test(kpiTagName);
+          var kpiBcf10 = /[_\-]10([_\-]|$)/.test(kpiTagName);
+          var kpiBcf11 = /[_\-]11([_\-]|$)/.test(kpiTagName);
+          var kpiBcf12 = /[_\-]12([_\-]|$)/.test(kpiTagName);
+          v = /c3h8/.test(kpiTagName) ? (kpiBcf7 ? v / 200 : (kpiBcf5 || kpiBcf8 || kpiBcf10 || kpiBcf11) ? v * 0.00125 : kpiBcf9 ? v * 0.0049 : kpiBcf12 ? v * 0.2 : (v / 1000) * 3.1) : (v >= 1000 ? v / 1000 : v / 100);
+        }
+      }
+      if (!isNaN(v) && /cp.*pv|pv.*cp/.test(kpiTagName) && /[_\-]7([_\-]|$)/.test(kpiTagName)) {
+        v = v * 2;
+      }
+      if (!isNaN(v) && /유조.*pv|pv.*유조|침탄.*pv|pv.*침탄/.test(kpiTagName) && /[_\-]8([_\-]|$)/.test(kpiTagName)) {
+        v = v / 10;
+      }
+      if (!isNaN(v) && /cp.*pv|pv.*cp/.test(kpiTagName) && /[_\-]9([_\-]|$)/.test(kpiTagName) && v >= 60) {
+        v = 0;
+      }
+      if (!isNaN(v) && /nh3/.test(kpiTagName) && /[_\-]9([_\-]|$)/.test(kpiTagName)) {
+        v = v / 100;
+      }
+      return v;
     }).filter(function(v){ return !isNaN(v); });
 
-    var color  = COLORS[tagIdxOf(t)];
+    var color  = tagColor(t);
     var name   = esc(t.trendName || t.tagName || t.colName);
-    var isFlow = isFlowTag(t);
     var cp     = !isFlow && isCpTag(t);
     var dec    = cp ? 3 : (isFlow ? 2 : 1);
 
@@ -834,7 +881,7 @@ function isCpTag(t) {
 /* ── 유량 태그 판별 (tagName/trendName/colName 에 유량 관련 키워드 포함) ── */
 function isFlowTag(t) {
   var name = (t.trendName || t.tagName || t.colName || '').toLowerCase();
-  return /flow|gas|유량|n2|nh3|rx|flw|air/.test(name);
+  return /flow|gas|유량|n2|nh3|rx|flw|air|c3h8/.test(name);
 }
 
 /* ── SP 태그 판별 ── */
@@ -846,21 +893,46 @@ function isSpTag(t) {
 /* ── 메인 차트 ── */
 function buildMainChart(selList, rows) {
   var series = selList.map(function(t, i) {
-    var color  = COLORS[tagIdxOf(t)];
+    var color  = tagColor(t);
     var isFlow = isFlowTag(t);
     var isCp   = !isFlow && isCpTag(t);
     var isSp   = isSpTag(t);
+    var isC3h8 = isFlow && /c3h8/.test((t.trendName || t.tagName || t.colName || '').toLowerCase());
     var data = [];
     rows.forEach(function(row) {
       var ts = parseTs(row.record_time || row.recordTime);
       if (!ts) return;
       var v = parseFloat(getSnapshotValue(row, t));
+      var tName = (t.trendName || t.tagName || t.colName || '').toLowerCase();
+      if (isFlow && !isNaN(v)) {
+        if (v > 30000) return;
+        var isBcf5 = /[_\-]5([_\-]|$)/.test(tName);
+        var isBcf7 = /[_\-]7([_\-]|$)/.test(tName);
+        var isBcf8 = /[_\-]8([_\-]|$)/.test(tName);
+        var isBcf9 = /[_\-]9([_\-]|$)/.test(tName);
+        var isBcf10 = /[_\-]10([_\-]|$)/.test(tName);
+        var isBcf11 = /[_\-]11([_\-]|$)/.test(tName);
+        var isBcf12 = /[_\-]12([_\-]|$)/.test(tName);
+        v = /c3h8/.test(tName) ? (isBcf7 ? v / 200 : (isBcf5 || isBcf8 || isBcf10 || isBcf11) ? v * 0.00125 : isBcf9 ? v * 0.0049 : isBcf12 ? v * 0.2 : (v / 1000) * 3.1) : (v >= 1000 ? v / 1000 : v / 100);
+      }
+      if (!isNaN(v) && /cp.*pv|pv.*cp/.test(tName) && /[_\-]7([_\-]|$)/.test(tName)) {
+        v = v * 2;
+      }
+      if (!isNaN(v) && /유조.*pv|pv.*유조|침탄.*pv|pv.*침탄/.test(tName) && /[_\-]8([_\-]|$)/.test(tName)) {
+        v = v / 10;
+      }
+      if (!isNaN(v) && /cp.*pv|pv.*cp/.test(tName) && /[_\-]9([_\-]|$)/.test(tName) && v >= 60) {
+        v = 0;
+      }
+      if (!isNaN(v) && /nh3/.test(tName) && /[_\-]9([_\-]|$)/.test(tName)) {
+        v = v / 100;
+      }
       if (!isNaN(v)) data.push([ts, v]);
     });
     return {
       name: t.trendName || t.tagName || t.colName,
       data: data, color: color, lineWidth: 2,
-      yAxis: isFlow ? 2 : (isCp ? 1 : 0),
+      yAxis: isC3h8 ? 2 : ((isFlow || isCp) ? 1 : 0),
       isCp: isCp, isFlow: isFlow,
       dashStyle: isSp ? 'Dash' : 'Solid',
       marker: { enabled: data.length < 80, radius: 3 },
@@ -870,8 +942,14 @@ function buildMainChart(selList, rows) {
 
   document.getElementById('btnZoomReset').classList.remove('visible');
 
+  var yAxisCfg = [
+    { min: 0, max: 1000, tickInterval: 50,  endOnTick: false, maxPadding: 0 },
+    { min: 0, max: 2.0,  tickInterval: 0.1, endOnTick: false, maxPadding: 0 },
+    { min: 0, max: 10,   tickInterval: 1,   endOnTick: false, maxPadding: 0 }
+  ];
+
   if (mainChart) {
-    mainChart.update({ series: series }, true, true);
+    mainChart.update({ series: series, yAxis: yAxisCfg }, true, true);
     attachAltDragAvg(selList, rows);
     applyJacupToChart();
     return;
@@ -901,32 +979,17 @@ function buildMainChart(selList, rows) {
       labels: { format: '{value:%m/%d %H:%M}', style: { fontSize:'11px', color:'#8899bb' } },
       crosshair: { color: 'rgba(96,165,250,.4)' }
     },
-    yAxis: [
-      {
-        /* 좌측: 온도  0~1000°C */
+    yAxis: yAxisCfg.map(function(cfg, i) {
+      var base = {
         title: { text: null },
-        min: 0, max: 1000, tickInterval: 50,
-        gridLineColor: '#1a2840',
-        labels: { format: '{value}', style: { fontSize:'10px', color:'#8899bb' } },
-        opposite: false
-      },
-      {
-        /* 우측1: CP  0~2.0 */
-        title: { text: null },
-        min: 0, softMax: 2.0, tickInterval: 0.1,
-        gridLineColor: 'transparent',
-        labels: { format: '{value:.2f}', style: { fontSize:'10px', color:'#4ADE80' } },
-        opposite: true
-      },
-      {
-        /* 우측2: 유량  0~10 */
-        title: { text: null },
-        min: 0, max: 10, tickInterval: 0.5,
-        gridLineColor: 'transparent',
-        labels: { format: '{value:.1f}', style: { fontSize:'10px', color:'#22D3EE' } },
-        opposite: true
-      }
-    ],
+        gridLineColor: i === 0 ? '#1a2840' : 'transparent',
+        opposite: i !== 0
+      };
+      if (i === 0)      base.labels = { format: '{value}',     style: { fontSize:'10px', color:'#8899bb' } };
+      else if (i === 1) base.labels = { format: '{value:.2f}', style: { fontSize:'10px', color:'#4ADE80' } };
+      else              base.labels = { format: '{value:.1f}', style: { fontSize:'10px', color:'#22D3EE' } };
+      return Object.assign({}, cfg, base);
+    }),
     tooltip: {
       shared: true,
       backgroundColor: '#0d1628',
@@ -1051,7 +1114,7 @@ function showAvgResult(selList, rows, t0, t1) {
     var vals = inRange.map(function(row){ return parseFloat(getSnapshotValue(row, t)); }).filter(function(v){ return !isNaN(v); });
     if (!vals.length) return null;
     var sum = vals.reduce(function(a,b){return a+b;},0);
-    return { name: t.tagName||t.colName, color: COLORS[tagIdxOf(t)], avg: sum/vals.length,
+    return { name: t.tagName||t.colName, color: tagColor(t), avg: sum/vals.length,
              min: Math.min.apply(null,vals), max: Math.max.apply(null,vals), cnt: vals.length };
   }).filter(Boolean);
 
@@ -1074,6 +1137,15 @@ function showAvgResult(selList, rows, t0, t1) {
 }
 
 function tagIdxOf(t) { var i = tags.indexOf(t); return i >= 0 ? i : 0; }
+
+function tagColor(t) {
+  var name = (t.trendName || t.tagName || t.colName || '').toLowerCase();
+  if (/침탄.*pv|pv.*침탄/.test(name)) return '#F87171';   /* 빨강 */
+  if (/유조.*pv|pv.*유조/.test(name)) return '#4ADE80';   /* 초록 */
+  if (/c3h8/.test(name))              return '#F472B6';   /* 분홍 */
+  if (/cp.*pv|pv.*cp/.test(name))     return '#22D3EE';   /* 하늘 */
+  return COLORS[tagIdxOf(t)];
+}
 
 /* ── 패널 탭 전환 ── */
 var curPanelTab = 'tag';
@@ -1144,6 +1216,8 @@ function renderLotList(rows) {
     var start16  = startRaw.substring(0, 16);
     var end16    = endRaw   ? endRaw.substring(0, 16) : '';
 
+    var isB11 = equtCd === '2420M010';
+
     var div = document.createElement('div');
     div.className = 'lot-row';
     div.id = 'lotRow_' + i;
@@ -1154,7 +1228,8 @@ function renderLotList(rows) {
 
     div.innerHTML = (custNm ? '<div class="lot-prod" style="color:var(--orange);font-weight:700">' + esc(custNm) + '</div>' : '')
       + '<div class="lot-num">' + esc(num) + (equtTag ? ' <span style="font-size:10px;font-weight:600;color:var(--primary)">· ' + esc(equtTag) + '</span>' : '') + '</div>'
-      + (prodNm  ? '<div class="lot-prod">' + esc(prodNm) + '</div>' : '');
+      + (prodNm  ? '<div class="lot-prod">' + esc(prodNm) + '</div>' : '')
+      + (isB11   ? '<div class="lot-prod" id="kgRow_' + i + '" style="color:var(--primary)">&#9888; 조회 중…</div>' : '');
       /* 하단 2줄 제거: 품번(prodNum), 시간(lot-time) */
 
     div.addEventListener('click', function() { selectLot(this); });
@@ -1163,6 +1238,7 @@ function renderLotList(rows) {
   el.innerHTML = '';
   el.appendChild(frag);
   lotActiveSel = null;
+  loadKgForBcf11Lots(rows);
 }
 
 function selectLot(rowEl) {
@@ -1248,17 +1324,35 @@ function applyJacupToChart() {
     if (jacupVisible[key] === false) return;
     var ts = parseTs(j.START_DTTM);
     if (!ts) return;
+
+    var kgStr = '';
+    if ((j.EQUT_CD || '') === '2420M010' && chartRows.length) {
+      var kgTag = tags.find(function(t){ var c=(t.colName||'').toLowerCase(); return c==='11_kg'||c.indexOf('11_kg')!==-1; });
+      if (kgTag) {
+        var closest = null, minDiff = Infinity;
+        chartRows.forEach(function(row){
+          var rt = parseTs(row.record_time || row.recordTime);
+          if (rt === null) return;
+          var diff = Math.abs(rt - ts);
+          if (diff < minDiff) { minDiff = diff; closest = row; }
+        });
+        if (closest) {
+          var kv = parseFloat(getSnapshotValue(closest, kgTag));
+          if (!isNaN(kv) && kv > 0) kgStr = kv.toFixed(1) + ' kg';
+        }
+      }
+    }
+
     axis.addPlotLine({
       id: 'jacup-' + key,
       value: ts, color: '#DD6B20', width: 1.5, dashStyle: 'ShortDash', zIndex: 5,
       label: {
         useHTML: true,
-        text: '<span style="display:inline-block;background:#DD6B20;color:#fff;font-size:12px;font-weight:700;padding:5px 10px;border-radius:6px;line-height:1.85;box-shadow:0 2px 8px rgba(221,107,32,.45);letter-spacing:.15px">'
+        text: '<span class="cht-jacup-lbl">'
             + (j.CUST_NM  ? '&#127968; ' + esc(j.CUST_NM) + '<br>' : '')
             + (j.PROD_NM  ? '<span style="font-size:11px;font-weight:500">' + esc(j.PROD_NM) + '</span><br>' : '')
             + '<span style="font-size:10px;font-weight:600;opacity:.82;letter-spacing:.3px">' + esc(key||'') + '</span>'
-            /* + (j.PROD_NUM ? ... : '') */
-            /* + (j.EQUT_CD  ? ... : '') */
+            + (kgStr ? '<br><span style="font-size:11px;font-weight:700">&#9878; ' + kgStr + '</span>' : '')
             + '</span>',
         rotation: 0, align: 'left', x: 3, y: 14
       }
@@ -1270,6 +1364,46 @@ function toggleJacup(key) {
   jacupVisible[key] = (jacupVisible[key] === false);
   renderJacupPills();
   applyJacupToChart();
+}
+
+/* ── BCF11 로트 목록에서 시작 시점의 11_kg 값 조회 ── */
+function loadKgForBcf11Lots(lotRows) {
+  lotRows.forEach(function(r, i) {
+    if (lotVal(r, 'EQUT_CD') !== '2420M010') return;
+    var startRaw = lotVal(r, 'START_DTTM');
+    if (!startRaw) return;
+    var startMs = parseTs(startRaw);
+    if (!startMs) return;
+    var fromDt = new Date(startMs - 5 * 60 * 1000);
+    var toDt   = new Date(startMs + 5 * 60 * 1000);
+    var spanId = 'kgRow_' + i;
+    fetch(base + '/temp/snapshot/range?from=' + encodeURIComponent(toSqlDateTime(fromDt))
+        + '&to='   + encodeURIComponent(toSqlDateTime(toDt)))
+      .then(function(res){ return res.json(); })
+      .then(function(snapRows){
+        var el = document.getElementById(spanId);
+        if (!el) return;
+        if (!Array.isArray(snapRows) || !snapRows.length) { el.textContent = ''; return; }
+        var kgTag = tags.find(function(t){ var c=(t.colName||'').toLowerCase(); return c==='11_kg'||c.indexOf('11_kg')!==-1; });
+        var closest = null, minDiff = Infinity;
+        snapRows.forEach(function(row){
+          var rt = parseTs(row.record_time || row.recordTime);
+          if (rt === null) return;
+          var diff = Math.abs(rt - startMs);
+          if (diff < minDiff) { minDiff = diff; closest = row; }
+        });
+        if (!closest) { el.textContent = ''; return; }
+        var v = NaN;
+        if (kgTag) {
+          v = parseFloat(getSnapshotValue(closest, kgTag));
+        } else {
+          v = parseFloat(closest['11_kg'] !== undefined ? closest['11_kg'] : closest['11_KG']);
+        }
+        if (!isNaN(v) && v > 0) el.innerHTML = '&#9878; <b>' + v.toFixed(1) + ' kg</b>';
+        else el.textContent = '';
+      })
+      .catch(function(){ var el = document.getElementById(spanId); if (el) el.textContent = ''; });
+  });
 }
 
 /* ── 메모 ── */
@@ -1363,7 +1497,7 @@ function applyMemosToChart() {
       zIndex: 5,
       label: {
         useHTML: true,
-        text: '<span style="display:inline-block;background:#805AD5;color:#fff;font-size:10px;font-weight:700;padding:4px 8px;border-radius:5px;line-height:1.6;box-shadow:0 2px 6px rgba(128,90,213,.35)">'
+        text: '<span class="cht-memo-lbl">'
             + esc(m.tcName||'')
             + (m.tcDesc ? '<br><span style="font-weight:400;font-size:9px;opacity:.92">' + esc(m.tcDesc) + '</span>' : '')
             + (m.tcUserName ? '<br><span style="font-weight:500;font-size:9px;opacity:.75">&#128100; ' + esc(m.tcUserName) + '</span>' : '')

@@ -290,7 +290,7 @@
   text-align: left;
   padding-left: 4px;
   width: 72px;
-  font-size: 9px;
+  font-size: 10px;
 }
 /* 존 값 박스 */
 .zbox {

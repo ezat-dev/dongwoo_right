@@ -183,6 +183,7 @@
   position: absolute;
   left: 150.87px;
   top: 320.09px;
+  z-index: 1;
 }
 .bcf-12-close-1 {
   background: #02e62c;
@@ -205,6 +206,7 @@
   position: absolute;
   left: 150.87px;
   top: 333.92px;
+  z-index: 1;
 }
 .bcf-12-close-2 {
   background: #02e62c;
@@ -227,6 +229,7 @@
   position: absolute;
   left: 163.84px;
   top: 450.63px;
+  z-index: 1;
 }
 .bcf-12-close-3 {
   background: #02e62c;
@@ -496,6 +499,7 @@
   position: absolute;
   left: 400.72px;
   top: 327.87px;
+  z-index: 1;
 }
 .bcf-1-close-1 {
   background: #02e62c;
@@ -518,6 +522,7 @@
   position: absolute;
   left: 413.69px;
   top: 450.63px;
+  z-index: 1;
 }
 .bcf-1-close-2 {
   background: #02e62c;
@@ -809,6 +814,7 @@
   position: absolute;
   left: 650.56px;
   top: 327.87px;
+  z-index: 1;
 }
 .bcf-2-close-1 {
   background: #02e62c;
@@ -831,6 +837,7 @@
   position: absolute;
   left: 663.53px;
   top: 450.63px;
+  z-index: 1;
 }
 .bcf-2-close-2 {
   background: #02e62c;
@@ -1117,6 +1124,7 @@
   position: absolute;
   left: 900.41px;
   top: 327.87px;
+  z-index: 1;
 }
 .bcf-3-close-1 {
   background: #02e62c;
@@ -1139,6 +1147,7 @@
   position: absolute;
   left: 913.38px;
   top: 450.63px;
+  z-index: 1;
 }
 .bcf-3-close-2 {
   background: #02e62c;
@@ -1425,6 +1434,7 @@
   position: absolute;
   left: 1150.26px;
   top: 327.87px;
+  z-index: 1;
 }
 .bcf-4-close-1 {
   background: #02e62c;
@@ -1447,6 +1457,7 @@
   position: absolute;
   left: 1163.22px;
   top: 450.63px;
+  z-index: 1;
 }
 .bcf-4-close-2 {
   background: #02e62c;
@@ -1733,6 +1744,7 @@
   position: absolute;
   left: 1400.1px;
   top: 327.87px;
+  z-index: 1;
 }
 .bcf-10-close-1 {
   background: #02e62c;
@@ -1755,6 +1767,7 @@
   position: absolute;
   left: 1413.07px;
   top: 450.63px;
+  z-index: 1;
 }
 .bcf-10-close-2 {
   background: #02e62c;
@@ -2041,6 +2054,7 @@
   position: absolute;
   left: 1649.95px;
   top: 320.09px;
+  z-index: 1;
 }
 .bcf-5-close-1 {
   background: #02e62c;
@@ -2063,6 +2077,7 @@
   position: absolute;
   left: 1649.95px;
   top: 333.92px;
+  z-index: 1;
 }
 .bcf-5-close-2 {
   background: #02e62c;
@@ -2085,6 +2100,7 @@
   position: absolute;
   left: 1662.92px;
   top: 450.63px;
+  z-index: 1;
 }
 .bcf-5-close-3 {
   background: #02e62c;

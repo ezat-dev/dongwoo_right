@@ -75,6 +75,60 @@ public class AuxiliaryInspectionController {
         }
     }
 
+    /* ── 점검자 목록 ── */
+    @RequestMapping(value = "/inspector/list", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<?> inspectorList() {
+        try {
+            List<Map<String, Object>> list = sqlSession.selectList("AuxiliaryInspectionMapper.selectInspectors");
+            Map<String, Object> res = ok();
+            res.put("list", list);
+            return ResponseEntity.ok(res);
+        } catch (Exception e) {
+            return ResponseEntity.ok(err("조회 실패: " + e.getMessage()));
+        }
+    }
+
+    /* ── 점검자 추가 ── */
+    @RequestMapping(value = "/inspector/add", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<?> inspectorAdd(@RequestBody Map<String, Object> body) {
+        try {
+            sqlSession.insert("AuxiliaryInspectionMapper.insertInspector", body);
+            return ResponseEntity.ok(ok());
+        } catch (Exception e) {
+            return ResponseEntity.ok(err("추가 실패: " + e.getMessage()));
+        }
+    }
+
+    /* ── 점검자 수정 ── */
+    @RequestMapping(value = "/inspector/update", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<?> inspectorUpdate(@RequestBody Map<String, Object> body) {
+        try {
+            sqlSession.update("AuxiliaryInspectionMapper.updateInspector", body);
+            return ResponseEntity.ok(ok());
+        } catch (Exception e) {
+            return ResponseEntity.ok(err("수정 실패: " + e.getMessage()));
+        }
+    }
+
+    /* ── 점검자 삭제 (soft delete) ── */
+    @RequestMapping(value = "/inspector/delete", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<?> inspectorDelete(@RequestBody Map<String, Object> body) {
+        try {
+            sqlSession.update("AuxiliaryInspectionMapper.deleteInspector", body);
+            return ResponseEntity.ok(ok());
+        } catch (Exception e) {
+            return ResponseEntity.ok(err("삭제 실패: " + e.getMessage()));
+        }
+    }
+
     /* ── 엑셀 다운로드 (A3 가로, 3단 나란히) ── */
     @RequestMapping(value = "/excel", method = RequestMethod.GET)
     public void excel(@RequestParam String date, HttpServletResponse response) throws Exception {
@@ -87,6 +141,15 @@ public class AuxiliaryInspectionController {
         Map<String,String> od = parseJson(rec, "outdoor_data");
         Map<String,String> cd = parseJson(rec, "comp_data");
         Map<String,String> nd = parseJson(rec, "n2gas_data");
+
+        /* 유의사항/특기사항이 비어있으면 템플릿(마지막 저장값)에서 가져오기 */
+        if (notes.isEmpty() || spNotes.isEmpty()) {
+            Map<String, Object> tmpl = sqlSession.selectOne("AuxiliaryInspectionMapper.selectTemplate");
+            if (tmpl != null) {
+                if (notes.isEmpty())   notes   = nvl(tmpl.get("notes"));
+                if (spNotes.isEmpty()) spNotes = nvl(tmpl.get("special_notes"));
+            }
+        }
 
         try (Workbook wb = new XSSFWorkbook()) {
             Sheet sh = wb.createSheet("부대설비점검표");

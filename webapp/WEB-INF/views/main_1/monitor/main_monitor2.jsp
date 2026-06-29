@@ -160,11 +160,11 @@
      animation-play-state: paused;
    }
 
-   .bcf-8-pen-3 { width: 33px; height: 33px; position: absolute; left: 674px; top: 501px; object-fit: cover; aspect-ratio: 1; }
-   .bcf-9-pen-3 { width: 33px; height: 33px; position: absolute; left: 674px; top: 501px; object-fit: cover; aspect-ratio: 1; }
-   .bcf-7-pen-3 { width: 33px; height: 33px; position: absolute; left: 674px; top: 501px; object-fit: cover; aspect-ratio: 1; }
+   .bcf-8-pen-3 { width: 33px; height: 33px; position: absolute; left: 622px; top: 402px; object-fit: cover; aspect-ratio: 1; }
+  .bcf-9-pen-3 { width: 33px; height: 33px; position: absolute; left: 868px; top: 416px; object-fit: cover; aspect-ratio: 1; }
+  .bcf-7-pen-3 { width: 33px; height: 33px; position: absolute; left: 1114px; top: 416px; object-fit: cover; aspect-ratio: 1; }
 
-   /* DT 요소 공통 스타일 */
+  /* DT 요소 공통 스타일 */
    .group-2 [class*="-dt-"] {
      background: #e8f5e9 !important;
      border: 1px solid #a5d6a7 !important;
@@ -342,7 +342,7 @@
       </div>
       <div class="bcf-9">
         <img class="bcf-92" src="<%= ctx %>/img/main_monitor_2/bcf-91.png" />
-        <img class="bcf-9-alarm" src="<%= ctx %>/img/main_monitor_2/bcf-9-alarm0.png" />
+        <img class="bcf-9-alarm bcf9_134" src="<%= ctx %>/img/main_monitor_2/bcf-9-alarm0.png" />
         <img class="bcf-9-moter-off-1" src="<%= ctx %>/img/main_monitor_2/bcf-9-moter-off-10.png" />
         <img class="bcf-9-moter-on-1 bcf9_110 bcf9_111" src="<%= ctx %>/img/main_monitor_2/bcf-9-moter-on-10.png" />
         <img class="bcf-9-moter-off-2" src="<%= ctx %>/img/main_monitor_2/bcf-9-moter-off-20.png" />
@@ -416,7 +416,7 @@
       </div>
       <div class="bcf-6">
         <img class="bcf-62" src="<%= ctx %>/img/main_monitor_2/bcf-61.png" />
-        <img class="bcf-6-alarm" src="<%= ctx %>/img/main_monitor_2/bcf-6-alarm0.png" />
+        <img class="bcf-6-alarm bcf6_40038" src="<%= ctx %>/img/main_monitor_2/bcf-6-alarm0.png" />
         <div class="bcf-6-back-1"></div>
         <div class="bcf-6-back-2"></div>
         <div class="bcf-6-jogging-1 bcf6_303 bcf6_304">조깅</div>

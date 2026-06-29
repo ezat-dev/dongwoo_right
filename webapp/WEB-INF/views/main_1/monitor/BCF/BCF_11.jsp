@@ -154,7 +154,7 @@
   color: #222;
   text-align: left;
   padding-left: 4px;
-  font-size: 9px;
+  font-size: 10px;
   white-space: nowrap;
 }
 

@@ -118,19 +118,47 @@ html, body { touch-action: manipulation; }
 .tb-done-btn:hover { background:#276749; }
 
 /* ── 사진 컬럼 ── */
-.tb-table th.t-photo { min-width:110px; width:110px; }
-.tb-table td.t-photo-cell { padding:6px 8px; text-align:center; vertical-align:middle; }
-.tb-img { width:94px; height:70px; object-fit:cover; border-radius:8px;
-  border:1px solid var(--border); display:block; margin:0 auto; background:var(--bg); }
-.tb-img-none { color:#CBD5E0; font-size:22px; line-height:70px; }
+.tb-table th.t-photo { min-width:170px; width:170px; }
+.tb-table td.t-photo-cell { padding:8px 10px; text-align:center; vertical-align:middle; }
+.tb-img {
+  width:150px; height:112px; object-fit:cover; border-radius:10px;
+  border:2px solid var(--border); display:block; margin:0 auto; background:var(--bg);
+  cursor:zoom-in; transition:transform .12s, box-shadow .12s;
+}
+.tb-img:hover { transform:scale(1.04); box-shadow:0 4px 16px rgba(0,0,0,.18); }
+.tb-img-none { color:#CBD5E0; font-size:28px; line-height:112px; }
+
+/* ── 사진 확대 라이트박스 ── */
+#imgLightbox {
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,.82);
+  z-index:9999; align-items:center; justify-content:center;
+  cursor:zoom-out;
+}
+#imgLightbox.show { display:flex; }
+#imgLightbox img {
+  max-width:92vw; max-height:88vh; border-radius:12px;
+  box-shadow:0 8px 48px rgba(0,0,0,.6); object-fit:contain;
+  pointer-events:none;
+}
+#imgLightbox .lb-close {
+  position:fixed; top:18px; right:22px; color:#fff; font-size:36px;
+  font-weight:300; cursor:zoom-out; line-height:1; user-select:none;
+}
+#imgLightbox .lb-caption {
+  position:fixed; bottom:22px; left:50%; transform:translateX(-50%);
+  color:#fff; font-size:14px; background:rgba(0,0,0,.55);
+  padding:6px 18px; border-radius:20px; pointer-events:none;
+  white-space:nowrap; max-width:80vw; overflow:hidden; text-overflow:ellipsis;
+}
 
 @media (max-width:640px) {
   .tb-nav-title { font-size:16px; }
   .tb-ctrl { flex-direction:column; }
   .tb-signer { flex-direction:column; align-items:flex-start; }
   .tb-table th.t-item { min-width:130px; }
-  .tb-table th.t-photo { min-width:80px; width:80px; }
-  .tb-img { width:68px; height:52px; }
+  .tb-table th.t-photo { min-width:120px; width:120px; }
+  .tb-img { width:104px; height:78px; }
+  .tb-img-none { line-height:78px; }
   .tb-input { height:48px; font-size:17px; }
 }
 </style>
@@ -205,6 +233,13 @@ html, body { touch-action: manipulation; }
   <div class="tb-footer">
     <button class="tb-done-btn" onclick="saveDone()">✅ 점검완료</button>
   </div>
+</div>
+
+<!-- 사진 확대 라이트박스 -->
+<div id="imgLightbox" onclick="closeLightbox()">
+  <span class="lb-close">✕</span>
+  <img id="lbImg" src="" alt="">
+  <div class="lb-caption" id="lbCaption"></div>
 </div>
 
 <script>
@@ -338,7 +373,7 @@ function renderWeek(){
   items.forEach(function(item){
     var results = item.results || {};
     var imgHtml = item.imgFile
-      ? '<img class="tb-img" src="' + base + '/inspect/item/image/' + esc(item.imgFile) + '" alt="' + esc(item.itemName) + '">'
+      ? '<img class="tb-img" src="' + base + '/inspect/item/image/' + esc(item.imgFile) + '" alt="' + esc(item.itemName) + '" onclick="openLightbox(this)">'
       : '<span class="tb-img-none">—</span>';
     html += '<tr><td class="t-name">' + esc(item.itemName) + '</td>'
           + '<td class="t-photo-cell">' + imgHtml + '</td>';
@@ -440,6 +475,19 @@ function showSaved(){
 function esc(s){
   return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
+
+/* ── 사진 확대 라이트박스 ── */
+function openLightbox(img) {
+  document.getElementById('lbImg').src = img.src;
+  document.getElementById('lbCaption').textContent = img.alt || '';
+  document.getElementById('imgLightbox').classList.add('show');
+}
+function closeLightbox() {
+  document.getElementById('imgLightbox').classList.remove('show');
+}
+document.addEventListener('keydown', function(e){
+  if (e.key === 'Escape') closeLightbox();
+});
 </script>
 </body>
 </html>

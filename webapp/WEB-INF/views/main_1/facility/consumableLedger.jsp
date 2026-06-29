@@ -195,6 +195,7 @@ body.tablet-mode .ctrl-bar { gap:14px; }
       <button class="btn-outline" onclick="openOutModal(null)" id="btnOut" data-perm="add">🔧 사용 등록</button>
       <button class="btn-primary" onclick="openEditModal(null)" id="btnAdd" data-perm="add">＋ 항목 추가</button>
       <button class="btn-outline" onclick="doExcel()" id="btnExcel">📥 엑셀 출력</button>
+      <button class="btn-outline" onclick="openInspectorMgr()" style="height:34px">사용자 관리</button>
     </div>
   </div>
 
@@ -362,7 +363,7 @@ body.tablet-mode .ctrl-bar { gap:14px; }
       </div>
       <div class="form-field">
         <label class="form-label">담당자</label>
-        <input class="form-input" type="text" id="inUserName" placeholder="성명" style="width:100%">
+        <select class="form-select" id="inUserName" style="width:100%"><option value="">-- 선택 --</option></select>
       </div>
     </div>
     <div class="modal-actions">
@@ -391,7 +392,7 @@ body.tablet-mode .ctrl-bar { gap:14px; }
       </div>
       <div class="form-field">
         <label class="form-label">담당자</label>
-        <input class="form-input" type="text" id="outUserName" placeholder="성명" style="width:100%">
+        <select class="form-select" id="outUserName" style="width:100%"><option value="">-- 선택 --</option></select>
       </div>
     </div>
     <div class="modal-actions">
@@ -402,13 +403,29 @@ body.tablet-mode .ctrl-bar { gap:14px; }
   </div>
 </div>
 
+<!-- ══ 사용자 관리 모달 ══ -->
+<div id="inspectorModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9000;align-items:center;justify-content:center" onclick="if(event.target===this)closeInspectorMgr()">
+  <div style="background:#fff;border-radius:14px;padding:26px 28px;width:400px;max-width:96vw;box-shadow:0 8px 40px rgba(0,0,0,.25);max-height:80vh;display:flex;flex-direction:column" onclick="event.stopPropagation()">
+    <div style="font-size:15px;font-weight:700;margin-bottom:16px">사용자 관리</div>
+    <div style="display:flex;gap:8px;margin-bottom:14px">
+      <input type="text" id="newInspectorName" class="form-input" placeholder="이름 입력" style="flex:1" onkeydown="if(event.key==='Enter')addInspector()">
+      <button class="btn-primary btn-sm" onclick="addInspector()">추가</button>
+    </div>
+    <div id="inspectorListBody" style="overflow-y:auto;flex:1;border:1px solid var(--border);border-radius:8px;padding:6px 0"></div>
+    <div style="text-align:right;margin-top:16px">
+      <button class="btn-outline" onclick="closeInspectorMgr()">닫기</button>
+    </div>
+  </div>
+</div>
+
 <script>
-var base       = '${pageContext.request.contextPath}';
-var canAdd     = true;
-var canEdit    = true;
-var canDel     = true;
-var stockCache = [];
-var tabletMode = localStorage.getItem('cl_tablet_mode') === '1';
+var base          = '${pageContext.request.contextPath}';
+var canAdd        = true;
+var canEdit       = true;
+var canDel        = true;
+var stockCache    = [];
+var tabletMode    = localStorage.getItem('cl_tablet_mode') === '1';
+var inspectorList = [];
 
 /* ── 권한 로드 후 재고 조회 ── */
 fetch(base + '/perm/my')
@@ -425,8 +442,9 @@ fetch(base + '/perm/my')
     }
     applyTabletMode();
     loadStock();
+    loadInspectors();
   })
-  .catch(function(){ applyTabletMode(); loadStock(); });
+  .catch(function(){ applyTabletMode(); loadStock(); loadInspectors(); });
 
 /* ══════════════════════════════
    태블릿 모드 토글
@@ -856,6 +874,111 @@ function buildCategoryDatalist() {
 function doExcel() { location.href = base + '/consumable/excel'; }
 
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+var escH = esc;
+
+/* ══════════════════════════════
+   담당자 드롭다운 관리
+══════════════════════════════ */
+function loadInspectors() {
+  fetch(base + '/auxiliary/inspection/inspector/list')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      inspectorList = d.list || [];
+      refreshInspectorSelects();
+    })
+    .catch(function(){});
+}
+
+function refreshInspectorSelects() {
+  var opts = '<option value="">-- 선택 --</option>'
+    + inspectorList.map(function(p){
+        return '<option value="' + esc(p.name) + '">' + esc(p.name) + '</option>';
+      }).join('');
+  ['inUserName','outUserName'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (!el) return;
+    var cur = el.value;
+    el.innerHTML = opts;
+    if (cur) el.value = cur;
+  });
+}
+
+/* ══════════════════════════════
+   사용자 관리 모달
+══════════════════════════════ */
+function openInspectorMgr() {
+  fetchInspectors(renderInspectorModal);
+  document.getElementById('inspectorModal').style.display = 'flex';
+}
+function closeInspectorMgr() {
+  document.getElementById('inspectorModal').style.display = 'none';
+}
+
+function fetchInspectors(cb) {
+  fetch(base + '/auxiliary/inspection/inspector/list')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      inspectorList = d.list || [];
+      refreshInspectorSelects();
+      if (cb) cb();
+    });
+}
+
+function renderInspectorModal() {
+  var body = document.getElementById('inspectorListBody');
+  if (!inspectorList.length) {
+    body.innerHTML = '<div style="padding:20px;text-align:center;color:#718096;font-size:13px">등록된 사용자가 없습니다.</div>';
+    return;
+  }
+  var html = '';
+  inspectorList.forEach(function(p){
+    html += '<div style="display:flex;align-items:center;gap:8px;padding:7px 12px;border-bottom:1px solid #EDF2F7">'
+      + '<input type="text" value="' + esc(p.name) + '" id="iname_' + p.idx + '" class="form-input" style="flex:1;height:32px;font-size:13px">'
+      + '<button class="btn-xs btn-xs-edit" onclick="updateInspector(' + p.idx + ')">저장</button>'
+      + '<button class="btn-xs btn-xs-del"  onclick="deleteInspector(' + p.idx + ')">삭제</button>'
+      + '</div>';
+  });
+  body.innerHTML = html;
+}
+
+function addInspector() {
+  var name = document.getElementById('newInspectorName').value.trim();
+  if (!name) { alert('이름을 입력하세요.'); return; }
+  fetch(base + '/auxiliary/inspection/inspector/add', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({name: name})
+  }).then(function(r){ return r.json(); })
+    .then(function(d){
+      if (!d.success) { alert(d.error || '추가 실패'); return; }
+      document.getElementById('newInspectorName').value = '';
+      fetchInspectors(renderInspectorModal);
+    });
+}
+
+function updateInspector(idx) {
+  var name = (document.getElementById('iname_' + idx).value || '').trim();
+  if (!name) { alert('이름을 입력하세요.'); return; }
+  fetch(base + '/auxiliary/inspection/inspector/update', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({idx: idx, name: name})
+  }).then(function(r){ return r.json(); })
+    .then(function(d){
+      if (!d.success) { alert(d.error || '수정 실패'); return; }
+      fetchInspectors(renderInspectorModal);
+    });
+}
+
+function deleteInspector(idx) {
+  if (!confirm('삭제하시겠습니까?')) return;
+  fetch(base + '/auxiliary/inspection/inspector/delete', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({idx: idx})
+  }).then(function(r){ return r.json(); })
+    .then(function(d){
+      if (!d.success) { alert(d.error || '삭제 실패'); return; }
+      fetchInspectors(renderInspectorModal);
+    });
+}
 
 /* ── 이력 탭 날짜 기본값 ── */
 (function(){

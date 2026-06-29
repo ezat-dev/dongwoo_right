@@ -85,4 +85,25 @@
             update_date   = NOW()
     </update>
 
+
+    <!-- 점검자 목록 -->
+    <select id="selectInspectors" resultType="map">
+        SELECT idx, name FROM tb_inspector WHERE del_yn = 'N' ORDER BY idx
+    </select>
+
+    <!-- 점검자 추가 -->
+    <insert id="insertInspector" parameterType="map">
+        INSERT INTO tb_inspector (name) VALUES (#{name})
+    </insert>
+
+    <!-- 점검자 수정 -->
+    <update id="updateInspector" parameterType="map">
+        UPDATE tb_inspector SET name = #{name} WHERE idx = #{idx}
+    </update>
+
+    <!-- 점검자 삭제 (soft delete) -->
+    <update id="deleteInspector" parameterType="map">
+        UPDATE tb_inspector SET del_yn = 'Y' WHERE idx = #{idx}
+    </update>
+
 </mapper>

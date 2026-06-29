@@ -318,6 +318,7 @@
   position: absolute;
   left: 368px;
   top: 237px;
+  z-index: 1;
 }
 .bcf-11-close-1 {
   background: #02e62c;
@@ -340,6 +341,7 @@
   position: absolute;
   left: 351px;
   top: 342px;
+  z-index: 1;
 }
 .bcf-11-close-2 {
   background: #02e62c;
@@ -362,6 +364,7 @@
   position: absolute;
   left: 345px;
   top: 453px;
+  z-index: 1;
 }
 .bcf-11-close-3 {
   background: #02e62c;
@@ -384,6 +387,7 @@
   position: absolute;
   left: 368px;
   top: 549px;
+  z-index: 1;
 }
 .bcf-11-close-4 {
   background: #02e62c;
@@ -510,6 +514,7 @@
   position: absolute;
   left: 607px;
   top: 362px;
+  z-index: 1;
 }
 .bcf-8-close-1 {
   background: #02e62c;
@@ -532,6 +537,7 @@
   position: absolute;
   left: 581px;
   top: 453px;
+  z-index: 1;
 }
 .bcf-8-close-2 {
   background: #02e62c;
@@ -554,6 +560,7 @@
   position: absolute;
   left: 608px;
   top: 557px;
+  z-index: 1;
 }
 .bcf-8-close-3 {
   background: #02e62c;
@@ -843,6 +850,7 @@
   position: absolute;
   left: 853px;
   top: 362px;
+  z-index: 1;
 }
 .bcf-9-close-1 {
   background: #02e62c;
@@ -865,6 +873,7 @@
   position: absolute;
   left: 827px;
   top: 453px;
+  z-index: 1;
 }
 .bcf-9-close-2 {
   background: #02e62c;
@@ -887,6 +896,7 @@
   position: absolute;
   left: 854px;
   top: 557px;
+  z-index: 1;
 }
 .bcf-9-close-3 {
   background: #02e62c;
@@ -1176,6 +1186,7 @@
   position: absolute;
   left: 1099px;
   top: 362px;
+  z-index: 1;
 }
 .bcf-7-close-1 {
   background: #02e62c;
@@ -1198,6 +1209,7 @@
   position: absolute;
   left: 1073px;
   top: 453px;
+  z-index: 1;
 }
 .bcf-7-close-2 {
   background: #02e62c;
@@ -1220,6 +1232,7 @@
   position: absolute;
   left: 1100px;
   top: 557px;
+  z-index: 1;
 }
 .bcf-7-close-3 {
   background: #02e62c;
@@ -1852,6 +1865,7 @@
   position: absolute;
   left: 1417px;
   top: 220px;
+  z-index: 1;
 }
 .bcf-6-close-1 {
   background: #02e62c;
@@ -1874,6 +1888,7 @@
   position: absolute;
   left: 1416px;
   top: 299px;
+  z-index: 1;
 }
 .bcf-6-close-2 {
   background: #02e62c;
@@ -1896,6 +1911,7 @@
   position: absolute;
   left: 1416px;
   top: 339px;
+  z-index: 1;
 }
 .bcf-6-close-3 {
   background: #02e62c;
@@ -1918,6 +1934,7 @@
   position: absolute;
   left: 1398px;
   top: 406px;
+  z-index: 1;
 }
 .bcf-6-close-4 {
   background: #02e62c;
@@ -1940,6 +1957,7 @@
   position: absolute;
   left: 1398px;
   top: 550px;
+  z-index: 1;
 }
 .bcf-6-close-5 {
   background: #02e62c;
@@ -1962,6 +1980,7 @@
   position: absolute;
   left: 1398px;
   top: 616px;
+  z-index: 1;
 }
 .bcf-6-close-6 {
   background: #02e62c;
@@ -1984,6 +2003,7 @@
   position: absolute;
   left: 1416px;
   top: 681px;
+  z-index: 1;
 }
 .bcf-6-close-7 {
   background: #02e62c;

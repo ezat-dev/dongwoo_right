@@ -190,6 +190,7 @@ html, body {
           <label>종료</label>
           <input type="datetime-local" id="trend-end"   value="2026-06-01T11:30">
           <button class="btn-primary" onclick="loadTrend()">조회</button>
+          <button class="btn-excel" id="btn-png" onclick="downloadChartPng()" style="display:none">&#128247; PNG</button>
           <span class="result-count" id="trend-count"></span>
         </div>
         <!-- 로딩 오버레이 (트렌드) -->
@@ -374,6 +375,7 @@ function loadTrend() {
       console.log('[BACKUP-TREND] 성공', { 설비: bcfLabel, 행수: rows.length, 샘플: rows[0] || null });
       buildSeriesPanel(rows);
       renderTrendChart();
+      document.getElementById('btn-png').style.display = '';
     })
     .catch(function(e){
       setTrendLoading(false);
@@ -450,6 +452,18 @@ function toggleAllSeries(show) {
   if (trendChart) trendChart.redraw();
 }
 
+/* ── 유량/가스 태그 판별 ── */
+function isFlowLabel(label) {
+  return /c3h8|nh3|유량/i.test(label);
+}
+function isCpLabel(label) {
+  return /\bcp\b/i.test(label);
+}
+function scaleFlow(v) {
+  if (v > 30000) return null;
+  return v >= 1000 ? v / 1000 : v / 100;
+}
+
 function renderTrendChart() {
   if (!trendRawData.length || !seriesMeta.length) return;
 
@@ -459,10 +473,18 @@ function renderTrendChart() {
     return new Date(row[key]).getTime();
   });
 
-  /* 시리즈 빌드 */
+  /* 시리즈 빌드 (스케일 적용) */
   var series = seriesMeta.map(function(s){
+    var isFlow = isFlowLabel(s.label);
+    var isCp   = !isFlow && isCpLabel(s.label);
     var data = trendRawData.map(function(row, i){
-      return [times[i], parseFloat(row[s.col]) || 0];
+      var v = parseFloat(row[s.col]);
+      if (isNaN(v)) return [times[i], null];
+      if (isFlow) {
+        var sv = scaleFlow(v);
+        return [times[i], sv];
+      }
+      return [times[i], v];
     });
     return {
       name:      s.label,
@@ -470,7 +492,8 @@ function renderTrendChart() {
       color:     s.color,
       lineWidth: 1.5,
       visible:   s.active,
-      marker:    { enabled: false }
+      marker:    { enabled: false },
+      yAxis:     isFlow ? 2 : (isCp ? 1 : 0)
     };
   });
 
@@ -500,11 +523,25 @@ function renderTrendChart() {
       labels: { format: '{value:%m/%d %H:%M}', style: { fontSize:'10px', color:'#A0AEC0' } },
       crosshair: { color: 'rgba(99,179,237,.25)' }
     },
-    yAxis: {
-      title: { text: null },
-      gridLineColor: '#1E2A3A',
-      labels: { style: { fontSize:'10px', color:'#A0AEC0' } }
-    },
+    yAxis: [
+      { /* 온도 */
+        title: { text: null },
+        gridLineColor: '#1E2A3A',
+        labels: { style: { fontSize:'10px', color:'#A0AEC0' } }
+      },
+      { /* CP */
+        title: { text: null }, opposite: true,
+        gridLineColor: 'transparent',
+        labels: { format: '{value:.2f}', style: { fontSize:'10px', color:'#68D391' } },
+        min: 0, softMax: 2.0
+      },
+      { /* 유량/가스 */
+        title: { text: null }, opposite: true,
+        gridLineColor: 'transparent',
+        labels: { format: '{value:.1f}', style: { fontSize:'10px', color:'#63B3ED' } },
+        min: 0, max: 20
+      }
+    ],
     tooltip: {
       shared: true,
       backgroundColor: '#2D3748',
@@ -513,9 +550,9 @@ function renderTrendChart() {
       style: { color: '#F7FAFC', fontSize: '11px' },
       xDateFormat: '%Y-%m-%d %H:%M:%S',
       pointFormatter: function() {
-        if (!this.series.visible) return '';
+        if (!this.series.visible || this.y === null) return '';
         var v = this.y;
-        var dec = (v < 10 && v !== 0) ? 3 : 1;
+        var dec = isFlowLabel(this.series.name) ? 2 : (isCpLabel(this.series.name) ? 3 : 1);
         return '<span style="color:' + this.series.color + '">&#9679;</span> '
              + this.series.name + ': <b>' + v.toFixed(dec) + '</b><br/>';
       }
@@ -524,6 +561,32 @@ function renderTrendChart() {
     credits: { enabled: false },
     series: series
   });
+}
+
+/* ── PNG 다운로드 ── */
+function downloadChartPng() {
+  if (!trendChart) { alert('먼저 차트를 조회하세요'); return; }
+  var svg = trendChart.getSVG({ width: trendChart.chartWidth, height: trendChart.chartHeight });
+  var blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+  var url  = URL.createObjectURL(blob);
+  var img  = new Image();
+  img.onload = function() {
+    var canvas = document.createElement('canvas');
+    canvas.width  = trendChart.chartWidth;
+    canvas.height = trendChart.chartHeight;
+    var c2d = canvas.getContext('2d');
+    c2d.fillStyle = '#0F1923';
+    c2d.fillRect(0, 0, canvas.width, canvas.height);
+    c2d.drawImage(img, 0, 0);
+    URL.revokeObjectURL(url);
+    var bcf  = 'BCF' + document.getElementById('trend-equip').value;
+    var from = document.getElementById('trend-start').value.slice(0,13).replace('T','_');
+    var a = document.createElement('a');
+    a.download = 'trend_' + bcf + '_' + from + '.png';
+    a.href = canvas.toDataURL('image/png');
+    a.click();
+  };
+  img.src = url;
 }
 
 /* ════════════════════════════
@@ -593,10 +656,11 @@ function loadAlarms() {
 }
 
 function exportExcel() {
-  if (!alarmTable || !alarmTable.getData().length){ alert('먼저 조회하세요'); return; }
   var from = document.getElementById('alarm-start').value;
   var to   = document.getElementById('alarm-end').value;
-  alarmTable.download('csv', 'alarm_' + from + '_' + to + '.csv', { bom: true });
+  var mask = document.getElementById('alarm-equip').value || '0';
+  if (!from || !to) { alert('기간을 선택하세요'); return; }
+  location.href = CTX + '/backup/alarm/excel?from=' + from + '&to=' + to + '&areaMask=' + mask;
 }
 
 /* ════════════════════════════

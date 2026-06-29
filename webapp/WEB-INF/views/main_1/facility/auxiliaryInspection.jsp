@@ -210,6 +210,7 @@ body.tablet-mode #noteCard2 .ax-textarea {
       <button class="btn-outline" onclick="loadData()">🔍 조회</button>
       <button class="btn-primary" id="btnSave" onclick="saveData()" data-perm="edit">💾 저장</button>
       <button class="btn-outline" onclick="doExcel()">📥 엑셀</button>
+      <button class="btn-outline" onclick="openInspectorMgr()">사용자 관리</button>
     </div>
   </div>
 
@@ -218,11 +219,11 @@ body.tablet-mode #noteCard2 .ax-textarea {
     <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:center">
       <div class="form-field" style="margin:0;display:flex;align-items:center;gap:8px">
         <label class="form-label" style="margin:0;white-space:nowrap;font-weight:700">주간 점검자</label>
-        <input class="form-input" type="text" id="dayInspector" placeholder="조 입력" style="width:120px">
+        <select class="form-input" id="dayInspector" style="width:140px"><option value="">-- 선택 --</option></select>
       </div>
       <div class="form-field" style="margin:0;display:flex;align-items:center;gap:8px">
         <label class="form-label" style="margin:0;white-space:nowrap;font-weight:700">야간 점검자</label>
-        <input class="form-input" type="text" id="nightInspector" placeholder="조 입력" style="width:120px">
+        <select class="form-input" id="nightInspector" style="width:140px"><option value="">-- 선택 --</option></select>
       </div>
       <span id="saveStatus" style="font-size:12px;color:var(--muted)"></span>
     </div>
@@ -294,6 +295,22 @@ body.tablet-mode #noteCard2 .ax-textarea {
     </div><!-- /sectionsWrap -->
 
   </div><!-- /mainLayout -->
+
+<!-- 점검자 관리 모달 -->
+<div id="inspectorModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9000;align-items:center;justify-content:center" onclick="if(event.target===this)closeInspectorMgr()">
+  <div style="background:#fff;border-radius:12px;width:360px;max-width:95vw;padding:20px 24px;box-shadow:0 8px 32px rgba(0,0,0,.2)" onclick="event.stopPropagation()">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <span style="font-size:15px;font-weight:700;color:var(--text)">점검자 관리</span>
+      <button onclick="closeInspectorMgr()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#A0AEC0;line-height:1">×</button>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <input type="text" id="newInspectorName" class="form-input" placeholder="이름 입력" style="flex:1"
+             onkeydown="if(event.key==='Enter')addInspector()">
+      <button class="btn-primary" onclick="addInspector()" style="white-space:nowrap;padding:6px 14px">추가</button>
+    </div>
+    <div id="inspectorListBody" style="max-height:320px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;min-height:48px"></div>
+  </div>
+</div>
 
 </div>
 
@@ -388,7 +405,7 @@ function initPage() {
   document.getElementById('inspectDate').value = today;
   applyTabletMode();
   buildTables();
-  loadData();
+  loadInspectorsThenData();
 }
 
 /* ══════════════════════════════════════════
@@ -734,6 +751,121 @@ function saveData() {
       if (!res.success) { alert(res.error || '저장 실패'); return; }
       document.getElementById('saveStatus').textContent = '✅ 저장 완료';
     });
+}
+
+/* ══════════════════════════════════════════
+   점검자 관리
+══════════════════════════════════════════ */
+var inspectorList = [];
+
+function loadInspectorsThenData() {
+  fetch(base + '/auxiliary/inspection/inspector/list')
+    .then(function(r){ return r.json(); })
+    .then(function(res){
+      inspectorList = res.list || [];
+      refreshDropdowns('', '');
+      loadData();
+    })
+    .catch(function(){ loadData(); });
+}
+
+function refreshDropdowns(dayVal, nightVal) {
+  var opts = '<option value="">-- 선택 --</option>';
+  inspectorList.forEach(function(p){
+    opts += '<option value="' + escH(p.name) + '">' + escH(p.name) + '</option>';
+  });
+  var ds = document.getElementById('dayInspector');
+  var ns = document.getElementById('nightInspector');
+  ds.innerHTML = opts;
+  ns.innerHTML = opts;
+  ds.value = dayVal || '';
+  ns.value = nightVal || '';
+}
+
+function openInspectorMgr() {
+  document.getElementById('inspectorModal').style.display = 'flex';
+  fetchInspectors();
+}
+
+function closeInspectorMgr() {
+  document.getElementById('inspectorModal').style.display = 'none';
+}
+
+function fetchInspectors() {
+  fetch(base + '/auxiliary/inspection/inspector/list')
+    .then(function(r){ return r.json(); })
+    .then(function(res){
+      inspectorList = res.list || [];
+      renderInspectorModal();
+      var ds = document.getElementById('dayInspector');
+      var ns = document.getElementById('nightInspector');
+      refreshDropdowns(ds.value, ns.value);
+    });
+}
+
+function renderInspectorModal() {
+  var html = '';
+  if (!inspectorList.length) {
+    html = '<div style="padding:20px;text-align:center;color:var(--muted);font-size:12px">등록된 점검자가 없습니다.</div>';
+  } else {
+    inspectorList.forEach(function(p) {
+      html += '<div style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid var(--border)">'
+            + '<span style="color:var(--muted);font-size:11px;min-width:28px;text-align:right">' + p.idx + '</span>'
+            + '<input type="text" value="' + escH(p.name) + '"'
+            + ' style="flex:1;border:1px solid transparent;border-radius:4px;padding:3px 6px;font-size:13px;outline:none;font-family:inherit"'
+            + ' onfocus="this.style.borderColor=\'var(--primary)\'"'
+            + ' onblur="this.style.borderColor=\'transparent\';updateInspector(' + p.idx + ',this.value)"'
+            + ' onkeydown="if(event.key===\'Enter\')this.blur()">'
+            + '<button onclick="deleteInspector(' + p.idx + ')"'
+            + ' style="color:#E53E3E;background:none;border:none;cursor:pointer;font-size:12px;padding:3px 8px;border-radius:4px"'
+            + ' onmouseover="this.style.background=\'#FFF5F5\'" onmouseout="this.style.background=\'none\'">삭제</button>'
+            + '</div>';
+    });
+  }
+  document.getElementById('inspectorListBody').innerHTML = html;
+}
+
+function addInspector() {
+  var name = document.getElementById('newInspectorName').value.trim();
+  if (!name) { document.getElementById('newInspectorName').focus(); return; }
+  fetch(base + '/auxiliary/inspection/inspector/add', {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({name: name})
+  }).then(function(r){ return r.json(); })
+    .then(function(res){
+      if (!res.success) { alert(res.error || '추가 실패'); return; }
+      document.getElementById('newInspectorName').value = '';
+      fetchInspectors();
+    });
+}
+
+function updateInspector(idx, name) {
+  name = (name || '').trim();
+  if (!name) { fetchInspectors(); return; }
+  fetch(base + '/auxiliary/inspection/inspector/update', {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({idx: idx, name: name})
+  }).then(function(r){ return r.json(); })
+    .then(function(res){
+      if (!res.success) { alert(res.error || '수정 실패'); fetchInspectors(); }
+      else { fetchInspectors(); }
+    });
+}
+
+function deleteInspector(idx) {
+  if (!confirm('삭제하시겠습니까?')) return;
+  fetch(base + '/auxiliary/inspection/inspector/delete', {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({idx: idx})
+  }).then(function(r){ return r.json(); })
+    .then(function(res){
+      if (!res.success) { alert(res.error || '삭제 실패'); return; }
+      fetchInspectors();
+    });
+}
+
+function escH(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 /* ══════════════════════════════════════════

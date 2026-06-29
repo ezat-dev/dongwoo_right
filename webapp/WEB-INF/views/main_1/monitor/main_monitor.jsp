@@ -259,7 +259,7 @@
 
     <!-- BCF 명칭 / 운전모드 라벨 (절대좌표, 각 작화 정중앙 정렬) -->
     <div class="bcf-name-lbl" style="left:107.65px">NO.12</div>
-    <div class="bcf-mode-lbl" data-mode-tag="bcf12_Y112H" style="left:107.65px">확인중</div>
+    <div class="bcf-mode-lbl" data-mode-tag="bcf12_Y112H" data-mode-inv="true" style="left:107.65px">확인중</div>
 
     <div class="bcf-name-lbl" style="left:357.49px">NO.1</div>
     <div class="bcf-mode-lbl" data-mode-tag="bcf1_106" style="left:357.49px">확인중</div>
@@ -291,7 +291,7 @@
     <div class="over-view-1">
       <div class="hogi-12">
         <img class="bcf-12" src="<%= ctx %>/img/main_monitor_1/bcf-120.png" />
-        <img class="bcf-12-alarm" src="<%= ctx %>/img/main_monitor_1/bcf-12-alarm0.png" />
+        <img class="bcf-12-alarm bcf12_Y0E4H" src="<%= ctx %>/img/main_monitor_1/bcf-12-alarm0.png" />
         <img class="bcf-12-belt" src="<%= ctx %>/img/main_monitor_1/bcf-12-belt0.png" />
         <img class="bcf-12-box-on-1" src="<%= ctx %>/img/main_monitor_1/bcf-12-box-on-10.png" />
         <img class="bcf-12-box-off-1" src="<%= ctx %>/img/main_monitor_1/bcf-12-box-off-10.png" />
@@ -301,8 +301,8 @@
         <img class="bcf-12-box-off-3" src="<%= ctx %>/img/main_monitor_1/bcf-12-box-off-30.png" />
         <img class="bcf-12-box-on-4" src="<%= ctx %>/img/main_monitor_1/bcf-12-box-on-40.png" />
         <img class="bcf-12-box-off-4" src="<%= ctx %>/img/main_monitor_1/bcf-12-box-off-40.png" />
-        <img class="bcf-12-tray-2" src="<%= ctx %>/img/main_monitor_1/bcf-12-tray-20.png" />
-        <img class="bcf-12-tray-1" src="<%= ctx %>/img/main_monitor_1/bcf-12-tray-10.png" />
+        <img class="bcf-12-tray-2 bcf12_M0925" src="<%= ctx %>/img/main_monitor_1/bcf-12-tray-20.png" />
+        <img class="bcf-12-tray-1 bcf12_Y119H" src="<%= ctx %>/img/main_monitor_1/bcf-12-tray-10.png" />
         <div class="back-12"></div>
         <div class="bcf-12-open-1 bcf12_X097H">열림</div>
         <div class="bcf-12-close-1">닫힘</div>
@@ -405,7 +405,7 @@
         <img class="bcf-3-box-on-4" src="<%= ctx %>/img/main_monitor_1/bcf-3-box-on-40.png" />
         <img class="bcf-3-box-off-4" src="<%= ctx %>/img/main_monitor_1/bcf-3-box-off-40.png" />
         <img class="bcf-3-tray-2 bcf3_51" src="<%= ctx %>/img/main_monitor_1/bcf-3-tray-20.png" />
-        <img class="bcf-3-tray-1 bcf3_98" src="<%= ctx %>/img/main_monitor_1/bcf-3-tray-10.png" />
+        <img class="bcf-3-tray-1 bcf3_97" src="<%= ctx %>/img/main_monitor_1/bcf-3-tray-10.png" />
         <div class="back-3"></div>
         <div class="bcf-3-open-1 bcf3_8">열림</div>
         <div class="bcf-3-close-1">닫힘</div>
@@ -915,7 +915,9 @@
     modeLblEls.forEach(function(el) {
       var tag = el.getAttribute('data-mode-tag');
       if (data[tag] == null) return;
-      var isAuto = (data[tag] === 1 || data[tag] === true);
+      var inv    = el.getAttribute('data-mode-inv') === 'true';
+      var rawOn  = (data[tag] === 1 || data[tag] === true);
+      var isAuto = inv ? !rawOn : rawOn;
       el.textContent       = isAuto ? '자동운전' : '수동운전';
       el.style.background  = isAuto ? 'linear-gradient(160deg,#f0fdf4,#bbf7d0)' : 'linear-gradient(160deg,#fff7ed,#fed7aa)';
       el.style.color       = isAuto ? '#166534' : '#9a3412';
@@ -943,82 +945,11 @@
   var pollCount = 0;
 
   function logByDevice(data) {
-    pollCount++;
-    var now = new Date().toLocaleTimeString('ko-KR', {hour12: false, hour:'2-digit', minute:'2-digit', second:'2-digit'});
-    console.groupCollapsed('[MON-1] 폴링 #' + pollCount + '  ' + now);
-
-    BCF_IDS.forEach(function(id) {
-      // 이 설비에 해당하는 태그만 추출
-      var prefix = id + '_';
-      var wordTags = Object.keys(wordElMap).filter(function(t){ return t.indexOf(prefix) === 0; });
-      var bitTags  = Object.keys(bitElMap ).filter(function(t){ return t.indexOf(prefix) === 0; });
-      var modeTags = allTags.filter(function(t){
-        return t.indexOf(prefix) === 0 && !wordElMap[t] && !bitElMap[t];
-      });
-
-      var nullWord = wordTags.filter(function(t){ return data[t] == null; });
-      var nullBit  = bitTags .filter(function(t){ return data[t] == null; });
-      var hasNull  = nullWord.length + nullBit.length > 0;
-
-      var style = hasNull ? 'color:#e53e3e;font-weight:700' : 'color:#38a169;font-weight:700';
-      console.groupCollapsed('%c' + id.toUpperCase()
-        + '  워드:' + wordTags.length + '  비트:' + bitTags.length
-        + (hasNull ? '  ⚠ 미응답:' + (nullWord.length + nullBit.length) : '  ✓'), style);
-
-      if (wordTags.length) {
-        console.group('▶ 워드(온도/CP)');
-        wordTags.forEach(function(t) {
-          var v = data[t];
-          if (v == null) { console.warn('  ' + t + ' → null (미응답)'); }
-          else {
-            var nv = Number(v);
-            var disp = CP_TAG.test(t) ? (nv*0.001).toFixed(3)+' %' : (nv >= 1000 ? (nv/10).toFixed(1) : nv.toFixed(1))+' ℃';
-            console.log('  ' + t + ' → ' + v + '  (' + disp + ')');
-          }
-        });
-        console.groupEnd();
-      }
-
-      if (bitTags.length) {
-        var onBits  = bitTags.filter(function(t){ return data[t] === 1 || data[t] === true; });
-        var offBits = bitTags.filter(function(t){ return data[t] === 0 || data[t] === false; });
-        var nullBitList = bitTags.filter(function(t){ return data[t] == null; });
-        console.group('▶ 비트  ON:' + onBits.length + '  OFF:' + offBits.length + (nullBitList.length ? '  NULL:'+nullBitList.length : ''));
-        if (onBits.length)  console.log('  ON  →', onBits.join(', '));
-        if (nullBitList.length) console.warn('  NULL→', nullBitList.join(', '));
-        console.groupEnd();
-      }
-
-      // 팬(pen) 요소: 태그 값 + 현재 회전/정지 상태
-      var bcfPenEls = penEls.filter(function(el) {
-        return bitTagsOf(el).some(function(t){ return t.indexOf(prefix) === 0; });
-      });
-      if (bcfPenEls.length) {
-        console.group('▶ 팬  (' + bcfPenEls.length + '개)');
-        bcfPenEls.forEach(function(el) {
-          var tags = bitTagsOf(el).filter(function(t){ return t.indexOf(prefix) === 0; });
-          var rotating = el.classList.contains('pen-rotating');
-          var state = rotating ? '▶ 회전중' : '■ 정지';
-          tags.forEach(function(t) {
-            var v = data[t];
-            var vStr = v == null ? '❌ null' : String(v);
-            console.log('  ' + t + ' = ' + vStr + '  [' + state + ']');
-          });
-        });
-        console.groupEnd();
-      }
-
-      if (modeTags.length) {
-        modeTags.forEach(function(t) {
-          var v = data[t];
-          console.log('  운전모드 ' + t + ' →', v == null ? '❌ null' : (v ? '자동운전' : '수동운전'));
-        });
-      }
-
-      console.groupEnd(); // 설비
-    });
-
-    console.groupEnd(); // 전체
+    // pollCount++;
+    // var now = new Date().toLocaleTimeString('ko-KR', {hour12: false, hour:'2-digit', minute:'2-digit', second:'2-digit'});
+    // console.groupCollapsed('[MON-1] 폴링 #' + pollCount + '  ' + now);
+    // ... (전체 주석처리 — BCF12 전용 logBcf12Detail 사용)
+    // console.groupEnd();
   }
 
   /* ── 4. 폴링: 응답 완료 후 다음 요청 예약 (중첩·연속 방지) ── */
@@ -1026,19 +957,152 @@
     setTimeout(fetchData, delay);
   }
 
-  // DT 값 확인 로그 — 처음 3회만 출력 후 자동 중단
+  // DT 값 확인 로그 — 처음 3회만 출력 후 자동 중단 (주석처리)
   var dtDbgFired = 0;
   function debugDtOnly(data) {
     if (dtDbgFired >= 3) return;
     dtDbgFired++;
-    // DOM에서 -dt 클래스 포함 요소의 _s_ 태그값만 출력
     var dtEls = document.querySelectorAll('[class*="-dt"]');
-    console.group('[DT-DBG] 단품 값 확인 (' + dtDbgFired + '/3)');
+    // console.group('[DT-DBG] 단품 값 확인 (' + dtDbgFired + '/3)');
     dtEls.forEach(function(el) {
       var sTag = (el.className || '').split(/\s+/).find(function(c) { return /^bcf\d+_s_/.test(c) || /^bcf\d+_dt_/.test(c); });
       if (!sTag) return;
-      console.log(el.className.split(/\s+/)[0] + '  →  ' + sTag + ' = ' + data[sTag]);
+      // console.log(el.className.split(/\s+/)[0] + '  →  ' + sTag + ' = ' + data[sTag]);
     });
+    // console.groupEnd();
+  }
+
+  /* ── BCF12(12호기) 신호 전용 콘솔 로거 ── */
+  var BCF12_SIG_INFO = {
+    'bcf12_X097H': { lbl: '도어 열림1 (Gate1 Open)',  grp: '도어·게이트' },
+    'bcf12_X095H': { lbl: '도어 열림2 (Gate2 Open)',  grp: '도어·게이트' },
+    'bcf12_X090H': { lbl: '도어 열림3 (Gate3 Open)',  grp: '도어·게이트' },
+    'bcf12_X092H': { lbl: '상승 (Up)',                         grp: '승강',    inv: true },
+    'bcf12_Y119H': { lbl: '트레이1 이송 (Y119H|X092H OR)',    grp: '트레이',  also: 'bcf12_X092H' },
+    'bcf12_M0925': { lbl: '트레이2 이송 (Tray2)',              grp: '트레이' },
+    'bcf12_Y0F4H': { lbl: '팬 1/2 회전 (Fan1/2)',             grp: '팬' },
+    'bcf12_Y0F8H': { lbl: '팬 3 회전 (Fan3)',                  grp: '팬' },
+    'bcf12_M6824': { lbl: '조깅 운전 (Jogging)',               grp: '운전',    inv: true },
+    'bcf12_Y0F0H': { lbl: '모터 A 기동 (Motor-A)',             grp: '모터' },
+    'bcf12_Y0F1H': { lbl: '모터 B 기동 (Motor-B)',             grp: '모터' },
+    'bcf12_Y112H': { lbl: '자동운전 (Auto)',                   grp: '운전모드', inv: true }
+  };
+  var _bcf12Prev  = {};
+  var _bcf12PollN = 0;
+
+  function logBcf12Detail(data) {
+    _bcf12PollN++;
+    var now  = new Date().toLocaleTimeString('ko-KR', {hour12:false});
+    var tags = Object.keys(BCF12_SIG_INFO);
+
+    /* 변화 감지 */
+    var changed = tags.filter(function(t) {
+      return data[t] != null && data[t] !== _bcf12Prev[t];
+    });
+
+    /* console.table 용 행 구성 */
+    var rows = {};
+    tags.forEach(function(t) {
+      var info    = BCF12_SIG_INFO[t];
+      var v       = data[t];
+      var rawOn   = (v === 1 || v === true);
+      /* 반전(inv) / OR 조합(also) 처리 */
+      var isOn    = info.inv  ? !rawOn
+                  : info.also ? (rawOn || (data[info.also] === 1 || data[info.also] === true))
+                  : rawOn;
+      /* 이전 유효 상태 */
+      var prevRaw    = _bcf12Prev[t];
+      var prevRawOn  = (prevRaw === 1 || prevRaw === true);
+      var prevOn     = info.inv  ? !prevRawOn
+                     : info.also ? (prevRawOn || (_bcf12Prev[info.also] === 1 || _bcf12Prev[info.also] === true))
+                     : prevRawOn;
+      /* 변화 여부 — also 태그 변화도 포함 */
+      var isChg = changed.indexOf(t) !== -1 || (info.also && changed.indexOf(info.also) !== -1);
+      rows['[' + info.grp + '] ' + t] = {
+        '설명'  : info.lbl,
+        '현재값': v == null ? '— null' : (isOn ? '● 1  ON' : '○ 0  OFF'),
+        '변화'  : isChg
+                   ? (prevRaw == null ? '첫응답'
+                   : (prevOn === isOn ? '' : (isOn ? 'ON↑' : 'OFF↓')))
+                   : ''
+      };
+      if (v != null) _bcf12Prev[t] = v;
+    });
+
+    var hdr = '[12호기 신호] #' + _bcf12PollN + '  ' + now
+            + (changed.length ? '  🔄 변화 ' + changed.length + '개' : '  ─ 변화없음');
+    var stHdr = changed.length
+      ? 'font-weight:800;font-size:12px;color:#c05621'
+      : 'font-weight:600;font-size:11px;color:#2b6cb0';
+
+    console.groupCollapsed('%c' + hdr, stHdr);
+    console.table(rows);
+    if (changed.length) {
+      changed.forEach(function(t) {
+        var info   = BCF12_SIG_INFO[t];
+        var rawOn  = (data[t] === 1 || data[t] === true);
+        var isOn   = info.inv  ? !rawOn
+                   : info.also ? (rawOn || (data[info.also] === 1 || data[info.also] === true))
+                   : rawOn;
+        console.log(
+          '%c  ' + t + '  ' + info.lbl + '  →  ' + (isOn ? '● ON (1)' : '○ OFF (0)'),
+          isOn ? 'color:#276749;font-weight:700' : 'color:#9b2c2c;font-weight:700'
+        );
+      });
+    }
+    console.groupEnd();
+  }
+
+  /* ── BCF3(3호기) 트레이 신호 전용 로거 ── */
+  var BCF3_TRAY_INFO = {
+    'bcf3_98': { lbl: '트레이1 이송 (Tray1)', grp: '트레이' },
+    'bcf3_51': { lbl: '트레이2 이송 (Tray2)', grp: '트레이' }
+  };
+  var _bcf3TrayPrev = {};
+  var _bcf3TrayPollN = 0;
+
+  function logBcf3Tray(data) {
+    var tags = Object.keys(BCF3_TRAY_INFO);
+    var hasData = tags.some(function(t) { return data[t] != null; });
+    if (!hasData) return;
+    _bcf3TrayPollN++;
+    var now = new Date().toLocaleTimeString('ko-KR', {hour12:false});
+    var changed = tags.filter(function(t) {
+      return data[t] != null && data[t] !== _bcf3TrayPrev[t];
+    });
+    var rows = {};
+    tags.forEach(function(t) {
+      var info  = BCF3_TRAY_INFO[t];
+      var v     = data[t];
+      var isOn  = (v === 1 || v === true);
+      var prev  = _bcf3TrayPrev[t];
+      var isChg = changed.indexOf(t) !== -1;
+      rows['[' + info.grp + '] ' + t] = {
+        '설명'  : info.lbl,
+        '현재값': v == null ? '— null' : (isOn ? '● 1  ON' : '○ 0  OFF'),
+        '변화'  : isChg
+                   ? (prev == null ? '첫응답'
+                   : (isOn ? 'ON↑' : 'OFF↓'))
+                   : ''
+      };
+      if (v != null) _bcf3TrayPrev[t] = v;
+    });
+    var hdr = '[3호기 트레이] #' + _bcf3TrayPollN + '  ' + now
+            + (changed.length ? '  🔄 변화 ' + changed.length + '개' : '  ─ 변화없음');
+    var stHdr = changed.length
+      ? 'font-weight:800;font-size:12px;color:#6b21a8'
+      : 'font-weight:600;font-size:11px;color:#1e40af';
+    console.groupCollapsed('%c' + hdr, stHdr);
+    console.table(rows);
+    if (changed.length) {
+      changed.forEach(function(t) {
+        var isOn = (data[t] === 1 || data[t] === true);
+        console.log(
+          '%c  ' + t + '  ' + BCF3_TRAY_INFO[t].lbl + '  →  ' + (isOn ? '● ON (1)' : '○ OFF (0)'),
+          isOn ? 'color:#276749;font-weight:700' : 'color:#9b2c2c;font-weight:700'
+        );
+      });
+    }
     console.groupEnd();
   }
 
@@ -1047,12 +1111,14 @@
     .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
     .then(function (data) {
       applyData(data);
-      logByDevice(data);
-      debugDtOnly(data);   // DT 주소·값 확인 (3회 후 자동 중단)
+      // logByDevice(data);
+      // debugDtOnly(data);
+      logBcf12Detail(data);
+      logBcf3Tray(data);
       scheduleNext(POLL_INTERVAL);
     })
     .catch(function (err) {
-      console.warn('[MON-1] PLC fetch 실패:', err);
+      // console.warn('[MON-1] PLC fetch 실패:', err);
       scheduleNext(FAIL_COOLDOWN);
     });
   }

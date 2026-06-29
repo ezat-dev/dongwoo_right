@@ -288,7 +288,7 @@
   text-align: left;
   padding-left: 4px;
   width: 72px;
-  font-size: 9px;
+  font-size: 10px;
 }
 /* 존 값 박스 */
 .zbox {
@@ -352,7 +352,7 @@
   color: #1a3a5c;
   text-align: left;
   padding-left: 4px;
-  font-size: 9px;
+  font-size: 10px;
   white-space: nowrap;
 }
 

@@ -147,7 +147,7 @@
   color: #0d2a42;
   text-align: left;
   padding-left: 5px;
-  font-size: 11px;
+  font-size: 10px;
   white-space: nowrap;
 }
 
