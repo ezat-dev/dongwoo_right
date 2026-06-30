@@ -391,6 +391,7 @@ body { font-family: 'Pretendard','Noto Sans KR','Segoe UI',sans-serif; }
         </span>
         <button class="btn-primary" onclick="reloadChart()">↺ 갱신</button>
         <button class="btn-outline btn-sm" onclick="openMemoModal()" style="border-color:rgba(128,90,213,.5);color:#553C9A" data-perm="add">+ 메모</button>
+        <button class="btn-outline btn-sm" onclick="saveChartPng()" title="차트 PNG 저장" style="border-color:rgba(59,130,246,.5);color:#1D4ED8">&#128247; 저장</button>
         <span style="margin-left:auto;font-size:11px;color:var(--muted)" id="periodLabel">최근 24시간</span>
       </div>
 
@@ -671,6 +672,9 @@ function renderTagList() {
     var teq  = getEquipFromTag(t);
     // 설비 필터
     if (curEquip !== 'ALL' && teq !== curEquip) return;
+    // 11_kg 숨김
+    var tn = (t.colName || t.tagName || '').toLowerCase();
+    if (/11.*kg|kg.*11/.test(tn) || tn.indexOf('11_kg') !== -1) return;
     // 검색 필터
     if (q && !displayName.toLowerCase().includes(q) && !subName.toLowerCase().includes(q) && !(t.address||'').toLowerCase().includes(q)) return;
     var isSel = selTags[t.colName];
@@ -730,7 +734,12 @@ function applyCustomRange() {
 
 /* ── 데이터 조회 & 차트 ── */
 function reloadChart() {
-  var selList = tags.filter(function(t){ return selTags[t.colName]; });
+  var selList = tags.filter(function(t){
+    if (!selTags[t.colName]) return false;
+    var n = (t.colName || t.tagName || '').toLowerCase();
+    if (/11.*kg|kg.*11/.test(n) || n.indexOf('11_kg') !== -1) return false;
+    return true;
+  });
   console.log('[trend] reloadChart()', { selCount: selList.length, curEquip: curEquip, curPeriod: curPeriod, isCustom: isCustom });
 
   if (!selList.length) {
@@ -822,12 +831,17 @@ function buildKpiCards(selList, rows) {
           var kpiBcf9 = /[_\-]9([_\-]|$)/.test(kpiTagName);
           var kpiBcf10 = /[_\-]10([_\-]|$)/.test(kpiTagName);
           var kpiBcf11 = /[_\-]11([_\-]|$)/.test(kpiTagName);
+          var kpiBcf2  = /[_\-]2([_\-]|$)/.test(kpiTagName);
+          var kpiBcf6  = /[_\-]6([_\-]|$)/.test(kpiTagName);
           var kpiBcf12 = /[_\-]12([_\-]|$)/.test(kpiTagName);
-          v = /c3h8/.test(kpiTagName) ? (kpiBcf7 ? v / 200 : (kpiBcf5 || kpiBcf8 || kpiBcf10 || kpiBcf11) ? v * 0.00125 : kpiBcf9 ? v * 0.0049 : kpiBcf12 ? v * 0.2 : (v / 1000) * 3.1) : (v >= 1000 ? v / 1000 : v / 100);
+          v = /c3h8/.test(kpiTagName) ? (kpiBcf7 ? v / 200 : (kpiBcf5 || kpiBcf8 || kpiBcf10 || kpiBcf11) ? v * 0.00125 : kpiBcf9 ? v * 0.0049 : kpiBcf12 ? v * 0.1 : kpiBcf2 ? v * 0.00152 : kpiBcf6 ? v * 0.01 : (v / 1000) * 3.1) : (v >= 1000 ? v / 1000 : v / 100);
         }
       }
-      if (!isNaN(v) && /cp.*pv|pv.*cp/.test(kpiTagName) && /[_\-]7([_\-]|$)/.test(kpiTagName)) {
+      if (!isNaN(v) && /cp.*pv|pv.*cp/.test(kpiTagName) && /[_\-]7([_\-]|$)|[_\-]9([_\-]|$)/.test(kpiTagName)) {
         v = v * 2;
+      }
+      if (!isNaN(v) && /cp.*pv|pv.*cp/.test(kpiTagName) && /[_\-]6([_\-]|$)/.test(kpiTagName)) {
+        v = v * 0.001;
       }
       if (!isNaN(v) && /유조.*pv|pv.*유조|침탄.*pv|pv.*침탄/.test(kpiTagName) && /[_\-]8([_\-]|$)/.test(kpiTagName)) {
         v = v / 10;
@@ -837,6 +851,12 @@ function buildKpiCards(selList, rows) {
       }
       if (!isNaN(v) && /nh3/.test(kpiTagName) && /[_\-]9([_\-]|$)/.test(kpiTagName)) {
         v = v / 100;
+      }
+      if (!isNaN(v) && /nh3/.test(kpiTagName) && /[_\-]10([_\-]|$)/.test(kpiTagName)) {
+        v = v / 10;
+      }
+      if (!isNaN(v) && /유조.*온도|온도.*유조/.test(kpiTagName) && /[_\-]9([_\-]|$)/.test(kpiTagName)) {
+        v = v - 9;
       }
       return v;
     }).filter(function(v){ return !isNaN(v); });
@@ -875,7 +895,7 @@ function buildKpiCards(selList, rows) {
 /* ── CP 태그 판별 ── */
 function isCpTag(t) {
   var name = (t.trendName || t.tagName || t.colName || '').toLowerCase();
-  return name.split(/[_\s]+/).indexOf('cp') !== -1;
+  return name.split(/[_\s]+/).indexOf('cp') !== -1 || /cp.*pv|pv.*cp/.test(name);
 }
 
 /* ── 유량 태그 판별 (tagName/trendName/colName 에 유량 관련 키워드 포함) ── */
@@ -912,11 +932,16 @@ function buildMainChart(selList, rows) {
         var isBcf9 = /[_\-]9([_\-]|$)/.test(tName);
         var isBcf10 = /[_\-]10([_\-]|$)/.test(tName);
         var isBcf11 = /[_\-]11([_\-]|$)/.test(tName);
+        var isBcf2  = /[_\-]2([_\-]|$)/.test(tName);
+        var isBcf6  = /[_\-]6([_\-]|$)/.test(tName);
         var isBcf12 = /[_\-]12([_\-]|$)/.test(tName);
-        v = /c3h8/.test(tName) ? (isBcf7 ? v / 200 : (isBcf5 || isBcf8 || isBcf10 || isBcf11) ? v * 0.00125 : isBcf9 ? v * 0.0049 : isBcf12 ? v * 0.2 : (v / 1000) * 3.1) : (v >= 1000 ? v / 1000 : v / 100);
+        v = /c3h8/.test(tName) ? (isBcf7 ? v / 200 : (isBcf5 || isBcf8 || isBcf10 || isBcf11) ? v * 0.00125 : isBcf9 ? v * 0.0049 : isBcf12 ? v * 0.1 : isBcf2 ? v * 0.00152 : isBcf6 ? v * 0.01 : (v / 1000) * 3.1) : (v >= 1000 ? v / 1000 : v / 100);
       }
-      if (!isNaN(v) && /cp.*pv|pv.*cp/.test(tName) && /[_\-]7([_\-]|$)/.test(tName)) {
+      if (!isNaN(v) && /cp.*pv|pv.*cp/.test(tName) && /[_\-]7([_\-]|$)|[_\-]9([_\-]|$)/.test(tName)) {
         v = v * 2;
+      }
+      if (!isNaN(v) && /cp.*pv|pv.*cp/.test(tName) && /[_\-]6([_\-]|$)/.test(tName)) {
+        v = v * 0.001;
       }
       if (!isNaN(v) && /유조.*pv|pv.*유조|침탄.*pv|pv.*침탄/.test(tName) && /[_\-]8([_\-]|$)/.test(tName)) {
         v = v / 10;
@@ -926,6 +951,12 @@ function buildMainChart(selList, rows) {
       }
       if (!isNaN(v) && /nh3/.test(tName) && /[_\-]9([_\-]|$)/.test(tName)) {
         v = v / 100;
+      }
+      if (!isNaN(v) && /nh3/.test(tName) && /[_\-]10([_\-]|$)/.test(tName)) {
+        v = v / 10;
+      }
+      if (!isNaN(v) && /유조.*온도|온도.*유조/.test(tName) && /[_\-]9([_\-]|$)/.test(tName)) {
+        v = v - 9;
       }
       if (!isNaN(v)) data.push([ts, v]);
     });
@@ -1142,6 +1173,7 @@ function tagColor(t) {
   var name = (t.trendName || t.tagName || t.colName || '').toLowerCase();
   if (/침탄.*pv|pv.*침탄/.test(name)) return '#F87171';   /* 빨강 */
   if (/유조.*pv|pv.*유조/.test(name)) return '#4ADE80';   /* 초록 */
+  if (/침탄.*c3h8|c3h8.*침탄/.test(name)) return '#A855F7'; /* 보라 */
   if (/c3h8/.test(name))              return '#F472B6';   /* 분홍 */
   if (/cp.*pv|pv.*cp/.test(name))     return '#22D3EE';   /* 하늘 */
   return COLORS[tagIdxOf(t)];
@@ -1404,6 +1436,38 @@ function loadKgForBcf11Lots(lotRows) {
       })
       .catch(function(){ var el = document.getElementById(spanId); if (el) el.textContent = ''; });
   });
+}
+
+/* ── 차트 PNG 저장 ── */
+function saveChartPng() {
+  if (!mainChart) { alert('차트가 없습니다.'); return; }
+  var svg = mainChart.getSVG({
+    chart: { backgroundColor: '#0d1929' }
+  });
+  var canvas = document.createElement('canvas');
+  var w = mainChart.chartWidth, h = mainChart.chartHeight;
+  canvas.width = w; canvas.height = h;
+  var ctx = canvas.getContext('2d');
+  var img = new Image();
+  var blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+  var url = URL.createObjectURL(blob);
+  img.onload = function() {
+    ctx.drawImage(img, 0, 0);
+    URL.revokeObjectURL(url);
+    var a = document.createElement('a');
+    var now = new Date();
+    var p = function(n){ return String(n).padStart(2,'0'); };
+    var fname = 'chart_' + now.getFullYear() + p(now.getMonth()+1) + p(now.getDate())
+              + '_' + p(now.getHours()) + p(now.getMinutes()) + p(now.getSeconds()) + '.png';
+    a.href = canvas.toDataURL('image/png');
+    a.download = fname;
+    a.click();
+  };
+  img.onerror = function() {
+    URL.revokeObjectURL(url);
+    alert('PNG 저장 실패: 브라우저 보안 정책으로 SVG 이미지 변환이 차단되었습니다.');
+  };
+  img.src = url;
 }
 
 /* ── 메모 ── */
