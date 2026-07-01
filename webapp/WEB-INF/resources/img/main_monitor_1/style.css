@@ -164,6 +164,7 @@
   top: 219.81px;
   object-fit: cover;
   aspect-ratio: 46.84/80.13;
+  z-index: 2;
 }
 .back-12 {
   background: #a1bcd1;
@@ -183,7 +184,6 @@
   position: absolute;
   left: 150.87px;
   top: 320.09px;
-  z-index: 1;
 }
 .bcf-12-close-1 {
   background: #02e62c;
@@ -195,6 +195,7 @@
   position: absolute;
   left: 150.87px;
   top: 320.09px;
+  z-index: 1;
 }
 .bcf-12-open-2 {
   background: #ff0000;
@@ -206,7 +207,6 @@
   position: absolute;
   left: 150.87px;
   top: 333.92px;
-  z-index: 1;
 }
 .bcf-12-close-2 {
   background: #02e62c;
@@ -218,6 +218,7 @@
   position: absolute;
   left: 150.87px;
   top: 333.92px;
+  z-index: 1;
 }
 .bcf-12-open-3 {
   background: #ff0000;
@@ -229,7 +230,6 @@
   position: absolute;
   left: 163.84px;
   top: 450.63px;
-  z-index: 1;
 }
 .bcf-12-close-3 {
   background: #02e62c;
@@ -241,6 +241,7 @@
   position: absolute;
   left: 163.84px;
   top: 450.63px;
+  z-index: 1;
 }
 .bcf-12-stop {
   background: #ff0000;
@@ -480,6 +481,7 @@
   top: 219.81px;
   object-fit: cover;
   aspect-ratio: 46.84/80.13;
+  z-index: 2;
 }
 .back-1 {
   background: #a1bcd1;
@@ -795,6 +797,7 @@
   top: 219.81px;
   object-fit: cover;
   aspect-ratio: 46.84/80.13;
+  z-index: 2;
 }
 .back-2 {
   background: #a1bcd1;
@@ -1105,6 +1108,7 @@
   top: 219.81px;
   object-fit: cover;
   aspect-ratio: 46.84/80.13;
+  z-index: 2;
 }
 .back-3 {
   background: #a1bcd1;
@@ -1415,6 +1419,7 @@
   top: 219.81px;
   object-fit: cover;
   aspect-ratio: 46.84/80.13;
+  z-index: 2;
 }
 .back-4 {
   background: #a1bcd1;
@@ -1725,6 +1730,7 @@
   top: 219.81px;
   object-fit: cover;
   aspect-ratio: 46.84/80.13;
+  z-index: 2;
 }
 .back-10 {
   background: #a1bcd1;
@@ -2035,6 +2041,7 @@
   top: 219.81px;
   object-fit: cover;
   aspect-ratio: 46.84/80.13;
+  z-index: 2;
 }
 .back-5 {
   background: #a1bcd1;
@@ -2163,6 +2170,7 @@
   color: #388e3c;
   letter-spacing: .3px;
   transition: background .25s, color .25s, border-color .25s;
+  z-index: 3;
 }
 .bcf-5-heat-off {
   width: 63.11px;

@@ -5,6 +5,7 @@
 <configuration>
   <mappers>
     <mapper resource="mybatis/mapper/htms/SeAlarmMapper.xml"/>
+    <mapper resource="mybatis/mapper/htms/JacupSyncMapper.xml"/>
     <mapper resource="mybatis/mapper/monitor/WorkListMapper.xml"/>
   </mappers>
 </configuration>

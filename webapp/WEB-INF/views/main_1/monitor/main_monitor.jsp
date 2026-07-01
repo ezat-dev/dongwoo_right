@@ -305,11 +305,11 @@
         <img class="bcf-12-tray-1 bcf12_Y119H" src="<%= ctx %>/img/main_monitor_1/bcf-12-tray-10.png" />
         <div class="back-12"></div>
         <div class="bcf-12-open-1 bcf12_X097H">열림</div>
-        <div class="bcf-12-close-1">닫힘</div>
+        <div class="bcf-12-close-1 bcf12_X097H">닫힘</div>
         <div class="bcf-12-open-2 bcf12_X095H">열림</div>
-        <div class="bcf-12-close-2">닫힘</div>
+        <div class="bcf-12-close-2 bcf12_X095H">닫힘</div>
         <div class="bcf-12-open-3 bcf12_X090H">열림</div>
-        <div class="bcf-12-close-3">닫힘</div>
+        <div class="bcf-12-close-3 bcf12_X090H">닫힘</div>
         <div class="bcf-12-stop">정지</div>
         <div class="bcf-12-up">상승</div>
         <div class="bcf-12-down bcf12_X092H">하강</div>
@@ -319,7 +319,7 @@
         <img class="bcf-12-obj-on" src="<%= ctx %>/img/main_monitor_1/bcf-12-obj-on0.png" />
         <img class="bcf-12-pen-2 bcf12_Y0F4H" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <img class="bcf-12-pen-1 bcf12_Y0F4H" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
-        <img class="bcf-12-pen-3 bcf12_Y0F8H" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
+        <img class="bcf-12-pen-3 bcf12_Y0F4H" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <div class="bcf-12-jogging bcf12_M6824">조깅</div>
         <img class="bcf-12-moter-off" src="<%= ctx %>/img/main_monitor_1/bcf-12-moter-off0.png" />
         <img class="bcf-12-moter-on bcf12_Y0F0H bcf12_Y0F1H" src="<%= ctx %>/img/main_monitor_1/bcf-12-moter-on0.png" />
@@ -811,21 +811,23 @@
 
   const allTags = Object.keys(wordElMap).concat(Object.keys(bitElMap));
 
-  // 초기 상태: 비트 요소 모두 숨김 (jogging은 항상 표시)
+  // 초기 상태: 비트 요소 모두 숨김 (jogging은 항상 표시, bcf12 open 열림은 visible 유지)
   Object.keys(bitElMap).forEach(function(tag) {
     bitElMap[tag].forEach(function(el) {
       if (el.className.indexOf('-jogging') !== -1) return;
+      // BCF12 도어: open 열림 div는 초기에 visible (신호=0 → 열림 상태)
+      if (/\bbcf12_X/.test(tag) && el.className.indexOf('-open-') !== -1) return;
       el.style.visibility = 'hidden';
     });
   });
 
   const penEls = Array.prototype.slice.call(document.querySelectorAll('img[class*="-pen-"]'));
 
-  // 조깅 요소 초기 상태: 정지(오렌지)
+  // 조깅 요소 초기 상태: 정지(연빨강) — CSS !important 우선순위 극복을 위해 setProperty 사용
   document.querySelectorAll('div[class*="-jogging"]').forEach(function(el) {
     el.textContent = '정지';
-    el.style.background = 'linear-gradient(180deg,#fed7aa 0%,#fdba74 100%)';
-    el.style.color = '#7c2d12';
+    el.style.setProperty('background', 'linear-gradient(180deg,#fca5a5 0%,#f87171 100%)', 'important');
+    el.style.setProperty('color', '#7f1d1d', 'important');
     el.style.fontWeight = '800';
   });
 
@@ -885,14 +887,19 @@
         if (el.className.indexOf('-jogging') !== -1) {
           el.textContent = show ? '조깅' : '정지';
           if (show) {
-            el.style.background = '';
-            el.style.color = '';
+            el.style.removeProperty('background');
+            el.style.removeProperty('color');
           } else {
-            el.style.background = 'linear-gradient(180deg,#fed7aa 0%,#fdba74 100%)';
-            el.style.color = '#7c2d12';
+            el.style.setProperty('background', 'linear-gradient(180deg,#fca5a5 0%,#f87171 100%)', 'important');
+            el.style.setProperty('color', '#7f1d1d', 'important');
           }
           el.style.fontWeight = '800';
           el.style.visibility = 'visible';
+          return;
+        }
+        // BCF12 도어 open 열림 div: 신호=1(닫힘)이면 숨기고, 신호=0(열림)이면 표시 (반전)
+        if (/\bbcf12_X/.test(tag) && el.className.indexOf('-open-') !== -1) {
+          el.style.visibility = show ? 'hidden' : 'visible';
           return;
         }
         el.style.visibility = show ? 'visible' : 'hidden';
@@ -974,15 +981,15 @@
 
   /* ── BCF12(12호기) 신호 전용 콘솔 로거 ── */
   var BCF12_SIG_INFO = {
-    'bcf12_X097H': { lbl: '도어 열림1 (Gate1 Open)',  grp: '도어·게이트' },
-    'bcf12_X095H': { lbl: '도어 열림2 (Gate2 Open)',  grp: '도어·게이트' },
-    'bcf12_X090H': { lbl: '도어 열림3 (Gate3 Open)',  grp: '도어·게이트' },
-    'bcf12_X092H': { lbl: '상승 (Up)',                         grp: '승강',    inv: true },
+    'bcf12_X097H': { lbl: '도어 닫힘1 (Gate1 Closed)', grp: '도어·게이트' },
+    'bcf12_X095H': { lbl: '도어 닫힘2 (Gate2 Closed)', grp: '도어·게이트' },
+    'bcf12_X090H': { lbl: '도어 닫힘3 (Gate3 Closed)', grp: '도어·게이트' },
+    'bcf12_X092H': { lbl: '상승 (Up)',                         grp: '승강' },
     'bcf12_Y119H': { lbl: '트레이1 이송 (Y119H|X092H OR)',    grp: '트레이',  also: 'bcf12_X092H' },
     'bcf12_M0925': { lbl: '트레이2 이송 (Tray2)',              grp: '트레이' },
     'bcf12_Y0F4H': { lbl: '팬 1/2 회전 (Fan1/2)',             grp: '팬' },
     'bcf12_Y0F8H': { lbl: '팬 3 회전 (Fan3)',                  grp: '팬' },
-    'bcf12_M6824': { lbl: '조깅 운전 (Jogging)',               grp: '운전',    inv: true },
+    'bcf12_M6824': { lbl: '조깅 운전 (Jogging)',               grp: '운전' },
     'bcf12_Y0F0H': { lbl: '모터 A 기동 (Motor-A)',             grp: '모터' },
     'bcf12_Y0F1H': { lbl: '모터 B 기동 (Motor-B)',             grp: '모터' },
     'bcf12_Y112H': { lbl: '자동운전 (Auto)',                   grp: '운전모드', inv: true }

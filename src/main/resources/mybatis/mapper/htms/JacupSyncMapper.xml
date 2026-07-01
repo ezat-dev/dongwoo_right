@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="JacupSyncMapper">
+
+    <select id="selectFromHtms" resultType="java.util.HashMap">
+        SELECT DISTINCT
+            A.STATUS_SEQ,
+            A.WORK_INDCT_NUM,
+            A.CUST_NUM,
+            COALESCE((SELECT CUST_COMP_NM FROM sat_cust WHERE CUST_NUM = A.CUST_NUM), A.CUST_NUM) AS CUST_NM,
+            A.EQUT_CD,
+            A.PROD_CD,
+            B.PROD_MM AS PROD_NM,
+            A.MAIN_WORK_INDCT_NUM,
+            A.INSERT_DTTM,
+            A.SCAN_START_DTTM,
+            A.START_DTTM,
+            A.END_DTTM
+        FROM tb_jacup A
+        LEFT JOIN sat_prod B ON A.PROD_CD = B.PROD_CD
+        WHERE A.INSERT_DTTM >= DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+        ORDER BY A.INSERT_DTTM ASC
+    </select>
+
+</mapper>

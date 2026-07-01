@@ -24,6 +24,7 @@
     <mapper resource="mybatis/mapper/monitor/TempMapper.xml"/>
     <mapper resource="mybatis/mapper/monitor/PlcConfigMapper.xml"/>
     <mapper resource="mybatis/mapper/monitor/NowWorkMapper.xml"/>
+    <mapper resource="mybatis/mapper/monitor/JacupLocalMapper.xml"/>
     <!-- facility -->
     <mapper resource="mybatis/mapper/facility/CalibMapper.xml"/>
     <mapper resource="mybatis/mapper/facility/InspectMapper.xml"/>

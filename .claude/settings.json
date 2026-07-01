@@ -9,7 +9,18 @@
       "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\resources\\\\js\\\\highchart\\\\offline-exporting.js\" -Destination \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\resources\\\\js\\\\highchart\\\\offline-exporting.js\" -Force)",
       "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\views\\\\main_1\\\\main.jsp\" -Destination \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\views\\\\main_1\\\\main.jsp\" -Force)",
       "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\views\\\\main_1\\\\monitor\\\\main_monitor.jsp\" -Destination \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\views\\\\main_1\\\\monitor\\\\main_monitor.jsp\" -Force)",
-      "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\views\\\\main_1\\\\monitor\\\\main_monitor2.jsp\" -Destination \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\views\\\\main_1\\\\monitor\\\\main_monitor2.jsp\" -Force)"
+      "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\views\\\\main_1\\\\monitor\\\\main_monitor2.jsp\" -Destination \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\views\\\\main_1\\\\monitor\\\\main_monitor2.jsp\" -Force)",
+      "PowerShell(& \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\shutdown.bat\")",
+      "PowerShell(& \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\startup.bat\")",
+      "PowerShell(Get-Process -Name \"java\" -ErrorAction SilentlyContinue | Select-Object Id, ProcessName, @{N='Cmd';E={\\(Get-WmiObject Win32_Process -Filter \"ProcessId=$\\($_.Id\\)\"\\).CommandLine}} | Format-List)",
+      "PowerShell(Stop-Process -Id 46732 -Force; Start-Sleep -Seconds 3; $env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; $env:CATALINA_BASE = \"D:\\\\apache-tomcat-9.0.115\"; Start-Process -FilePath \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\startup.bat\" -WorkingDirectory \"D:\\\\apache-tomcat-9.0.115\\\\bin\" -WindowStyle Minimized; Write-Host \"Tomcat restarting...\")",
+      "PowerShell(Start-Sleep -Seconds 8; Get-Process -Name \"java\" | Where-Object { \\(Get-WmiObject Win32_Process -Filter \"ProcessId=$\\($_.Id\\)\"\\).CommandLine -match \"catalina\" } | Select-Object Id, @{N='StartTime';E={$_.StartTime}})",
+      "PowerShell($env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; $env:CATALINA_BASE = \"D:\\\\apache-tomcat-9.0.115\"; $env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; Start-Process -FilePath \"cmd.exe\" -ArgumentList \"/c D:\\\\apache-tomcat-9.0.115\\\\bin\\\\startup.bat\" -WorkingDirectory \"D:\\\\apache-tomcat-9.0.115\\\\bin\" -WindowStyle Normal; Write-Host \"started\")",
+      "Bash(awk '{print $1, $2}')",
+      "Bash(awk '$1 == 1')",
+      "PowerShell(Stop-Process -Id 36196 -Force)",
+      "PowerShell(Start-Process -FilePath \"C:\\\\PlcApiServer\\\\bin\\\\Release\\\\net8.0\\\\PlcApiServer.exe\" -WorkingDirectory \"C:\\\\PlcApiServer\\\\bin\\\\Release\\\\net8.0\")",
+      "PowerShell(Get-Process -Name \"PlcApiServer\" -ErrorAction SilentlyContinue)"
     ]
   }
 }

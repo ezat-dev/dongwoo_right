@@ -780,11 +780,11 @@
     });
   });
 
-  // 조깅 요소 초기 상태: 정지(연한 하늘색)
+  // 조깅 요소 초기 상태: 정지(연빨강) — CSS !important 우선순위 극복을 위해 setProperty 사용
   document.querySelectorAll('div[class*="-jogging"]').forEach(function(el) {
     el.textContent = '정지';
-    el.style.background = 'linear-gradient(180deg,#e0f2fe 0%,#7dd3fc 100%)';
-    el.style.color = '#0c4a6e';
+    el.style.setProperty('background', 'linear-gradient(180deg,#fca5a5 0%,#f87171 100%)', 'important');
+    el.style.setProperty('color', '#7f1d1d', 'important');
     el.style.fontWeight = '800';
   });
 
@@ -848,11 +848,11 @@
         if (el.className.indexOf('-jogging') !== -1) {
           el.textContent = show ? '조깅' : '정지';
           if (show) {
-            el.style.background = '';
-            el.style.color = '';
+            el.style.removeProperty('background');
+            el.style.removeProperty('color');
           } else {
-            el.style.background = 'linear-gradient(180deg,#e0f2fe 0%,#7dd3fc 100%)';
-            el.style.color = '#0c4a6e';
+            el.style.setProperty('background', 'linear-gradient(180deg,#fca5a5 0%,#f87171 100%)', 'important');
+            el.style.setProperty('color', '#7f1d1d', 'important');
           }
           el.style.fontWeight = '800';
           el.style.visibility = 'visible';

@@ -442,6 +442,7 @@ body { font-family: 'Pretendard','Noto Sans KR','Segoe UI',sans-serif; }
 <script>
 var base = '${pageContext.request.contextPath}';
 </script>
+<script src="${pageContext.request.contextPath}/js/html2canvas.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/highchart/highcharts.js"></script>
 <script src="${pageContext.request.contextPath}/js/highchart/exporting.js"></script>
 <script src="${pageContext.request.contextPath}/js/highchart/offline-exporting.js"></script>
@@ -1440,20 +1441,14 @@ function loadKgForBcf11Lots(lotRows) {
 
 /* ── 차트 PNG 저장 ── */
 function saveChartPng() {
-  if (!mainChart) { alert('차트가 없습니다.'); return; }
-  var svg = mainChart.getSVG({
-    chart: { backgroundColor: '#0d1929' }
-  });
-  var canvas = document.createElement('canvas');
-  var w = mainChart.chartWidth, h = mainChart.chartHeight;
-  canvas.width = w; canvas.height = h;
-  var ctx = canvas.getContext('2d');
-  var img = new Image();
-  var blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
-  var url = URL.createObjectURL(blob);
-  img.onload = function() {
-    ctx.drawImage(img, 0, 0);
-    URL.revokeObjectURL(url);
+  var el = document.getElementById('mainChartBox');
+  if (!el) { alert('차트가 없습니다.'); return; }
+  html2canvas(el, {
+    backgroundColor: '#0d1929',
+    scale: 2,
+    useCORS: true,
+    logging: false
+  }).then(function(canvas) {
     var a = document.createElement('a');
     var now = new Date();
     var p = function(n){ return String(n).padStart(2,'0'); };
@@ -1462,12 +1457,7 @@ function saveChartPng() {
     a.href = canvas.toDataURL('image/png');
     a.download = fname;
     a.click();
-  };
-  img.onerror = function() {
-    URL.revokeObjectURL(url);
-    alert('PNG 저장 실패: 브라우저 보안 정책으로 SVG 이미지 변환이 차단되었습니다.');
-  };
-  img.src = url;
+  });
 }
 
 /* ── 메모 ── */

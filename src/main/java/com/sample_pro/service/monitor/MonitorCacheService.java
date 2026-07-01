@@ -275,8 +275,8 @@ public class MonitorCacheService {
             new int[]   {144,           146,           149,           151},
             new String[]{"bcf12_X090H", "bcf12_X092H", "bcf12_X095H", "bcf12_X097H"});
 
-        // Y240(0xF0)~Y248(0xF8)
-        readMitBitRange("Y", 240, 9,
+        // Y240(0xF0)~Y249: count=10(짝수)으로 Y248(0xF8) byte경계 문제 방지
+        readMitBitRange("Y", 240, 10,
             new int[]   {240,           241,           244,           248},
             new String[]{"bcf12_Y0F0H", "bcf12_Y0F1H", "bcf12_Y0F4H", "bcf12_Y0F8H"});
 

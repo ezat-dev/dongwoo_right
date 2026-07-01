@@ -68,7 +68,7 @@
             j.PROD_CD,
             p.PROD_MM         AS PROD_NM,
             p.CUST_PROD_NUM   AS PROD_NUM,
-            c.CUST_COMP_NM    AS CUST_NM,
+            COALESCE(c.CUST_COMP_NM, j.CUST_NUM) AS CUST_NM,
             DATE_FORMAT(j.START_DTTM, '%Y-%m-%d %H:%i:%s') AS START_DTTM,
             DATE_FORMAT(j.END_DTTM,   '%Y-%m-%d %H:%i:%s') AS END_DTTM
         FROM tb_jacup j

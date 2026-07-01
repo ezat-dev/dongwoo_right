@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="JacupLocalMapper">
+
+    <select id="selectExistingKeys" resultType="String">
+        SELECT WORK_INDCT_NUM
+        FROM tb_jacup
+        WHERE INSERT_DTTM >= DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+    </select>
+
+    <insert id="insertOne" parameterType="java.util.HashMap">
+        INSERT INTO tb_jacup
+            (STATUS_SEQ, WORK_INDCT_NUM, CUST_NUM, EQUT_CD, PROD_CD,
+             MAIN_WORK_INDCT_NUM, INSERT_DTTM, SCAN_START_DTTM, START_DTTM, END_DTTM)
+        VALUES
+            (#{STATUS_SEQ}, #{WORK_INDCT_NUM}, #{CUST_NUM}, #{EQUT_CD}, #{PROD_CD},
+             #{MAIN_WORK_INDCT_NUM}, #{INSERT_DTTM}, #{SCAN_START_DTTM}, #{START_DTTM}, #{END_DTTM})
+    </insert>
+
+</mapper>
