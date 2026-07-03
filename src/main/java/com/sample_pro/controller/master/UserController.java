@@ -31,11 +31,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sample_pro.domain.PagePermission;
 import com.sample_pro.domain.Permission;
-
 import com.sample_pro.domain.UserMenu;
 import com.sample_pro.domain.Users;
 
+import com.sample_pro.service.master.PermService;
 import com.sample_pro.service.master.UserService;
 
 @Controller
@@ -43,7 +44,20 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
-	
+
+	@Autowired
+	private PermService permService;
+
+	private static final String[] ALL_PAGE_URLS = {
+		"main/monitor", "equip/monitor", "equip/detail",
+		"work/list", "work/now1", "work/now2",
+		"trend", "alarm/history", "alarm/ranking",
+		"calib/status", "inspect/daily", "auxiliary/inspection",
+		"spare/parts", "facility/backup", "consumable/ledger",
+		"inspect/fproof", "inspect/fprooflist",
+		"user/manage", "user/permission"
+	};
+
 	public static int USER_CODE = 0;
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -66,8 +80,23 @@ public class UserController {
 		Map<String, Object> r = new HashMap<>();
 		try {
 			Object empId = body.get("emp_id");
-			if (empId == null || empId.toString().trim().isEmpty()) userService.empInsert(body);
-			else userService.empUpdate(body);
+			if (empId == null || empId.toString().trim().isEmpty()) {
+				userService.empInsert(body);
+				// 신규 직원 생성 시 전체 페이지 권한 자동 부여
+				Object newEmpId = body.get("emp_id");
+				if (newEmpId != null) {
+					List<PagePermission> perms = new ArrayList<>();
+					for (String url : ALL_PAGE_URLS) {
+						PagePermission p = new PagePermission();
+						p.setPageUrl(url);
+						p.setCanView("Y"); p.setCanAdd("Y"); p.setCanEdit("Y"); p.setCanDel("Y");
+						perms.add(p);
+					}
+					permService.savePerms(Integer.parseInt(newEmpId.toString()), perms);
+				}
+			} else {
+				userService.empUpdate(body);
+			}
 			r.put("success", true);
 		} catch(Exception e) { r.put("success", false); r.put("message", e.getMessage()); }
 		return r;

@@ -11,7 +11,7 @@
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; overflow: hidden; }
-body { background: #07090F; color: #A8D8F0; font-family: 'Consolas', monospace; padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; }
+body { background: #07090F; color: #A8D8F0; font-family: 'Malgun Gothic', '맑은 고딕', 'Consolas', sans-serif; padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; }
 
 .page-title { font-size: 18px; font-weight: bold; color: #00F0FF; text-shadow: 0 0 12px #00F0FF66; }
 .page-sub   { font-size: 10px; color: #B24BF3; opacity: .6; }
@@ -42,7 +42,7 @@ body { background: #07090F; color: #A8D8F0; font-family: 'Consolas', monospace; 
 .plc-tab .tab-dot.err { background: #FF4466; box-shadow: 0 0 4px #FF4466; }
 .plc-tab .tab-dot.run { background: #00F0FF; box-shadow: 0 0 4px #00F0FF; animation: blink .8s infinite; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
-.plc-tab .tab-badge { font-size: 9px; opacity: .5; }
+.plc-tab .tab-badge { font-size: 9px; opacity: .75; }
 .plc-tab .tab-close {
     font-size: 12px; opacity: .4; margin-left: 2px; line-height: 1;
     padding: 0 2px; border-radius: 2px;
@@ -51,15 +51,15 @@ body { background: #07090F; color: #A8D8F0; font-family: 'Consolas', monospace; 
 
 .btn-add-plc {
     height: 30px; padding: 0 12px; background: transparent;
-    border: 1px dashed #2A4A6A; color: #2A4A6A;
-    font-family: 'Consolas', monospace; font-size: 11px;
+    border: 1px dashed #5A7FA0; color: #8AACCC;
+    font-size: 11px;
     cursor: pointer; border-radius: 3px; transition: all .15s; white-space: nowrap;
 }
 .btn-add-plc:hover { border-color: #00F0FF; color: #00F0FF; }
 .btn-add-modbus {
     height: 30px; padding: 0 12px; background: transparent;
-    border: 1px dashed #2A4A6A; color: #2A4A6A;
-    font-family: 'Consolas', monospace; font-size: 11px;
+    border: 1px dashed #5A7FA0; color: #8AACCC;
+    font-size: 11px;
     cursor: pointer; border-radius: 3px; transition: all .15s; white-space: nowrap;
 }
 .btn-add-modbus:hover { border-color: #4DD0E1; color: #4DD0E1; }
@@ -69,7 +69,7 @@ body { background: #07090F; color: #A8D8F0; font-family: 'Consolas', monospace; 
 .panel-head { display: flex; align-items: center; gap: 8px; padding: 8px 14px; border-bottom: 1px solid #0D1A2E; font-size: 10px; font-weight: bold; letter-spacing: 1px; }
 .acc { width: 3px; height: 14px; border-radius: 2px; flex-shrink: 0; }
 .cfg-row { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; padding: 8px 14px; }
-.cfg-label { font-size: 10px; color: #5A7FA0; white-space: nowrap; }
+.cfg-label { font-size: 10px; color: #90AECA; white-space: nowrap; }
 
 .cfg-inp {
     background: #060A18; border: 1px solid #1A3A5C; color: #00F0FF;
@@ -98,13 +98,13 @@ select.plc-inp { cursor: pointer; width: 200px; color: #00FF88; border-color: #0
 .conn-dot { width: 8px; height: 8px; border-radius: 50%; background: #2A4A6A; transition: all .3s; }
 .conn-dot.ok  { background: #00FF88; box-shadow: 0 0 5px #00FF88; }
 .conn-dot.err { background: #FF4466; box-shadow: 0 0 5px #FF4466; }
-.conn-msg { font-size: 11px; color: #5A7FA0; }
+.conn-msg { font-size: 11px; color: #90AECA; }
 .conn-msg.ok  { color: #00FF88; }
 .conn-msg.err { color: #FF4466; }
 
 .btn {
     height: 26px; padding: 0 12px; background: transparent;
-    font-family: 'Consolas', monospace; font-size: 11px; font-weight: bold;
+    font-size: 11px; font-weight: bold;
     cursor: pointer; border-radius: 2px; transition: all .15s; white-space: nowrap;
 }
 .btn-cyan   { border: 1px solid #00F0FF; color: #00F0FF; }
@@ -119,9 +119,9 @@ select.plc-inp { cursor: pointer; width: 200px; color: #00FF88; border-color: #0
 /* ══ 통계 ══ */
 .stats-row { display: grid; grid-template-columns: repeat(5,1fr); gap: 6px; flex-shrink: 0; }
 .stat-card { border-radius: 3px; padding: 6px 10px; display: flex; flex-direction: column; align-items: center; gap: 1px; border: 1px solid; }
-.sc-label { font-size: 9px; font-weight: bold; letter-spacing: 1px; opacity: .6; }
+.sc-label { font-size: 9px; font-weight: bold; letter-spacing: 1px; opacity: .8; }
 .sc-val   { font-size: 20px; font-weight: bold; }
-.sc-sub   { font-size: 9px; opacity: .4; }
+.sc-sub   { font-size: 9px; opacity: .65; }
 .sc-read-ok    { background: #071410; border-color: #00FF88; color: #00FF88; }
 .sc-read-fail  { background: #140709; border-color: #FF4466; color: #FF4466; }
 .sc-write-ok   { background: #071318; border-color: #00D4FF; color: #00D4FF; }
@@ -133,10 +133,10 @@ select.plc-inp { cursor: pointer; width: 200px; color: #00FF88; border-color: #0
 .s-dot { width: 7px; height: 7px; border-radius: 50%; background: #2A4A6A; transition: all .3s; }
 .s-dot.ok  { background: #00FF88; box-shadow: 0 0 5px #00FF88; }
 .s-dot.err { background: #FF4466; box-shadow: 0 0 5px #FF4466; }
-.s-msg { color: #5A7FA0; font-size: 11px; }
+.s-msg { color: #90AECA; font-size: 11px; }
 .s-msg.ok  { color: #00FF88; }
 .s-msg.err { color: #FF4466; }
-.s-cnt { margin-left: auto; color: #2A4A6A; font-size: 10px; }
+.s-cnt { margin-left: auto; color: #7090B0; font-size: 10px; }
 .spin { width: 10px; height: 10px; border-radius: 50%; border: 2px solid #1A3A5C; border-top-color: #00F0FF; }
 .spin.on { animation: spin .6s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -161,7 +161,7 @@ select.plc-inp { cursor: pointer; width: 200px; color: #00FF88; border-color: #0
 .read-scroll::-webkit-scrollbar-thumb, .write-scroll::-webkit-scrollbar-thumb, .con-body::-webkit-scrollbar-thumb { background:#1A3A5C; border-radius:2px; }
 
 .r-table { width:100%; border-collapse:collapse; font-size:12px; }
-.r-table thead th { position:sticky; top:0; z-index:1; background:#060A18; color:#00F0FF; opacity:.5; font-size:9px; letter-spacing:1px; font-weight:bold; padding:6px 8px; border-bottom:1px solid #1A3A5C; text-align:center; }
+.r-table thead th { position:sticky; top:0; z-index:1; background:#060A18; color:#00F0FF; opacity:.85; font-size:9px; letter-spacing:1px; font-weight:bold; padding:6px 8px; border-bottom:1px solid #1A3A5C; text-align:center; }
 .r-table thead th:first-child { text-align:left; }
 .r-table tbody td { padding:7px 8px; border-bottom:1px solid #060A18; text-align:center; }
 .r-table tbody td:first-child { text-align:left; }
@@ -172,8 +172,8 @@ select.plc-inp { cursor: pointer; width: 200px; color: #00FF88; border-color: #0
 .td-addr { color:#B24BF3; font-weight:bold; font-size:12px; }
 .td-dec  { color:#00F0FF; font-weight:bold; font-size:14px; }
 .td-hex  { color:#FFD060; font-size:11px; }
-.td-bin  { color:#2A4A6A; font-size:9px; letter-spacing:1px; }
-.td-time { color:#2A4A6A; font-size:10px; }
+.td-bin  { color:#5A7FA0; font-size:9px; letter-spacing:1px; font-family:'Consolas',monospace; }
+.td-time { color:#7090B0; font-size:10px; }
 .td-area { font-size:9px; white-space:nowrap; }
 .area-badge { display:inline-block; padding:1px 6px; border-radius:2px; font-size:9px; font-weight:bold; letter-spacing:.5px; border:1px solid; }
 .area-1x { background:#071A0E; border-color:#00FF88; color:#00FF88; }
@@ -182,27 +182,27 @@ select.plc-inp { cursor: pointer; width: 200px; color: #00FF88; border-color: #0
 .area-4x { background:#100A18; border-color:#B24BF3; color:#B24BF3; }
 .area-raw{ background:#0A0A0A; border-color:#3A5A7A; color:#3A5A7A; }
 
-.w-chunk-head { font-size:9px; font-weight:bold; color:#1A3A5C; letter-spacing:1px; padding:8px 0 3px; border-top:1px solid #0D1A2E; margin-top:4px; }
+.w-chunk-head { font-size:9px; font-weight:bold; color:#6A8AAA; letter-spacing:1px; padding:8px 0 3px; border-top:1px solid #0D1A2E; margin-top:4px; }
 .w-chunk-head:first-of-type { border-top:none; margin-top:0; padding-top:0; }
 .w-row { display:flex; align-items:center; gap:6px; padding:5px 0; border-bottom:1px solid #0D1A2E; }
 .w-addr { width:70px; color:#B24BF3; font-weight:bold; font-size:12px; flex-shrink:0; }
 .w-cur  { width:55px; text-align:right; color:#00F0FF; font-weight:bold; font-size:14px; flex-shrink:0; }
-.w-arrow { color:#2A4A6A; font-size:11px; flex-shrink:0; }
+.w-arrow { color:#7090B0; font-size:11px; flex-shrink:0; }
 .w-inp  { flex:1; min-width:0; background:#060A18; border:1px solid #1A3A5C; color:#FFD060; font-family:'Consolas',monospace; font-size:13px; font-weight:bold; padding:4px 6px; border-radius:2px; text-align:center; outline:none; }
 .w-inp:focus { border-color:#FFD060; }
 .w-btn  { width:52px; height:28px; background:transparent; border:1px solid #00FF88; color:#00FF88; font-family:'Consolas',monospace; font-size:10px; font-weight:bold; cursor:pointer; border-radius:2px; flex-shrink:0; }
 .w-btn:hover { background:#00FF88; color:#07090F; }
-.w-hint { font-size:9px; color:#2A4A6A; margin-top:8px; }
+.w-hint { font-size:9px; color:#7090B0; margin-top:8px; }
 
 .con-panel { background:#030508; border:1px solid #0D1A2E; border-radius:4px; display:flex; flex-direction:column; min-height:0; }
-.con-head  { display:flex; align-items:center; justify-content:space-between; padding:6px 10px; border-bottom:1px solid #0D1A2E; font-size:10px; font-weight:bold; color:#2A4A6A; letter-spacing:1px; flex-shrink:0; }
+.con-head  { display:flex; align-items:center; justify-content:space-between; padding:6px 10px; border-bottom:1px solid #0D1A2E; font-size:10px; font-weight:bold; color:#7090B0; letter-spacing:1px; flex-shrink:0; }
 .con-body  { flex:1; overflow-y:auto; min-height:0; padding:5px 8px; font-size:10px; line-height:1.8; }
 .log-line { display:flex; gap:5px; }
-.log-t  { color:#2A4A6A; flex-shrink:0; font-size:9px; }
+.log-t  { color:#7090B0; flex-shrink:0; font-size:9px; }
 .log-r  { color:#00F0FF; word-break:break-all; }
 .log-w  { color:#00FF88; word-break:break-all; }
 .log-e  { color:#FF4466; word-break:break-all; }
-.log-x  { color:#5A7FA0; word-break:break-all; }
+.log-x  { color:#90AECA; word-break:break-all; }
 .btn-cl { background:transparent; border:1px solid #1A3A5C; color:#2A4A6A; font-family:'Consolas',monospace; font-size:9px; padding:2px 6px; cursor:pointer; border-radius:2px; }
 .btn-cl:hover { border-color:#FF4466; color:#FF4466; }
 
@@ -223,7 +223,7 @@ select.plc-inp { cursor: pointer; width: 200px; color: #00FF88; border-color: #0
 }
 .bit-card-addr { color:#B24BF3; font-weight:bold; font-size:13px; }
 .bit-card-val  { color:#00F0FF; font-size:11px; }
-.bit-card-close { cursor:pointer; color:#2A4A6A; font-size:14px; padding:0 4px; line-height:1; }
+.bit-card-close { cursor:pointer; color:#7090B0; font-size:14px; padding:0 4px; line-height:1; }
 .bit-card-close:hover { color:#FF4466; }
 .bit-row { display:flex; gap:4px; flex-wrap:nowrap; }
 .bit-box {
@@ -236,8 +236,8 @@ select.plc-inp { cursor: pointer; width: 200px; color: #00FF88; border-color: #0
 .bit-box:hover { border-color:#FFD060; background:#1A1200; }
 .bit-box:hover .bit-name { color:#FFD06099; }
 .bit-box:hover .bit-val  { color:#FFD060; }
-.bit-box .bit-name { font-size:9px; color:#2A4A6A; }
-.bit-box .bit-val  { font-size:14px; font-weight:bold; color:#2A4A6A; }
+.bit-box .bit-name { font-size:9px; color:#7090B0; }
+.bit-box .bit-val  { font-size:14px; font-weight:bold; color:#7090B0; }
 .bit-box.on { border-color:#00FF88; background:#001A08; }
 .bit-box.on .bit-name { color:#00FF8899; }
 .bit-box.on .bit-val  { color:#00FF88; text-shadow:0 0 6px #00FF88; }
@@ -247,17 +247,58 @@ select.plc-inp { cursor: pointer; width: 200px; color: #00FF88; border-color: #0
 .bit-label-inp {
   width:34px; background:transparent; border:none;
   border-bottom:1px solid #1A3A5C;
-  color:#5A7FA0; font-family:'Consolas',monospace; font-size:8px;
+  color:#90AECA; font-family:'Consolas',monospace; font-size:8px;
   text-align:center; outline:none; padding:1px 0; flex-shrink:0;
 }
 .bit-label-inp:focus { border-bottom-color:#FFD060; color:#FFD060; }
 .bit-sublabel {
-  font-size:8px; color:#5A7FA0; text-align:center;
+  font-size:8px; color:#90AECA; text-align:center;
   overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
   width:34px; flex-shrink:0;
 }
 .bit-box.on + .bit-sublabel,
 .bit-sublabel.on { color:#00FF8899; }
+
+/* ══ Device 선택 pill ══ */
+.dev-pills { display:none; margin-left:16px; align-items:center; gap:4px; }
+.dev-pills.show { display:flex; }
+.dev-pill-label { font-size:9px; color:#7090B0; margin-right:4px; }
+.dev-pill {
+    padding:2px 10px; border-radius:3px; cursor:pointer;
+    background:transparent; border:1px solid #4A2A6A;
+    color:#B24BF3; font-family:'Consolas',monospace; font-size:12px; font-weight:bold;
+    transition:all .12s; line-height:1.7;
+}
+/* 디바이스별 inactive 색상 */
+.dev-pill[data-dev="D"] { color:#00D4FF; border-color:#00D4FF44; }
+.dev-pill[data-dev="W"] { color:#4499FF; border-color:#4499FF44; }
+.dev-pill[data-dev="R"] { color:#00E8C0; border-color:#00E8C044; }
+.dev-pill[data-dev="M"] { color:#FF8844; border-color:#FF884444; }
+.dev-pill[data-dev="L"] { color:#FFD060; border-color:#FFD06044; }
+.dev-pill[data-dev="X"] { color:#00FF88; border-color:#00FF8844; }
+.dev-pill[data-dev="Y"] { color:#88FF44; border-color:#88FF4444; }
+.dev-pill[data-dev="B"] { color:#CC55FF; border-color:#CC55FF44; }
+.dev-pill[data-dev="S"] { color:#FF5599; border-color:#FF559944; }
+/* 디바이스별 active 색상 */
+.dev-pill[data-dev="D"].active { background:#00D4FF; color:#07090F; border-color:#00D4FF; }
+.dev-pill[data-dev="W"].active { background:#4499FF; color:#07090F; border-color:#4499FF; }
+.dev-pill[data-dev="R"].active { background:#00E8C0; color:#07090F; border-color:#00E8C0; }
+.dev-pill[data-dev="M"].active { background:#FF8844; color:#07090F; border-color:#FF8844; }
+.dev-pill[data-dev="L"].active { background:#FFD060; color:#07090F; border-color:#FFD060; }
+.dev-pill[data-dev="X"].active { background:#00FF88; color:#07090F; border-color:#00FF88; }
+.dev-pill[data-dev="Y"].active { background:#88FF44; color:#07090F; border-color:#88FF44; }
+.dev-pill[data-dev="B"].active { background:#CC55FF; color:#07090F; border-color:#CC55FF; }
+.dev-pill[data-dev="S"].active { background:#FF5599; color:#07090F; border-color:#FF5599; }
+/* hover */
+.dev-pill[data-dev="D"]:hover:not(.active) { background:#00D4FF1A; border-color:#00D4FF; }
+.dev-pill[data-dev="W"]:hover:not(.active) { background:#4499FF1A; border-color:#4499FF; }
+.dev-pill[data-dev="R"]:hover:not(.active) { background:#00E8C01A; border-color:#00E8C0; }
+.dev-pill[data-dev="M"]:hover:not(.active) { background:#FF88441A; border-color:#FF8844; }
+.dev-pill[data-dev="L"]:hover:not(.active) { background:#FFD0601A; border-color:#FFD060; }
+.dev-pill[data-dev="X"]:hover:not(.active) { background:#00FF881A; border-color:#00FF88; }
+.dev-pill[data-dev="Y"]:hover:not(.active) { background:#88FF441A; border-color:#88FF44; }
+.dev-pill[data-dev="B"]:hover:not(.active) { background:#CC55FF1A; border-color:#CC55FF; }
+.dev-pill[data-dev="S"]:hover:not(.active) { background:#FF55991A; border-color:#FF5599; }
 
 /* ══ PLC 추가 모달 ══ */
 .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999; align-items:center; justify-content:center; }
@@ -337,10 +378,23 @@ select.plc-inp { cursor: pointer; width: 200px; color: #00FF88; border-color: #0
   <div class="panel-head" style="padding:8px 14px">
     <div class="acc" style="background:#B24BF3"></div>
     <span style="color:#B24BF3">RANGE  CONFIG</span>
-    <span style="color:#2A4A6A; font-size:9px; margin-left:8px" id="chunkInfo"></span>
+    <div class="dev-pills" id="mitsDevicePicker">
+      <span class="dev-pill-label">DEVICE</span>
+      <button class="dev-pill active" data-dev="D" onclick="selectMitsDev(this,'D')">D</button>
+      <button class="dev-pill" data-dev="W" onclick="selectMitsDev(this,'W')">W</button>
+      <button class="dev-pill" data-dev="R" onclick="selectMitsDev(this,'R')">R</button>
+      <button class="dev-pill" data-dev="M" onclick="selectMitsDev(this,'M')">M</button>
+      <button class="dev-pill" data-dev="L" onclick="selectMitsDev(this,'L')">L</button>
+      <button class="dev-pill" data-dev="X" onclick="selectMitsDev(this,'X')">X</button>
+      <button class="dev-pill" data-dev="Y" onclick="selectMitsDev(this,'Y')">Y</button>
+      <button class="dev-pill" data-dev="B" onclick="selectMitsDev(this,'B')">B</button>
+      <button class="dev-pill" data-dev="S" onclick="selectMitsDev(this,'S')">S</button>
+    </div>
+    <span style="color:#7090B0; font-size:9px; margin-left:10px" id="chunkInfo"></span>
   </div>
-  <div class="cfg-row">
-    <span class="cfg-label">시작 D주소</span>
+  <!-- LS / Modbus 공용 행 -->
+  <div class="cfg-row" id="rangeRowDefault">
+    <span class="cfg-label" id="cfgStartLabel">시작 D주소</span>
     <input class="cfg-inp" id="cfgStart" type="number" value="10000" min="0" max="65535">
     <span class="cfg-label">읽을 개수</span>
     <input class="cfg-inp" id="cfgCount" type="number" value="100" min="1" max="9900" oninput="updateChunkInfo()">
@@ -360,6 +414,25 @@ select.plc-inp { cursor: pointer; width: 200px; color: #00FF88; border-color: #0
     </select>
     <button class="btn btn-cyan" id="btnStart" onclick="startPolling()">▶  시작</button>
     <button class="btn btn-red"  id="btnStop"  onclick="stopPolling()" style="display:none">■  중지</button>
+    <span id="lsNotice" style="display:none;color:#FFD060;font-size:10px;border:1px solid rgba(255,208,96,0.4);padding:2px 8px;border-radius:2px;margin-left:4px">D 영역 지원 · M/C 영역 구현중</span>
+  </div>
+  <!-- Mitsubishi 전용 행 -->
+  <div class="cfg-row" id="rangeRowMits" style="display:none">
+    <input type="hidden" id="cfgMitsDevice" value="D">
+    <span class="cfg-label">시작 주소</span>
+    <input class="cfg-inp" id="cfgMitsStart" type="number" value="0" min="0" max="65535">
+    <span class="cfg-label">읽을 개수</span>
+    <input class="cfg-inp" id="cfgMitsCount" type="number" value="20" min="1" max="960">
+    <span class="cfg-label">폴링 간격</span>
+    <select class="cfg-inp" id="cfgMitsInterval" style="width:90px">
+      <option value="300">300ms</option>
+      <option value="500">500ms</option>
+      <option value="1000" selected>1000ms</option>
+      <option value="2000">2000ms</option>
+      <option value="5000">5000ms</option>
+    </select>
+    <button class="btn btn-cyan" id="btnStartMits" onclick="startPolling()">▶  시작</button>
+    <button class="btn btn-red"  id="btnStopMits"  onclick="stopPolling()" style="display:none">■  중지</button>
   </div>
   <div class="chunk-bar-wrap" id="chunkBarWrap">
     <span style="font-size:9px;color:#5A7FA0;white-space:nowrap">CHUNKS</span>
@@ -381,12 +454,12 @@ select.plc-inp { cursor: pointer; width: 200px; color: #00FF88; border-color: #0
     <div class="panel-head">
       <div class="acc" style="background:#00F0FF"></div>
       <span style="color:#00F0FF">READ  —  실시간 모니터링</span>
-      <span style="color:#2A4A6A;font-size:10px;margin-left:4px" id="rangeLabel"></span>
+      <span style="color:#7090B0;font-size:10px;margin-left:4px" id="rangeLabel"></span>
     </div>
     <div class="read-scroll">
       <table class="r-table">
         <thead><tr>
-          <th style="width:70px">D주소</th>
+          <th style="width:70px" id="readAddrHeader">D주소</th>
           <th style="width:68px">영역</th>
           <th style="width:60px">DEC</th>
           <th style="width:60px">HEX</th>
@@ -394,7 +467,7 @@ select.plc-inp { cursor: pointer; width: 200px; color: #00FF88; border-color: #0
           <th style="width:70px">갱신시각</th>
         </tr></thead>
         <tbody id="readBody">
-          <tr><td colspan="6" style="color:#2A4A6A;text-align:center;padding:24px">폴링 시작 후 표시</td></tr>
+          <tr><td colspan="6" style="color:#7090B0;text-align:center;padding:24px">폴링 시작 후 표시</td></tr>
         </tbody>
       </table>
     </div>
@@ -405,7 +478,7 @@ select.plc-inp { cursor: pointer; width: 200px; color: #00FF88; border-color: #0
       <span style="color:#00FF88">WRITE  —  PLC 값 쓰기</span>
     </div>
     <div class="write-scroll" id="writeBody">
-      <div style="color:#2A4A6A;text-align:center;padding:20px;font-size:11px">폴링 시작 후 표시</div>
+      <div style="color:#7090B0;text-align:center;padding:20px;font-size:11px">폴링 시작 후 표시</div>
     </div>
     <div class="sbar">
       <div class="s-dot" id="wDot"></div>
@@ -426,7 +499,7 @@ select.plc-inp { cursor: pointer; width: 200px; color: #00FF88; border-color: #0
   <div class="bit-panel-head">
     <div class="acc" style="background:#FFD060"></div>
     <span style="color:#FFD060">BIT  MONITOR</span>
-    <span style="color:#2A4A6A;font-size:9px;margin-left:6px">// 워드 → 비트 분해  ·  LS D주소 기준</span>
+    <span style="color:#7090B0;font-size:9px;margin-left:6px">// 워드 → 비트 분해  ·  LS D주소 기준</span>
     <div style="margin-left:auto;display:flex;align-items:center;gap:6px">
       <span class="cfg-label">D주소</span>
       <input class="cfg-inp" id="bitAddAddr" type="number" placeholder="예: 2" style="width:72px" onkeydown="if(event.key==='Enter')addBitMonitor()">
@@ -574,12 +647,59 @@ function getPlcTypeById(plcId) {
     return (plcId && plcMap[plcId] && plcMap[plcId].plcType) ? plcMap[plcId].plcType : 'LS';
 }
 
-function addrLabelByType(addr, plcType) {
-    return isModbusType(plcType) ? String(addr) : ('D' + addr);
+function addrLabelByType(addr, plcType, device) {
+    if (isModbusType(plcType)) return String(addr);
+    if (plcType === 'MITSUBISHI') return (device || 'D') + addr;
+    return 'D' + addr;
 }
 
 function addrLabel(addr, plcId) {
-    return addrLabelByType(addr, getPlcTypeById(plcId || currentId));
+    var pid = plcId || currentId;
+    var p   = plcMap[pid];
+    var dev = (p && p.polling && p.polling.device) ? p.polling.device : 'D';
+    return addrLabelByType(addr, p ? p.plcType : 'LS', dev);
+}
+
+function updateRangePanel(plcType) {
+    var defRow  = document.getElementById('rangeRowDefault');
+    var mitsRow = document.getElementById('rangeRowMits');
+    var lsNote  = document.getElementById('lsNotice');
+    var startLbl = document.getElementById('cfgStartLabel');
+    var addrHdr  = document.getElementById('readAddrHeader');
+    var picker   = document.getElementById('mitsDevicePicker');
+    if (plcType === 'MITSUBISHI') {
+        defRow.style.display  = 'none';
+        mitsRow.style.display = '';
+        if (picker)  picker.classList.add('show');
+        if (addrHdr) addrHdr.textContent = '주소';
+    } else {
+        defRow.style.display  = '';
+        mitsRow.style.display = 'none';
+        if (picker)  picker.classList.remove('show');
+        var isMB = isModbusType(plcType);
+        if (startLbl) startLbl.textContent = isMB ? '시작 주소' : '시작 D주소';
+        if (lsNote)   lsNote.style.display = (plcType === 'LS') ? '' : 'none';
+        if (addrHdr)  addrHdr.textContent  = isMB ? '주소' : 'D주소';
+    }
+}
+
+function selectMitsDev(btn, dev) {
+    document.querySelectorAll('.dev-pill').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    document.getElementById('cfgMitsDevice').value = dev;
+    var addrHdr = document.getElementById('readAddrHeader');
+    if (addrHdr) addrHdr.textContent = dev + '주소';
+}
+
+function updatePollingButtons(running) {
+    ['btnStart','btnStartMits'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.style.display = running ? 'none' : '';
+    });
+    ['btnStop','btnStopMits'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.style.display = running ? '' : 'none';
+    });
 }
 
 function renderTabs() {
@@ -627,6 +747,7 @@ function loadTabState() {
         }
     }
     updateTypeBadge(p.plcType);
+    updateRangePanel(p.plcType);
     setConnStatus(p.connMsg || '미확인', p.connOk === true ? 'ok' : p.connOk === false ? 'err' : '');
 
     // 통계
@@ -637,8 +758,7 @@ function loadTabState() {
     document.getElementById('cntWriteFail').textContent = s.writeFail;
 
     // 폴링 버튼
-    document.getElementById('btnStart').style.display = p.polling.running ? 'none' : '';
-    document.getElementById('btnStop').style.display  = p.polling.running ? '' : 'none';
+    updatePollingButtons(p.polling.running);
     document.getElementById('spinner').className = 'spin' + (p.polling.running ? ' on' : '');
 
     // 읽기 테이블/쓰기 패널 재렌더
@@ -775,6 +895,7 @@ function removePlc(e, id) {
 function onPlcTypeChange() {
     var t = document.getElementById('selPlcType').value;
     document.getElementById('inpPlcPort').value = getDefaultPortByType(t);
+    updateRangePanel(t);
     if (t === 'MODBUS_TCP') {
         var startEl = document.getElementById('cfgStart');
         var curStart = parseInt(startEl.value, 10);
@@ -869,11 +990,23 @@ function startPolling() {
     var p = plcMap[currentId];
     if (p.polling.running) return;
 
-    var start    = parseInt(document.getElementById('cfgStart').value)    || 10000;
-    var count    = parseInt(document.getElementById('cfgCount').value)    || 100;
-    var interval = parseInt(document.getElementById('cfgInterval').value) || 1000;
-    var size     = parseInt(document.getElementById('cfgChunkSize').value)|| 100;
+    var isMits = (p.plcType === 'MITSUBISHI');
+    var start, count, interval, size, device;
+    if (isMits) {
+        device   = document.getElementById('cfgMitsDevice').value || 'D';
+        start    = parseInt(document.getElementById('cfgMitsStart').value)    || 0;
+        count    = Math.min(parseInt(document.getElementById('cfgMitsCount').value) || 20, 960);
+        interval = parseInt(document.getElementById('cfgMitsInterval').value) || 1000;
+        size     = count;
+    } else {
+        device   = 'D';
+        start    = parseInt(document.getElementById('cfgStart').value)    || 10000;
+        count    = parseInt(document.getElementById('cfgCount').value)    || 100;
+        interval = parseInt(document.getElementById('cfgInterval').value) || 1000;
+        size     = parseInt(document.getElementById('cfgChunkSize').value)|| 100;
+    }
 
+    p.polling.device = device;
     p.chunks = calcChunks(start, count, size);
     p.polling.cycle = 0; p.polling.writeBuilt = false;
     p.polling.isChunking = false; p.polling.chunkIdx = 0;
@@ -888,15 +1021,14 @@ function startPolling() {
     p.polling.elapsedTimer = setInterval(function(){ updateElapsed(currentId); }, 1000);
 
     document.getElementById('rangeLabel').textContent =
-        '// '+addrLabelByType(start, p.plcType)+'~'+addrLabelByType(start+count-1, p.plcType)+'  ('+count+'개  '+p.chunks.length+'청크)';
-    document.getElementById('btnStart').style.display = 'none';
-    document.getElementById('btnStop').style.display  = '';
+        '// '+addrLabelByType(start, p.plcType, device)+'~'+addrLabelByType(start+count-1, p.plcType, device)+'  ('+count+'개  '+p.chunks.length+'청크)';
+    updatePollingButtons(true);
     document.getElementById('spinner').classList.add('on');
     p.polling.running = true;
-    updateChunkInfo();
+    if (!isMits) updateChunkInfo();
     setStatus('폴링 중...', '');
     renderTabs();
-    clog('시작 ['+currentId+'] '+addrLabelByType(start, p.plcType)+'~'+addrLabelByType(start+count-1, p.plcType)+'  간격='+interval+'ms', 'r');
+    clog('시작 ['+currentId+'] '+addrLabelByType(start, p.plcType, device)+'~'+addrLabelByType(start+count-1, p.plcType, device)+'  간격='+interval+'ms', 'r');
 
     startChunkCycle(currentId);
     var tid = currentId;
@@ -912,8 +1044,7 @@ function stopPolling() {
     clearInterval(p.polling.elapsedTimer); p.polling.elapsedTimer = null;
     p.polling.running = false; p.polling.isChunking = false;
 
-    document.getElementById('btnStart').style.display = '';
-    document.getElementById('btnStop').style.display  = 'none';
+    updatePollingButtons(false);
     document.getElementById('spinner').classList.remove('on');
     document.getElementById('sDot').className = 's-dot';
     document.getElementById('cntElapsedSub').textContent = '폴링 중지';
@@ -951,9 +1082,16 @@ function fetchNextChunk(id) {
     if (id === currentId) setPip(ci, 'active');
 
     var useBits = isModbusType(p.plcType) && isBitArea(chunk.start);
-    var readUrl = useBits
-        ? '/sample_pro/plc/readBits/' + id + '?start=' + chunk.start + '&count=' + chunk.count
-        : '/sample_pro/plc/read/'     + id + '?start=' + chunk.start + '&count=' + chunk.count;
+    var device  = (p.polling && p.polling.device) ? p.polling.device : 'D';
+    var readUrl;
+    if (isModbusType(p.plcType)) {
+        readUrl = useBits
+            ? '/sample_pro/plc/readBits/' + id + '?start=' + chunk.start + '&count=' + chunk.count
+            : '/sample_pro/plc/read/'     + id + '?start=' + chunk.start + '&count=' + chunk.count;
+    } else {
+        readUrl = '/sample_pro/plc/read/' + id + '?start=' + chunk.start + '&count=' + chunk.count;
+        if (p.plcType === 'MITSUBISHI') readUrl += '&device=' + encodeURIComponent(device);
+    }
 
     fetch(readUrl)
     .then(function(res){ if(!res.ok) throw new Error('HTTP '+res.status); return res.json(); })
@@ -999,8 +1137,9 @@ function flushReadTable() {
             var bin = val.toString(2).padStart(16,'0').replace(/(.{4})/g,'$1 ').trim();
             var sep = (!firstChunk && i===0) ? ' chunk-sep' : '';
             firstChunk = false;
+            var dev = (p.polling && p.polling.device) ? p.polling.device : 'D';
             html += '<tr class="'+(changed?'flash':'')+sep+'">'
-                  + '<td class="td-addr">'+addrLabelByType(dAddr, p.plcType)+'</td>'
+                  + '<td class="td-addr">'+addrLabelByType(dAddr, p.plcType, dev)+'</td>'
                   + '<td class="td-area">'+modbusAreaBadge(dAddr, p.plcType)+'</td>'
                   + '<td class="td-dec">'+val+'</td>'
                   + '<td class="td-hex">'+hex+'</td>'
@@ -1016,8 +1155,9 @@ function buildAllWriteRows() {
     if (!currentId) return;
     var p = plcMap[currentId];
     var html = '';
+    var wDev = (p.polling && p.polling.device) ? p.polling.device : 'D';
     p.chunks.forEach(function(chunk, ci){
-        html += '<div class="w-chunk-head">CHUNK '+(ci+1)+'  //  '+addrLabelByType(chunk.start, p.plcType)+' ~ '+addrLabelByType(chunk.start+chunk.count-1, p.plcType)+'</div>';
+        html += '<div class="w-chunk-head">CHUNK '+(ci+1)+'  //  '+addrLabelByType(chunk.start, p.plcType, wDev)+' ~ '+addrLabelByType(chunk.start+chunk.count-1, p.plcType, wDev)+'</div>';
         for(var i=0;i<chunk.count;i++){
             var dAddr = chunk.start+i;
             var val   = p.values['D'+dAddr] != null ? p.values['D'+dAddr] : 0;
@@ -1031,7 +1171,7 @@ function buildAllWriteRows() {
                 ? '<span style="font-size:9px;color:#FF446688;width:52px;text-align:center;flex-shrink:0">READ ONLY</span>'
                 : '<button class="w-btn" onclick="doWrite(\''+currentId+'\','+dAddr+')">WRITE</button>';
             html += '<div class="w-row">'
-                  + '<span class="w-addr">'+addrLabelByType(dAddr, p.plcType)+'</span>'
+                  + '<span class="w-addr">'+addrLabelByType(dAddr, p.plcType, wDev)+'</span>'
                   + modbusAreaBadge(dAddr, p.plcType)
                   + '<span class="w-cur" id="wcur_'+dAddr+'">'+val+'</span>'
                   + '<span class="w-arrow">→</span>'

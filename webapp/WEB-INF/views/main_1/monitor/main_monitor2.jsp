@@ -424,9 +424,9 @@
         <!-- <div class="bcf-6-jogging-3 bcf6_305 bcf6_306">조깅</div> -->
         <div class="bcf-6-jogging-3 bcf6_305 bcf6_305">조깅</div>
         <div class="bcf-6-jogging-4 bcf6_307 bcf6_307">조깅</div>
-        <div class="bcf-6-jogging-5 bcf6_309 bcf6_309">조깅</div>
-        <div class="bcf-6-jogging-6 bcf6_311 bcf6_311">조깅</div>
-        <div class="bcf-6-jogging-7 bcf6_313 bcf6_313">조깅</div>
+        <div class="bcf-6-jogging-5 bcf6_309 bcf6_310">조깅</div>
+        <div class="bcf-6-jogging-6 bcf6_311 bcf6_312">조깅</div>
+        <div class="bcf-6-jogging-7 bcf6_313 bcf6_314">조깅</div>
         <img class="bcf-6-moter-off-1" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-off-10.png" />
         <img class="bcf-6-moter-on-1 bcf6_244 bcf6_245" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-on-10.png" />
         <img class="bcf-6-moter-off-2" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-off-20.png" />
@@ -846,8 +846,10 @@
       bitElMap[tag].forEach(function (el) {
         if (isPenElement(el)) return;
         if (el.className.indexOf('-jogging') !== -1) {
-          el.textContent = show ? '조깅' : '정지';
-          if (show) {
+          var jogTags = bitTagsOf(el);
+          var jogShow = jogTags.some(function(t) { return data[t] === 1 || data[t] === true; });
+          el.textContent = jogShow ? '조깅' : '정지';
+          if (jogShow) {
             el.style.removeProperty('background');
             el.style.removeProperty('color');
           } else {
@@ -861,6 +863,22 @@
         el.style.visibility = show ? 'visible' : 'hidden';
       });
     });
+
+    // tray-4 신호=1일 때만 DT-2 박스 표시
+    (function() {
+      var trayDtMap = [
+        { tray: 'bcf8_117', dt: '.bcf-8-dt-2' },
+        { tray: 'bcf9_145', dt: '.bcf-9-dt-2' },
+        { tray: 'bcf7_145', dt: '.bcf-7-dt-2' },
+        { tray: 'bcf8_116', dt: '.bcf-8-dt-1' },
+        { tray: 'bcf9_144', dt: '.bcf-9-dt-1' },
+        { tray: 'bcf7_144', dt: '.bcf-7-dt-1' },
+      ];
+      trayDtMap.forEach(function(m) {
+        var el = document.querySelector(m.dt);
+        if (el) el.style.visibility = (data[m.tray] === 1) ? 'visible' : 'hidden';
+      });
+    })();
 
     penEls.forEach(function(el) {
       var tags = bitTagsOf(el);

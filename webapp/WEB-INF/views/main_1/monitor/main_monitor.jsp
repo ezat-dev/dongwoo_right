@@ -155,6 +155,7 @@
      transform-origin: 50% 50%;
      animation: penSpinRight 5.5s linear infinite;
      will-change: transform;
+     z-index: 3;
    }
    .group-1 img[class*="-pen-"].pen-rotating {
      animation-play-state: running;
@@ -259,7 +260,7 @@
 
     <!-- BCF 명칭 / 운전모드 라벨 (절대좌표, 각 작화 정중앙 정렬) -->
     <div class="bcf-name-lbl" style="left:107.65px">NO.12</div>
-    <div class="bcf-mode-lbl" data-mode-tag="bcf12_Y112H" data-mode-inv="true" style="left:107.65px">확인중</div>
+    <div class="bcf-mode-lbl" data-mode-tag="bcf12_Y112H" style="left:107.65px">확인중</div>
 
     <div class="bcf-name-lbl" style="left:357.49px">NO.1</div>
     <div class="bcf-mode-lbl" data-mode-tag="bcf1_106" style="left:357.49px">확인중</div>
@@ -301,8 +302,8 @@
         <img class="bcf-12-box-off-3" src="<%= ctx %>/img/main_monitor_1/bcf-12-box-off-30.png" />
         <img class="bcf-12-box-on-4" src="<%= ctx %>/img/main_monitor_1/bcf-12-box-on-40.png" />
         <img class="bcf-12-box-off-4" src="<%= ctx %>/img/main_monitor_1/bcf-12-box-off-40.png" />
-        <img class="bcf-12-tray-2 bcf12_M0925" src="<%= ctx %>/img/main_monitor_1/bcf-12-tray-20.png" />
-        <img class="bcf-12-tray-1 bcf12_Y119H" src="<%= ctx %>/img/main_monitor_1/bcf-12-tray-10.png" />
+        <img class="bcf-12-tray-2 bcf12_Y119H" src="<%= ctx %>/img/main_monitor_1/bcf-12-tray-20.png" />
+        <img class="bcf-12-tray-1 bcf12_M0925" src="<%= ctx %>/img/main_monitor_1/bcf-12-tray-10.png" />
         <div class="back-12"></div>
         <div class="bcf-12-open-1 bcf12_X097H">열림</div>
         <div class="bcf-12-close-1 bcf12_X097H">닫힘</div>
@@ -311,8 +312,8 @@
         <div class="bcf-12-open-3 bcf12_X090H">열림</div>
         <div class="bcf-12-close-3 bcf12_X090H">닫힘</div>
         <div class="bcf-12-stop">정지</div>
-        <div class="bcf-12-up">상승</div>
-        <div class="bcf-12-down bcf12_X092H">하강</div>
+        <div class="bcf-12-down">하강</div>
+        <div class="bcf-12-up bcf12_X092H">상승</div>
         <img class="bcf-12-heat-off" src="<%= ctx %>/img/main_monitor_1/bcf-12-heat-off0.png" />
         <img class="bcf-12-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-12-heat-on0.png" />
         <img class="bcf-12-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-12-obj-off0.png" />
@@ -815,8 +816,10 @@
   Object.keys(bitElMap).forEach(function(tag) {
     bitElMap[tag].forEach(function(el) {
       if (el.className.indexOf('-jogging') !== -1) return;
-      // BCF12 도어: open 열림 div는 초기에 visible (신호=0 → 열림 상태)
-      if (/\bbcf12_X/.test(tag) && el.className.indexOf('-open-') !== -1) return;
+      // BCF12 도어: close 닫힘 div는 초기에 visible (신호=0 → 닫힘 상태)
+      if (/\bbcf12_X/.test(tag) && el.className.indexOf('-close-') !== -1) return;
+      // BCF12 승강: up 상승 div는 초기에 visible (신호=0 → 상승 상태)
+      if (tag === 'bcf12_X092H' && el.className.indexOf('bcf-12-up') !== -1) return;
       el.style.visibility = 'hidden';
     });
   });
@@ -885,8 +888,9 @@
       bitElMap[tag].forEach(function (el) {
         if (isPenElement(el)) return;
         if (el.className.indexOf('-jogging') !== -1) {
-          el.textContent = show ? '조깅' : '정지';
-          if (show) {
+          var jogShow = show;
+          el.textContent = jogShow ? '조깅' : '정지';
+          if (jogShow) {
             el.style.removeProperty('background');
             el.style.removeProperty('color');
           } else {
@@ -897,14 +901,47 @@
           el.style.visibility = 'visible';
           return;
         }
-        // BCF12 도어 open 열림 div: 신호=1(닫힘)이면 숨기고, 신호=0(열림)이면 표시 (반전)
-        if (/\bbcf12_X/.test(tag) && el.className.indexOf('-open-') !== -1) {
+        // BCF12 도어 close 닫힘 div: 신호=0(닫힘)이면 표시, 신호=1(열림)이면 숨김 (반전)
+        if (/\bbcf12_X/.test(tag) && el.className.indexOf('-close-') !== -1) {
+          el.style.visibility = show ? 'hidden' : 'visible';
+          return;
+        }
+        // BCF12 승강 up 상승 div: 신호=0(상승)이면 표시, 신호=1이면 숨김 (반전)
+        if (tag === 'bcf12_X092H' && el.className.indexOf('bcf-12-up') !== -1) {
           el.style.visibility = show ? 'hidden' : 'visible';
           return;
         }
         el.style.visibility = show ? 'visible' : 'hidden';
       });
     });
+
+    // BCF12 승강: X092H=0(상승)이면 bcf-12-down을 뒤로 밀어 상승 텍스트가 보이게
+    (function() {
+      var downEl = document.querySelector('.bcf-12-down');
+      if (downEl) downEl.style.zIndex = (data['bcf12_X092H'] !== 1) ? '-1' : '';
+    })();
+
+    // BCF5 open-3: bcf10_2=1이면 앞으로, 0이면 뒤로
+    (function() {
+      var el = document.querySelector('.bcf-5-open-3');
+      if (el) el.style.zIndex = (data['bcf10_2'] === 1) ? '' : '-1';
+    })();
+
+    // tray-1 신호=1일 때만 DT 박스 표시
+    (function() {
+      var trayDtMap = [
+        { tray: 'bcf1_50',  dt: '.bcf-1-dt'  },
+        { tray: 'bcf2_50',  dt: '.bcf-2-dt'  },
+        { tray: 'bcf3_97',  dt: '.bcf-3-dt'  },
+        { tray: 'bcf4_50',  dt: '.bcf-4-dt'  },
+        { tray: 'bcf5_53',  dt: '.bcf-5-dt'  },
+        { tray: 'bcf10_53', dt: '.bcf-10-dt' },
+      ];
+      trayDtMap.forEach(function(m) {
+        var el = document.querySelector(m.dt);
+        if (el) el.style.visibility = (data[m.tray] === 1) ? 'visible' : 'hidden';
+      });
+    })();
 
     penEls.forEach(function(el) {
       var tags = bitTagsOf(el);
@@ -985,14 +1022,14 @@
     'bcf12_X095H': { lbl: '도어 닫힘2 (Gate2 Closed)', grp: '도어·게이트' },
     'bcf12_X090H': { lbl: '도어 닫힘3 (Gate3 Closed)', grp: '도어·게이트' },
     'bcf12_X092H': { lbl: '상승 (Up)',                         grp: '승강' },
-    'bcf12_Y119H': { lbl: '트레이1 이송 (Y119H|X092H OR)',    grp: '트레이',  also: 'bcf12_X092H' },
-    'bcf12_M0925': { lbl: '트레이2 이송 (Tray2)',              grp: '트레이' },
+    'bcf12_M0925': { lbl: '트레이1 이송 (Tray1)',              grp: '트레이' },
+    'bcf12_Y119H': { lbl: '트레이2 이송 (Y119H|X092H OR)',    grp: '트레이',  also: 'bcf12_X092H' },
     'bcf12_Y0F4H': { lbl: '팬 1/2 회전 (Fan1/2)',             grp: '팬' },
     'bcf12_Y0F8H': { lbl: '팬 3 회전 (Fan3)',                  grp: '팬' },
     'bcf12_M6824': { lbl: '조깅 운전 (Jogging)',               grp: '운전' },
     'bcf12_Y0F0H': { lbl: '모터 A 기동 (Motor-A)',             grp: '모터' },
     'bcf12_Y0F1H': { lbl: '모터 B 기동 (Motor-B)',             grp: '모터' },
-    'bcf12_Y112H': { lbl: '자동운전 (Auto)',                   grp: '운전모드', inv: true }
+    'bcf12_Y112H': { lbl: '자동운전 (Auto)',                   grp: '운전모드' }
   };
   var _bcf12Prev  = {};
   var _bcf12PollN = 0;

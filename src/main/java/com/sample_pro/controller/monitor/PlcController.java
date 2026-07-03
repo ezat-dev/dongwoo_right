@@ -283,13 +283,14 @@ public class PlcController {
     @ResponseBody
     public ResponseEntity<?> readById(
             @PathVariable String id,
-            @RequestParam(value = "start", defaultValue = "10000") int start,
-            @RequestParam(value = "count", defaultValue = "100")   int count) {
+            @RequestParam(value = "start",  defaultValue = "10000") int start,
+            @RequestParam(value = "count",  defaultValue = "100")   int count,
+            @RequestParam(value = "device", defaultValue = "D")     String device) {
 
         if (count < 1)   count = 1;
-        if (count > 300) count = 300;
+        if (count > 960) count = 960;
 
-        String url = CSHARP + "/api/plc/read/" + id + "?start=" + start + "&count=" + count;
+        String url = CSHARP + "/api/plc/read/" + id + "?start=" + start + "&count=" + count + "&device=" + device;
         System.out.println(">>> [READ/" + id + "] " + url);
         try {
             Map<?, ?> res = rest.getForObject(url, Map.class);

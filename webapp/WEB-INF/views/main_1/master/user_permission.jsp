@@ -98,19 +98,25 @@ var selEmpId = null;
 var permData = {};  // { pageUrl: {canView,canAdd,canEdit,canDel} }
 
 var PAGES = [
-  { url:'main/monitor',   name:'메인 모니터링',  icon:'🧭' },
-  { url:'equip/monitor',  name:'통신 모니터링',  icon:'🖥️' },
-  { url:'equip/detail',   name:'설비 상세',      icon:'🔍' },
-  { url:'trend',          name:'트렌드',         icon:'📈' },
-  { url:'alarm/history',  name:'알람 이력',      icon:'🔔' },
-  { url:'alarm/ranking',  name:'알람 랭킹',      icon:'🏆' },
-  { url:'calib/status',   name:'보정현황',       icon:'🌡️' },
-  { url:'inspect/daily',  name:'일상점검일지',   icon:'📋' },
+  { url:'main/monitor',         name:'메인 모니터링',   icon:'🧭' },
+  { url:'equip/monitor',        name:'통신 모니터링',   icon:'🖥️' },
+  { url:'equip/detail',         name:'설비 상세',       icon:'🔍' },
+  { url:'work/list',            name:'작업 목록',       icon:'📝' },
+  { url:'work/now1',            name:'공정현황-1',      icon:'🏭' },
+  { url:'work/now2',            name:'공정현황-2',      icon:'🏗️' },
+  { url:'trend',                name:'트렌드',          icon:'📈' },
+  { url:'alarm/history',        name:'알람 이력',       icon:'🔔' },
+  { url:'alarm/ranking',        name:'알람 랭킹',       icon:'🏆' },
+  { url:'calib/status',         name:'정기보전',        icon:'🌡️' },
+  { url:'inspect/daily',        name:'일상점검일지',    icon:'📋' },
   { url:'auxiliary/inspection', name:'부대설비 점검표', icon:'🏭' },
-  { url:'inspect/fproof', name:'F/PROOF',        icon:'🛡️' },
-  { url:'spare/parts',    name:'스페어파트',     icon:'🔩' },
-  { url:'user/manage',    name:'사용자 관리',    icon:'👤' },
-  { url:'user/permission',name:'권한 부여',      icon:'🔐' }
+  { url:'spare/parts',          name:'스페어파트',      icon:'🔩' },
+  { url:'facility/backup',      name:'BACKUP-DATA',     icon:'💾' },
+  { url:'consumable/ledger',    name:'소모재 관리대장', icon:'📦' },
+  { url:'inspect/fproof',       name:'F/PROOF SAVE',    icon:'🛡️' },
+  { url:'inspect/fprooflist',   name:'F/PROOF LIST',    icon:'📊' },
+  { url:'user/manage',          name:'사용자 관리',     icon:'👤' },
+  { url:'user/permission',      name:'권한 부여',       icon:'🔐' }
 ];
 
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }

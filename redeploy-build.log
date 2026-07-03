@@ -14,7 +14,7 @@
 [INFO] 
 [INFO] --- compiler:3.10.1:compile (default-compile) @ web ---
 [INFO] Changes detected - recompiling the module!
-[INFO] Compiling 133 source files to D:\sample_pro\target\classes
+[INFO] Compiling 134 source files to D:\sample_pro\target\classes
 [INFO] /D:/sample_pro/src/main/java/com/sample_pro/controller/facility/AuxiliaryInspectionController.java: D:\sample_pro\src\main\java\com\sample_pro\controller\facility\AuxiliaryInspectionController.java uses or overrides a deprecated API.
 [INFO] /D:/sample_pro/src/main/java/com/sample_pro/controller/facility/AuxiliaryInspectionController.java: Recompile with -Xlint:deprecation for details.
 [INFO] 
@@ -36,6 +36,6 @@
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  4.613 s
-[INFO] Finished at: 2026-07-01T09:26:39+09:00
+[INFO] Total time:  4.177 s
+[INFO] Finished at: 2026-07-03T15:42:08+09:00
 [INFO] ------------------------------------------------------------------------

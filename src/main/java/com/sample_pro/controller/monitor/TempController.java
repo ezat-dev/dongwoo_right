@@ -3,6 +3,7 @@ package com.sample_pro.controller.monitor;
 import com.sample_pro.domain.TempHistory;
 import com.sample_pro.domain.TempMemo;
 import com.sample_pro.domain.TempTag;
+import com.sample_pro.service.monitor.ExcelExportService;
 import com.sample_pro.service.monitor.TempService;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class TempController {
 
     @Autowired
     private TempService tempService;
+
+    @Autowired
+    private ExcelExportService excelExportService;
 
     @RequestMapping(value = "/manage", method = RequestMethod.GET)
     public String tempManagePage() {
@@ -230,6 +234,19 @@ public class TempController {
             return ResponseEntity.ok(ok());
         } catch (Exception e) {
             return ResponseEntity.ok(err("Memo delete failed: " + e.getMessage()));
+        }
+    }
+
+    // GET|POST /temp/excel/export?date=2026-07-01  (date 생략 시 전날)
+    @RequestMapping(value = "/excel/export", method = {RequestMethod.GET, RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<?> excelExport(
+            @RequestParam(required = false) String date) {
+        try {
+            excelExportService.exportForDate(date);
+            return ResponseEntity.ok(ok());
+        } catch (Exception e) {
+            return ResponseEntity.ok(err("Excel export failed: " + e.getMessage()));
         }
     }
 

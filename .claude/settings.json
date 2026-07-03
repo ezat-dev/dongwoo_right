@@ -20,7 +20,15 @@
       "Bash(awk '$1 == 1')",
       "PowerShell(Stop-Process -Id 36196 -Force)",
       "PowerShell(Start-Process -FilePath \"C:\\\\PlcApiServer\\\\bin\\\\Release\\\\net8.0\\\\PlcApiServer.exe\" -WorkingDirectory \"C:\\\\PlcApiServer\\\\bin\\\\Release\\\\net8.0\")",
-      "PowerShell(Get-Process -Name \"PlcApiServer\" -ErrorAction SilentlyContinue)"
+      "PowerShell(Get-Process -Name \"PlcApiServer\" -ErrorAction SilentlyContinue)",
+      "PowerShell(Test-NetConnection -ComputerName 192.168.1.112 -Port 5002 -InformationLevel Detailed)",
+      "PowerShell(Start-Process -FilePath \"cmd.exe\" -ArgumentList \"/c\", \"d:\\\\sample_pro\\\\redeploy.cmd\" -WorkingDirectory \"d:\\\\sample_pro\" -NoNewWindow)",
+      "PowerShell($proc = Get-NetTCPConnection -LocalPort 5050 -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty OwningProcess; if \\($proc\\) { Stop-Process -Id $proc -Force; Write-Output \"기존 프로세스 종료: PID $proc\" } else { Write-Output \"실행 중인 프로세스 없음\" })",
+      "PowerShell(Start-Process -FilePath \"dotnet\" -ArgumentList \"run\", \"--project\", \"C:\\\\PlcApiServer\\\\PlcApiServer.csproj\" -WorkingDirectory \"C:\\\\PlcApiServer\" -NoNewWindow; Start-Sleep -Seconds 8; $up = Get-NetTCPConnection -LocalPort 5050 -ErrorAction SilentlyContinue; Write-Output \"C# API 5050: $\\(if\\($up\\){'UP'}else{'DOWN \\(아직 기동중\\)'}\\)\";)",
+      "PowerShell(Start-Sleep -Seconds 3; if \\(Test-Path \"D:\\\\12_log\"\\) { Get-ChildItem \"D:\\\\12_log\" | Sort-Object LastWriteTime -Descending | Select-Object -First 1 | ForEach-Object { Get-Content $_.FullName | Select-Object -Last 20 } } else { Write-Output \"D:\\\\12_log 없음\" })",
+      "PowerShell(Stop-Process -Id 15428 -Force)",
+      "PowerShell(Start-Process -FilePath \"dotnet\" -ArgumentList \"run --project C:\\\\PlcApiServer\\\\PlcApiServer.csproj\" -WorkingDirectory \"C:\\\\PlcApiServer\" -WindowStyle Normal)",
+      "PowerShell(cmd /c \"d:\\\\sample_pro\\\\redeploy.cmd\" 2>&1)"
     ]
   }
 }
