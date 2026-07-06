@@ -28,7 +28,10 @@
       "PowerShell(Start-Sleep -Seconds 3; if \\(Test-Path \"D:\\\\12_log\"\\) { Get-ChildItem \"D:\\\\12_log\" | Sort-Object LastWriteTime -Descending | Select-Object -First 1 | ForEach-Object { Get-Content $_.FullName | Select-Object -Last 20 } } else { Write-Output \"D:\\\\12_log 없음\" })",
       "PowerShell(Stop-Process -Id 15428 -Force)",
       "PowerShell(Start-Process -FilePath \"dotnet\" -ArgumentList \"run --project C:\\\\PlcApiServer\\\\PlcApiServer.csproj\" -WorkingDirectory \"C:\\\\PlcApiServer\" -WindowStyle Normal)",
-      "PowerShell(cmd /c \"d:\\\\sample_pro\\\\redeploy.cmd\" 2>&1)"
+      "PowerShell(cmd /c \"d:\\\\sample_pro\\\\redeploy.cmd\" 2>&1)",
+      "PowerShell(mvn compile -q 2>&1)",
+      "PowerShell(Get-Command java -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source; $env:JAVA_HOME; $env:PATH -split ';' | Where-Object { $_ -match 'java|maven|mvn' })",
+      "PowerShell(Start-Process \"C:\\\\PlcApiServer\\\\publish\\\\PlcApiServer.exe\" -WorkingDirectory \"C:\\\\PlcApiServer\\\\publish\")"
     ]
   }
 }

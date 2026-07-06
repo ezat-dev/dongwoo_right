@@ -575,6 +575,21 @@
   left: 420.6px;
   top: 185.22px;
 }
+.bcf-belt-dt {
+  background: #e8f5e9;
+  border: 1px solid #a5d6a7;
+  border-radius: 4px;
+  width: 57.06px;
+  height: 24.21px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: #388e3c;
+  letter-spacing: .3px;
+}
 .bcf-1-dt-ez-50 {
   background: #e8f5e9;
   border: 1px solid #a5d6a7;

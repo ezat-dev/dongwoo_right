@@ -247,6 +247,12 @@
    .bcf-10-pen-1 { width: 43.72px !important; height: 43.72px !important; left: 1362.39px !important; top: 377.33px !important; }
    .bcf-5-pen-2  { width: 43.72px !important; height: 43.72px !important; left: 1743.64px !important; top: 377.33px !important; }
    .bcf-5-pen-1  { width: 43.72px !important; height: 43.72px !important; left: 1612.23px !important; top: 377.33px !important; }
+   .bcf-1-belt-dt  { position: absolute; left: 420.60px;  top: 595.22px; width: 183px; height: 43px; z-index: 10; }
+   .bcf-2-belt-dt  { position: absolute; left: 670.45px;  top: 595.22px; width: 183px; height: 43px; z-index: 10; }
+   .bcf-3-belt-dt  { position: absolute; left: 920.29px;  top: 595.22px; width: 183px; height: 43px; z-index: 10; }
+   .bcf-4-belt-dt  { position: absolute; left: 1170.14px; top: 595.22px; width: 183px; height: 43px; z-index: 10; }
+   .bcf-10-belt-dt { position: absolute; left: 1419.99px; top: 595.22px; width: 183px; height: 43px; z-index: 10; }
+   .bcf-5-belt-dt  { position: absolute; left: 1669.83px; top: 595.22px; width: 183px; height: 43px; z-index: 10; }
    </style>
   <title>Document</title>
 </head>
@@ -288,6 +294,13 @@
     <div class="bcf-4-conn"  style="position:absolute;left:1107.03px;top:645.22px;"></div>
     <div class="bcf-10-conn" style="position:absolute;left:1356.88px;top:645.22px;"></div>
     <div class="bcf-5-conn"  style="position:absolute;left:1606.72px;top:645.22px;"></div>
+    <!-- tray-2/belt DT(40004) 표시: bcfX_51(또는 53)=1일 때 conn 위에 표시 -->
+    <div class="bcf-belt-dt bcf-1-belt-dt  bcf1_s_40004"></div>
+    <div class="bcf-belt-dt bcf-2-belt-dt  bcf2_s_40004"></div>
+    <div class="bcf-belt-dt bcf-3-belt-dt  bcf3_s_40004"></div>
+    <div class="bcf-belt-dt bcf-4-belt-dt  bcf4_s_40004"></div>
+    <div class="bcf-belt-dt bcf-10-belt-dt bcf10_s_40004"></div>
+    <div class="bcf-belt-dt bcf-5-belt-dt  bcf5_s_40004"></div>
 
     <div class="over-view-1">
       <div class="hogi-12">
@@ -936,6 +949,12 @@
         { tray: 'bcf4_50',  dt: '.bcf-4-dt'  },
         { tray: 'bcf5_53',  dt: '.bcf-5-dt'  },
         { tray: 'bcf10_53', dt: '.bcf-10-dt' },
+        { tray: 'bcf1_51',  dt: '.bcf-1-belt-dt'  },
+        { tray: 'bcf2_51',  dt: '.bcf-2-belt-dt'  },
+        { tray: 'bcf3_51',  dt: '.bcf-3-belt-dt'  },
+        { tray: 'bcf4_51',  dt: '.bcf-4-belt-dt'  },
+        { tray: 'bcf5_53',  dt: '.bcf-5-belt-dt'  },
+        { tray: 'bcf10_53', dt: '.bcf-10-belt-dt' },
       ];
       trayDtMap.forEach(function(m) {
         var el = document.querySelector(m.dt);
