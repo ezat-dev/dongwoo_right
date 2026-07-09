@@ -303,7 +303,7 @@
           <td class="st" data-tags="bcf12_L0302,bcf12_L0303,bcf12_L0304,bcf12_L0305"></td>
           <td class="st" data-tags="bcf12_L0306"></td>
           <td class="st" data-tags="bcf12_Y119H"></td>
-          <td class="st" data-tags="bcf12_Y119H,bcf12_M0925"></td>
+          <td class="st new_st" data-tags="bcf12_Y119H"></td>
         </tr>
       </tbody>
     </table>
@@ -367,6 +367,8 @@
         // 기본:   태그 하나라도 1이면 활성
         var isActive = (logic === 'alloff')
           ? tags.every(function(t){ return data[t] == 0; })
+          : (logic === 'allon')
+          ? tags.every(function(t){ return data[t] == 1; })
           : tags.some(function(t){ return data[t] == 1; });
         var tr      = td.closest('tr');
         var equip   = tr ? (tr.getAttribute('data-equip-cd') || '?') : '?';

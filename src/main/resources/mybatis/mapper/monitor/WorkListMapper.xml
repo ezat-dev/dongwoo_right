@@ -60,6 +60,10 @@
         ORDER BY EQUT_CD, WORK_INDCT_NUM ASC
     </select>
 
+    <!--
+        [임시] tb_jacup, sat_cust — ez_scada DB에 복제된 htms 원본 테이블
+        추후 htms 원본 DB(192.168.1.93)를 직접 참조하는 방식으로 교체 예정
+    -->
     <select id="selectJacupByRange" parameterType="map" resultType="java.util.HashMap">
         SELECT
             j.WORK_INDCT_NUM,

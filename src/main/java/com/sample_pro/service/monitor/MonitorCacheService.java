@@ -326,6 +326,9 @@ public class MonitorCacheService {
         // Y256(0x100) 단독
         readMitBitSingle("Y", 256, "bcf12_y100h");
 
+        // Y257(0x101H) — obj-on
+        readMitBitSingle("Y", 257, "bcf12_Y101H");
+
         // Y267(0x10B)~Y269(0x10D): 3비트
         readMitBitRange("Y", 267, 3,
             new int[]   {267,          269},

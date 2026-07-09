@@ -128,6 +128,10 @@
      background: linear-gradient(180deg, #bbf7d0 0%, #22c55e 100%) !important;
      font-size: 11px !important;
    }
+   .bcf-1-close-2, .bcf-2-close-2, .bcf-3-close-2, .bcf-4-close-2,
+   .bcf-5-close-2, .bcf-10-close-2, .bcf-12-close-2 {
+     height: 16.83px !important;
+   }
    .group-1 [class*="-open-"] {
      color: #fff;
      background: linear-gradient(180deg, #fb7185 0%, #dc2626 100%) !important;
@@ -297,10 +301,10 @@
     <!-- tray-2/belt DT(40004) 표시: bcfX_51(또는 53)=1일 때 conn 위에 표시 -->
     <div class="bcf-belt-dt bcf-1-belt-dt  bcf1_s_40004"></div>
     <div class="bcf-belt-dt bcf-2-belt-dt  bcf2_s_40004"></div>
-    <div class="bcf-belt-dt bcf-3-belt-dt  bcf3_s_40002"></div>
+    <div class="bcf-belt-dt bcf-3-belt-dt  bcf3_s_40004"></div>
     <div class="bcf-belt-dt bcf-4-belt-dt  bcf4_s_40004"></div>
     <div class="bcf-belt-dt bcf-10-belt-dt bcf10_s_40004"></div>
-    <div class="bcf-belt-dt bcf-5-belt-dt  bcf5_s_40004"></div>
+    <div class="bcf-belt-dt bcf-5-belt-dt  bcf5_s_40002"></div>
 
     <div class="over-view-1">
       <div class="hogi-12">
@@ -330,7 +334,7 @@
         <img class="bcf-12-heat-off" src="<%= ctx %>/img/main_monitor_1/bcf-12-heat-off0.png" />
         <img class="bcf-12-heat-on" src="<%= ctx %>/img/main_monitor_1/bcf-12-heat-on0.png" />
         <img class="bcf-12-obj-off" src="<%= ctx %>/img/main_monitor_1/bcf-12-obj-off0.png" />
-        <img class="bcf-12-obj-on" src="<%= ctx %>/img/main_monitor_1/bcf-12-obj-on0.png" />
+        <img class="bcf-12-obj-on bcf12_Y101H" src="<%= ctx %>/img/main_monitor_1/bcf-12-obj-on0.png" />
         <img class="bcf-12-pen-2 bcf12_Y0F4H" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <img class="bcf-12-pen-1 bcf12_Y0F4H" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
         <img class="bcf-12-pen-3 bcf12_Y0F4H" src="<%= ctx %>/img/main_monitor_1/ffeenn.png" />
@@ -953,7 +957,7 @@
         { tray: 'bcf2_51',  dt: '.bcf-2-belt-dt'  },
         { tray: 'bcf3_51',  dt: '.bcf-3-belt-dt'  },
         { tray: 'bcf4_51',  dt: '.bcf-4-belt-dt'  },
-        { tray: 'bcf5_52',  dt: '.bcf-5-belt-dt'  },
+        { tray: 'bcf5_54',  dt: '.bcf-5-belt-dt'  },
         { tray: 'bcf10_54', dt: '.bcf-10-belt-dt' },
       ];
       trayDtMap.forEach(function(m) {

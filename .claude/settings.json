@@ -65,7 +65,8 @@
       "PowerShell(& \"C:\\\\Program Files\\\\MariaDB 10.11\\\\bin\\\\mysql.exe\" -u root \"-pezat6695!\" ez_scada -e \"SELECT record_time FROM tb_temp_snapshot ORDER BY record_time DESC LIMIT 20;\")",
       "PowerShell(& \"C:\\\\Program Files\\\\MariaDB 10.2\\\\bin\\\\mysql.exe\" -u root \"-pezat6695!\" ez_scada -e \"SELECT record_time FROM tb_temp_snapshot ORDER BY record_time DESC LIMIT 20;\")",
       "PowerShell(& \"C:\\\\Program Files\\\\MariaDB 10.2\\\\bin\\\\mysql.exe\" -u root \"-pezat6695!\" ez_scada -e \"SELECT record_time, TIMESTAMPDIFF\\(SECOND, LAG\\(record_time\\) OVER \\(ORDER BY record_time\\), record_time\\) AS gap_sec FROM tb_temp_snapshot ORDER BY record_time DESC LIMIT 15;\")",
-      "PowerShell(& \"C:\\\\Program Files\\\\MariaDB 10.2\\\\bin\\\\mysql.exe\" -u root \"-pezat6695!\" ez_scada -e \"SELECT p.plc_id, p.ip, p.port, p.enabled FROM tb_plc p WHERE p.plc_id = '11_kg';\")"
+      "PowerShell(& \"C:\\\\Program Files\\\\MariaDB 10.2\\\\bin\\\\mysql.exe\" -u root \"-pezat6695!\" ez_scada -e \"SELECT p.plc_id, p.ip, p.port, p.enabled FROM tb_plc p WHERE p.plc_id = '11_kg';\")",
+      "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\views\\\\main_1\\\\monitor\\\\main_monitor.jsp\" \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\ROOT\\\\WEB-INF\\\\views\\\\main_1\\\\monitor\\\\main_monitor.jsp\" -Force)"
     ]
   }
 }
