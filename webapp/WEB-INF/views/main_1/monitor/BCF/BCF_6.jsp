@@ -269,21 +269,21 @@
 .alarm-body {
   flex: 1;
   min-height: 0;
-  border-top: 1px solid #f0b888;
+  border-top: 1px solid #e8b0c0;
   overflow: hidden;
   position: relative;
 }
 .alarm-body .tabulator,
-.alarm-body .tabulator-tableHolder { background: #fff5ee; border: none; }
+.alarm-body .tabulator-tableHolder { background: #fff0f3; border: none; }
 .alarm-body .tabulator-row,
-.alarm-body .tabulator-row.tabulator-row-even { background: #fff5ee; border-bottom: 1px solid #fce0c8; min-height: 48px; }
-.alarm-body .tabulator-row:hover { background: #ffe8d6 !important; }
-.alarm-body .tabulator-cell { border-right: none; padding: 4px 6px; color: #4a1500; font-family: '맑은 고딕','Malgun Gothic',sans-serif; font-size: 13px; font-weight: 700; white-space: normal; word-break: break-word; line-height: 1.35; overflow: hidden; }
-.alarm-body .tabulator-placeholder span { background: #fff5ee; color: #aa3300; font-family: '맑은 고딕','Malgun Gothic',sans-serif; font-size: 13px; }
-.alarm-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #ee6600; vertical-align: middle; animation: alarm-pulse 1.2s ease-in-out infinite; }
-.alarm-time-val { color: #aa3300; font-size: 13px; font-weight: 700; letter-spacing: .3px; font-variant-numeric: tabular-nums; }
+.alarm-body .tabulator-row.tabulator-row-even { background: #fff0f3; border-bottom: 1px solid #f8d5de; min-height: 52px; }
+.alarm-body .tabulator-row:hover { background: #fce0e6 !important; }
+.alarm-body .tabulator-cell { border-right: none; padding: 5px 6px; color: #3a0012; font-family: '맑은 고딕','Malgun Gothic',sans-serif; font-size: 15px; font-weight: 700; white-space: normal; word-break: break-word; line-height: 1.35; align-items: flex-start; overflow: hidden; }
+.alarm-body .tabulator-placeholder span { background: #fff0f3; color: #990022; font-family: '맑은 고딕','Malgun Gothic',sans-serif; font-size: 13px; }
+.alarm-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #dd2244; vertical-align: middle; animation: alarm-pulse 1.2s ease-in-out infinite; }
+.alarm-time-val { color: #990022; font-size: 14px; font-weight: 700; letter-spacing: .3px; font-variant-numeric: tabular-nums; }
 @keyframes alarm-pulse {
-  0%, 100% { opacity: 1;   box-shadow: 0 0 5px #ee6600; }
+  0%, 100% { opacity: 1;   box-shadow: 0 0 5px #dd2244; }
   50%       { opacity: 0.25; box-shadow: none; }
 }
 .bcf6-alarm-body {
@@ -364,7 +364,7 @@
       <img class="bcf-6-tray-5 bcf6_294" src="<%= ctx %>/img/bcf6/bcf-6-tray-50.png" />
       <img class="bcf-6-tray-6 bcf6_295" src="<%= ctx %>/img/bcf6/bcf-6-tray-60.png" />
       <img class="bcf-6-tray-7 bcf6_296" src="<%= ctx %>/img/bcf6/bcf-6-tray-70.png" />
-      <img class="bcf-6-tray-8" src="<%= ctx %>/img/bcf6/bcf-6-tray-80.png" />
+      <img class="bcf-6-tray-8 bcf6_297" src="<%= ctx %>/img/bcf6/bcf-6-tray-80.png" />
       <img class="bcf-6-tray-9 bcf6_298" src="<%= ctx %>/img/bcf6/bcf-6-tray-90.png" />
       <img class="bcf-6-tray-10 bcf6_37" src="<%= ctx %>/img/bcf6/bcf-6-tray-100.png" />
       <img class="bcf-6-tray-11 bcf6_43" src="<%= ctx %>/img/bcf6/bcf-6-tray-110.png" />
@@ -550,7 +550,7 @@
       <div class="bcf-1-flamesw-box17 bcf6_129"></div>
       <div class="bcf-1-flamesw-box18 bcf6_130"></div>
       <div class="bcf-1-flamesw-box19 bcf6_129"></div>
-      <div class="bcf-6-alrblow-off-box"></div>
+      <!-- <div class="bcf-6-alrblow-off-box"></div>
       <div class="bcf-6-alrblow-on-box bcf6_81"></div>
       <div class="bcf-6-mainair-off-box"></div>
       <div class="bcf-6-mainair-on-box bcf6_7"></div>
@@ -559,7 +559,7 @@
       <div class="bcf-6-pilot-1-off-box"></div>
       <div class="bcf-6-pilot-1-on-box bcf6_132"></div>
       <div class="bcf-6-pilot-2-off-box"></div>
-      <div class="bcf-6-pilot-2-on-box bcf6_133"></div>
+      <div class="bcf-6-pilot-2-on-box bcf6_133"></div> -->
       <img class="bcf-6-arrow-left-1 bcf6_245" src="<%= ctx %>/img/bcf6/bcf-6-arrow-left-10.png" />
       <img class="bcf-6-arrow-right-1 bcf6_244" src="<%= ctx %>/img/bcf6/bcf-6-arrow-right-10.png" />
       <img class="bcf-6-arrow-left-2 bcf6_249" src="<%= ctx %>/img/bcf6/bcf-6-arrow-left-20.png" />
@@ -806,6 +806,9 @@
   var statusElMap = {};  // 'bcf6_8'       → [el, ...]
 
   /* 클래스 스캔: 비트(소문자) + 아날로그(대문자) */
+  // 알람 이미지 초기 숨김 (PLC 수신 전 노출 방지)
+  document.querySelectorAll('[class*="-alarm-"]:not([class*="-alarm-panel"])').forEach(function(el) { el.style.visibility = 'hidden'; });
+
   document.querySelectorAll('[class]').forEach(function(el) {
     el.className.split(/\s+/).forEach(function(cls) {
       if (/^bcf6_\d+$/.test(cls)) {
@@ -926,12 +929,19 @@
     layout:        'fitColumns',
     headerVisible: false,
     placeholder:   '현재 경보 없음',
-    rowHeight:     36,
+    rowHeight:     52,
     data:          [],
     columns: [
       {
         title: '', field: 'dot', width: 22, resizable: false, headerSort: false,
         formatter: function() { return '<span class="alarm-dot"></span>'; }
+      },
+      {
+        title: '시간', field: 'occurTime', width: 152, resizable: false, headerSort: false,
+        formatter: function(cell) {
+          var v = cell.getValue() || '';
+          return '<span class="alarm-time-val">' + (v.length >= 16 ? v.substring(0, 16) : v) + '</span>';
+        }
       },
       {
         title: '경보 내용', field: 'alarmMsg', headerSort: false,

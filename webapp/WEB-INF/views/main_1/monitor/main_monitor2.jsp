@@ -161,9 +161,46 @@
    }
 
    .bcf-8-pen-3 { width: 33px; height: 33px; position: absolute; left: 622px; top: 402px; object-fit: cover; aspect-ratio: 1; }
-  .bcf-9-pen-3 { width: 33px; height: 33px; position: absolute; left: 868px; top: 416px; object-fit: cover; aspect-ratio: 1; }
-  .bcf-7-pen-3 { width: 33px; height: 33px; position: absolute; left: 1114px; top: 416px; object-fit: cover; aspect-ratio: 1; }
+  .bcf-9-pen-3 { width: 33px; height: 33px; position: absolute; left: 868px; top: 402px; object-fit: cover; aspect-ratio: 1; }
+  .bcf-7-pen-3 { width: 33px; height: 33px; position: absolute; left: 1114px; top: 402px; object-fit: cover; aspect-ratio: 1; }
 
+
+  .bcf-7-dt-2 {
+    background: #99dfa6;
+    border-style: solid;
+    border-color: #000000;
+    border-width: 1px;
+    width: 38px;
+    height: 23px;
+    position: absolute;
+    left: 1112px;
+    top: 480px;
+}
+
+
+.bcf-8-dt-2 {
+    background: #99dfa6;
+    border-style: solid;
+    border-color: #000000;
+    border-width: 1px;
+    width: 38px;
+    height: 23px;
+    position: absolute;
+    left: 620px;
+    top: 480px;
+}
+
+.bcf-9-dt-2 {
+    background: #99dfa6;
+    border-style: solid;
+    border-color: #000000;
+    border-width: 1px;
+    width: 38px;
+    height: 23px;
+    position: absolute;
+    left: 866px;
+    top: 480px;
+}
   /* DT 요소 공통 스타일 */
    .group-2 [class*="-dt-"] {
      background: #e8f5e9 !important;
@@ -183,6 +220,9 @@
    .group-3 img[class*="-alarm"] {
      top: 82px !important;
    }
+
+   /* bcf-8-dt-2 : 이미지 뒤에 가려지는 문제 해결 */
+   .group-2 .bcf-8-dt-2 { z-index: 200; }
 
    .group-3 [class*="-conn"] {
      height: 43px;
@@ -290,7 +330,7 @@
         <div class="bcf-11-dt-2 bcf11_s_40009"></div>
         <div class="bcf-11-dt-3 bcf11_s_40026"></div>
         <div class="bcf-11-dt-4 bcf11_s_40043"></div>
-        <div class="bcf-11-dt-5 bcf11_s_40051"></div>
+        <div class="bcf-11-dt-5 bcf11_s_40052"></div>
         <div class="bcf-11-open-1 bcf11_3">열림</div>
         <div class="bcf-11-close-1">닫힘</div>
         <div class="bcf-11-open-2 bcf11_5">열림</div>
@@ -422,15 +462,15 @@
         <div class="bcf-6-jogging-1 bcf6_303 bcf6_304">조깅</div>
         <!-- <div class="bcf-6-jogging-2">조깅</div> -->
         <!-- <div class="bcf-6-jogging-3 bcf6_305 bcf6_306">조깅</div> -->
-        <div class="bcf-6-jogging-3 bcf6_305 bcf6_305">조깅</div>
-        <div class="bcf-6-jogging-4 bcf6_307 bcf6_307">조깅</div>
+        <div class="bcf-6-jogging-3 bcf6_305 bcf6_306">조깅</div>
+        <div class="bcf-6-jogging-4 bcf6_307 bcf6_308">조깅</div>
         <div class="bcf-6-jogging-5 bcf6_309 bcf6_310">조깅</div>
         <div class="bcf-6-jogging-6 bcf6_311 bcf6_312">조깅</div>
         <div class="bcf-6-jogging-7 bcf6_313 bcf6_314">조깅</div>
         <img class="bcf-6-moter-off-1" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-off-10.png" />
         <img class="bcf-6-moter-on-1 bcf6_244 bcf6_245" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-on-10.png" />
         <img class="bcf-6-moter-off-2" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-off-20.png" />
-        <img class="bcf-6-moter-on-2 bcf6_187" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-on-20.png" />
+        <img class="bcf-6-moter-on-2 bcf6_188" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-on-20.png" />
         <img class="bcf-6-moter-off-3" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-off-30.png" />
         <img class="bcf-6-moter-on-3 bcf6_248 bcf6_249" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-on-30.png" />
         <img class="bcf-6-moter-off-4" src="<%= ctx %>/img/main_monitor_2/bcf-6-moter-off-40.png" />
@@ -649,7 +689,7 @@
       <div class="tm-item tm-blue">
         <div class="tm-item-name">침탄8</div>
         <div class="tm-cell tm-cur bcf8_s_40049">DT</div>
-        <div class="tm-cell tm-set bcf8_s_40071">DT</div>
+        <div class="tm-cell tm-set bcf8_s_40072">DT</div>
       </div>
       <div class="tm-item tm-blue">
         <div class="tm-item-name">유조8</div>
@@ -811,6 +851,14 @@
     if (allTags.indexOf(tag) < 0) allTags.push(tag);
   });
 
+  /* bcf7_143 : HTML 요소 없이 DT 가시성 제어에만 필요 */
+  if (allTags.indexOf('bcf7_143') < 0) allTags.push('bcf7_143');
+
+  /* DT 박스 초기 숨김 */
+  document.querySelectorAll('.group-2 [class*="-dt-"]').forEach(function(el) {
+    el.style.visibility = 'hidden';
+  });
+
   if (!allTags.length) return;
 
   var CP_TAG  = /_(40052|40071|D1081|D1087)$|bcf6_s_4004[5689]|bcf11_s_(4008[01]|4000[45])|bcf8_s_(40055|40074)|bcf[79]_s_(44613|40007)/;
@@ -829,10 +877,12 @@
           text = data[tag];
         } else if (CP2_TAG.test(tag)) {
           text = (raw * 0.002).toFixed(3);   // ×2 보정: bcf7_s_44613, bcf9_s_44613 전용
-        } else if (CP_TAG.test(tag)) {
-          text = (raw * 0.001).toFixed(3);
         } else if (el.className.indexOf('-dt-') !== -1) {
           text = String(Math.round(raw));
+        } else if (CP_TAG.test(tag)) {
+          text = (raw * 0.001).toFixed(3);
+        } else if (tag === 'bcf7_s_44612') {
+          text = ((raw >= 1000 ? raw / 10 : raw) + 8).toFixed(1);
         } else {
           text = raw >= 1000 ? (raw / 10).toFixed(1) : raw.toFixed(1);
         }
@@ -860,19 +910,35 @@
           el.style.visibility = 'visible';
           return;
         }
+        // moter-on 요소: 여러 태그 중 하나라도 1이면 표시 (OR 조건)
+        if (el.className.indexOf('-moter-on') !== -1) {
+          var motorTags = bitTagsOf(el);
+          var motorShow = motorTags.some(function(t) { return data[t] === 1 || data[t] === true; });
+          el.style.visibility = motorShow ? 'visible' : 'hidden';
+          return;
+        }
         el.style.visibility = show ? 'visible' : 'hidden';
       });
     });
 
-    // tray-4 신호=1일 때만 DT-2 박스 표시
+    // 코일 신호=1일 때만 해당 DT 박스 표시
     (function() {
       var trayDtMap = [
-        { tray: 'bcf8_117', dt: '.bcf-8-dt-2' },
-        { tray: 'bcf9_145', dt: '.bcf-9-dt-2' },
-        { tray: 'bcf7_145', dt: '.bcf-7-dt-2' },
-        { tray: 'bcf8_116', dt: '.bcf-8-dt-1' },
-        { tray: 'bcf9_144', dt: '.bcf-9-dt-1' },
-        { tray: 'bcf7_144', dt: '.bcf-7-dt-1' },
+        /* BCF-11 */
+        { tray: 'bcf11_40008', dt: '.bcf-11-dt-1' },
+        { tray: 'bcf11_40010', dt: '.bcf-11-dt-2' },
+        { tray: 'bcf11_40027', dt: '.bcf-11-dt-3' },
+        { tray: 'bcf11_40044', dt: '.bcf-11-dt-4' },
+        { tray: 'bcf11_40053', dt: '.bcf-11-dt-5' },
+        /* BCF-8 */
+        { tray: 'bcf8_116',   dt: '.bcf-8-dt-1' },
+        { tray: 'bcf8_15',    dt: '.bcf-8-dt-2' },
+        /* BCF-9 */
+        { tray: 'bcf9_144',   dt: '.bcf-9-dt-1' },
+        { tray: 'bcf9_145',   dt: '.bcf-9-dt-2' },
+        /* BCF-7 */
+        { tray: 'bcf7_144',   dt: '.bcf-7-dt-1' },
+        { tray: 'bcf7_145',   dt: '.bcf-7-dt-2' },
       ];
       trayDtMap.forEach(function(m) {
         var el = document.querySelector(m.dt);
@@ -992,6 +1058,26 @@
           var v = data[t];
           console.log('  운전모드 ' + t + ' →', v == null ? '❌ null' : (v ? '자동운전' : '수동운전'));
         });
+      }
+
+      // BCF6 moter-on 전용 OR 로그
+      if (id === 'bcf6') {
+        var motorDefs = [
+          { name: 'moter-on-1', tags: ['bcf6_244','bcf6_245'] },
+          { name: 'moter-on-2', tags: ['bcf6_188'] },
+          { name: 'moter-on-3', tags: ['bcf6_248','bcf6_249'] },
+          { name: 'moter-on-4', tags: ['bcf6_252','bcf6_253'] },
+          { name: 'moter-on-5', tags: ['bcf6_256','bcf6_257'] },
+          { name: 'moter-on-6', tags: ['bcf6_260','bcf6_261'] },
+          { name: 'moter-on-7', tags: ['bcf6_264','bcf6_265'] },
+        ];
+        console.group('▶ BCF6 모터 ON/OFF (OR 조건)');
+        motorDefs.forEach(function(m) {
+          var vals = m.tags.map(function(t){ return t + '=' + (data[t] == null ? '❌null' : data[t]); });
+          var orResult = m.tags.some(function(t){ return data[t] === 1 || data[t] === true; });
+          console.log('  ' + m.name + '  [' + vals.join(' | ') + ']  → ' + (orResult ? '🟢 ON' : '⚫ OFF'));
+        });
+        console.groupEnd();
       }
 
       console.groupEnd();

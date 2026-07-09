@@ -178,17 +178,18 @@
 }
 .alarm-body {
   flex: 1;
-  background: #b8b8b8;
-  border-top: 1px solid #888;
+  min-height: 0;
+  border-top: 1px solid #e8b0c0;
+  overflow: hidden;
   position: relative;
 }
-.alarm-body::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 2px;
-  background: #2255cc;
-}
+.alarm-body .tabulator,
+.alarm-body .tabulator-tableHolder { background: #fff0f3; border: none; }
+.alarm-body .tabulator-row,
+.alarm-body .tabulator-row.tabulator-row-even { background: #fff0f3; border-bottom: 1px solid #f8d5de; min-height: 52px; }
+.alarm-body .tabulator-row:hover { background: #fce0e6 !important; }
+.alarm-body .tabulator-cell { border-right: none; padding: 5px 6px; color: #3a0012; font-family: '맑은 고딕','Malgun Gothic',sans-serif; font-size: 15px; font-weight: 700; white-space: normal; word-break: break-word; line-height: 1.35; align-items: flex-start; overflow: hidden; }
+.alarm-body .tabulator-placeholder span { background: #fff0f3; color: #990022; font-family: '맑은 고딕','Malgun Gothic',sans-serif; font-size: 13px; }
 
 /* ══════════════════════════════
    자동운전 준비조건
@@ -322,24 +323,24 @@
   width: 100%;
   height: 100%;
   border-collapse: collapse;
-  font-size: 10px;
-  font-family: 'Malgun Gothic', sans-serif;
+  font-size: 12px;
+  font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
   table-layout: fixed;
 }
 .bcf12-zone-table th,
 .bcf12-zone-table td {
   border: 1px solid #aac4d8;
   text-align: center;
-  padding: 1px;
+  padding: 1px 2px;
   white-space: nowrap;
   overflow: hidden;
 }
 .bcf12-zone-table thead tr th {
-  background: #b8dde8;
-  color: #1a3a5c;
+  background: #2a9d91;
+  color: #fff;
   font-weight: 700;
-  font-size: 10px;
-  padding: 2px 0;
+  font-size: 12px;
+  padding: 4px 0;
 }
 .bcf12-zone-table thead tr th.th-empty {
   background: #e0e8f0;
@@ -349,10 +350,10 @@
 .bcf12-zone-table tbody tr td.row-label {
   background: #d0e6f0;
   font-weight: 700;
-  color: #1a3a5c;
+  color: #0a2a4a;
   text-align: left;
-  padding-left: 4px;
-  font-size: 10px;
+  padding-left: 5px;
+  font-size: 11px;
   white-space: nowrap;
 }
 
@@ -361,12 +362,13 @@
   display: block;
   width: 90%;
   margin: 1px auto;
-  height: 14px;
-  line-height: 14px;
-  border-radius: 2px;
+  height: 20px;
+  line-height: 20px;
+  border-radius: 3px;
   background: #ffb0b0;
-  border: 1px solid #e05050;
-  font-size: 8px;
+  border: 1.5px solid #e05050;
+  font-size: 11px;
+  font-weight: 700;
   color: #5a0000;
   text-align: center;
 }
@@ -380,11 +382,17 @@
 .zbox12.gas.air     { background: #c8eeff; border-color: #4090c0; color: #002850; }
 .zbox12.gas.air-sp  { background: #a8d8ff; border-color: #2070a0; color: #001840; }
 
-@keyframes blink { 50% { opacity: 0; } }
-.alarm-dot {
-  display: inline-block; width: 8px; height: 8px;
-  background: #ff2222; border-radius: 50%; animation: blink 1s infinite;
+.alarm-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #dd2244; vertical-align: middle; animation: alarm-pulse 1.2s ease-in-out infinite; }
+.alarm-time-val { color: #990022; font-size: 14px; font-weight: 700; letter-spacing: .3px; font-variant-numeric: tabular-nums; }
+@keyframes alarm-pulse {
+  0%, 100% { opacity: 1;   box-shadow: 0 0 5px #dd2244; }
+  50%       { opacity: 0.25; box-shadow: none; }
 }
+@keyframes bcf-air-blink {
+  0%, 100% { opacity: 1;    filter: brightness(1);   }
+  50%       { opacity: 0.25; filter: brightness(1.5); }
+}
+[class*="bcf-12-alarm-"] { visibility: hidden !important; }
 </style>
 
 <body>
@@ -446,9 +454,9 @@
       <img class="bcf-12-obj-10" src="<%= ctx %>/img/bcf12/bcf-12-obj-100.png" />
       <img class="bcf-12-pen-off" src="<%= ctx %>/img/bcf12/bcf-12-pen-off0.png" />
       <img class="bcf-12-pen-on" src="<%= ctx %>/img/bcf12/bcf-12-pen-on0.png" />
-      <img class="bcf-12-tray-1" src="<%= ctx %>/img/bcf12/bcf-12-tray-10.png" />
-      <img class="bcf-12-tray-2" src="<%= ctx %>/img/bcf12/bcf-12-tray-20.png" />
-      <img class="bcf-12-tray-3" src="<%= ctx %>/img/bcf12/bcf-12-tray-30.png" />
+      <img class="bcf-12-tray-1 bcf12_Y119 bcf12_X092H" src="<%= ctx %>/img/bcf12/bcf-12-tray-10.png" />
+      <img class="bcf-12-tray-2 bcf12_X092" src="<%= ctx %>/img/bcf12/bcf-12-tray-20.png" />
+      <img class="bcf-12-tray-3 bcf12_M0925" src="<%= ctx %>/img/bcf12/bcf-12-tray-30.png" />
       <img class="bcf-12-bong-1" src="<%= ctx %>/img/bcf12/bcf-12-bong-10.png" />
       <img class="bcf-12-bong-2" src="<%= ctx %>/img/bcf12/bcf-12-bong-20.png" />
       <img class="bcf-12-bong-3" src="<%= ctx %>/img/bcf12/bcf-12-bong-30.png" />
@@ -461,7 +469,7 @@
       <img class="bcf-12-door-open-2" src="<%= ctx %>/img/bcf12/bcf-12-door-open-20.png" />
       <img class="bcf-12-door-close-3" src="<%= ctx %>/img/bcf12/bcf-12-door-close-30.png" />
       <img class="bcf-12-door-open-3" src="<%= ctx %>/img/bcf12/bcf-12-door-open-30.png" />
-      <img class="bcf-12-air-cycle" src="<%= ctx %>/img/bcf12/bcf-12-air-cycle0.png" />
+      <img class="bcf-12-air-cycle bcf12_Y0F4H" src="<%= ctx %>/img/bcf12/bcf-12-air-cycle0.png" />
       <img class="bcf-12-sensor-off-1" src="<%= ctx %>/img/bcf12/bcf-12-sensor-off-10.png" />
       <img class="bcf-12-sensor-on-1" src="<%= ctx %>/img/bcf12/bcf-12-sensor-on-10.png" />
       <img class="bcf-12-sensor-off-2" src="<%= ctx %>/img/bcf12/bcf-12-sensor-off-20.png" />
@@ -759,6 +767,34 @@
   );
 
   function applyData(data) {
+    /* 트레이 로그 */
+    var y119  = data['bcf12_Y119H'] != null ? data['bcf12_Y119H'] : data['bcf12_Y119'];
+    var x092h = data['bcf12_X092H'];
+    var m0925 = data['bcf12_M0925'];
+    var x092  = data['bcf12_X092H'] != null ? data['bcf12_X092H'] : data['bcf12_X092'];
+    console.log('[BCF12 트레이] Y119H:', y119, '| X092H:', x092h, '| M0925:', m0925, '| X092:', x092);
+
+    /* 트레이 visibility */
+    var t1 = document.querySelector('.bcf-12-tray-1');
+    var t2 = document.querySelector('.bcf-12-tray-2');
+    var t3 = document.querySelector('.bcf-12-tray-3');
+    if (t1) t1.style.visibility = (y119 === 1 && x092h === 0) ? 'visible' : 'hidden';
+    if (t2) t2.style.visibility = (m0925 === 1) ? 'visible' : 'hidden';
+    if (t3) t3.style.visibility = (y119 === 1 || x092h === 0) ? 'visible' : 'hidden';
+
+    /* 에어사이클 애니메이션 */
+    var airEl = document.querySelector('.bcf-12-air-cycle');
+    if (airEl) {
+      var y0f4 = data['bcf12_Y0F4H'];
+      if (y0f4 === 1) {
+        airEl.style.visibility = 'visible';
+        airEl.style.animation  = 'bcf-air-blink 2s ease-in-out infinite';
+      } else {
+        airEl.style.visibility = 'hidden';
+        airEl.style.animation  = 'none';
+      }
+    }
+
     Object.keys(wordElMap).forEach(function(tag) {
       var key = tag.replace(/^bcf12_d(\d+)$/i, 'bcf12_s_D$1');
       var val = data[key] != null ? data[key] : data[tag];
@@ -797,11 +833,16 @@
 
   var alarmTable = new Tabulator('.alarm-body', {
     height: '100%', layout: 'fitColumns', headerVisible: false,
-    placeholder: '현재 경보 없음', rowHeight: 36, data: [],
+    placeholder: '현재 경보 없음', rowHeight: 52, data: [],
     columns: [
       { title: '', field: 'dot', width: 22, resizable: false, headerSort: false,
         formatter: function() { return '<span class="alarm-dot"></span>'; } },
-      { title: '경보', field: 'alarmMsg', headerSort: false,
+      { title: '시간', field: 'occurTime', width: 152, resizable: false, headerSort: false,
+        formatter: function(cell) {
+          var v = cell.getValue() || '';
+          return '<span class="alarm-time-val">' + (v.length >= 16 ? v.substring(0, 16) : v) + '</span>';
+        } },
+      { title: '경보 내용', field: 'alarmMsg', headerSort: false,
         formatter: function(cell) { return cell.getValue() || '알람'; } }
     ]
   });

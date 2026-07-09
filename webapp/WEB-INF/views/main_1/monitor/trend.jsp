@@ -391,7 +391,8 @@ body { font-family: 'Pretendard','Noto Sans KR','Segoe UI',sans-serif; }
         </span>
         <button class="btn-primary" onclick="reloadChart()">↺ 갱신</button>
         <button class="btn-outline btn-sm" onclick="openMemoModal()" style="border-color:rgba(128,90,213,.5);color:#553C9A" data-perm="add">+ 메모</button>
-        <button class="btn-outline btn-sm" onclick="saveChartPng()" title="차트 PNG 저장" style="border-color:rgba(59,130,246,.5);color:#1D4ED8">&#128247; 저장</button>
+        <button class="btn-outline btn-sm" onclick="saveChartPng()" title="차트 PNG 캡쳐" style="border-color:rgba(59,130,246,.5);color:#1D4ED8">&#128247; 캡쳐</button>
+        <button class="btn-outline btn-sm" onclick="saveChartXls()" title="엑셀 저장" style="border-color:rgba(34,197,94,.5);color:#166534">&#128202; 엑셀</button>
         <span style="margin-left:auto;font-size:11px;color:var(--muted)" id="periodLabel">최근 24시간</span>
       </div>
 
@@ -1175,6 +1176,7 @@ function tagColor(t) {
   if (/침탄.*pv|pv.*침탄/.test(name)) return '#F87171';   /* 빨강 */
   if (/유조.*pv|pv.*유조/.test(name)) return '#4ADE80';   /* 초록 */
   if (/침탄.*c3h8|c3h8.*침탄/.test(name)) return '#A855F7'; /* 보라 */
+  if (/c3h8/.test(name) && /2실/.test(name) && /[_\-]11([_\-]|$)/.test(name)) return '#CC00FF'; /* 형광 보라 - 2실 11호기 */
   if (/c3h8/.test(name))              return '#F472B6';   /* 분홍 */
   if (/cp.*pv|pv.*cp/.test(name))     return '#22D3EE';   /* 하늘 */
   return COLORS[tagIdxOf(t)];
@@ -1458,6 +1460,12 @@ function saveChartPng() {
     a.download = fname;
     a.click();
   });
+}
+
+/* ── 엑셀 저장 ── */
+function saveChartXls() {
+  if (!mainChart) { alert('차트가 없습니다.'); return; }
+  mainChart.downloadXLS();
 }
 
 /* ── 메모 ── */

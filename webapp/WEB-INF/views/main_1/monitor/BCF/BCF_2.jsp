@@ -330,6 +330,30 @@
 .zbox.yellow { background: #fffcc0; border-color: #b0a000; color: #3a3000; }
 .zbox.cyan   { background: #b8eeff; border-color: #30a0cc; color: #002a44; }
 .zbox.empty  { background: #f4f4f4; border-color: #ccc;    color: #aaa;    font-weight: 400; }
+
+/* ── DT 값 박스 (벨트속도·온도 표시) ── */
+.bcf-1-dt-1,
+.bcf-1-dt-2,
+.bcf-1-dt-3 {
+  background: linear-gradient(180deg, #4cae3e 0%, #2f8623 100%);
+  border: 1.5px solid #1e6417;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.20);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Malgun Gothic', '맑은 고딕', monospace;
+  font-size: 11px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: .4px;
+  text-shadow: 0 1px 2px rgba(0,0,0,.50);
+}
+/* ── 에어사이클 깜빡 ── */
+@keyframes bcf-air-blink {
+  0%, 100% { opacity: 1;    filter: brightness(1);   }
+  50%       { opacity: 0.25; filter: brightness(1.5); }
+}
 </style>
 
 <body>
@@ -393,7 +417,7 @@
       <img class="bcf-1-pen-on bcf2_22" src="<%= ctx %>/img/bcf1/bcf-1-pen-on0.png" />
       <img class="bcf-1-tray-1 bcf2_51" src="<%= ctx %>/img/bcf1/bcf-1-tray-10.png" />
       <img class="bcf-1-tray-2 bcf2_3" src="<%= ctx %>/img/bcf1/bcf-1-tray-20.png" />
-      <img class="bcf-1-tray-3" src="<%= ctx %>/img/bcf1/bcf-1-tray-30.png" />
+      <img class="bcf-1-tray-3 bcf2_50" src="<%= ctx %>/img/bcf1/bcf-1-tray-30.png" />
       <img class="bcf-1-bong-1" src="<%= ctx %>/img/bcf1/bcf-1-bong-10.png" />
       <img class="bcf-1-bong-2 bcf2_34" src="<%= ctx %>/img/bcf1/bcf-1-bong-20.png" />
       <img class="bcf-1-bong-3 bcf2_33" src="<%= ctx %>/img/bcf1/bcf-1-bong-30.png" />
@@ -402,7 +426,7 @@
       <img class="bcf-1-bong-4" src="<%= ctx %>/img/bcf1/bcf-1-bong-40.png" />
       <img class="bcf-1-bong-5 bcf2_2" src="<%= ctx %>/img/bcf1/bcf-1-bong-50.png" />
       <img class="bcf-1-bong-6 bcf2_2" src="<%= ctx %>/img/bcf1/bcf-1-bong-60.png" />
-      <img class="bcf-1-door-close-2" src="<%= ctx %>/img/bcf1/bcf-1-door-close-20.png" />
+      <img class="bcf-1-door-close-2 bcf2_8" src="<%= ctx %>/img/bcf1/bcf-1-door-close-20.png" />
       <img class="bcf-1-door-open-2" src="<%= ctx %>/img/bcf1/bcf-1-door-open-20.png" />
       <img class="bcf-1-air-cycle bcf2_60" src="<%= ctx %>/img/bcf1/bcf-1-air-cycle0.png" />
       <img class="bcf-1-sensor-off-1" src="<%= ctx %>/img/bcf1/bcf-1-sensor-off-10.png" />
@@ -410,8 +434,8 @@
       <img class="bcf-1-sensor-off-2" src="<%= ctx %>/img/bcf1/bcf-1-sensor-off-20.png" />
       <img class="bcf-1-sensor-on-2" src="<%= ctx %>/img/bcf1/bcf-1-sensor-on-20.png" />
       <img class="bcf-1-cycle bcf2_39 bcf2_40" src="<%= ctx %>/img/bcf1/bcf-1-cycle0.png" />
-      <img class="bcf-1-rotate-1 bcf2_59" src="<%= ctx %>/img/bcf1/bcf-1-rotate-10.png" />
-      <img class="bcf-1-rotate-2 bcf2_59" src="<%= ctx %>/img/bcf1/bcf-1-rotate-20.png" />
+      <img class="bcf-1-rotate-1 bcf2_60" src="<%= ctx %>/img/bcf1/bcf-1-rotate-10.png" />
+      <img class="bcf-1-rotate-2 bcf2_60" src="<%= ctx %>/img/bcf1/bcf-1-rotate-20.png" />
       <img class="bcf-1-rotate-3 bcf2_39 bcf2_40" src="<%= ctx %>/img/bcf1/bcf-1-rotate-30.png" />
       <img class="bcf-1-alarm-1 bcf2_74" src="<%= ctx %>/img/bcf1/bcf-1-alarm-10.png" />
       <img class="bcf-1-alarm-2 bcf2_85" src="<%= ctx %>/img/bcf1/bcf-1-alarm-20.png" />
@@ -427,14 +451,14 @@
       <img class="bcf-1-alarm-12 bcf2_72" src="<%= ctx %>/img/bcf1/bcf-1-alarm-120.png" />
       <img class="bcf-1-alarm-13 bcf2_83" src="<%= ctx %>/img/bcf1/bcf-1-alarm-130.png" />
       <img class="bcf-1-alarm-14 bcf2_71" src="<%= ctx %>/img/bcf1/bcf-1-alarm-140.png" />
-      <img class="bcf-1-enrich-gray bcf2_139" src="<%= ctx %>/img/bcf1/bcf-1-enrich-gray0.png" />
+      <!-- <img class="bcf-1-enrich-gray bcf2_139" src="<%= ctx %>/img/bcf1/bcf-1-enrich-gray0.png" />
       <img class="bcf-1-enrich-red" src="<%= ctx %>/img/bcf1/bcf-1-enrich-red0.png" />
-      <img class="bcf-1-enrich-green bcf2_27" src="<%= ctx %>/img/bcf1/bcf-1-enrich-green0.png" />
+      <img class="bcf-1-enrich-green bcf2_27" src="<%= ctx %>/img/bcf1/bcf-1-enrich-green0.png" /> -->
       <img class="bcf-1-amm-gray bcf2_141" src="<%= ctx %>/img/bcf1/bcf-1-amm-gray0.png" />
-      <img class="bcf-1-amm-red" src="<%= ctx %>/img/bcf1/bcf-1-amm-red0.png" />
+      <!-- <img class="bcf-1-amm-red" src="<%= ctx %>/img/bcf1/bcf-1-amm-red0.png" /> -->
       <img class="bcf-1-amm-green bcf2_28" src="<%= ctx %>/img/bcf1/bcf-1-amm-green0.png" />
       <div class="bcf-1-enrich-off-box bcf2_138"></div>
-      <div class="bcf-1-enrich-on-box bcf2_139"></div>
+      <!-- <div class="bcf-1-enrich-on-box bcf2_139"></div> -->
       <div class="bcf-1-amm-off-box  bcf2_140"></div>
       <div class="bcf-1-amm-on-box bcf2_141"></div>
       <div class="bcf-1-jog-stop-box"></div>
@@ -449,12 +473,12 @@
       <div class="bcf-1-1-sok-box bcf2_41"></div>
       <div class="bcf-1-2-sok-box bcf2_48"></div>
       <div class="bcf-1-3-sok-box bcf2_49"></div>
-      <div class="bcf-1-dt-2 bcf2_3"></div>
-      <div class="bcf-1-dt-1 bcf2_51"></div>
+      <div class="bcf-1-dt-2 bcf2_3 bcf2_40004"></div>
+      <div class="bcf-1-dt-1 bcf2_51 bcf2_40002"></div>
       <div class="bcf-1-ro-on bcf2_52"></div>
-      <div class="bcf-1-ro-off"></div>
-      <div class="bcf-1-dt-3"></div>
-      <div class="bcf-1-flamesw-box bcf2_17"></div>
+      <!-- <div class="bcf-1-ro-off"></div> -->
+      <div class="bcf-1-dt-3 bcf2_50 bcf2_40060"></div>
+      <!-- <div class="bcf-1-flamesw-box bcf2_17"></div> -->
       <div class="bcf-1-flame-box bcf2_18"></div>
       <div class="bcf-1-fire-box bcf2_16"></div>
       <img class="bcf-1-fire-1 bcf2_30" src="<%= ctx %>/img/fireggg.gif" />
@@ -696,6 +720,12 @@
 
 <style>
 @keyframes bcf2-spin { to { transform: rotate(360deg); } }
+
+/* ── 에어사이클 깜빡 ── */
+@keyframes bcf-air-blink {
+  0%, 100% { opacity: 1;    filter: brightness(1);   }
+  50%       { opacity: 0.25; filter: brightness(1.5); }
+}
 </style>
 <script src="<%= ctx %>/js/tabulator/tabulator.js"></script>
 <script>
@@ -721,12 +751,15 @@
   var wordElMap   = {};  // 'bcf2_s_40046' → [el, ...]
   var statusElMap = {};  // 'bcf2_25'      → [el, ...]
 
+  // 알람 이미지 초기 숨김 (PLC 수신 전 노출 방지)
+  document.querySelectorAll('[class*="-alarm-"]:not(.bcf-alarm-panel)').forEach(function(el) { el.style.visibility = 'hidden'; });
+
   document.querySelectorAll('[class]').forEach(function(el) {
     el.className.split(/\s+/).forEach(function(cls) {
-      if (/^bcf2_\d+$/.test(cls)) {
+      if (/^bcf2_\d{1,4}$/.test(cls)) {
         if (!bitElMap[cls]) bitElMap[cls] = [];
         bitElMap[cls].push(el);
-      } else if (/^BCF2_\d+$/.test(cls)) {
+      } else if (/^bcf2_\d{5,}$/.test(cls) || /^BCF2_\d+$/.test(cls)) {
         var apiTag = 'bcf2_s_' + cls.slice(5);
         if (!wordElMap[apiTag]) wordElMap[apiTag] = [];
         wordElMap[apiTag].push(el);
@@ -792,7 +825,12 @@
       bitElMap[tag].forEach(function(el) {
         if (tag === 'bcf2_59') {
           el.style.visibility = 'visible';
-          el.style.animation  = isOn ? 'bcf2-spin 1s linear infinite' : 'none';
+          el.style.animation  = isOn ? 'bcf2-spin 3s linear infinite' : 'none';
+        } else if (tag === 'bcf2_60') {
+          el.style.visibility = isOn ? 'visible' : 'hidden';
+          el.style.animation  = isOn
+            ? (el.classList.contains('bcf-1-air-cycle') ? 'bcf-air-blink 2s ease-in-out infinite' : 'bcf2-spin 3s linear infinite')
+            : 'none';
         } else {
           el.style.visibility = isOn ? 'visible' : 'hidden';
         }
@@ -804,6 +842,17 @@
       if (data[tag] == null) return;
       statusElMap[tag].forEach(function(el) {
         updateStatusItem(el, data[tag]);
+      });
+    });
+
+    /* 사이클 이미지: bcf2_39 or bcf2_40 중 하나라도 1이면 서서히 나타남 */
+    var cycleOn = (data['bcf2_39'] === 1 || data['bcf2_40'] === 1);
+    ['bcf2_39', 'bcf2_40'].forEach(function(tag) {
+      if (!bitElMap[tag]) return;
+      bitElMap[tag].forEach(function(el) {
+        el.style.transition = 'opacity 1.5s ease-in-out';
+        el.style.visibility = 'visible';
+        el.style.opacity    = cycleOn ? '1' : '0';
       });
     });
   }

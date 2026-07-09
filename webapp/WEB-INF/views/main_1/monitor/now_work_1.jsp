@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -42,9 +42,9 @@
 
   col.c-equip    { width: 9%; }
   col.c-room     { width: 8%; }
-  col.c-customer { width: 14%; }
-  col.c-product  { width: 18%; }
-  col.c-lotno    { width: 18%; }
+  col.c-customer { width: 20%; }
+  col.c-product  { width: 20%; }
+  col.c-lotno    { width: 16%; }
   col.c-st       { width: 6.6%; }
 
   th, td {
@@ -114,8 +114,8 @@
     border-color: #6FAA2C;
   }
   td.st.active {
-    background: #BAE6FD;
-    border-color: #7DD3FC;
+    background: #559df9;
+    border-color: #3a85e8;
   }
 
   tr.sep td { border-top: 2px solid #CBD5E1 !important; }

@@ -249,20 +249,21 @@
 .bcf7-alarm-body {
   flex: 1;
   min-height: 0;
-  border-top: 1px solid #f0b888;
+  border-top: 1px solid #e8b0c0;
   overflow: hidden;
   position: relative;
 }
 .bcf7-alarm-body .tabulator,
-.bcf7-alarm-body .tabulator-tableHolder { background: #fff5ee; border: none; }
+.bcf7-alarm-body .tabulator-tableHolder { background: #fff0f3; border: none; }
 .bcf7-alarm-body .tabulator-row,
-.bcf7-alarm-body .tabulator-row.tabulator-row-even { background: #fff5ee; border-bottom: 1px solid #fce0c8; min-height: 36px; }
-.bcf7-alarm-body .tabulator-row:hover { background: #ffe8d6 !important; }
-.bcf7-alarm-body .tabulator-cell { border-right: none; padding: 4px 6px; color: #4a1500; font-family: '맑은 고딕','Malgun Gothic',sans-serif; font-size: 12px; font-weight: 700; white-space: normal; word-break: break-word; line-height: 1.35; overflow: hidden; }
-.bcf7-alarm-body .tabulator-placeholder span { background: #fff5ee; color: #aa3300; font-family: '맑은 고딕','Malgun Gothic',sans-serif; font-size: 12px; }
-.alarm-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #ee6600; vertical-align: middle; animation: alarm-pulse 1.2s ease-in-out infinite; }
+.bcf7-alarm-body .tabulator-row.tabulator-row-even { background: #fff0f3; border-bottom: 1px solid #f8d5de; min-height: 52px; }
+.bcf7-alarm-body .tabulator-row:hover { background: #fce0e6 !important; }
+.bcf7-alarm-body .tabulator-cell { border-right: none; padding: 5px 6px; color: #3a0012; font-family: '맑은 고딕','Malgun Gothic',sans-serif; font-size: 15px; font-weight: 700; white-space: normal; word-break: break-word; line-height: 1.35; align-items: flex-start; overflow: hidden; }
+.bcf7-alarm-body .tabulator-placeholder span { background: #fff0f3; color: #990022; font-family: '맑은 고딕','Malgun Gothic',sans-serif; font-size: 13px; }
+.alarm-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #dd2244; vertical-align: middle; animation: alarm-pulse 1.2s ease-in-out infinite; }
+.alarm-time-val { color: #990022; font-size: 14px; font-weight: 700; letter-spacing: .3px; font-variant-numeric: tabular-nums; }
 @keyframes alarm-pulse {
-  0%, 100% { opacity: 1;   box-shadow: 0 0 5px #ee6600; }
+  0%, 100% { opacity: 1;   box-shadow: 0 0 5px #dd2244; }
   50%       { opacity: 0.25; box-shadow: none; }
 }
 </style>
@@ -383,20 +384,20 @@
     <div class="bcf7-auto-panel">
       <div class="bcf7-auto-title">자동운전 조건</div>
       <div class="bcf7-auto-grid">
-        <div class="bcf7-auto-item state-gray" data-tag="bcf7_8"  data-gray="true" data-text-0="추출포크 후진"        data-text-1="추출포크 후진"       >추출포크 후진</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf7_38" data-gray="true" data-text-0="입구 커튼 S/W ON"    data-text-1="입구 커튼 S/W ON"   >입구 커튼 S/W ON</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf7_10" data-gray="true" data-text-0="포크베이스 하강"      data-text-1="포크베이스 하강"     >포크베이스 하강</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf7_44" data-gray="true" data-text-0="출구 커튼 S/W ON"    data-text-1="출구 커튼 S/W ON"   >출구 커튼 S/W ON</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf7_11" data-gray="true" data-text-0="보조롤러 하강"        data-text-1="보조롤러 하강"       >보조롤러 하강</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf7_78" data-gray="true" data-text-0="출구 FLAME ON"       data-text-1="출구 FLAME ON"      >출구 FLAME ON</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf7_13" data-gray="true" data-text-0="입구문 닫힘"          data-text-1="입구문 닫힘"         >입구문 닫힘</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf7_80" data-gray="true" data-text-0="배기 FLAME ON"       data-text-1="배기 FLAME ON"      >배기 FLAME ON</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf7_15" data-gray="true" data-text-0="중간문 닫힘"          data-text-1="중간문 닫힘"         >중간문 닫힘</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf7_64" data-gray="true" data-text-0="비상정지(판넬)"       data-text-1="비상정지(판넬)"      >비상정지(판넬)</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf7_145"  data-gray="true" data-text-0="추출포크 후진"        data-text-1="추출포크 후진"       >추출포크 후진</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf7_140" data-gray="true" data-text-0="입구 커튼 S/W ON"    data-text-1="입구 커튼 S/W ON"   >입구 커튼 S/W ON</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf7_144" data-gray="true" data-text-0="포크베이스 하강"      data-text-1="포크베이스 하강"     >포크베이스 하강</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf7_139" data-gray="true" data-text-0="출구 커튼 S/W ON"    data-text-1="출구 커튼 S/W ON"   >출구 커튼 S/W ON</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf7_142" data-gray="true" data-text-0="보조롤러 하강"        data-text-1="보조롤러 하강"       >보조롤러 하강</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf7_235" data-gray="true" data-text-0="출구 FLAME ON"       data-text-1="출구 FLAME ON"      >출구 FLAME ON</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf7_143" data-gray="true" data-text-0="입구문 닫힘"          data-text-1="입구문 닫힘"         >입구문 닫힘</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf7_6" data-gray="true" data-text-0="배기 FLAME ON"       data-text-1="배기 FLAME ON"      >배기 FLAME ON</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf7_141" data-gray="true" data-text-0="중간문 닫힘"          data-text-1="중간문 닫힘"         >중간문 닫힘</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf7_146" data-gray="true" data-text-0="비상정지(판넬)"       data-text-1="비상정지(판넬)"      >비상정지(판넬)</div>
         <div class="bcf7-auto-item state-gray" data-tag="bcf7_17" data-gray="true" data-text-0="E/V 상승"            data-text-1="E/V 상승"           >E/V 상승</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf7_65" data-gray="true" data-text-0="비상정지(입구)"       data-text-1="비상정지(입구)"      >비상정지(입구)</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf7_147" data-gray="true" data-text-0="비상정지(입구)"       data-text-1="비상정지(입구)"      >비상정지(입구)</div>
         <div class="bcf7-auto-item state-gray" data-tag="bcf7_20" data-gray="true" data-text-0="출구문 닫힘"          data-text-1="출구문 닫힘"         >출구문 닫힘</div>
-        <div class="bcf7-auto-item state-gray" data-tag="bcf7_66" data-gray="true" data-text-0="비상정지(출구)"       data-text-1="비상정지(출구)"      >비상정지(출구)</div>
+        <div class="bcf7-auto-item state-gray" data-tag="bcf7_148" data-gray="true" data-text-0="비상정지(출구)"       data-text-1="비상정지(출구)"      >비상정지(출구)</div>
         <div class="bcf7-auto-item state-green">자동스텝1 준비완료</div>
         <div class="bcf7-auto-item state-gray" data-tag="bcf7_25" data-gray="true" data-text-0="자동SS(입구)"         data-text-1="자동SS(입구)"        >자동SS(입구)</div>
         <div class="bcf7-auto-item state-green">자동스텝2 준비완료</div>
@@ -552,6 +553,9 @@
   var INTERVAL = 3000;
   var bitElMap = {}, wordElMap = {}, statusElMap = {};
 
+  // 알람 이미지 초기 숨김 (PLC 수신 전 노출 방지)
+  document.querySelectorAll('[class*="-alarm-"]:not([class*="-alarm-panel"]):not([class*="-alarm-body"])').forEach(function(el) { el.style.visibility = 'hidden'; });
+
   document.querySelectorAll('[class]').forEach(function(el) {
     el.className.split(/\s+/).forEach(function(cls) {
       var mLow = cls.match(/^bcf7_(\d+)$/);
@@ -630,11 +634,16 @@
 
   var alarmTable = new Tabulator('.bcf7-alarm-body', {
     height: '100%', layout: 'fitColumns', headerVisible: false,
-    placeholder: '현재 경보 없음', rowHeight: 36, data: [],
+    placeholder: '현재 경보 없음', rowHeight: 52, data: [],
     columns: [
       { title: '', field: 'dot', width: 22, resizable: false, headerSort: false,
         formatter: function() { return '<span class="alarm-dot"></span>'; } },
-      { title: '경보', field: 'alarmMsg', headerSort: false,
+      { title: '시간', field: 'occurTime', width: 152, resizable: false, headerSort: false,
+        formatter: function(cell) {
+          var v = cell.getValue() || '';
+          return '<span class="alarm-time-val">' + (v.length >= 16 ? v.substring(0, 16) : v) + '</span>';
+        } },
+      { title: '경보 내용', field: 'alarmMsg', headerSort: false,
         formatter: function(cell) { return cell.getValue() || '알람'; } }
     ]
   });

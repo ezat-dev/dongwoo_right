@@ -178,17 +178,18 @@
 }
 .alarm-body {
   flex: 1;
-  background: #b8b8b8;
-  border-top: 1px solid #888;
+  min-height: 0;
+  border-top: 1px solid #e8b0c0;
+  overflow: hidden;
   position: relative;
 }
-.alarm-body::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 2px;
-  background: #2255cc;
-}
+.alarm-body .tabulator,
+.alarm-body .tabulator-tableHolder { background: #fff0f3; border: none; }
+.alarm-body .tabulator-row,
+.alarm-body .tabulator-row.tabulator-row-even { background: #fff0f3; border-bottom: 1px solid #f8d5de; min-height: 52px; }
+.alarm-body .tabulator-row:hover { background: #fce0e6 !important; }
+.alarm-body .tabulator-cell { border-right: none; padding: 5px 6px; color: #3a0012; font-family: '맑은 고딕','Malgun Gothic',sans-serif; font-size: 15px; font-weight: 700; white-space: normal; word-break: break-word; line-height: 1.35; align-items: flex-start; overflow: hidden; }
+.alarm-body .tabulator-placeholder span { background: #fff0f3; color: #990022; font-family: '맑은 고딕','Malgun Gothic',sans-serif; font-size: 13px; }
 
 /* ══════════════════════════════
    자동운전 준비조건
@@ -254,65 +255,92 @@
 .bcf-zone-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 10px;
-  font-family: 'Malgun Gothic', sans-serif;
-  table-layout: fixed;   /* 균등 분배 */
-      height: 250px;
+  font-size: 12px;
+  font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+  table-layout: fixed;
+  height: 250px;
 }
 .bcf-zone-table th,
 .bcf-zone-table td {
   border: 1px solid #aac4d8;
   text-align: center;
-  padding: 1px 1px;
+  padding: 1px 2px;
   white-space: nowrap;
   overflow: hidden;
 }
 .bcf-zone-table thead tr:first-child th {
-  background: #3dbdb0;
+  background: #2a9d91;
   color: #fff;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 1px;
-  padding: 3px 0;
+  letter-spacing: .6px;
+  padding: 4px 0;
 }
 .bcf-zone-table thead tr:nth-child(2) th {
-  background: #b8dde8;
-  color: #1a3a5c;
+  background: #5bbdb5;
+  color: #fff;
   font-weight: 700;
-  font-size: 10px;
-  padding: 2px 0;
+  font-size: 11px;
+  padding: 3px 0;
 }
 .bcf-zone-table tbody tr td { background: #fff; }
 .bcf-zone-table tbody tr td.row-label {
   background: #d0e6f0;
   font-weight: 700;
-  color: #1a3a5c;
+  color: #0a2a4a;
   text-align: left;
-  padding-left: 4px;
+  padding-left: 5px;
   width: 72px;
-  font-size: 10px;
+  font-size: 11px;
 }
 /* 존 값 박스 */
 .zbox {
   display: block;
   width: 90%;
-  margin: 0 auto;
-  height: 16px;
-  line-height: 16px;
-  border-radius: 2px;
+  margin: 1px auto;
+  height: 20px;
+  line-height: 20px;
+  border-radius: 3px;
   background: #ffaaaa;
-  border: 1px solid #e05050;
-  font-size: 9px;
+  border: 1.5px solid #e05050;
+  font-size: 11px;
+  font-weight: 700;
   color: #5a0000;
   text-align: center;
 }
 .zbox.yellow { background: #fffaaa; border-color: #c8c000; color: #5a5000; }
 .zbox.cyan   { background: #aaeeff; border-color: #40aacc; color: #003a5c; }
 .zbox.empty  { background: #f0f0f0; border-color: #ccc;    color: #aaa; }
-@keyframes blink { 50% { opacity: 0; } }
-.alarm-dot {
-  display: inline-block; width: 8px; height: 8px;
-  background: #ff2222; border-radius: 50%; animation: blink 1s infinite;
+.alarm-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #dd2244; vertical-align: middle; animation: alarm-pulse 1.2s ease-in-out infinite; }
+.alarm-time-val { color: #990022; font-size: 14px; font-weight: 700; letter-spacing: .3px; font-variant-numeric: tabular-nums; }
+@keyframes alarm-pulse {
+  0%, 100% { opacity: 1;   box-shadow: 0 0 5px #dd2244; }
+  50%       { opacity: 0.25; box-shadow: none; }
+}
+
+/* ── DT 값 박스 (벨트속도·온도 표시) ── */
+.bcf-1-dt-1,
+.bcf-1-dt-2,
+.bcf-1-dt-3 {
+  background: linear-gradient(180deg, #4cae3e 0%, #2f8623 100%);
+  border: 1.5px solid #1e6417;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.20);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Malgun Gothic', '맑은 고딕', monospace;
+  font-size: 11px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: .4px;
+  text-shadow: 0 1px 2px rgba(0,0,0,.50);
+}
+
+/* ── 에어사이클 깜빡 ── */
+@keyframes bcf-air-blink {
+  0%, 100% { opacity: 1;    filter: brightness(1);   }
+  50%       { opacity: 0.25; filter: brightness(1.5); }
 }
 </style>
 
@@ -375,9 +403,9 @@
       <img class="bcf-1-motor-on bcf10_46" src="<%= ctx %>/img/bcf1/bcf-1-motor-on0.png" />
       <img class="bcf-1-pen-off" src="<%= ctx %>/img/bcf1/bcf-1-pen-off0.png" />
       <img class="bcf-1-pen-on bcf10_22" src="<%= ctx %>/img/bcf1/bcf-1-pen-on0.png" />
-      <img class="bcf-1-tray-1 bcf10_51" src="<%= ctx %>/img/bcf1/bcf-1-tray-10.png" />
-      <img class="bcf-1-tray-2 bcf10_3" src="<%= ctx %>/img/bcf1/bcf-1-tray-20.png" />
-      <img class="bcf-1-tray-3" src="<%= ctx %>/img/bcf1/bcf-1-tray-30.png" />
+      <img class="bcf-1-tray-1 bcf10_54" src="<%= ctx %>/img/bcf1/bcf-1-tray-10.png" />
+      <img class="bcf-1-tray-2 bcf10_52" src="<%= ctx %>/img/bcf1/bcf-1-tray-20.png" />
+      <img class="bcf-1-tray-3 bcf10_53" src="<%= ctx %>/img/bcf1/bcf-1-tray-30.png" />
       <img class="bcf-1-bong-1" src="<%= ctx %>/img/bcf1/bcf-1-bong-10.png" />
       <img class="bcf-1-bong-2 bcf10_34" src="<%= ctx %>/img/bcf1/bcf-1-bong-20.png" />
       <img class="bcf-1-bong-3 bcf10_33" src="<%= ctx %>/img/bcf1/bcf-1-bong-30.png" />
@@ -411,16 +439,16 @@
       <img class="bcf-1-alarm-12 bcf10_72" src="<%= ctx %>/img/bcf1/bcf-1-alarm-120.png" />
       <img class="bcf-1-alarm-13 bcf10_83" src="<%= ctx %>/img/bcf1/bcf-1-alarm-130.png" />
       <img class="bcf-1-alarm-14 bcf10_71" src="<%= ctx %>/img/bcf1/bcf-1-alarm-140.png" />
-      <img class="bcf-1-enrich-gray bcf10_139" src="<%= ctx %>/img/bcf1/bcf-1-enrich-gray0.png" />
-      <img class="bcf-1-enrich-red" src="<%= ctx %>/img/bcf1/bcf-1-enrich-red0.png" />
-      <img class="bcf-1-enrich-green bcf10_27" src="<%= ctx %>/img/bcf1/bcf-1-enrich-green0.png" />
+      <!-- <img class="bcf-1-enrich-gray bcf10_139" src="<%= ctx %>/img/bcf1/bcf-1-enrich-gray0.png" /> -->
+      <!-- <img class="bcf-1-enrich-red" src="<%= ctx %>/img/bcf1/bcf-1-enrich-red0.png" /> -->
+      <!-- <img class="bcf-1-enrich-green bcf10_27" src="<%= ctx %>/img/bcf1/bcf-1-enrich-green0.png" />
       <img class="bcf-1-amm-gray bcf10_141" src="<%= ctx %>/img/bcf1/bcf-1-amm-gray0.png" />
       <img class="bcf-1-amm-red" src="<%= ctx %>/img/bcf1/bcf-1-amm-red0.png" />
       <img class="bcf-1-amm-green bcf10_28" src="<%= ctx %>/img/bcf1/bcf-1-amm-green0.png" />
       <div class="bcf-1-enrich-off-box bcf10_138"></div>
       <div class="bcf-1-enrich-on-box bcf10_139"></div>
       <div class="bcf-1-amm-off-box  bcf10_140"></div>
-      <div class="bcf-1-amm-on-box bcf10_141"></div>
+      <div class="bcf-1-amm-on-box bcf10_141"></div> -->
       <div class="bcf-1-jog-stop-box"></div>
       <div class="bcf-1-jog-manual-box bcf10_57 bcf10_59"></div>
       <div class="bcf-1-jog-on-box bcf10_56 bcf10_58"></div>
@@ -433,14 +461,14 @@
       <div class="bcf-1-1-sok-box bcf10_41"></div>
       <div class="bcf-1-2-sok-box bcf10_48"></div>
       <div class="bcf-1-3-sok-box bcf10_49"></div>
-      <div class="bcf-1-dt-2 bcf10_3"></div>
-      <div class="bcf-1-dt-1 bcf10_51"></div>
+      <div class="bcf-1-dt-2 bcf10_3 bcf10_40004"></div>
+      <div class="bcf-1-dt-1 bcf10_51 bcf10_40002"></div>
       <div class="bcf-1-ro-on bcf10_52"></div>
       <div class="bcf-1-ro-off"></div>
-      <div class="bcf-1-dt-3"></div>
-      <div class="bcf-1-flamesw-box bcf10_17"></div>
+      <div class="bcf-1-dt-3 bcf10_53 bcf10_40060"></div>
+      <!-- <div class="bcf-1-flamesw-box bcf10_17"></div>
       <div class="bcf-1-flame-box bcf10_18"></div>
-      <div class="bcf-1-fire-box bcf10_16"></div>
+      <div class="bcf-1-fire-box bcf10_16"></div> -->
       <img class="bcf-1-fire-1 bcf10_30" src="<%= ctx %>/img/bcf1/bcf-1-fire-10.png" />
       <img class="bcf-1-fire-2  bcf10_16" src="<%= ctx %>/img/bcf1/bcf-1-fire-20.png" />
     </div>
@@ -693,6 +721,9 @@
   var INTERVAL = 3000;
   var bitElMap = {}, wordElMap = {};
 
+  // 알람 이미지 초기 숨김 (PLC 수신 전 노출 방지)
+  document.querySelectorAll('[class*="-alarm-"]:not(.bcf-alarm-panel)').forEach(function(el) { el.style.visibility = 'hidden'; });
+
   document.querySelectorAll('[class]').forEach(function(el) {
     el.className.split(/\s+/).forEach(function(cls) {
       var mLow = cls.match(/^bcf10_(\d+)$/);
@@ -743,8 +774,29 @@
     Object.keys(bitElMap).forEach(function(tag) {
       if (data[tag] == null) return;
       var isOn = (data[tag] === 1 || data[tag] === true);
-      bitElMap[tag].forEach(function(el) { el.style.visibility = isOn ? 'visible' : 'hidden'; });
+      bitElMap[tag].forEach(function(el) {
+        if (tag === 'bcf10_60') {
+          el.style.visibility = isOn ? 'visible' : 'hidden';
+          el.style.animation  = isOn
+            ? (el.classList.contains('bcf-1-air-cycle') ? 'bcf-air-blink 2s ease-in-out infinite' : 'bcf10-spin 3s linear infinite')
+            : 'none';
+        } else {
+          el.style.visibility = isOn ? 'visible' : 'hidden';
+        }
+      });
     });
+
+    /* 사이클 이미지: bcf10_39 or bcf10_40 중 하나라도 1이면 서서히 나타남 */
+    var cycleOn = (data['bcf10_39'] === 1 || data['bcf10_40'] === 1);
+    ['bcf10_39', 'bcf10_40'].forEach(function(tag) {
+      if (!bitElMap[tag]) return;
+      bitElMap[tag].forEach(function(el) {
+        el.style.transition = 'opacity 1.5s ease-in-out';
+        el.style.visibility = 'visible';
+        el.style.opacity    = cycleOn ? '1' : '0';
+      });
+    });
+
     Object.keys(autoElMap).forEach(function(tag) {
       if (data[tag] == null) return;
       var isOn = (data[tag] === 1 || data[tag] === true);
@@ -767,11 +819,16 @@
 
   var alarmTable = new Tabulator('.alarm-body', {
     height: '100%', layout: 'fitColumns', headerVisible: false,
-    placeholder: '현재 경보 없음', rowHeight: 36, data: [],
+    placeholder: '현재 경보 없음', rowHeight: 52, data: [],
     columns: [
       { title: '', field: 'dot', width: 22, resizable: false, headerSort: false,
         formatter: function() { return '<span class="alarm-dot"></span>'; } },
-      { title: '경보', field: 'alarmMsg', headerSort: false,
+      { title: '시간', field: 'occurTime', width: 152, resizable: false, headerSort: false,
+        formatter: function(cell) {
+          var v = cell.getValue() || '';
+          return '<span class="alarm-time-val">' + (v.length >= 16 ? v.substring(0, 16) : v) + '</span>';
+        } },
+      { title: '경보 내용', field: 'alarmMsg', headerSort: false,
         formatter: function(cell) { return cell.getValue() || '알람'; } }
     ]
   });

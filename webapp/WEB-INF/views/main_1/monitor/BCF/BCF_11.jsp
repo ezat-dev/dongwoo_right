@@ -111,7 +111,7 @@
 
 /* ── 좌: 존구간 테이블 ── */
 .bcf11-zone-panel {
-  flex: 0 0 570px;
+  flex: 3;
   border: 1.5px solid #888;
   border-radius: 3px;
   overflow: hidden;
@@ -121,7 +121,7 @@
   width: 100%;
   height: 100%;
   border-collapse: collapse;
-  font-size: 10px;
+  font-size: 12px;
   table-layout: fixed;
 }
 .bcf11-zone-table th,
@@ -133,11 +133,11 @@
   overflow: hidden;
 }
 .bcf11-zone-table thead tr th {
-  background: #d0d0d0;
-  color: #222;
+  background: #b0c8d8;
+  color: #0a2a4a;
   font-weight: 700;
-  font-size: 10px;
-  padding: 3px 1px;
+  font-size: 12px;
+  padding: 4px 1px;
 }
 .bcf11-zone-table thead tr th.th-empty {
   background: #e8e8e8;
@@ -149,12 +149,12 @@
 
 .bcf11-zone-table tbody tr td { background: #fff; }
 .bcf11-zone-table tbody tr td.row-label {
-  background: #d8d8d8;
+  background: #c8d8e8;
   font-weight: 700;
-  color: #222;
+  color: #0a2a4a;
   text-align: left;
   padding-left: 4px;
-  font-size: 10px;
+  font-size: 11px;
   white-space: nowrap;
 }
 
@@ -163,12 +163,13 @@
   display: block;
   width: 88%;
   margin: 1px auto;
-  height: 15px;
-  line-height: 15px;
+  height: 20px;
+  line-height: 20px;
   border-radius: 2px;
   background: #ffb0b0;
   border: 1px solid #e05050;
-  font-size: 9px;
+  font-size: 11px;
+  font-weight: 700;
   color: #5a0000;
   text-align: center;
 }
@@ -258,21 +259,23 @@
 }
 .bcf11-alarm-body {
   flex: 1;
-  background: #b8b8b8;
-  border-top: 1px solid #888;
+  min-height: 0;
+  border-top: 1px solid #e8b0c0;
+  overflow: hidden;
   position: relative;
 }
-.bcf11-alarm-body::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 2px;
-  background: #2255cc;
-}
-@keyframes blink { 50% { opacity: 0; } }
-.alarm-dot {
-  display: inline-block; width: 8px; height: 8px;
-  background: #ff2222; border-radius: 50%; animation: blink 1s infinite;
+.bcf11-alarm-body .tabulator,
+.bcf11-alarm-body .tabulator-tableHolder { background: #fff0f3; border: none; }
+.bcf11-alarm-body .tabulator-row,
+.bcf11-alarm-body .tabulator-row.tabulator-row-even { background: #fff0f3; border-bottom: 1px solid #f8d5de; min-height: 52px; }
+.bcf11-alarm-body .tabulator-row:hover { background: #fce0e6 !important; }
+.bcf11-alarm-body .tabulator-cell { border-right: none; padding: 5px 6px; color: #3a0012; font-family: '맑은 고딕','Malgun Gothic',sans-serif; font-size: 15px; font-weight: 700; white-space: normal; word-break: break-word; line-height: 1.35; align-items: flex-start; overflow: hidden; }
+.bcf11-alarm-body .tabulator-placeholder span { background: #fff0f3; color: #990022; font-family: '맑은 고딕','Malgun Gothic',sans-serif; font-size: 13px; }
+.alarm-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #dd2244; vertical-align: middle; animation: alarm-pulse 1.2s ease-in-out infinite; }
+.alarm-time-val { color: #990022; font-size: 14px; font-weight: 700; letter-spacing: .3px; font-variant-numeric: tabular-nums; }
+@keyframes alarm-pulse {
+  0%, 100% { opacity: 1;   box-shadow: 0 0 5px #dd2244; }
+  50%       { opacity: 0.25; box-shadow: none; }
 }
 </style>
 
@@ -356,31 +359,31 @@
       <img class="bcf-11-sensor-on-2 bcf11_127" src="<%= ctx %>/img/bcf11/bcf-11-sensor-on-20.png" />
       <img class="bcf-11-sensor-off-3" src="<%= ctx %>/img/bcf11/bcf-11-sensor-off-30.png" />
       <img class="bcf-11-sensor-on-3 bcf11_15" src="<%= ctx %>/img/bcf11/bcf-11-sensor-on-30.png" />
-      <img class="bcf-11-enrich-gray-1" src="<%= ctx %>/img/bcf11/bcf-11-enrich-gray-10.png" />
-      <img class="bcf-11-enrich-red-1" src="<%= ctx %>/img/bcf11/bcf-11-enrich-red-10.png" />
-      <img class="bcf-11-enrich-green-1 bcf11_12" src="<%= ctx %>/img/bcf11/bcf-11-enrich-green-10.png" />
-      <div class="bcf-11-enrich-off-box-1"></div>
-      <div class="bcf-11-enrich-on-box-1 bcf11_12"></div>
-      <img class="bcf-11-amm-gray-1" src="<%= ctx %>/img/bcf11/bcf-11-amm-gray-10.png" />
+      <!-- <img class="bcf-11-enrich-gray-1" src="<%= ctx %>/img/bcf11/bcf-11-enrich-gray-10.png" />
+      <img class="bcf-11-enrich-red-1" src="<%= ctx %>/img/bcf11/bcf-11-enrich-red-10.png" /> -->
+      <!-- <img class="bcf-11-enrich-green-1 bcf11_12" src="<%= ctx %>/img/bcf11/bcf-11-enrich-green-10.png" /> -->
+      <!-- <div class="bcf-11-enrich-off-box-1"></div>
+      <div class="bcf-11-enrich-on-box-1 bcf11_12"></div> -->
+      <!-- <img class="bcf-11-amm-gray-1" src="<%= ctx %>/img/bcf11/bcf-11-amm-gray-10.png" />
       <img class="bcf-11-amm-red-1" src="<%= ctx %>/img/bcf11/bcf-11-amm-red-10.png" />
       <img class="bcf-11-amm-green-1 bcf11_107" src="<%= ctx %>/img/bcf11/bcf-11-amm-green-10.png" />
       <div class="bcf-11-amm-off-box-1"></div>
       <div class="bcf-11-amm-on-box-1 bcf11_107"></div>
-      <img class="bcf-11-enrich-gray-2" src="<%= ctx %>/img/bcf11/bcf-11-enrich-gray-20.png" />
-      <img class="bcf-11-enrich-red-2" src="<%= ctx %>/img/bcf11/bcf-11-enrich-red-20.png" />
-      <img class="bcf-11-enrich-green-2 bcf11_69" src="<%= ctx %>/img/bcf11/bcf-11-enrich-green-20.png" />
-      <div class="bcf-11-enrich-off-box-2"></div>
-      <div class="bcf-11-enrich-on-box-2 bcf11_69"></div>
-      <img class="bcf-11-amm-gray-2" src="<%= ctx %>/img/bcf11/bcf-11-amm-gray-20.png" />
+     <img class="bcf-11-enrich-gray-2" src="<%= ctx %>/img/bcf11/bcf-11-enrich-gray-20.png" />
+      <img class="bcf-11-enrich-red-2" src="<%= ctx %>/img/bcf11/bcf-11-enrich-red-20.png" /> -->
+      <!-- <img class="bcf-11-enrich-green-2 bcf11_69" src="<%= ctx %>/img/bcf11/bcf-11-enrich-green-20.png" /> -->
+      <!-- <div class="bcf-11-enrich-off-box-2"></div>
+      <div class="bcf-11-enrich-on-box-2 bcf11_69"></div> -->
+      <!-- <img class="bcf-11-amm-gray-2" src="<%= ctx %>/img/bcf11/bcf-11-amm-gray-20.png" />
       <img class="bcf-11-amm-red-2" src="<%= ctx %>/img/bcf11/bcf-11-amm-red-20.png" />
-      <img class="bcf-11-amm-green-2 bcf11_121" src="<%= ctx %>/img/bcf11/bcf-11-amm-green-20.png" />
-      <div class="bcf-11-amm-off-box-2"></div>
-      <div class="bcf-11-amm-on-box-2 bcf11_121"></div>
-      <img class="bcf-11-ngas-gray-1" src="<%= ctx %>/img/bcf11/bcf-11-ngas-gray-10.png" />
+      <img class="bcf-11-amm-green-2 bcf11_121" src="<%= ctx %>/img/bcf11/bcf-11-amm-green-20.png" />  -->
+      <!-- <div class="bcf-11-amm-off-box-2"></div>
+      <div class="bcf-11-amm-on-box-2 bcf11_121"></div> -->
+      <!-- <img class="bcf-11-ngas-gray-1" src="<%= ctx %>/img/bcf11/bcf-11-ngas-gray-10.png" />
       <img class="bcf-11-ngas-red-1" src="<%= ctx %>/img/bcf11/bcf-11-ngas-red-10.png" />
       <img class="bcf-11-ngas-green-1" src="<%= ctx %>/img/bcf11/bcf-11-ngas-green-10.png" />
-      <div class="bcf-11-ngas-off-box-1 bcf11_199"></div>
-      <div class="bcf-11-ngas-on-box-1"></div>
+      <div class="bcf-11-ngas-off-box-1 bcf11_199"></div> -->
+      <!-- <div class="bcf-11-ngas-on-box-1"></div> -->
       <img class="bcf-11-motor-gray-1" src="<%= ctx %>/img/bcf11/bcf-11-motor-gray-10.png" />
       <img class="bcf-11-motor-green-1 bcf11_126 bcf11_68" src="<%= ctx %>/img/bcf11/bcf-11-motor-green-10.png" />
       <img class="bcf-11-rotate-1 bcf11_8 bcf11_195" src="<%= ctx %>/img/bcf11/bcf-11-rotate-10.png" />
@@ -447,7 +450,7 @@
         <table class="bcf11-zone-table">
           <thead>
             <tr>
-              <th class="th-empty" style="width:80px;"></th>
+              <th class="th-empty" style="width:105px;"></th>
               <th class="th-red">침탄</th>
               <th>승온</th>
               <th class="th-red">침탄</th>
@@ -586,15 +589,23 @@
   var INTERVAL = 3000;
   var bitElMap = {}, wordElMap = {};
 
+  // 알람 이미지 초기 숨김 (PLC 수신 전 노출 방지)
+  document.querySelectorAll('[class*="-alarm-"]:not([class*="-alarm-panel"]):not([class*="-alarm-body"])').forEach(function(el) { el.style.visibility = 'hidden'; });
+
   document.querySelectorAll('[class]').forEach(function(el) {
     if (el.classList.contains('bcf11-auto-item')) return; /* statusElMap 에서 처리 */
     el.className.split(/\s+/).forEach(function(cls) {
       var mLow = cls.match(/^bcf11_(\d+)$/);
       if (!mLow) return;
       var addr = parseInt(mLow[1], 10);
+      /* 트레이 wordFlag 주소: 백엔드가 bcf11_40010 키로 저장 → bitElMap으로 처리 */
+      var isTrayFlag = (cls === 'bcf11_40010' || cls === 'bcf11_40027' || cls === 'bcf11_40044' || cls === 'bcf11_40053');
       /* zbox7 / bcf11-tp-val 은 수치 표시용 → 주소 크기 무관하게 word read */
       var isDisplay = el.classList.contains('zbox7') || el.classList.contains('bcf11-tp-val');
-      if (addr >= 40000 || isDisplay) {
+      if (isTrayFlag) {
+        if (!bitElMap[cls]) bitElMap[cls] = [];
+        bitElMap[cls].push(el);
+      } else if (addr >= 40000 || isDisplay) {
         var apiTag = 'bcf11_s_' + mLow[1];
         if (!wordElMap[apiTag]) wordElMap[apiTag] = [];
         wordElMap[apiTag].push(el);
@@ -625,6 +636,7 @@
   }
 
   function applyData(data) {
+
     Object.keys(wordElMap).forEach(function(tag) {
       if (data[tag] == null) return;
       var raw = Number(data[tag]);
@@ -641,7 +653,8 @@
     Object.keys(bitElMap).forEach(function(tag) {
       if (data[tag] == null) return;
       var isOn = (data[tag] === 1 || data[tag] === true);
-      bitElMap[tag].forEach(function(el) { el.style.visibility = isOn ? 'visible' : 'hidden'; });
+      var show = (tag === 'bcf11_40044') ? !isOn : isOn;
+      bitElMap[tag].forEach(function(el) { el.style.visibility = show ? 'visible' : 'hidden'; });
     });
     Object.keys(statusElMap).forEach(function(tag) {
       if (data[tag] == null) return;
@@ -662,11 +675,16 @@
 
   var alarmTable = new Tabulator('.bcf11-alarm-body', {
     height: '100%', layout: 'fitColumns', headerVisible: false,
-    placeholder: '현재 경보 없음', rowHeight: 36, data: [],
+    placeholder: '현재 경보 없음', rowHeight: 52, data: [],
     columns: [
       { title: '', field: 'dot', width: 22, resizable: false, headerSort: false,
         formatter: function() { return '<span class="alarm-dot"></span>'; } },
-      { title: '경보', field: 'alarmMsg', headerSort: false,
+      { title: '시간', field: 'occurTime', width: 152, resizable: false, headerSort: false,
+        formatter: function(cell) {
+          var v = cell.getValue() || '';
+          return '<span class="alarm-time-val">' + (v.length >= 16 ? v.substring(0, 16) : v) + '</span>';
+        } },
+      { title: '경보 내용', field: 'alarmMsg', headerSort: false,
         formatter: function(cell) { return cell.getValue() || '알람'; } }
     ]
   });

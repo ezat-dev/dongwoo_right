@@ -255,20 +255,21 @@
 .bcf7-alarm-body {
   flex: 1;
   min-height: 0;
-  border-top: 1px solid #f0b888;
+  border-top: 1px solid #e8b0c0;
   overflow: hidden;
   position: relative;
 }
 .bcf7-alarm-body .tabulator,
-.bcf7-alarm-body .tabulator-tableHolder { background: #fff5ee; border: none; }
+.bcf7-alarm-body .tabulator-tableHolder { background: #fff0f3; border: none; }
 .bcf7-alarm-body .tabulator-row,
-.bcf7-alarm-body .tabulator-row.tabulator-row-even { background: #fff5ee; border-bottom: 1px solid #fce0c8; min-height: 36px; }
-.bcf7-alarm-body .tabulator-row:hover { background: #ffe8d6 !important; }
-.bcf7-alarm-body .tabulator-cell { border-right: none; padding: 4px 6px; color: #4a1500; font-family: '맑은 고딕','Malgun Gothic',sans-serif; font-size: 12px; font-weight: 700; white-space: normal; word-break: break-word; line-height: 1.35; overflow: hidden; }
-.bcf7-alarm-body .tabulator-placeholder span { background: #fff5ee; color: #aa3300; font-family: '맑은 고딕','Malgun Gothic',sans-serif; font-size: 12px; }
-.alarm-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #ee6600; vertical-align: middle; animation: alarm-pulse 1.2s ease-in-out infinite; }
+.bcf7-alarm-body .tabulator-row.tabulator-row-even { background: #fff0f3; border-bottom: 1px solid #f8d5de; min-height: 52px; }
+.bcf7-alarm-body .tabulator-row:hover { background: #fce0e6 !important; }
+.bcf7-alarm-body .tabulator-cell { border-right: none; padding: 5px 6px; color: #3a0012; font-family: '맑은 고딕','Malgun Gothic',sans-serif; font-size: 15px; font-weight: 700; white-space: normal; word-break: break-word; line-height: 1.35; align-items: flex-start; overflow: hidden; }
+.bcf7-alarm-body .tabulator-placeholder span { background: #fff0f3; color: #990022; font-family: '맑은 고딕','Malgun Gothic',sans-serif; font-size: 13px; }
+.alarm-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #dd2244; vertical-align: middle; animation: alarm-pulse 1.2s ease-in-out infinite; }
+.alarm-time-val { color: #990022; font-size: 14px; font-weight: 700; letter-spacing: .3px; font-variant-numeric: tabular-nums; }
 @keyframes alarm-pulse {
-  0%, 100% { opacity: 1;   box-shadow: 0 0 5px #ee6600; }
+  0%, 100% { opacity: 1;   box-shadow: 0 0 5px #dd2244; }
   50%       { opacity: 0.25; box-shadow: none; }
 }
 </style>
@@ -558,6 +559,9 @@
   var INTERVAL = 3000;
   var bitElMap = {}, wordElMap = {};
 
+  // 알람 이미지 초기 숨김 (PLC 수신 전 노출 방지)
+  document.querySelectorAll('[class*="-alarm-"]:not([class*="-alarm-panel"]):not([class*="-alarm-body"])').forEach(function(el) { el.style.visibility = 'hidden'; });
+
   document.querySelectorAll('[class]').forEach(function(el) {
     el.className.split(/\s+/).forEach(function(cls) {
       var mLow = cls.match(/^bcf9_(\d+)$/);
@@ -637,11 +641,16 @@
 
   var alarmTable = new Tabulator('.bcf7-alarm-body', {
     height: '100%', layout: 'fitColumns', headerVisible: false,
-    placeholder: '현재 경보 없음', rowHeight: 36, data: [],
+    placeholder: '현재 경보 없음', rowHeight: 52, data: [],
     columns: [
       { title: '', field: 'dot', width: 22, resizable: false, headerSort: false,
         formatter: function() { return '<span class="alarm-dot"></span>'; } },
-      { title: '경보', field: 'alarmMsg', headerSort: false,
+      { title: '시간', field: 'occurTime', width: 152, resizable: false, headerSort: false,
+        formatter: function(cell) {
+          var v = cell.getValue() || '';
+          return '<span class="alarm-time-val">' + (v.length >= 16 ? v.substring(0, 16) : v) + '</span>';
+        } },
+      { title: '경보 내용', field: 'alarmMsg', headerSort: false,
         formatter: function(cell) { return cell.getValue() || '알람'; } }
     ]
   });

@@ -297,7 +297,7 @@
     <!-- tray-2/belt DT(40004) 표시: bcfX_51(또는 53)=1일 때 conn 위에 표시 -->
     <div class="bcf-belt-dt bcf-1-belt-dt  bcf1_s_40004"></div>
     <div class="bcf-belt-dt bcf-2-belt-dt  bcf2_s_40004"></div>
-    <div class="bcf-belt-dt bcf-3-belt-dt  bcf3_s_40004"></div>
+    <div class="bcf-belt-dt bcf-3-belt-dt  bcf3_s_40002"></div>
     <div class="bcf-belt-dt bcf-4-belt-dt  bcf4_s_40004"></div>
     <div class="bcf-belt-dt bcf-10-belt-dt bcf10_s_40004"></div>
     <div class="bcf-belt-dt bcf-5-belt-dt  bcf5_s_40004"></div>
@@ -732,7 +732,7 @@
           <div class="tm-cell bcf2_s_40046">DT</div><div class="tm-cell bcf2_s_40047">DT</div><div class="tm-cell bcf2_s_40052">DT</div>
         </div>
         <div class="tm-row tm-set">
-          <div class="tm-cell bcf2_s_40069">DT</div><div class="tm-cell bcf2_s_40070">DT</div><div class="tm-cell bcf2_s_40072">DT</div>
+          <div class="tm-cell bcf2_s_40069">DT</div><div class="tm-cell bcf2_s_40070">DT</div><div class="tm-cell bcf2_s_40071">DT</div>
         </div>
       </div>
 
@@ -953,8 +953,8 @@
         { tray: 'bcf2_51',  dt: '.bcf-2-belt-dt'  },
         { tray: 'bcf3_51',  dt: '.bcf-3-belt-dt'  },
         { tray: 'bcf4_51',  dt: '.bcf-4-belt-dt'  },
-        { tray: 'bcf5_53',  dt: '.bcf-5-belt-dt'  },
-        { tray: 'bcf10_53', dt: '.bcf-10-belt-dt' },
+        { tray: 'bcf5_52',  dt: '.bcf-5-belt-dt'  },
+        { tray: 'bcf10_54', dt: '.bcf-10-belt-dt' },
       ];
       trayDtMap.forEach(function(m) {
         var el = document.querySelector(m.dt);
