@@ -28,4 +28,9 @@ public class WorkListDaoImpl implements WorkListDao {
     public List<Map<String, Object>> selectJacupByRange(Map<String, Object> params) {
         return sqlSession.selectList("WorkListMapper.selectJacupByRange", params);
     }
+
+    @Override
+    public int softDeleteJacup(int statusSeq) {
+        return sqlSession.update("WorkListMapper.softDeleteJacup", statusSeq);
+    }
 }

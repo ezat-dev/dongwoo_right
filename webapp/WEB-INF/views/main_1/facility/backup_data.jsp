@@ -459,8 +459,23 @@ function isFlowLabel(label) {
 function isCpLabel(label) {
   return /\bcp\b/i.test(label);
 }
-function scaleFlow(v) {
+/* BCF별 유량 환산 (trend.jsp 기준) */
+function scaleFlow(v, label, bcf) {
   if (v > 30000) return null;
+  var lbl = (label || '').toLowerCase();
+  if (/c3h8/.test(lbl)) {
+    if (bcf === '7')  return v / 200;
+    if (bcf === '5' || bcf === '8' || bcf === '10' || bcf === '11') return v * 0.00125;
+    if (bcf === '9')  return v * 0.0049;
+    if (bcf === '12') return v * 0.1;
+    if (bcf === '2')  return v * 0.00152;
+    if (bcf === '6')  return v * 0.01;
+    return (v / 1000) * 3.1;
+  }
+  if (/nh3/.test(lbl)) {
+    if (bcf === '9')  return v / 100;
+    if (bcf === '10') return v / 10;
+  }
   return v >= 1000 ? v / 1000 : v / 100;
 }
 
@@ -473,17 +488,31 @@ function renderTrendChart() {
     return new Date(row[key]).getTime();
   });
 
-  /* 시리즈 빌드 (스케일 적용) */
+  var bcf = document.getElementById('trend-equip').value;
+
+  /* 시리즈 빌드 (스케일 적용 — trend.jsp 기준) */
   var series = seriesMeta.map(function(s){
     var isFlow = isFlowLabel(s.label);
     var isCp   = !isFlow && isCpLabel(s.label);
+    var isC3h8 = isFlow && /c3h8/i.test(s.label);
+    var lbl    = s.label.toLowerCase();
     var data = trendRawData.map(function(row, i){
       var v = parseFloat(row[s.col]);
       if (isNaN(v)) return [times[i], null];
       if (isFlow) {
-        var sv = scaleFlow(v);
-        return [times[i], sv];
+        return [times[i], scaleFlow(v, s.label, bcf)];
       }
+      /* CP 보정 */
+      if (isCp) {
+        if (bcf === '7' || bcf === '9') v = v * 2;
+        if (bcf === '6') v = v * 0.001;
+        if (bcf === '9' && v >= 60) v = 0;
+      }
+      /* 온도 보정 */
+      if (bcf === '8' && /침탄.*pv|유조.*pv|침탄.*sp|유조.*sp/.test(lbl)) v = v / 10;
+      if (bcf === '9' && /유조.*sp/.test(lbl))              v = v + 9;
+      if (bcf === '9' && /유조.*온도|온도.*유조/.test(lbl))  v = v - 9;
+      if (bcf === '7' && /유조.*온도|온도.*유조/.test(lbl))  v = v + 8;
       return [times[i], v];
     });
     return {
@@ -493,7 +522,7 @@ function renderTrendChart() {
       lineWidth: 1.5,
       visible:   s.active,
       marker:    { enabled: false },
-      yAxis:     isFlow ? 2 : (isCp ? 1 : 0)
+      yAxis:     isC3h8 ? 2 : ((isFlow || isCp) ? 1 : 0)
     };
   });
 
@@ -524,22 +553,23 @@ function renderTrendChart() {
       crosshair: { color: 'rgba(99,179,237,.25)' }
     },
     yAxis: [
-      { /* 온도 */
+      { /* 온도 — trend.jsp 기준 */
         title: { text: null },
-        gridLineColor: '#1E2A3A',
-        labels: { style: { fontSize:'10px', color:'#A0AEC0' } }
+        min: 0, max: 1000, tickInterval: 50, endOnTick: false, maxPadding: 0,
+        gridLineColor: '#1a2840',
+        labels: { format: '{value}', style: { fontSize:'10px', color:'#8899bb' } }
       },
-      { /* CP */
+      { /* CP/NH3 — trend.jsp 기준 */
         title: { text: null }, opposite: true,
+        min: 0, max: 2.0, tickInterval: 0.1, endOnTick: false, maxPadding: 0,
         gridLineColor: 'transparent',
-        labels: { format: '{value:.2f}', style: { fontSize:'10px', color:'#68D391' } },
-        min: 0, softMax: 2.0
+        labels: { format: '{value:.2f}', style: { fontSize:'10px', color:'#4ADE80' } }
       },
-      { /* 유량/가스 */
+      { /* c3h8 — trend.jsp 기준 */
         title: { text: null }, opposite: true,
+        min: 0, max: 10, tickInterval: 1, endOnTick: false, maxPadding: 0,
         gridLineColor: 'transparent',
-        labels: { format: '{value:.1f}', style: { fontSize:'10px', color:'#63B3ED' } },
-        min: 0, max: 20
+        labels: { format: '{value:.1f}', style: { fontSize:'10px', color:'#22D3EE' } }
       }
     ],
     tooltip: {

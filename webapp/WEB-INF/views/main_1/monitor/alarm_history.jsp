@@ -466,10 +466,13 @@ function downloadExcel(){
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 /* ── 초기화 ── */
+function toLocalDate(d){
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
 var today = new Date();
-document.getElementById('dateTo').value   = today.toISOString().slice(0,10);
-var m1 = new Date(today); m1.setDate(1);
-document.getElementById('dateFrom').value = m1.toISOString().slice(0,10);
+document.getElementById('dateTo').value   = toLocalDate(today);
+var m1 = new Date(today); m1.setDate(m1.getDate() - 7);
+document.getElementById('dateFrom').value = toLocalDate(m1);
 
 loadAll();
 setInterval(loadAll, 300000); // 5분 주기 자동 갱신

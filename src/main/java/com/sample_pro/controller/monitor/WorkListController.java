@@ -43,6 +43,28 @@ public class WorkListController {
         MACHINES = Collections.unmodifiableList(list);
     }
 
+    // POST /work/softDelete → START_DTTM = '2000-12-31 00:00:00' (사실상 삭제)
+    @RequestMapping(value = "/softDelete", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public ResponseEntity<?> softDelete(@RequestBody Map<String, String> body) {
+        String seqStr = body.get("statusSeq");
+        Map<String, Object> res = new HashMap<>();
+        if (seqStr == null || seqStr.isEmpty()) {
+            res.put("success", false);
+            res.put("error", "statusSeq 필요");
+            return ResponseEntity.ok(res);
+        }
+        try {
+            int updated = workListService.softDeleteJacup(Integer.parseInt(seqStr));
+            res.put("success", updated > 0);
+            res.put("updated", updated);
+        } catch (Exception e) {
+            res.put("success", false);
+            res.put("error", e.getMessage());
+        }
+        return ResponseEntity.ok(res);
+    }
+
     // GET /work/jacup/range → 트렌드용 시간범위 조회
     @RequestMapping(value = "/jacup/range", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody

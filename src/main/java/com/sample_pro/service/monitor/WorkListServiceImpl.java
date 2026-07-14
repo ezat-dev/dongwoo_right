@@ -32,4 +32,9 @@ public class WorkListServiceImpl implements WorkListService {
         params.put("to",   to);
         return workListDao.selectJacupByRange(params);
     }
+
+    @Override
+    public int softDeleteJacup(int statusSeq) {
+        return workListDao.softDeleteJacup(statusSeq);
+    }
 }

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
@@ -12,7 +12,7 @@
         http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
         http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd">
 
-    <!-- 스케줄러: MonitorCacheService @Scheduled 활성화 -->
+    <!-- ?ㅼ?以꾨윭: MonitorCacheService @Scheduled ?쒖꽦??-->
     <task:annotation-driven scheduler="scheduler" executor="executor"/>
     <task:scheduler id="scheduler" pool-size="4"/>
     <task:executor id="executor" keep-alive="10" pool-size="10-20" queue-capacity="10" rejection-policy="ABORT"/>
@@ -23,21 +23,21 @@
         <property name="driverClassName" value="org.mariadb.jdbc.Driver"/>
         <property name="url" value="jdbc:mariadb://localhost:3306/ez_scada?useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="root"/>
-        <property name="password" value="ezat6695!"/>
-        <!-- 끊긴 커넥션 자동 감지: MySQL wait_timeout 초과 후 재연결 -->
+        <property name="password" value="a123456789"/>
+        <!-- ?딄릿 而ㅻ꽖???먮룞 媛먯?: MySQL wait_timeout 珥덇낵 ???ъ뿰寃?-->
         <property name="validationQuery" value="SELECT 1"/>
         <property name="testOnBorrow" value="true"/>
         <property name="testWhileIdle" value="true"/>
         <property name="timeBetweenEvictionRunsMillis" value="60000"/>
     </bean>
 
-    <!-- htms DataSource (알람 이력) -->
+    <!-- htms DataSource (?뚮엺 ?대젰) -->
     <bean id="htmsDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="org.mariadb.jdbc.Driver"/>
         <property name="url" value="jdbc:mariadb://192.168.1.93:3306/htms"/>
         <property name="username" value="root"/>
         <property name="password" value="a123456789"/>
-        <!-- htms DB도 동일하게 stale connection 방지 -->
+        <!-- htms DB???숈씪?섍쾶 stale connection 諛⑹? -->
         <property name="validationQuery" value="SELECT 1"/>
         <property name="testOnBorrow" value="true"/>
         <property name="testWhileIdle" value="true"/>
@@ -61,7 +61,7 @@
     
     
 
-    <!-- MyBatis 설정 (ez_scada) -->
+    <!-- MyBatis ?ㅼ젙 (ez_scada) -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="configLocation" value="classpath:mybatis/config/mybatis-context.xml"/>
@@ -71,7 +71,7 @@
         <constructor-arg ref="sqlSessionFactory"/>
     </bean>
 
-    <!-- MyBatis 설정 (htms - 알람 이력) -->
+    <!-- MyBatis ?ㅼ젙 (htms - ?뚮엺 ?대젰) -->
     <bean id="htmsSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="htmsDataSource"/>
         <property name="configLocation" value="classpath:mybatis/config/mybatis-htms-context.xml"/>
@@ -81,15 +81,15 @@
         <constructor-arg ref="htmsSqlSessionFactory"/>
     </bean>
 
-    <!-- 트랜잭션 설정 -->
+    <!-- ?몃옖??뀡 ?ㅼ젙 -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <!-- DAO 및 Service 스캔 -->
+    <!-- DAO 諛?Service ?ㅼ틪 -->
     <context:component-scan base-package="com.sample_pro.dao com.sample_pro.service"/>
 
-    <!-- 초기 작업 클래스 -->
+    <!-- 珥덇린 ?묒뾽 ?대옒??-->
 
     
     

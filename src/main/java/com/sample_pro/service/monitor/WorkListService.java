@@ -8,4 +8,5 @@ public interface WorkListService {
     List<WorkListItem> getPendingWorkList(String equtCd);
     List<WorkListItem> getAllPendingWorkList();
     List<Map<String, Object>> getJacupByRange(String equtCd, String from, String to);
+    int softDeleteJacup(int statusSeq);
 }

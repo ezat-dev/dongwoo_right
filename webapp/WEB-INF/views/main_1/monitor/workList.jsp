@@ -180,9 +180,8 @@
     </div>
     <div class="del-modal-lot" id="delModalLot">-</div>
     <div class="del-modal-btns">
-      <button class="del-btn-main del-btn-transfer" onclick="handleDelAction('transfer')">프로그램 전환시 작동</button>
-      <button class="del-btn-main del-btn-end"      onclick="handleDelAction('end')">끝내기</button>
-      <button class="del-btn-main del-btn-cancel"   onclick="closeDelModal()">취소</button>
+      <button class="del-btn-main del-btn-end"    onclick="handleDelAction('end')">삭제</button>
+      <button class="del-btn-main del-btn-cancel" onclick="closeDelModal()">취소</button>
     </div>
   </div>
 </div>
@@ -200,6 +199,10 @@ function loadData() {
   fetch(ROOT + '/work/listData')
     .then(function(r) { return r.json(); })
     .then(function(data) {
+      if (!Array.isArray(data)) {
+        console.error('작업LIST 로드 실패', data);
+        return;
+      }
       renderAll(data);
       var now = new Date();
       document.getElementById('updateTime').textContent =
@@ -270,7 +273,7 @@ function buildTable(m) {
   // 실제 데이터 행
   for (var i = 0; i < items.length; i++) {
     var item = items[i];
-    var key  = m.machineTag + '|' + item.workIndctNum;
+    var key  = m.machineTag + '|' + item.workIndctNum + '|' + item.statusSeq;
     var tr   = document.createElement('tr');
     if (selectedKey === key) tr.classList.add('selected');
     tr.dataset.key = key;
@@ -337,18 +340,24 @@ function closeDelModal() {
 
 function handleDelAction(action) {
   if (!selectedKey) { closeDelModal(); return; }
-  var parts   = selectedKey.split('|');
-  var machine = parts[0] || '';
-  var lot     = parts[1] || '';
-  var label   = action === 'transfer' ? '프로그램 전환시 작동' : '끝내기';
-  console.log('[worklist] delete action:', action, machine, lot);
-  // TODO: API 호출
-  // fetch(ROOT + '/work/delete', { method:'POST', headers:{'Content-Type':'application/json'},
-  //   body: JSON.stringify({ action: action, workIndctNum: lot, equtCd: machine }) })
+  var parts     = selectedKey.split('|');
+  var statusSeq = parts[2] || '';
   closeDelModal();
-  selectedKey = null;
-  updateTrashBtn();
-  loadData();
+  fetch(ROOT + '/work/softDelete', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ statusSeq: statusSeq })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(res) {
+    if (!res.success) console.error('[worklist] softDelete 실패', res.error);
+  })
+  .catch(function(e) { console.error('[worklist] softDelete 오류', e); })
+  .finally(function() {
+    selectedKey = null;
+    updateTrashBtn();
+    loadData();
+  });
 }
 
 /* ── HTML 이스케이프 ── */

@@ -452,6 +452,7 @@ var base = '${pageContext.request.contextPath}';
 var tags       = [];
 var selTags    = {};
 var curEquip   = 'ALL';
+var tagColorMap = {}; // colName → 고정 색상 (BCF6/BCF11 제외)
 var curPeriod  = '6h';
 var isCustom   = false;
 var mainChart  = null;
@@ -581,6 +582,7 @@ function loadTags() {
       console.log('[trend] /temp/cols response', d);
       tags = Array.isArray(d) ? d : [];
       if (!tags.length) { loadDemoChart(); return; }
+      buildTagColorMap();
       initDefaultSelection();
       renderTagList();
       reloadChart();
@@ -848,6 +850,12 @@ function buildKpiCards(selList, rows) {
       if (!isNaN(v) && /유조.*pv|pv.*유조|침탄.*pv|pv.*침탄/.test(kpiTagName) && /[_\-]8([_\-]|$)/.test(kpiTagName)) {
         v = v / 10;
       }
+      if (!isNaN(v) && /유조.*sp|sp.*유조|침탄.*sp|sp.*침탄/.test(kpiTagName) && /[_\-]8([_\-]|$)/.test(kpiTagName)) {
+        v = v / 10;
+      }
+      if (!isNaN(v) && /유조.*sp|sp.*유조/.test(kpiTagName) && /[_\-]9([_\-]|$)/.test(kpiTagName)) {
+        v = v + 9;
+      }
       if (!isNaN(v) && /cp.*pv|pv.*cp/.test(kpiTagName) && /[_\-]9([_\-]|$)/.test(kpiTagName) && v >= 60) {
         v = 0;
       }
@@ -859,6 +867,9 @@ function buildKpiCards(selList, rows) {
       }
       if (!isNaN(v) && /유조.*온도|온도.*유조/.test(kpiTagName) && /[_\-]9([_\-]|$)/.test(kpiTagName)) {
         v = v - 9;
+      }
+      if (!isNaN(v) && /유조.*온도|온도.*유조/.test(kpiTagName) && /[_\-]7([_\-]|$)/.test(kpiTagName)) {
+        v = v + 8;
       }
       return v;
     }).filter(function(v){ return !isNaN(v); });
@@ -948,6 +959,12 @@ function buildMainChart(selList, rows) {
       if (!isNaN(v) && /유조.*pv|pv.*유조|침탄.*pv|pv.*침탄/.test(tName) && /[_\-]8([_\-]|$)/.test(tName)) {
         v = v / 10;
       }
+      if (!isNaN(v) && /유조.*sp|sp.*유조|침탄.*sp|sp.*침탄/.test(tName) && /[_\-]8([_\-]|$)/.test(tName)) {
+        v = v / 10;
+      }
+      if (!isNaN(v) && /유조.*sp|sp.*유조/.test(tName) && /[_\-]9([_\-]|$)/.test(tName)) {
+        v = v + 9;
+      }
       if (!isNaN(v) && /cp.*pv|pv.*cp/.test(tName) && /[_\-]9([_\-]|$)/.test(tName) && v >= 60) {
         v = 0;
       }
@@ -959,6 +976,9 @@ function buildMainChart(selList, rows) {
       }
       if (!isNaN(v) && /유조.*온도|온도.*유조/.test(tName) && /[_\-]9([_\-]|$)/.test(tName)) {
         v = v - 9;
+      }
+      if (!isNaN(v) && /유조.*온도|온도.*유조/.test(tName) && /[_\-]7([_\-]|$)/.test(tName)) {
+        v = v + 8;
       }
       if (!isNaN(v)) data.push([ts, v]);
     });
@@ -1171,15 +1191,57 @@ function showAvgResult(selList, rows, t0, t1) {
 
 function tagIdxOf(t) { var i = tags.indexOf(t); return i >= 0 ? i : 0; }
 
+/* 타입별 색상 팔레트 (같은 타입 여러 채널은 순서대로 다른 색) */
+var TYPE_PALETTES = {
+  ct_pv:   ['#F87171','#EF4444','#FCA5A5','#DC2626','#FECACA'],  /* 침탄pv - 빨강 계열 */
+  uj_pv:   ['#4ADE80','#22C55E','#86EFAC','#16A34A','#BBF7D0'],  /* 유조pv - 초록 계열 */
+  ct_c3h8: ['#A855F7','#9333EA','#C084FC','#7C3AED'],             /* 침탄c3h8 - 보라 계열 */
+  c3h8:    ['#F472B6','#EC4899','#FBCFE8','#DB2777'],             /* c3h8 - 분홍 계열 */
+  cp_pv:   ['#22D3EE','#06B6D4','#67E8F9','#0891B2']             /* cp pv - 하늘 계열 */
+};
+
+function buildTagColorMap() {
+  tagColorMap = {};
+  var counter  = {};
+  var otherIdx = 0;
+  tags.forEach(function(t) {
+    var equip = getEquipFromTag(t);
+    if (equip === 'BCF6' || equip === 'BCF11') return; /* 6/11호기는 별도 처리 유지 */
+    var name = (t.trendName || t.tagName || t.colName || '').toLowerCase();
+    var group;
+    if      (/침탄.*pv|pv.*침탄/.test(name))          group = 'ct_pv';
+    else if (/유조.*pv|pv.*유조/.test(name))           group = 'uj_pv';
+    else if (/침탄.*c3h8|c3h8.*침탄/.test(name))      group = 'ct_c3h8';
+    else if (/c3h8/.test(name))                        group = 'c3h8';
+    else if (/cp.*pv|pv.*cp/.test(name))               group = 'cp_pv';
+    else                                               group = null;
+    if (group) {
+      var idx = counter[group] = (counter[group] || 0);
+      tagColorMap[t.colName] = TYPE_PALETTES[group][idx % TYPE_PALETTES[group].length];
+      counter[group]++;
+    } else {
+      tagColorMap[t.colName] = COLORS[otherIdx % COLORS.length];
+      otherIdx++;
+    }
+  });
+}
+
 function tagColor(t) {
-  var name = (t.trendName || t.tagName || t.colName || '').toLowerCase();
-  if (/침탄.*pv|pv.*침탄/.test(name)) return '#F87171';   /* 빨강 */
-  if (/유조.*pv|pv.*유조/.test(name)) return '#4ADE80';   /* 초록 */
-  if (/침탄.*c3h8|c3h8.*침탄/.test(name)) return '#A855F7'; /* 보라 */
-  if (/c3h8/.test(name) && /2실/.test(name) && /[_\-]11([_\-]|$)/.test(name)) return '#CC00FF'; /* 형광 보라 - 2실 11호기 */
-  if (/c3h8/.test(name))              return '#F472B6';   /* 분홍 */
-  if (/cp.*pv|pv.*cp/.test(name))     return '#22D3EE';   /* 하늘 */
-  return COLORS[tagIdxOf(t)];
+  var equip = getEquipFromTag(t);
+  /* BCF6/BCF11: 기존 방식 유지 */
+  if (equip === 'BCF6' || equip === 'BCF11') {
+    var n6 = (t.trendName || t.tagName || t.colName || '').toLowerCase();
+    if (/침탄.*pv|pv.*침탄/.test(n6))          return '#F87171';
+    if (/유조.*pv|pv.*유조/.test(n6))           return '#4ADE80';
+    if (/침탄.*c3h8|c3h8.*침탄/.test(n6))      return '#A855F7';
+    if (/c3h8/.test(n6) && /2실/.test(n6) && /[_\-]11([_\-]|$)/.test(n6)) return '#CC00FF';
+    if (/c3h8/.test(n6))                        return '#F472B6';
+    if (/cp.*pv|pv.*cp/.test(n6))               return '#22D3EE';
+    return COLORS[tagIdxOf(t) % COLORS.length];
+  }
+  /* 그 외: 안정적 캐시 색상 */
+  if (t && t.colName && tagColorMap[t.colName]) return tagColorMap[t.colName];
+  return COLORS[tagIdxOf(t) % COLORS.length];
 }
 
 /* ── 패널 탭 전환 ── */

@@ -66,7 +66,27 @@
       "PowerShell(& \"C:\\\\Program Files\\\\MariaDB 10.2\\\\bin\\\\mysql.exe\" -u root \"-pezat6695!\" ez_scada -e \"SELECT record_time FROM tb_temp_snapshot ORDER BY record_time DESC LIMIT 20;\")",
       "PowerShell(& \"C:\\\\Program Files\\\\MariaDB 10.2\\\\bin\\\\mysql.exe\" -u root \"-pezat6695!\" ez_scada -e \"SELECT record_time, TIMESTAMPDIFF\\(SECOND, LAG\\(record_time\\) OVER \\(ORDER BY record_time\\), record_time\\) AS gap_sec FROM tb_temp_snapshot ORDER BY record_time DESC LIMIT 15;\")",
       "PowerShell(& \"C:\\\\Program Files\\\\MariaDB 10.2\\\\bin\\\\mysql.exe\" -u root \"-pezat6695!\" ez_scada -e \"SELECT p.plc_id, p.ip, p.port, p.enabled FROM tb_plc p WHERE p.plc_id = '11_kg';\")",
-      "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\views\\\\main_1\\\\monitor\\\\main_monitor.jsp\" \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\ROOT\\\\WEB-INF\\\\views\\\\main_1\\\\monitor\\\\main_monitor.jsp\" -Force)"
+      "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\views\\\\main_1\\\\monitor\\\\main_monitor.jsp\" \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\ROOT\\\\WEB-INF\\\\views\\\\main_1\\\\monitor\\\\main_monitor.jsp\" -Force)",
+      "Bash(\"/c/Program Files/MariaDB 10.2/bin/mysql.exe\" -u root -pezat6695! -e \"ALTER USER 'root'@'localhost' IDENTIFIED BY 'a123456789'; FLUSH PRIVILEGES;\")",
+      "Bash(\"/c/Program Files/MariaDB 10.2/bin/mysql.exe\" -u root -pa123456789 -e \"SELECT 'password changed OK';\")",
+      "Bash(\"C:\\\\Program Files\\\\MariaDB 10.2\\\\bin\\\\mysql.exe\" -h 192.168.1.98 -P 3306 -u root -pezat6695! -e \"ALTER USER 'root'@'localhost' IDENTIFIED BY 'a123456789'; FLUSH PRIVILEGES;\")",
+      "Bash(\"C:\\\\Program Files\\\\MariaDB 10.2\\\\bin\\\\mysql.exe\" -h 192.168.1.98 -P 3306 -u root -pa123456789 -e \"SELECT user, host FROM mysql.user WHERE user='root';\")",
+      "Bash(\"C:\\\\Program Files\\\\MariaDB 10.2\\\\bin\\\\mysql.exe\" -h 192.168.1.98 -P 3306 -u root -pezat6695! -e \"SELECT user, host FROM mysql.user WHERE user='root';\")",
+      "Bash(\"C:\\\\Program Files\\\\MariaDB 10.2\\\\bin\\\\mysql.exe\" -h 192.168.1.98 -P 3306 -u root -pezat6695! -e \"ALTER USER 'root'@'%' IDENTIFIED BY 'a123456789'; ALTER USER 'root'@'127.0.0.1' IDENTIFIED BY 'a123456789'; ALTER USER 'root'@'::1' IDENTIFIED BY 'a123456789'; ALTER USER 'root'@'desktop-r3451eo' IDENTIFIED BY 'a123456789'; ALTER USER 'root'@'localhost' IDENTIFIED BY 'a123456789'; FLUSH PRIVILEGES;\")",
+      "Bash(\"C:\\\\Program Files\\\\MariaDB 10.2\\\\bin\\\\mysql.exe\" -h 192.168.1.98 -P 3306 -u root -pa123456789 -e \"SELECT 'OK - 192.168.1.98 password changed' AS result;\")",
+      "Bash(\"C:\\\\Program Files\\\\MariaDB 10.2\\\\bin\\\\mysql.exe\" -h 192.168.4.4 -P 3306 -u root -pa123456789 htms -e \"SHOW FULL TABLES WHERE Table_type = 'VIEW';\")",
+      "Bash(\"C:\\\\Program Files\\\\MariaDB 10.2\\\\bin\\\\mysql.exe\" -h 192.168.4.4 -P 3306 -u root -pa123456789 htms -e \"SHOW TABLES LIKE '%jacup%';\")",
+      "Bash(\"C:\\\\Program Files\\\\MariaDB 10.2\\\\bin\\\\mysql.exe\" -h 192.168.4.4 -P 3306 -u root -pezat6695! htms -e \"SELECT user, host FROM mysql.user WHERE user='root';\")",
+      "Bash(\"C:\\\\Program Files\\\\MariaDB 10.2\\\\bin\\\\mysql.exe\" -h 192.168.4.4 -P 3306 -u root -pezat6695! htms -e \"ALTER USER 'root'@'127.0.0.1' IDENTIFIED BY 'a123456789'; ALTER USER 'root'@'::1' IDENTIFIED BY 'a123456789'; ALTER USER 'root'@'desktop-ulig7mm' IDENTIFIED BY 'a123456789'; ALTER USER 'root'@'localhost' IDENTIFIED BY 'a123456789'; FLUSH PRIVILEGES;\")",
+      "Bash(\"C:\\\\Program Files\\\\MariaDB 10.2\\\\bin\\\\mysql.exe\" -h 192.168.4.4 -P 3306 -u root -pezat6695! htms -e \"SHOW TABLES LIKE '%jacup%'; SHOW FULL TABLES WHERE Table_type='VIEW';\")",
+      "Bash(\"C:\\\\Program Files\\\\MariaDB 10.2\\\\bin\\\\mysql.exe\" -h 192.168.4.4 -P 3306 -u root -pa123456789 htms -e \"SHOW TABLES LIKE '%jacup%'; SHOW FULL TABLES WHERE Table_type='VIEW';\")",
+      "Bash(\"C:\\\\Program Files\\\\MariaDB 10.2\\\\bin\\\\mysql.exe\" -h 192.168.4.4 -P 3306 -u root -pa123456789 htms -e \"DESCRIBE v_jacup; SELECT COUNT\\(*\\) FROM v_jacup WHERE START_DTTM IS NULL;\")",
+      "Bash(git -C \"d:\\\\sample_pro\" log --oneline --all -- \"webapp/WEB-INF/views/main_1/main.jsp\")",
+      "Bash(copy \"d:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\views\\\\main_1\\\\facility\\\\backup_data.jsp\" \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\views\\\\main_1\\\\facility\\\\backup_data.jsp\")",
+      "PowerShell(Get-Content \"D:\\\\SC_LOG\\\\20260713.log\" -Encoding UTF8 | Where-Object { $_ -match \"warn|error|Error|WARN|socket|Socket|10061|alarm|Alarm\" } | Select-Object -Last 30)",
+      "PowerShell(Get-Content \"D:\\\\SC_LOG\\\\20260714.log\" -Encoding UTF8 | Where-Object { $_ -match \"ERR|error|Error|10061|INIT\" } | Select-Object -First 20)",
+      "PowerShell(Get-Content \"D:\\\\SC_LOG\\\\20260714.log\" -Encoding UTF8 | Where-Object { $_ -match \"ERR|10061|warn|WARN\" } | Select-Object -Last 10)",
+      "PowerShell(Get-Content \"D:\\\\START_MOVE_END\\\\20260714.log\" -Encoding UTF8 | Where-Object { $_ -match \"START|INIT|ERR\" } | Select-Object -Last 20)"
     ]
   }
 }

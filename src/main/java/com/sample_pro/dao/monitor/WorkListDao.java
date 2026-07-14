@@ -8,4 +8,5 @@ public interface WorkListDao {
     List<WorkListItem> selectPendingWorkList(String equtCd);
     List<WorkListItem> selectAllPendingWorkList();
     List<Map<String, Object>> selectJacupByRange(Map<String, Object> params);
+    int softDeleteJacup(int statusSeq);
 }

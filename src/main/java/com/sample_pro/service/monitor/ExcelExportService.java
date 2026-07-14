@@ -381,18 +381,30 @@ public class ExcelExportService {
             else if (b6)  raw = raw * 0.001;
         }
 
+        if (b7) {
+            boolean isUjTemp = lo.matches(".*(유조.*온도|온도.*유조).*")
+                            || cn.contains("_uj_pv");
+            if (isUjTemp) raw = raw + 8.0;
+        }
+
         if (b8) {
-            boolean isUjCt = lo.matches(".*(유조.*pv|pv.*유조|침탄.*pv|pv.*침탄).*")
-                          || cn.contains("_uj_pv") || cn.contains("_ct_pv");
-            if (isUjCt) raw = raw / 10.0;
+            boolean isUjCtPv = lo.matches(".*(유조.*pv|pv.*유조|침탄.*pv|pv.*침탄).*")
+                             || cn.contains("_uj_pv") || cn.contains("_ct_pv");
+            boolean isUjCtSp = lo.matches(".*(유조.*sp|sp.*유조|침탄.*sp|sp.*침탄).*")
+                             || cn.contains("_uj_sp") || cn.contains("_ct_sp");
+            if (isUjCtPv || isUjCtSp) raw = raw / 10.0;
         }
 
         if (isCpPv && b9 && raw >= 60) return 0.0;
 
         if (b9) {
-            boolean isUjTemp = lo.matches(".*(유조.*온도|온도.*유조).*")
-                            || cn.contains("_uj_pv");
-            if (isUjTemp) raw = raw - 9.0;
+            boolean isUjPv = lo.matches(".*(유조.*온도|온도.*유조).*")
+                          || cn.contains("_uj_pv");
+            if (isUjPv) raw = raw - 9.0;
+
+            boolean isUjSp = lo.matches(".*(유조.*sp|sp.*유조).*")
+                          || cn.contains("_uj_sp");
+            if (isUjSp) raw = raw + 9.0;
         }
 
         return raw;

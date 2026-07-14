@@ -634,12 +634,13 @@
   .tm-blue  .tm-set { background: #eff6ff;  color: #3b82f6; border-color: #bfdbfe; }
 
   /* AUTO 모드: 온도 패널 확장 */
-  body.auto-mode .tm-panel        { padding: 14px 14px 20px; }
-  body.auto-mode .tm-label-spacer { height: 32px; }
-  body.auto-mode .tm-label-cell .lc-title { font-size: 12px; }
-  body.auto-mode .tm-label-cell .lc-unit  { font-size: 13px; }
-  body.auto-mode .tm-item-name    { height: 32px; font-size: 12px; }
-  body.auto-mode .tm-cell         { height: 46px; font-size: 14px; }
+  body.auto-mode .ov-tab-group    { display: none; }
+  body.auto-mode .tm-panel        { padding: 6px 14px 8px; }
+  body.auto-mode .tm-label-spacer { height: 18px; }
+  body.auto-mode .tm-label-cell .lc-title { font-size: 8px; }
+  body.auto-mode .tm-label-cell .lc-unit  { font-size: 9px; }
+  body.auto-mode .tm-item-name    { height: 18px; font-size: 8px; }
+  body.auto-mode .tm-cell         { height: 26px; font-size: 10px; }
   </style>
 
   <div class="tm-panel">
@@ -883,6 +884,8 @@
           text = (raw * 0.001).toFixed(3);
         } else if (tag === 'bcf7_s_44612') {
           text = ((raw >= 1000 ? raw / 10 : raw) + 8).toFixed(1);
+        } else if (tag === 'bcf9_s_44612') {
+          text = ((raw >= 1000 ? raw / 10 : raw) - 8).toFixed(1);
         } else {
           text = raw >= 1000 ? (raw / 10).toFixed(1) : raw.toFixed(1);
         }
@@ -1147,6 +1150,7 @@
       document.body.classList.add('auto-mode');
     }
   } catch(e) {}
+
 })();
 
 /* ── 화면 맞춤 스케일 ── */

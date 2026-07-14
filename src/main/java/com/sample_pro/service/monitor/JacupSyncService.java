@@ -3,7 +3,6 @@ package com.sample_pro.service.monitor;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -23,7 +22,8 @@ public class JacupSyncService {
     @Resource(name = "session")
     private SqlSession localSession;
 
-    @Scheduled(fixedDelay = 20000)
+    // htms(192.168.4.4) 직접 연결로 전환 — 동기화 불필요, 비활성화
+    // @Scheduled(fixedDelay = 20000)
     public void sync() {
         try {
             // 로컬에 이미 있는 키 수집

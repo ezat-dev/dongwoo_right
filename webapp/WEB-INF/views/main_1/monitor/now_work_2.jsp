@@ -52,7 +52,7 @@
     vertical-align: middle;
     font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
     font-weight: 700;
-    border: 1px solid #E8ECF0;
+    border: 1px solid #94A3B8;
   }
 
   thead tr:first-child th {
@@ -86,7 +86,7 @@
     font-size: clamp(12px, 1.2vw, 21px);
     font-weight: 900;
     line-height: 1.8;
-    border-color: #E2E8F0;
+    border-color: #94A3B8;
   }
 
   td.room {
@@ -94,7 +94,7 @@
     color: #475569;
     font-size: clamp(11px, 1.1vw, 19px);
     font-weight: 800;
-    border-color: #E8ECF0;
+    border-color: #94A3B8;
   }
 
   td.data {
@@ -102,12 +102,12 @@
     color: #1E293B;
     font-size: clamp(11px, 1.15vw, 20px);
     font-weight: 700;
-    border-color: #EEF1F5;
+    border-color: #94A3B8;
   }
 
   td.st {
     background: #D4EDBA;
-    border-color: #BCDDA0;
+    border-color: #86B84A;
   }
   td.st.on {
     background: #8DC34A;
@@ -118,7 +118,7 @@
     border-color: #3a85e8;
   }
 
-  tr.sep td { border-top: 2px solid #CBD5E1 !important; }
+  tr.sep td { border-top: 2px solid #64748B !important; }
 
   tbody tr { height: auto; }
 </style>

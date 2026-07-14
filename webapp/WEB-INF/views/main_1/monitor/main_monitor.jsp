@@ -670,13 +670,14 @@
   .tm-blue  .tm-set .tm-cell { background: #eff6ff; color: #3b82f6; border-color: #bfdbfe; }
 
   /* AUTO 모드: 온도 패널 확장 */
-  body.auto-mode .tm-panel        { padding: 14px 14px 20px; }
-  body.auto-mode .tm-label-spacer { height: 32px; }
-  body.auto-mode .tm-label-cell .lc-title { font-size: 12px; }
-  body.auto-mode .tm-label-cell .lc-unit  { font-size: 13px; }
-  body.auto-mode .tm-ch-header    { height: 32px; }
-  body.auto-mode .tm-ch-name      { font-size: 12px; }
-  body.auto-mode .tm-cell         { height: 46px; font-size: 15px; }
+  body.auto-mode .ov-tab-group    { display: none; }
+  body.auto-mode .tm-panel        { padding: 6px 14px 8px; }
+  body.auto-mode .tm-label-spacer { height: 18px; }
+  body.auto-mode .tm-label-cell .lc-title { font-size: 8px; }
+  body.auto-mode .tm-label-cell .lc-unit  { font-size: 9px; }
+  body.auto-mode .tm-ch-header    { height: 18px; }
+  body.auto-mode .tm-ch-name      { font-size: 8px; }
+  body.auto-mode .tm-cell         { height: 26px; font-size: 10px; }
   </style>
 
   <div class="tm-panel">
@@ -1234,6 +1235,7 @@
       document.body.classList.add('auto-mode');
     }
   } catch(e) {}
+
 })();
 
 /* ── 화면 맞춤 스케일 ── */

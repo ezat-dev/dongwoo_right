@@ -518,6 +518,7 @@ function doLogout(){
 /* ── AUTO 키오스크 ── */
 var _autoRunning    = false;
 var _autoTimer      = null;
+var _autoFsTimer    = null;
 var _autoIdx        = 0;
 var _autoSavedSrc   = '';
 var _autoSavedTitle = '';
@@ -528,8 +529,7 @@ var AUTO_KIOSK_PAGES = [
   { url:'${pageContext.request.contextPath}/main_1/main/monitor',  name:'OVERVIEW-1' },
   { url:'${pageContext.request.contextPath}/main_1/main/monitor2', name:'OVERVIEW-2' },
   { url:'${pageContext.request.contextPath}/main_1/work/now1',     name:'현재 작업-1' },
-  { url:'${pageContext.request.contextPath}/main_1/work/now2',     name:'현재 작업-2' },
-  { url:'${pageContext.request.contextPath}/main_1/work/list',     name:'작업 목록'   }
+  { url:'${pageContext.request.contextPath}/main_1/work/now2',     name:'현재 작업-2' }
 ];
 var AUTO_KIOSK_URLS = AUTO_KIOSK_PAGES.map(function(p){ return p.url; });
 
@@ -547,7 +547,7 @@ function _startKioskBar() {
   fill.style.width = '0%';
   function step(ts) {
     if (!_autoBarStart) _autoBarStart = ts;
-    var pct = Math.min((ts - _autoBarStart) / 10000 * 100, 100);
+    var pct = Math.min((ts - _autoBarStart) / 16000 * 100, 100);
     fill.style.width = pct + '%';
     if (pct < 100) _autoRafId = requestAnimationFrame(step);
   }
@@ -586,30 +586,35 @@ function startAutoKiosk() {
   _kioskTick();
   _autoClockTimer = setInterval(_kioskTick, 1000);
 
-  /* 전체화면 요청 */
-  try {
-    if (document.documentElement.requestFullscreen)
-      document.documentElement.requestFullscreen().catch(function(){});
-    else if (document.documentElement.webkitRequestFullscreen)
-      document.documentElement.webkitRequestFullscreen();
-  } catch(e) {}
+  /* 전체화면 요청 — 비활성화
+  clearTimeout(_autoFsTimer);
+  _autoFsTimer = setTimeout(function() {
+    try {
+      if (document.documentElement.requestFullscreen)
+        document.documentElement.requestFullscreen().catch(function(){});
+      else if (document.documentElement.webkitRequestFullscreen)
+        document.documentElement.webkitRequestFullscreen();
+    } catch(e) {}
+  }, 5000);
+  */
 
   /* 첫 페이지 */
   _autoShowPage(0);
 
-  /* 10초마다 순환 */
+  /* 16초마다 순환 */
   _autoTimer = setInterval(function() {
     _autoIdx = (_autoIdx + 1) % AUTO_KIOSK_PAGES.length;
     _autoShowPage(_autoIdx);
-  }, 10000);
+  }, 16000);
 
   document.addEventListener('fullscreenchange', _onFscChange);
 }
 
 function stopAutoKiosk() {
   _autoRunning = false;
-  if (_autoTimer)      { clearInterval(_autoTimer);      _autoTimer = null; }
-  if (_autoClockTimer) { clearInterval(_autoClockTimer); _autoClockTimer = null; }
+  if (_autoTimer)      { clearInterval(_autoTimer);        _autoTimer = null; }
+  if (_autoFsTimer)    { clearTimeout(_autoFsTimer);       _autoFsTimer = null; }
+  if (_autoClockTimer) { clearInterval(_autoClockTimer);   _autoClockTimer = null; }
   if (_autoRafId)      { cancelAnimationFrame(_autoRafId); _autoRafId = null; }
   document.removeEventListener('fullscreenchange', _onFscChange);
   try { if (document.fullscreenElement) document.exitFullscreen(); } catch(e) {}
