@@ -670,7 +670,14 @@ function renderTagList() {
   }
   var q = (document.getElementById('tagSearch').value || '').toLowerCase();
   var html = '';
-  tags.forEach(function(t, i) {
+  var sortedTags = tags.slice().sort(function(a, b) {
+    var aN = (a.colName || a.tagName || '').toLowerCase();
+    var bN = (b.colName || b.tagName || '').toLowerCase();
+    var aP = /pv/.test(aN) ? 0 : 1;
+    var bP = /pv/.test(bN) ? 0 : 1;
+    return aP - bP;
+  });
+  sortedTags.forEach(function(t, i) {
     var displayName = t.trendName || t.tagName || t.colName;
     var subName     = t.colName || t.tagName;
     var teq  = getEquipFromTag(t);
@@ -1193,7 +1200,7 @@ function tagIdxOf(t) { var i = tags.indexOf(t); return i >= 0 ? i : 0; }
 
 /* 타입별 색상 팔레트 (같은 타입 여러 채널은 순서대로 다른 색) */
 var TYPE_PALETTES = {
-  ct_pv:   ['#F87171','#EF4444','#FCA5A5','#DC2626','#FECACA'],  /* 침탄pv - 빨강 계열 */
+  ct_pv:   ['#FF1744'],  /* 침탄pv - 형광 빨강 통일 */
   uj_pv:   ['#4ADE80','#22C55E','#86EFAC','#16A34A','#BBF7D0'],  /* 유조pv - 초록 계열 */
   ct_c3h8: ['#A855F7','#9333EA','#C084FC','#7C3AED'],             /* 침탄c3h8 - 보라 계열 */
   c3h8:    ['#F472B6','#EC4899','#FBCFE8','#DB2777'],             /* c3h8 - 분홍 계열 */
@@ -1228,13 +1235,30 @@ function buildTagColorMap() {
 
 function tagColor(t) {
   var equip = getEquipFromTag(t);
-  /* BCF6/BCF11: 기존 방식 유지 */
-  if (equip === 'BCF6' || equip === 'BCF11') {
+  /* BCF11: 태그별 개별 색상 */
+  if (equip === 'BCF11') {
+    var n11 = (t.trendName || t.tagName || t.colName || '').toLowerCase();
+    if (/1실.*온도.*pv|room1.*temp.*pv/.test(n11))  return '#FF1744';  /* 1실 온도 PV - 형광 빨강 */
+    if (/2실.*온도.*pv|room2.*temp.*pv/.test(n11))  return '#FF6D00';  /* 2실 온도 PV - 주황 */
+    if (/냉각.*pv|cool.*temp.*pv/.test(n11))        return '#FFD600';  /* 냉각실 온도 PV - 노랑 */
+    if (/1실.*cp.*pv|room1.*cp.*pv/.test(n11))      return '#00E5FF';  /* 1실 CP PV - 형광 하늘 */
+    if (/2실.*cp.*pv|room2.*cp.*pv/.test(n11))      return '#2979FF';  /* 2실 CP PV - 파랑 */
+    if (/1실.*온도.*sp|room1.*temp.*sp/.test(n11))  return '#FF80AB';  /* 1실 온도 SP - 핑크 */
+    if (/2실.*온도.*sp|room2.*temp.*sp/.test(n11))  return '#FFAB40';  /* 2실 온도 SP - 연주황 */
+    if (/냉각.*sp|cool.*temp.*sp/.test(n11))        return '#FFF176';  /* 냉각실 온도 SP - 연노랑 */
+    if (/1실.*cp.*sp|room1.*cp.*sp/.test(n11))      return '#80D8FF';  /* 1실 CP SP - 연하늘 */
+    if (/2실.*cp.*sp|room2.*cp.*sp/.test(n11))      return '#82B1FF';  /* 2실 CP SP - 연파랑 */
+    if (/1실.*c3h8|room1.*c3h8/.test(n11))          return '#00E676';  /* 1실 C3H8 - 형광 초록 */
+    if (/2실.*c3h8|room2.*c3h8/.test(n11))          return '#AA00FF';  /* 2실 C3H8 - 보라 */
+    return COLORS[tagIdxOf(t) % COLORS.length];
+  }
+  /* BCF6: 기존 방식 유지 */
+  if (equip === 'BCF6') {
     var n6 = (t.trendName || t.tagName || t.colName || '').toLowerCase();
-    if (/침탄.*pv|pv.*침탄/.test(n6))          return '#F87171';
+    if (/침탄2.*pv|pv.*침탄2/.test(n6))        return '#00FF7F';
+    if (/침탄.*pv|pv.*침탄/.test(n6))          return '#FF1744';
     if (/유조.*pv|pv.*유조/.test(n6))           return '#4ADE80';
     if (/침탄.*c3h8|c3h8.*침탄/.test(n6))      return '#A855F7';
-    if (/c3h8/.test(n6) && /2실/.test(n6) && /[_\-]11([_\-]|$)/.test(n6)) return '#CC00FF';
     if (/c3h8/.test(n6))                        return '#F472B6';
     if (/cp.*pv|pv.*cp/.test(n6))               return '#22D3EE';
     return COLORS[tagIdxOf(t) % COLORS.length];

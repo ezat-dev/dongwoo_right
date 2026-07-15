@@ -1,6 +1,7 @@
 package com.sample_pro.domain;
 
-public class Users {
+public class Users implements java.io.Serializable {
+	private static final long serialVersionUID = 1L;
 	
 	public String ck_date;
 	public String a_3;

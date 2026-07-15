@@ -11,6 +11,10 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -24,7 +28,8 @@ public class AlarmExportService {
     @Autowired
     private AlarmService alarmService;
 
-    private static final String SAVE_DIR = "D:\\DATA_BACKUP\\알람 리스트";
+    private static final String SAVE_DIR     = "D:\\DATA_BACKUP\\알람 리스트";
+    private static final String SAVE_DIR_NET = "Z:\\08-대구사업장\\04-대생\\02 레벨2\\06-설비관리\\통합모니터링 데이터 백업\\알람 리스트";
     private static final DateTimeFormatter DATE_FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     // 시트명 (Excel 표시용)
@@ -76,6 +81,7 @@ public class AlarmExportService {
                 wb.write(fos);
             }
             log.info("[AlarmExport] 저장 완료: {} (총 {}건)", out.getAbsolutePath(), all.size());
+            copyToNetwork(out.toPath(), SAVE_DIR_NET);
 
         } catch (Exception e) {
             log.error("[AlarmExport] 엑셀 생성 실패: {}", e.getMessage(), e);
@@ -116,6 +122,16 @@ public class AlarmExportService {
     }
 
     private String nv(String s) { return s != null ? s : ""; }
+
+    private void copyToNetwork(Path src, String netDir) {
+        try {
+            Files.createDirectories(Paths.get(netDir));
+            Files.copy(src, Paths.get(netDir, src.getFileName().toString()), StandardCopyOption.REPLACE_EXISTING);
+            log.info("[AlarmExport] 네트워크 복사 완료: {}\\{}", netDir, src.getFileName());
+        } catch (Exception e) {
+            log.warn("[AlarmExport] 네트워크 복사 실패 (로컬 저장은 정상): {}", e.getMessage());
+        }
+    }
 
     private CellStyle buildHeaderStyle(Workbook wb) {
         Font f = wb.createFont();

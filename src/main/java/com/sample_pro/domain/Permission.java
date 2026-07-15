@@ -1,6 +1,7 @@
 package com.sample_pro.domain;
 
-public class Permission {
+public class Permission implements java.io.Serializable {
+	private static final long serialVersionUID = 1L;
 
 	//PERMISSION테이블(권한등록)
 	private int perm_code;

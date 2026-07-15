@@ -169,7 +169,7 @@
 <!-- ===== 추가/수정 모달 ===== -->
 <div class="modal-overlay" id="editModal">
   <div class="modal-box">
-    <div class="modal-title">🔧 <span id="modalTitleText">보항 추가</span></div>
+    <div class="modal-title">🔧 <span id="modalTitleText">설비별 정기 보전</span></div>
     <input type="hidden" id="mCalibId">
     <div class="modal-grid">
       <div class="form-field">
@@ -194,7 +194,7 @@
         <label class="form-label">보전 예정일</label>
         <input class="form-input" type="date" id="mLastCalibDt" style="width:100%" onchange="onLastCalibChange()">
       </div>
-      <div class="form-field">
+      <div class="form-field" style="display:none;">
         <label class="form-label">다음 보전 예정일</label>
         <div class="next-calib-wrap">
           <select class="form-select" id="mNextCalibSel" onchange="onNextCalibSelChange()">
@@ -403,7 +403,7 @@ function updateSummary(list) {
 function openModal(calibId) {
   curEditCalibId = calibId || 0;
   document.getElementById('mCalibId').value = calibId || '';
-  document.getElementById('modalTitleText').textContent = calibId ? '보항 수정' : '보항 추가';
+  document.getElementById('modalTitleText').textContent = '설비별 정기 보전';
 
   document.getElementById('mEquipName').value    = '';
   document.getElementById('mEquipType').value    = '탬퍼링';
@@ -466,7 +466,7 @@ function saveModal() {
     zoneLocation: document.getElementById('mZoneLocation').value.trim(),
     measLocation: document.getElementById('mMeasLocation').value.trim(),
     lastCalibDt:  document.getElementById('mLastCalibDt').value,
-    nextCalibDt:  document.getElementById('mNextCalibDt').value,
+    nextCalibDt:  '',
     handler:      document.getElementById('mHandler').value.trim(),
     status:       document.getElementById('mStatus').value,
     remark:       document.getElementById('mRemark').value.trim()

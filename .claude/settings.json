@@ -86,7 +86,34 @@
       "PowerShell(Get-Content \"D:\\\\SC_LOG\\\\20260713.log\" -Encoding UTF8 | Where-Object { $_ -match \"warn|error|Error|WARN|socket|Socket|10061|alarm|Alarm\" } | Select-Object -Last 30)",
       "PowerShell(Get-Content \"D:\\\\SC_LOG\\\\20260714.log\" -Encoding UTF8 | Where-Object { $_ -match \"ERR|error|Error|10061|INIT\" } | Select-Object -First 20)",
       "PowerShell(Get-Content \"D:\\\\SC_LOG\\\\20260714.log\" -Encoding UTF8 | Where-Object { $_ -match \"ERR|10061|warn|WARN\" } | Select-Object -Last 10)",
-      "PowerShell(Get-Content \"D:\\\\START_MOVE_END\\\\20260714.log\" -Encoding UTF8 | Where-Object { $_ -match \"START|INIT|ERR\" } | Select-Object -Last 20)"
+      "PowerShell(Get-Content \"D:\\\\START_MOVE_END\\\\20260714.log\" -Encoding UTF8 | Where-Object { $_ -match \"START|INIT|ERR\" } | Select-Object -Last 20)",
+      "PowerShell($env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; $env:JAVA_HOME = \\(Get-Command java -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source | Split-Path | Split-Path\\); & \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\shutdown.bat\")",
+      "PowerShell(Get-ChildItem \"C:\\\\Program Files\\\\Java\" -ErrorAction SilentlyContinue | Select-Object Name; Get-ChildItem \"C:\\\\Program Files\\\\Eclipse Adoptium\" -ErrorAction SilentlyContinue | Select-Object Name; \\(Get-Command java\\).Source)",
+      "PowerShell($env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; $env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; & \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\shutdown.bat\"; Start-Sleep -Seconds 5; & \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\startup.bat\")",
+      "PowerShell(Get-Command mvn.cmd -ErrorAction SilentlyContinue)",
+      "Read(//c//**)",
+      "PowerShell(Select-String -Pattern \"maven|eclipse|sts|spring\" -CaseSensitive:$false)",
+      "Read(//d//**)",
+      "PowerShell($env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; & \"D:\\\\apache-maven-3.9.15\\\\bin\\\\mvn.cmd\" -f \"d:\\\\sample_pro\\\\pom.xml\" clean package -DskipTests 2>&1 | Select-Object -Last 20)",
+      "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\target\\\\classes\\\\com\\\\sample_pro\\\\domain\\\\Users.class\" \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\classes\\\\com\\\\sample_pro\\\\domain\\\\Users.class\" -Force)",
+      "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\target\\\\classes\\\\com\\\\sample_pro\\\\domain\\\\Permission.class\" \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\classes\\\\com\\\\sample_pro\\\\domain\\\\Permission.class\" -Force)",
+      "Read(//z/08-�뱸�����/04-���/02 ����2/06-�������/**)",
+      "PowerShell($env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; D:\\\\apache-maven-3.9.15\\\\bin\\\\mvn.cmd -f \"d:\\\\sample_pro\\\\pom.xml\" clean package -DskipTests 2>&1 | Select-String -Pattern \"BUILD|ERROR|WARNING\" | Select-Object -Last 20)",
+      "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\target\\\\sample_pro\\\\WEB-INF\\\\classes\\\\com\\\\sample_pro\\\\service\\\\monitor\\\\ExcelExportService.class\" \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\classes\\\\com\\\\sample_pro\\\\service\\\\monitor\\\\\" -Force)",
+      "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\target\\\\sample_pro\\\\WEB-INF\\\\classes\\\\com\\\\sample_pro\\\\service\\\\monitor\\\\AlarmExportService.class\" \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\classes\\\\com\\\\sample_pro\\\\service\\\\monitor\\\\\" -Force)",
+      "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\target\\\\classes\\\\com\\\\sample_pro\\\\service\\\\monitor\\\\ExcelExportService.class\" \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\classes\\\\com\\\\sample_pro\\\\service\\\\monitor\\\\\" -Force)",
+      "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\target\\\\classes\\\\com\\\\sample_pro\\\\service\\\\monitor\\\\AlarmExportService.class\" \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\classes\\\\com\\\\sample_pro\\\\service\\\\monitor\\\\\" -Force)",
+      "PowerShell($env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; $env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; & \"$env:CATALINA_HOME\\\\bin\\\\shutdown.bat\" 2>&1 | Select-Object -Last 5)",
+      "PowerShell(Start-Sleep -Seconds 5; $env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; D:\\\\apache-maven-3.9.15\\\\bin\\\\mvn.cmd -f \"d:\\\\sample_pro\\\\pom.xml\" clean package -DskipTests 2>&1 | Select-String -Pattern \"BUILD|ERROR\" | Select-Object -Last 5)",
+      "PowerShell($env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; $env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; & \"$env:CATALINA_HOME\\\\bin\\\\startup.bat\" 2>&1 | Select-Object -Last 5)",
+      "PowerShell(Start-Sleep -Seconds 8; $log = Get-Content \"D:\\\\apache-tomcat-9.0.115\\\\logs\\\\catalina.out\" -Tail 5 -ErrorAction SilentlyContinue; if \\(-not $log\\) { Get-ChildItem \"D:\\\\apache-tomcat-9.0.115\\\\logs\" | Sort-Object LastWriteTime -Descending | Select-Object -First 3 | ForEach-Object { Write-Host $_.Name; Get-Content $_.FullName -Tail 3 } } else { $log })",
+      "PowerShell(Get-ChildItem \"C:\\\\PlcApiServer\" -Recurse | Where-Object { !$_.PSIsContainer } | Sort-Object LastWriteTime -Descending | Select-Object FullName, LastWriteTime | Select-Object -First 10)",
+      "PowerShell(Select-String -Path \"D:\\\\SC_LOG\\\\20260714.log\" -Pattern \"COMM|11:3[89]|12:0[12]|12:09\" | Select-Object -First 30 | ForEach-Object { $_.Line })",
+      "PowerShell(Select-String -Path \"D:\\\\SC_LOG\\\\20260714.log\" -Pattern \"BCF_06|BCF_6|192\\\\.168\\\\.1\\\\.106\" | Where-Object { $_.Line -match \"1[12]:\" } | ForEach-Object { $_.Line })"
+    ],
+    "additionalDirectories": [
+      "D:\\apache-tomcat-9.0.115\\conf",
+      "D:\\apache-tomcat-9.0.115"
     ]
   }
 }

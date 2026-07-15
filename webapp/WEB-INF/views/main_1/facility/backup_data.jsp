@@ -85,7 +85,7 @@ html, body {
 
 /* ── 트렌드 바디 ── */
 .trend-body {
-  display:grid; grid-template-columns:160px 1fr;
+  display:grid; grid-template-columns:160px 160px 1fr;
   flex:1; min-height:0; overflow:hidden;
 }
 .series-panel {
@@ -111,8 +111,62 @@ html, body {
 .series-item:hover { background:#EBF8FF; }
 .series-item input[type="checkbox"] { cursor:pointer; accent-color:#3182CE; }
 .series-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
-.chart-wrap { flex:1; min-width:0; }
-#trendChart { width:100%; height:100%; }
+/* ── 로트 패널 ── */
+.lot-panel {
+  border-right:1px solid #E2E8F0; background:#fafbfc;
+  display:flex; flex-direction:column; overflow:hidden;
+}
+.lot-panel-hd {
+  padding:7px 10px; font-size:11px; font-weight:700;
+  color:#2D3748; border-bottom:1px solid #E2E8F0;
+  background:#EDF2F7; flex-shrink:0;
+}
+.lot-search-wrap {
+  padding:5px 8px; border-bottom:1px solid #E2E8F0; flex-shrink:0;
+}
+.lot-search-wrap input {
+  width:100%; height:24px; border:1px solid #E2E8F0; border-radius:4px;
+  padding:0 6px; font-size:10px; outline:none;
+}
+.lot-search-wrap input:focus { border-color:#3182CE; }
+.lot-list { flex:1; overflow-y:auto; padding:4px 0; }
+.lot-item {
+  padding:5px 10px; font-size:10px; cursor:pointer;
+  border-bottom:1px solid #F0F4F8; line-height:1.4;
+  transition:background .1s;
+}
+.lot-item:hover { background:#EBF8FF; }
+.lot-item.active { background:#EBF8FF; border-left:3px solid #DD6B20; padding-left:7px; }
+.lot-item .lot-no { font-weight:700; color:#2B6CB0; }
+.lot-item .lot-sub { color:#718096; font-size:9px; }
+/* ── 로트 바 (trend.jsp jacup-bar 동일) ── */
+.jacup-bar {
+  background:#fff; border:1px solid #E2E8F0;
+  border-radius:10px; padding:7px 12px;
+  box-shadow:0 1px 4px rgba(0,0,0,.08);
+  display:none; flex-wrap:wrap; align-items:center; gap:6px;
+  flex-shrink:0; margin:0 0 4px 0;
+}
+.jacup-pill {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:3px 9px; border-radius:16px;
+  border:1px solid rgba(221,107,32,.4);
+  background:rgba(221,107,32,.08);
+  font-size:11px; font-weight:600; color:#7B341E;
+  cursor:pointer; transition:all .13s; user-select:none;
+}
+.jacup-pill:hover { background:rgba(221,107,32,.18); }
+.jacup-pill.hidden { opacity:.4; text-decoration:line-through; }
+.jacup-pill-dot { width:7px; height:7px; border-radius:50%; background:#DD6B20; flex-shrink:0; }
+.cht-jacup-lbl {
+  display:inline-block;
+  background:rgba(221,107,32,0.45) !important;
+  backdrop-filter:blur(2px);
+  color:#fff; font-size:11px; font-weight:700;
+  padding:2px 7px; border-radius:5px; line-height:1.5;
+}
+.chart-wrap { flex:1; min-width:0; display:flex; flex-direction:column; gap:4px; }
+#trendChart { flex:1; min-height:0; }
 
 /* ── 알람 테이블 ── */
 .table-area { flex:1; min-height:0; display:block; overflow:hidden; background:#fafbfc; }
@@ -153,6 +207,7 @@ html, body {
   <!-- ── 탭 바 ── -->
   <div class="bd-topbar">
     <span class="bd-title">&#128190; BACKUP-DATA</span>
+    <span style="font-size:11px;color:#718096;font-weight:600;">데이터 범위: 2026-07-13 까지</span>
     <div class="bd-divider"></div>
     <button class="bd-tab active" id="tab-trend" onclick="switchTab('trend')">
       <span>&#128200;</span> 트렌드
@@ -171,7 +226,7 @@ html, body {
         <div class="bd-card-header"><span>&#128200;</span> 트렌드 조회 (htms DB)</div>
         <div class="filter-row">
           <label>설비</label>
-          <select id="trend-equip">
+          <select id="trend-equip" onchange="loadTrend()">
             <option value="1">BCF1</option>
             <option value="2">BCF2</option>
             <option value="3">BCF3</option>
@@ -186,11 +241,12 @@ html, body {
             <option value="12">BCF12</option>
           </select>
           <label>시작</label>
-          <input type="datetime-local" id="trend-start" value="2026-05-29T11:30">
+          <input type="datetime-local" id="trend-start" value="2026-07-03T00:00" max="2026-07-13T23:59">
           <label>종료</label>
-          <input type="datetime-local" id="trend-end"   value="2026-06-01T11:30">
+          <input type="datetime-local" id="trend-end"   value="2026-07-13T23:59" max="2026-07-13T23:59">
           <button class="btn-primary" onclick="loadTrend()">조회</button>
           <button class="btn-excel" id="btn-png" onclick="downloadChartPng()" style="display:none">&#128247; PNG</button>
+          <button class="btn-excel" id="btn-xls" onclick="downloadChartXls()" style="display:none">&#128202; 엑셀</button>
           <span class="result-count" id="trend-count"></span>
         </div>
         <!-- 로딩 오버레이 (트렌드) -->
@@ -199,7 +255,17 @@ html, body {
           <span id="trend-loading-msg">조회 중...</span>
         </div>
         <div class="trend-body">
-          <!-- 좌: 시리즈 선택 -->
+          <!-- 좌1: 로트 검색 -->
+          <div class="lot-panel">
+            <div class="lot-panel-hd">&#128230; 로트</div>
+            <div class="lot-search-wrap">
+              <input type="text" id="lot-search" placeholder="로트번호 검색..." oninput="filterLotList()">
+            </div>
+            <div class="lot-list" id="lot-list">
+              <div style="padding:16px 10px;font-size:10px;color:#A0AEC0;">조회 후 표시</div>
+            </div>
+          </div>
+          <!-- 좌2: 시리즈 선택 -->
           <div class="series-panel">
             <div class="series-panel-hd">
               표시 항목
@@ -211,6 +277,7 @@ html, body {
           </div>
           <!-- 우: 차트 -->
           <div class="chart-wrap">
+            <div class="jacup-bar" id="lot-bar"></div>
             <div id="trendChart"></div>
           </div>
         </div>
@@ -257,6 +324,17 @@ html, body {
 
 <script>
 var CTX = '<%= ctx %>';
+
+/* BCF호기 → EQUT_CD 매핑 (trend.jsp와 동일) */
+var EQUT_MAP = {
+  '1':'2420M001','2':'2420M002','3':'2420M003','4':'2420M004',
+  '5':'2420M005','6':'2420M011','7':'2420M006','8':'2420M007',
+  '9':'2420M008','10':'2420M009','11':'2420M010','12':'2421M002'
+};
+
+var bdJacups    = [];
+var bdJacupVis  = {};
+var bdLotAll    = [];  /* 전체 로트 목록 (검색용) */
 
 /* ════════════════════════════
    공통
@@ -342,9 +420,23 @@ function setTrendLoading(on, msg) {
 }
 
 function loadTrend() {
-  var bcf  = document.getElementById('trend-equip').value;
-  var from = document.getElementById('trend-start').value.replace('T',' ') + ':00';
-  var to   = document.getElementById('trend-end').value.replace('T',' ')   + ':00';
+  var bcf      = document.getElementById('trend-equip').value;
+  var fromVal  = document.getElementById('trend-start').value;
+  var toVal    = document.getElementById('trend-end').value;
+  if (!fromVal || !toVal) return;
+
+  var diffDays = (new Date(toVal) - new Date(fromVal)) / (1000 * 60 * 60 * 24);
+
+  if (diffDays >= 14) {
+    alert('조회 기간이 너무 깁니다.\n14일 이상은 데이터가 너무 많아 조회할 수 없습니다.\n기간을 줄여주세요.');
+    return;
+  }
+  if (diffDays >= 10) {
+    if (!confirm('조회 기간이 ' + Math.ceil(diffDays) + '일입니다.\n데이터가 많아 로딩이 오래 걸릴 수 있습니다.\n계속 조회하시겠습니까?')) return;
+  }
+
+  var from = fromVal.replace('T',' ') + ':00';
+  var to   = toVal.replace('T',' ')   + ':00';
   var bcfLabel = 'BCF' + bcf;
   var cnt  = document.getElementById('trend-count');
 
@@ -376,6 +468,8 @@ function loadTrend() {
       buildSeriesPanel(rows);
       renderTrendChart();
       document.getElementById('btn-png').style.display = '';
+      document.getElementById('btn-xls').style.display = '';
+      loadBdJacup(bcf, from, to);
     })
     .catch(function(e){
       setTrendLoading(false);
@@ -519,7 +613,7 @@ function renderTrendChart() {
       name:      s.label,
       data:      data,
       color:     s.color,
-      lineWidth: 1.5,
+      lineWidth: 2.5,
       visible:   s.active,
       marker:    { enabled: false },
       yAxis:     isC3h8 ? 2 : ((isFlow || isCp) ? 1 : 0)
@@ -591,6 +685,136 @@ function renderTrendChart() {
     credits: { enabled: false },
     series: series
   });
+  setTimeout(function(){ renderLotBar(); applyBdJacupToChart(); }, 100);
+}
+
+/* ════════════════════════════
+   로트 (작업지시) 기능
+════════════════════════════ */
+var MAX_DT = '2026-07-13T23:59';
+
+function loadBdJacup(bcf, from, to) {
+  var equtCd = EQUT_MAP[bcf] || '';
+  if (!equtCd) return;
+  fetch(CTX + '/work/jacup/range?equtCd=' + encodeURIComponent(equtCd)
+      + '&from=' + encodeURIComponent(from) + '&to=' + encodeURIComponent(to))
+    .then(function(r){ return r.ok ? r.json() : []; })
+    .then(function(d){
+      bdJacups = Array.isArray(d) ? d : [];
+      bdLotAll = bdJacups.slice();
+      bdJacups.forEach(function(j){
+        if (bdJacupVis[j.WORK_INDCT_NUM] === undefined) bdJacupVis[j.WORK_INDCT_NUM] = true;
+      });
+      renderLotList('');
+      renderLotBar();
+      applyBdJacupToChart();
+    })
+    .catch(function(){ bdJacups = []; renderLotList(''); renderLotBar(); });
+}
+
+function lotVal(r, k) { return r[k] || r[k.toLowerCase()] || ''; }
+
+function fmtDtInput(ts) {
+  var d = new Date(ts);
+  return d.getFullYear() + '-'
+    + String(d.getMonth()+1).padStart(2,'0') + '-'
+    + String(d.getDate()).padStart(2,'0') + 'T'
+    + String(d.getHours()).padStart(2,'0') + ':'
+    + String(d.getMinutes()).padStart(2,'0');
+}
+
+function jumpToLot(no) {
+  var j = bdLotAll.find(function(x){ return lotVal(x,'WORK_INDCT_NUM') === no; });
+  if (!j) return;
+  var st = lotVal(j,'START_DTTM');
+  var en = lotVal(j,'END_DTTM') || st;
+  if (!st) return;
+  var PAD = 10 * 60 * 1000;
+  var from = new Date(new Date(st).getTime() - PAD);
+  var to   = new Date(new Date(en).getTime() + PAD);
+  var toStr = fmtDtInput(Math.min(to.getTime(), new Date(MAX_DT).getTime()));
+  document.getElementById('trend-start').value = fmtDtInput(from.getTime());
+  document.getElementById('trend-end').value   = toStr;
+  loadTrend();
+}
+
+function renderLotList(q) {
+  var list = document.getElementById('lot-list');
+  var items = bdLotAll.filter(function(j){
+    if (!q) return true;
+    var no = lotVal(j,'WORK_INDCT_NUM'), cu = lotVal(j,'CUST_COMP_NM'), pr = lotVal(j,'PROD_MM');
+    return (no+cu+pr).toLowerCase().indexOf(q.toLowerCase()) !== -1;
+  });
+  if (!items.length) {
+    list.innerHTML = '<div style="padding:16px 10px;font-size:10px;color:#A0AEC0;">'+(bdLotAll.length?'검색 결과 없음':'로트 없음')+'</div>';
+    return;
+  }
+  var html = '';
+  items.forEach(function(j){
+    var no = lotVal(j,'WORK_INDCT_NUM');
+    var cu = lotVal(j,'CUST_COMP_NM') || '-';
+    var pr = lotVal(j,'PROD_MM') || '-';
+    var st = (lotVal(j,'START_DTTM')||'').slice(0,16);
+    html += '<div class="lot-item" onclick="jumpToLot(\'' + no + '\')">'
+          + '<div class="lot-no">' + no + '</div>'
+          + '<div class="lot-sub">' + cu + '</div>'
+          + '<div class="lot-sub">' + pr + '</div>'
+          + '<div class="lot-sub">' + st + '</div>'
+          + '</div>';
+  });
+  list.innerHTML = html;
+}
+
+function filterLotList() {
+  renderLotList(document.getElementById('lot-search').value);
+}
+
+function toggleBdLot(no) {
+  bdJacupVis[no] = (bdJacupVis[no] === false) ? true : false;
+  renderLotBar();
+  applyBdJacupToChart();
+}
+
+function renderLotBar() {
+  var bar = document.getElementById('lot-bar');
+  if (!bdJacups.length) { bar.style.display = 'none'; return; }
+  bar.style.display = 'flex';
+  var html = '<span style="font-size:11px;font-weight:700;color:#DD6B20;flex-shrink:0;margin-right:2px">작업지시</span>';
+  bdJacups.forEach(function(j){
+    var no  = lotVal(j,'WORK_INDCT_NUM');
+    var vis = bdJacupVis[no] !== false;
+    html += '<span class="jacup-pill' + (vis ? '' : ' hidden') + '" onclick="toggleBdLot(\'' + no + '\')">'
+          + '<span class="jacup-pill-dot"></span>' + no + '</span>';
+  });
+  bar.innerHTML = html;
+}
+
+function applyBdJacupToChart() {
+  if (!trendChart) return;
+  var axis = trendChart.xAxis[0];
+  (axis.plotLinesAndBands || []).slice().forEach(function(b){
+    if (b.id && String(b.id).indexOf('bd-jacup-') === 0) axis.removePlotLine(b.id);
+  });
+  bdJacups.forEach(function(j){
+    var no  = lotVal(j,'WORK_INDCT_NUM');
+    if (bdJacupVis[no] === false) return;
+    var ts  = new Date(lotVal(j,'START_DTTM')).getTime();
+    if (isNaN(ts)) return;
+    var cu  = lotVal(j,'CUST_COMP_NM'); var pr = lotVal(j,'PROD_MM');
+    axis.addPlotLine({
+      id: 'bd-jacup-' + no,
+      value: ts, color: '#DD6B20', width: 1.5, dashStyle: 'ShortDash', zIndex: 5,
+      label: {
+        useHTML: true,
+        text: '<span class="cht-jacup-lbl">'
+            + (cu ? '&#127968; ' + cu + '<br>' : '')
+            + (pr ? '<span style="font-size:11px;font-weight:500">' + pr + '</span><br>' : '')
+            + '<span style="font-size:10px;font-weight:600;opacity:.82">' + no + '</span>'
+            + '</span>',
+        rotation: 0, align: 'left', x: 3, y: 14
+      }
+    });
+  });
 }
 
 /* ── PNG 다운로드 ── */
@@ -617,6 +841,53 @@ function downloadChartPng() {
     a.click();
   };
   img.src = url;
+}
+
+/* ── 엑셀 다운로드 ── */
+function downloadChartXls() {
+  if (!trendChart) { alert('먼저 차트를 조회하세요'); return; }
+  var series = trendChart.series.filter(function(s){ return s.visible && s.data.length; });
+  if (!series.length) { alert('표시 중인 데이터가 없습니다'); return; }
+
+  var bcf  = 'BCF' + document.getElementById('trend-equip').value;
+  var from = document.getElementById('trend-start').value.slice(0,16).replace('T',' ');
+
+  // 시간 목록 수집 (전체 series 합집합, 정렬)
+  var timeSet = {};
+  series.forEach(function(s){ s.data.forEach(function(p){ timeSet[p.x] = true; }); });
+  var times = Object.keys(timeSet).map(Number).sort(function(a,b){ return a-b; });
+
+  // 헤더
+  var header = ['시간'].concat(series.map(function(s){ return s.name; }));
+
+  // 각 시간별 행 구성
+  var rows = times.map(function(ts) {
+    var dt = new Date(ts);
+    var ymd = dt.getFullYear() + '-'
+      + String(dt.getMonth()+1).padStart(2,'0') + '-'
+      + String(dt.getDate()).padStart(2,'0') + ' '
+      + String(dt.getHours()).padStart(2,'0') + ':'
+      + String(dt.getMinutes()).padStart(2,'0') + ':'
+      + String(dt.getSeconds()).padStart(2,'0');
+    var row = [ymd];
+    series.forEach(function(s) {
+      var pt = s.data.find(function(p){ return p.x === ts; });
+      row.push(pt ? (pt.y !== null && pt.y !== undefined ? pt.y : '') : '');
+    });
+    return row;
+  });
+
+  // CSV → BOM + UTF-8
+  var csv = '﻿' + [header].concat(rows).map(function(r){
+    return r.map(function(v){ return '"' + String(v).replace(/"/g,'""') + '"'; }).join(',');
+  }).join('\r\n');
+
+  var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  var a = document.createElement('a');
+  a.download = 'trend_' + bcf + '_' + from.replace(/[: ]/g,'-') + '.csv';
+  a.href = URL.createObjectURL(blob);
+  a.click();
+  URL.revokeObjectURL(a.href);
 }
 
 /* ════════════════════════════

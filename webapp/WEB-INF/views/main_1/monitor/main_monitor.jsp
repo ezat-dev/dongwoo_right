@@ -299,11 +299,11 @@
     <div class="bcf-10-conn" style="position:absolute;left:1356.88px;top:645.22px;"></div>
     <div class="bcf-5-conn"  style="position:absolute;left:1606.72px;top:645.22px;"></div>
     <!-- tray-2/belt DT(40004) 표시: bcfX_51(또는 53)=1일 때 conn 위에 표시 -->
-    <div class="bcf-belt-dt bcf-1-belt-dt  bcf1_s_40004"></div>
+    <div class="bcf-belt-dt bcf-1-belt-dt  bcf1_s_40002"></div>
     <div class="bcf-belt-dt bcf-2-belt-dt  bcf2_s_40004"></div>
-    <div class="bcf-belt-dt bcf-3-belt-dt  bcf3_s_40004"></div>
+    <div class="bcf-belt-dt bcf-3-belt-dt  bcf3_s_40002"></div>
     <div class="bcf-belt-dt bcf-4-belt-dt  bcf4_s_40004"></div>
-    <div class="bcf-belt-dt bcf-10-belt-dt bcf10_s_40004"></div>
+    <div class="bcf-belt-dt bcf-10-belt-dt bcf10_s_40002"></div>
     <div class="bcf-belt-dt bcf-5-belt-dt  bcf5_s_40002"></div>
 
     <div class="over-view-1">
@@ -528,7 +528,7 @@
         <img class="bcf-5-tray-1 bcf5_53" src="<%= ctx %>/img/main_monitor_1/bcf-5-tray-10.png" />
         <div class="back-5"></div>
         <div class="bcf-5-open-1 bcf5_8">열림</div>
-        <div class="bcf-5-close-1">닫힘</div>
+        <%-- <div class="bcf-5-close-1">닫힘</div> --%>
         <div class="bcf-5-open-2 bcf5_2">열림</div>
         <div class="bcf-5-close-2">닫힘</div>
         <div class="bcf-5-open-3">열림</div>

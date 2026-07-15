@@ -28,8 +28,11 @@ public class ExcelExportService {
 
     private static final Logger log = LoggerFactory.getLogger(ExcelExportService.class);
 
-    private static final String DAILY_DIR = "D:\\DATA_BACKUP\\설비별 온도";
-    private static final String LOT_DIR   = "D:\\DATA_BACKUP\\LOT별 온도";
+    private static final String DAILY_DIR     = "D:\\DATA_BACKUP\\설비별 온도";
+    private static final String LOT_DIR       = "D:\\DATA_BACKUP\\LOT별 온도";
+
+    private static final String DAILY_DIR_NET = "Z:\\08-대구사업장\\04-대생\\02 레벨2\\06-설비관리\\통합모니터링 데이터 백업\\설비별 온도";
+    private static final String LOT_DIR_NET   = "Z:\\08-대구사업장\\04-대생\\02 레벨2\\06-설비관리\\통합모니터링 데이터 백업\\LOT별 온도";
 
     private static final DateTimeFormatter FMT_DATE = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter FMT_DTTM = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -132,6 +135,7 @@ public class ExcelExportService {
                 wb.write(fos);
             }
             log.info("[ExcelExport] 설비별 저장 완료: {}", file);
+            copyToNetwork(file, DAILY_DIR_NET);
         }
     }
 
@@ -215,6 +219,8 @@ public class ExcelExportService {
                 wb.write(fos);
             }
             log.info("[ExcelExport] 로트 저장: {}", file);
+            String dateFolder = startS.length() >= 10 ? startS.substring(0, 10) : LocalDate.now().minusDays(1).format(FMT_DATE);
+            copyToNetwork(file, LOT_DIR_NET + "\\" + dateFolder);
         }
     }
 
@@ -495,5 +501,16 @@ public class ExcelExportService {
 
     private static String sanitize(String name) {
         return name.replaceAll("[\\\\/:*?\"<>|]", "_");
+    }
+
+    private void copyToNetwork(Path src, String netDir) {
+        try {
+            Path dest = Paths.get(netDir, src.getFileName().toString());
+            Files.createDirectories(Paths.get(netDir));
+            Files.copy(src, dest, StandardCopyOption.REPLACE_EXISTING);
+            log.info("[ExcelExport] 네트워크 복사 완료: {}", dest);
+        } catch (Exception e) {
+            log.warn("[ExcelExport] 네트워크 복사 실패 (로컬 저장은 정상): {}", e.getMessage());
+        }
     }
 }
