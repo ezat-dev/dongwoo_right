@@ -423,7 +423,7 @@
         <img class="bcf-3-box-on-4" src="<%= ctx %>/img/main_monitor_1/bcf-3-box-on-40.png" />
         <img class="bcf-3-box-off-4" src="<%= ctx %>/img/main_monitor_1/bcf-3-box-off-40.png" />
         <img class="bcf-3-tray-2 bcf3_51" src="<%= ctx %>/img/main_monitor_1/bcf-3-tray-20.png" />
-        <img class="bcf-3-tray-1 bcf3_97" src="<%= ctx %>/img/main_monitor_1/bcf-3-tray-10.png" />
+        <img class="bcf-3-tray-1 bcf3_50" src="<%= ctx %>/img/main_monitor_1/bcf-3-tray-10.png" />
         <div class="back-3"></div>
         <div class="bcf-3-open-1 bcf3_8">열림</div>
         <div class="bcf-3-close-1">닫힘</div>
@@ -950,7 +950,7 @@
       var trayDtMap = [
         { tray: 'bcf1_50',  dt: '.bcf-1-dt'  },
         { tray: 'bcf2_50',  dt: '.bcf-2-dt'  },
-        { tray: 'bcf3_97',  dt: '.bcf-3-dt'  },
+        { tray: 'bcf3_50',  dt: '.bcf-3-dt'  },
         { tray: 'bcf4_50',  dt: '.bcf-4-dt'  },
         { tray: 'bcf5_53',  dt: '.bcf-5-dt'  },
         { tray: 'bcf10_53', dt: '.bcf-10-dt' },

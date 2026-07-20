@@ -109,7 +109,11 @@
       "PowerShell(Start-Sleep -Seconds 8; $log = Get-Content \"D:\\\\apache-tomcat-9.0.115\\\\logs\\\\catalina.out\" -Tail 5 -ErrorAction SilentlyContinue; if \\(-not $log\\) { Get-ChildItem \"D:\\\\apache-tomcat-9.0.115\\\\logs\" | Sort-Object LastWriteTime -Descending | Select-Object -First 3 | ForEach-Object { Write-Host $_.Name; Get-Content $_.FullName -Tail 3 } } else { $log })",
       "PowerShell(Get-ChildItem \"C:\\\\PlcApiServer\" -Recurse | Where-Object { !$_.PSIsContainer } | Sort-Object LastWriteTime -Descending | Select-Object FullName, LastWriteTime | Select-Object -First 10)",
       "PowerShell(Select-String -Path \"D:\\\\SC_LOG\\\\20260714.log\" -Pattern \"COMM|11:3[89]|12:0[12]|12:09\" | Select-Object -First 30 | ForEach-Object { $_.Line })",
-      "PowerShell(Select-String -Path \"D:\\\\SC_LOG\\\\20260714.log\" -Pattern \"BCF_06|BCF_6|192\\\\.168\\\\.1\\\\.106\" | Where-Object { $_.Line -match \"1[12]:\" } | ForEach-Object { $_.Line })"
+      "PowerShell(Select-String -Path \"D:\\\\SC_LOG\\\\20260714.log\" -Pattern \"BCF_06|BCF_6|192\\\\.168\\\\.1\\\\.106\" | Where-Object { $_.Line -match \"1[12]:\" } | ForEach-Object { $_.Line })",
+      "PowerShell($env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; D:\\\\apache-maven-3.9.15\\\\bin\\\\mvn.cmd -f \"d:\\\\sample_pro\\\\pom.xml\" clean package -DskipTests 2>&1 | Select-String \"BUILD|ERROR\" | Select-Object -Last 3)",
+      "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\target\\\\classes\\\\com\\\\sample_pro\\\\service\\\\monitor\\\\MonitorCacheService.class\" \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\classes\\\\com\\\\sample_pro\\\\service\\\\monitor\\\\\" -Force)",
+      "PowerShell($env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; $env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; & \"$env:CATALINA_HOME\\\\bin\\\\shutdown.bat\")",
+      "PowerShell(Start-Sleep -Seconds 5; $env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; $env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; & \"$env:CATALINA_HOME\\\\bin\\\\startup.bat\")"
     ],
     "additionalDirectories": [
       "D:\\apache-tomcat-9.0.115\\conf",
