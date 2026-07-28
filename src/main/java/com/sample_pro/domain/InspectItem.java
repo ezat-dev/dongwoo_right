@@ -9,6 +9,7 @@ public class InspectItem {
     private String applyFromYm;
     private String delFromYm;
     private String imgFile;
+    private String inputType;   // NUM(기본) 또는 OX
 
     public int    getItemId()       { return itemId; }
     public String getEquipId()      { return equipId; }
@@ -18,6 +19,7 @@ public class InspectItem {
     public String getApplyFromYm()  { return applyFromYm; }
     public String getDelFromYm()    { return delFromYm; }
     public String getImgFile()      { return imgFile; }
+    public String getInputType()    { return inputType; }
 
     public void setItemId(int itemId)           { this.itemId = itemId; }
     public void setEquipId(String equipId)       { this.equipId = equipId; }
@@ -27,4 +29,5 @@ public class InspectItem {
     public void setApplyFromYm(String v)         { this.applyFromYm = v; }
     public void setDelFromYm(String v)           { this.delFromYm = v; }
     public void setImgFile(String v)             { this.imgFile = v; }
+    public void setInputType(String v)           { this.inputType = v; }
 }

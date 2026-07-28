@@ -62,6 +62,25 @@
   background:none; cursor:pointer; }
 .eib-edit:hover { border-color:var(--primary); color:var(--primary); }
 .eib-del:hover  { border-color:var(--red); color:var(--red); background:var(--red-l); }
+.eib-type       { border-color:#7C3AED; color:#7C3AED; }
+.eib-type:hover { background:#EDE9FE; }
+.eib-type.active{ background:#7C3AED !important; color:#fff !important; }
+
+/* OX 행 강조 */
+.row-ox td            { background:#EDE9FE !important; }
+.row-ox td.item-name  { background:#EDE9FE !important; }
+.row-ox td.today-col  { background:#D9D3FC !important; }
+
+/* OX 드롭다운 */
+.ox-select {
+  width:100%; height:34px; border:none; background:transparent;
+  text-align:center; font-size:13px; font-weight:700;
+  color:var(--text); outline:none; cursor:pointer;
+  -webkit-appearance:none; appearance:none;
+}
+.ox-select:focus { background:#DDD6FE; border-radius:3px; }
+.ox-select.has-o { background:#D1FAE5 !important; color:#065F46 !important; }
+.ox-select.has-x { background:#FEE2E2 !important; color:#991B1B !important; }
 
 .action-row { display:flex; gap:8px; flex-wrap:wrap; margin-top:14px; align-items:center; }
 .status-badge { font-size:11px; padding:2px 8px; border-radius:10px; font-weight:600; }
@@ -133,7 +152,7 @@
     </div>
     <div class="form-field">
       <label class="form-label">설비</label>
-      <select class="form-select" id="selEquip" style="width:140px">
+      <select class="form-select" id="selEquip" style="width:140px" onchange="loadData()">
         <option>BCF_1</option><option>BCF_2</option><option>BCF_3</option>
         <option>BCF_4</option><option>BCF_5</option><option>BCF_6</option>
         <option>BCF_7</option><option>BCF_8</option><option>BCF_9</option>
@@ -162,6 +181,14 @@
         <input class="form-input" type="text" id="confirmer" placeholder="성명 입력" style="width:110px"
                onchange="autoSaveHeader()">
       </div>
+      <span style="display:inline-flex;align-items:center;gap:10px;font-size:11px;color:var(--muted);margin-left:4px">
+        <span style="display:inline-flex;align-items:center;gap:4px">
+          <span style="width:12px;height:12px;background:#EDE9FE;border:1px solid #C4B5FD;border-radius:2px;display:inline-block;flex-shrink:0"></span>수치값 입력
+        </span>
+        <span style="display:inline-flex;align-items:center;gap:4px">
+          <span style="width:12px;height:12px;background:var(--bg);border:1px solid var(--border);border-radius:2px;display:inline-block;flex-shrink:0"></span>O/X 입력
+        </span>
+      </span>
       <span id="statusBadge" class="status-badge status-TEMP" style="margin-left:auto">임시저장</span>
     </div>
 
@@ -216,12 +243,13 @@
 </div>
 
 <script>
-var base     = '${pageContext.request.contextPath}';
-var editMode = false;
-var curData  = null;
-var selYm    = '';
-var selEquip = '';
-var today    = new Date();
+var base         = '${pageContext.request.contextPath}';
+var editMode     = false;
+var curData      = null;
+var selYm        = '';
+var selEquip     = '';
+var today        = new Date();
+var inputTypeMap = {};
 
 (function(){
   var d = new Date();
@@ -290,8 +318,14 @@ function renderMatrix(d){
     return;
   }
 
+  // 서버 데이터로 inputTypeMap 갱신
+  items.forEach(function(item){
+    inputTypeMap[item.itemId] = item.inputType || 'NUM';
+  });
+
   var html = '';
   items.forEach(function(item){
+    var isOX    = inputTypeMap[item.itemId] === 'OX';
     var results = item.results || {};
     var imgCell = '';
     if(item.imgFile){
@@ -301,12 +335,13 @@ function renderMatrix(d){
     }
     imgCell += '<button class="img-upload-btn" onclick="openImgUpload(' + item.itemId + ')">＋</button>';
 
-    html += '<tr>'
+    html += '<tr' + (!isOX ? ' class="row-ox"' : '') + '>'
       + '<td class="item-name">'
       +   '<span>' + esc(item.itemName) + '</span>'
       +   '<div class="edit-item-btns' + (editMode?' show':'') + '" id="eib_' + item.itemId + '">'
       +     '<button class="eib eib-edit" onclick="openItemModal(' + item.itemId + ')">수정</button>'
       +     '<button class="eib eib-del"  onclick="delItem(' + item.itemId + ')">삭제</button>'
+      +     '<button class="eib eib-type' + (!isOX?' active':'') + '" id="eib_type_' + item.itemId + '" onclick="toggleInputType(' + item.itemId + ')">' + (isOX ? '수치값' : 'O/X') + '</button>'
       +   '</div>'
       + '</td>'
       + '<td class="item-std">' + esc(item.itemStd || '') + '</td>'
@@ -326,6 +361,19 @@ function renderMatrix(d){
 }
 
 function mkCell(itemId, day, shift, val, extraCls){
+  if (inputTypeMap[itemId] === 'OX') {
+    var oxVal  = (val === 'O' || val === 'X') ? val : '';
+    var selCls = 'ox-select' + (oxVal==='O' ? ' has-o' : oxVal==='X' ? ' has-x' : '');
+    return '<td class="sh-cell' + extraCls + '">'
+      + '<select class="' + selCls + '"'
+      + ' data-item="' + itemId + '" data-day="' + day + '" data-shift="' + shift + '"'
+      + ' onchange="saveCell(this)">'
+      + '<option value="">—</option>'
+      + '<option value="O"' + (oxVal==='O'?' selected':'') + '>O</option>'
+      + '<option value="X"' + (oxVal==='X'?' selected':'') + '>X</option>'
+      + '</select>'
+      + '</td>';
+  }
   var disp    = (val === 99 || val === '99') ? '√' : (val !== '' && val != null ? String(val) : '');
   var hasCls  = disp !== '' ? ' has-val' : '';
   var chkCls  = disp === '√' ? ' is-check' : '';
@@ -352,17 +400,22 @@ function onInspInput(input){
     input.classList.toggle('has-val', v !== '');
   }
 }
-function saveCell(input){
-  /* 포커스 떠날 때 99 → √ 변환 보장 */
-  if(input.value === '99'){ input.value='√'; input.classList.add('is-check','has-val'); }
-  var rawVal = input.value === '√' ? '99' : input.value;
+function saveCell(el){
+  var rawVal;
+  if (el.tagName === 'SELECT') {
+    rawVal = el.value;
+    el.className = 'ox-select' + (el.value==='O' ? ' has-o' : el.value==='X' ? ' has-x' : '');
+  } else {
+    if(el.value === '99'){ el.value='√'; el.classList.add('is-check','has-val'); }
+    rawVal = el.value === '√' ? '99' : el.value;
+  }
   fetch(base + '/inspect/result/cell', {
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({
       equipId: selEquip, ym: selYm,
-      day:     parseInt(input.dataset.day),
-      itemId:  parseInt(input.dataset.item),
-      shift:   input.dataset.shift,
+      day:     parseInt(el.dataset.day),
+      itemId:  parseInt(el.dataset.item),
+      shift:   el.dataset.shift,
       val:     rawVal
     })
   }).then(function(r){ return r.json(); })
@@ -396,6 +449,28 @@ function autoSaveHeader(){
       status: 'TEMP'
     })
   });
+}
+
+function toggleInputType(itemId) {
+  var cur  = inputTypeMap[itemId] || 'NUM';
+  var next = (cur === 'OX') ? 'NUM' : 'OX';
+  fetch(base + '/inspect/item/inputtype', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({itemId: itemId, inputType: next})
+  }).then(function(r){ return r.json(); })
+    .then(function(d){
+      if (d.success) {
+        /* curData도 갱신해야 renderMatrix 내부의 inputTypeMap 덮어쓰기를 막음 */
+        if (curData && curData.items) {
+          curData.items.forEach(function(it) {
+            if (it.itemId == itemId) it.inputType = next;
+          });
+        }
+        renderMatrix(curData);
+      } else {
+        alert(d.error || '저장 실패');
+      }
+    });
 }
 
 function toggleEditMode(){

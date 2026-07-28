@@ -16,6 +16,7 @@ public interface InspectDao {
     void insertItem(InspectItem item);
     void updateItem(InspectItem item);
     void updateItemDel(InspectItem item);
+    void updateItemInputType(int itemId, String inputType);
     void deleteItem(int itemId);
 
     void upsertHeader(InspectHeader header);

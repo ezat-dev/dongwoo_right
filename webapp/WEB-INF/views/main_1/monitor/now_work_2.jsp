@@ -291,7 +291,7 @@
           tr.querySelector('[data-col="lot"]').textContent  = item.lotNo  || '';
         });
       })
-      .catch(function(e) { console.error('nowWork fetch error', e); });
+      .catch(function(e) { /* console.error('nowWork fetch error', e); */ });
   }
 
   fit();
@@ -338,17 +338,17 @@
         td.classList.toggle('active', isActive);
       });
 
-      var ts    = new Date().toLocaleTimeString('ko-KR', {hour12: false});
-      var lines = ['[NowWork2 ' + ts + '] 공정현황 비트 상태'];
-      Object.keys(equipMap).forEach(function(k) {
-        lines.push('  ' + k + ' │ ' + equipMap[k].join('  '));
-      });
-      if (changed.length) {
-        lines.push('  ▶ 변경 ' + changed.length + '건: ' + changed.join(' / '));
-      }
-      console.log(lines.join('\n'));
+      // var ts    = new Date().toLocaleTimeString('ko-KR', {hour12: false});
+      // var lines = ['[NowWork2 ' + ts + '] 공정현황 비트 상태'];
+      // Object.keys(equipMap).forEach(function(k) {
+      //   lines.push('  ' + k + ' │ ' + equipMap[k].join('  '));
+      // });
+      // if (changed.length) {
+      //   lines.push('  ▶ 변경 ' + changed.length + '건: ' + changed.join(' / '));
+      // }
+      // console.log(lines.join('\n'));
     })
-    .catch(function(e) { console.warn('[NowWork2] 스냅샷 fetch 실패:', e); })
+    .catch(function(e) { /* console.warn('[NowWork2] 스냅샷 fetch 실패:', e); */ })
     .finally(function() { plcBusy = false; });
   }
 

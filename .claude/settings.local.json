@@ -142,7 +142,20 @@
       "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\views\\\\main_1\\\\main.jsp\" \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\views\\\\main_1\\\\main.jsp\" -Force)",
       "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\views\\\\main_1\\\\facility\\\\backup_data.jsp\" \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\views\\\\main_1\\\\facility\\\\backup_data.jsp\" -Force)",
       "Bash(xargs grep -l \"cols\\\\|trendName\\\\|tagName\\\\|colName\")",
-      "Bash(xargs grep -l \"TREND_NAME\\\\|TAG_NAME\\\\|COL_NAME\\\\|temp_tag\\\\|TEMP_TAG\")"
+      "Bash(xargs grep -l \"TREND_NAME\\\\|TAG_NAME\\\\|COL_NAME\\\\|temp_tag\\\\|TEMP_TAG\")",
+      "PowerShell(Get-Process -Name \"java\" -ErrorAction SilentlyContinue | Where-Object { $_.MainWindowTitle -eq \"\" } | Select-Object Id, CPU, WorkingSet)",
+      "PowerShell(Get-Process -Name \"java\" -ErrorAction SilentlyContinue | ForEach-Object { $id = $_.Id; $cmd = \\(Get-WmiObject Win32_Process -Filter \"ProcessId=$id\"\\).CommandLine; [PSCustomObject]@{Id=$id; CMD=$cmd} } | Select-Object Id, @{N='CMD';E={$_.CMD.Substring\\(0,[Math]::Min\\(120,$_.CMD.Length\\)\\)}})",
+      "PowerShell(& \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\shutdown.bat\"; Start-Sleep -Seconds 5; Get-Process -Name \"java\" -ErrorAction SilentlyContinue | Where-Object { $_.Id -eq 35016 } | Select-Object Id)",
+      "PowerShell($env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; & \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\shutdown.bat\"; Start-Sleep -Seconds 8; Get-Process -Name \"java\" -ErrorAction SilentlyContinue | Where-Object { $_.Id -eq 35016 } | Select-Object Id)",
+      "PowerShell($env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; $env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; & \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\shutdown.bat\"; Start-Sleep -Seconds 10; Get-Process -Name \"java\" -ErrorAction SilentlyContinue | Where-Object { $_.Id -eq 35016 } | Select-Object Id)",
+      "PowerShell(\"WAR ���� �Ϸ�\")",
+      "PowerShell($env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; $env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; & \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\startup.bat\")",
+      "PowerShell(Start-Sleep -Seconds 12; Get-Process -Name \"java\" -ErrorAction SilentlyContinue | Where-Object { $_.WorkingSet -gt 100MB } | Select-Object Id, @{N='MB';E={[Math]::Round\\($_.WorkingSet/1MB\\)}})",
+      "PowerShell($env:CATALINA_HOME=\"D:\\\\apache-tomcat-9.0.115\"; $env:JAVA_HOME=\"C:\\\\Program Files\\\\Java\\\\jdk-11\"; & \"$env:CATALINA_HOME\\\\bin\\\\shutdown.bat\" 2>&1 | Select-Object -Last 3; Start-Sleep -Seconds 4; & \"$env:CATALINA_HOME\\\\bin\\\\startup.bat\" 2>&1 | Select-Object -Last 3)",
+      "PowerShell($env:CATALINA_HOME=\"D:\\\\apache-tomcat-9.0.115\"; $env:JAVA_HOME=\"C:\\\\Program Files\\\\Java\\\\jdk-11\"; Start-Process -FilePath \"$env:CATALINA_HOME\\\\bin\\\\startup.bat\" -NoNewWindow; Write-Host \"Tomcat starting\")",
+      "PowerShell(Get-Process java | ForEach-Object { $id = $_.Id; $cmd = \\(Get-WmiObject Win32_Process -Filter \"ProcessId=$id\"\\).CommandLine; [PSCustomObject]@{PID=$id; Cmd=$cmd} } | Format-List)",
+      "PowerShell(Stop-Process -Id 41172 -Force -Confirm:$false)",
+      "PowerShell($env:CATALINA_HOME=\"D:\\\\apache-tomcat-9.0.115\"; $env:JAVA_HOME=\"C:\\\\Program Files\\\\Java\\\\jdk-11\"; Start-Process -FilePath \"$env:CATALINA_HOME\\\\bin\\\\startup.bat\" -NoNewWindow -Wait; Write-Host \"Startup issued\")"
     ],
     "additionalDirectories": [
       "D:\\apache-tomcat-9.0.115\\webapps",

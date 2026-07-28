@@ -14,10 +14,11 @@
         <result property="applyFromYm" column="apply_from_ym"/>
         <result property="delFromYm"   column="del_from_ym"/>
         <result property="imgFile"     column="img_file"/>
+        <result property="inputType"   column="input_type"/>
     </resultMap>
 
     <select id="selectItems" parameterType="map" resultMap="itemMap">
-        SELECT item_id, equip_id, item_name, item_std, sort_order, apply_from_ym, del_from_ym, img_file
+        SELECT item_id, equip_id, item_name, item_std, sort_order, apply_from_ym, del_from_ym, img_file, input_type
         FROM tb_inspect_item
         WHERE equip_id = #{equipId}
           AND apply_from_ym &lt;= #{ym}
@@ -26,19 +27,23 @@
     </select>
 
     <select id="selectItemById" parameterType="int" resultMap="itemMap">
-        SELECT item_id, equip_id, item_name, item_std, sort_order, apply_from_ym, del_from_ym, img_file
+        SELECT item_id, equip_id, item_name, item_std, sort_order, apply_from_ym, del_from_ym, img_file, input_type
         FROM tb_inspect_item WHERE item_id = #{itemId}
     </select>
 
     <insert id="insertItem" parameterType="com.sample_pro.domain.InspectItem">
-        INSERT INTO tb_inspect_item (equip_id, item_name, item_std, sort_order, apply_from_ym)
-        VALUES (#{equipId}, #{itemName}, #{itemStd}, #{sortOrder}, #{applyFromYm})
+        INSERT INTO tb_inspect_item (equip_id, item_name, item_std, sort_order, apply_from_ym, input_type)
+        VALUES (#{equipId}, #{itemName}, #{itemStd}, #{sortOrder}, #{applyFromYm}, #{inputType})
     </insert>
 
     <update id="updateItem" parameterType="com.sample_pro.domain.InspectItem">
         UPDATE tb_inspect_item
         SET item_name=#{itemName}, item_std=#{itemStd}, sort_order=#{sortOrder}
         WHERE item_id=#{itemId}
+    </update>
+
+    <update id="updateItemInputType" parameterType="map">
+        UPDATE tb_inspect_item SET input_type=#{inputType} WHERE item_id=#{itemId}
     </update>
 
     <update id="updateItemImg" parameterType="map">

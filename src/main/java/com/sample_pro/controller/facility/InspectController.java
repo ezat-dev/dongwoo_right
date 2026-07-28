@@ -53,6 +53,18 @@ public class InspectController {
         catch (Exception e) { return ResponseEntity.ok(err("항목 수정 실패: " + e.getMessage())); }
     }
 
+    @RequestMapping(value = "/item/inputtype", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<?> itemInputType(@RequestBody Map<String, Object> body) {
+        try {
+            int itemId = Integer.parseInt(body.get("itemId").toString());
+            String inputType = body.getOrDefault("inputType", "NUM").toString();
+            inspectService.updateItemInputType(itemId, inputType);
+            return ResponseEntity.ok(ok());
+        } catch (Exception e) { return ResponseEntity.ok(err("저장 실패: " + e.getMessage())); }
+    }
+
     @RequestMapping(value = "/item/delete", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody

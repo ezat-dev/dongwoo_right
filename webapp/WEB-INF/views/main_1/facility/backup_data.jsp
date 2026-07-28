@@ -306,9 +306,9 @@ html, body {
             <option value="2048">BCF12</option>
           </select>
           <label>시작일</label>
-          <input type="date" id="alarm-start" value="2026-01-01">
+          <input type="date" id="alarm-start" value="2026-07-11">
           <label>종료일</label>
-          <input type="date" id="alarm-end"   value="2026-06-01">
+          <input type="date" id="alarm-end"   value="2026-07-13">
           <button class="btn-alarm" onclick="loadAlarms()">조회</button>
           <button class="btn-excel" onclick="exportExcel()">&#128190; 엑셀</button>
           <span class="result-count" id="alarm-count"></span>
@@ -968,16 +968,11 @@ function exportExcel() {
    페이지 로드 시 자동 조회
 ════════════════════════════ */
 document.addEventListener('DOMContentLoaded', function() {
-  var now  = new Date();
-  var past = new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000);
+  document.getElementById('trend-end').value   = '2026-07-13T23:59';
+  document.getElementById('trend-start').value = '2026-07-12T12:00';
 
-  document.getElementById('trend-end').value   = fmtDt(now);
-  document.getElementById('trend-start').value = fmtDt(past);
-
-  var ymd = now.getFullYear() + '-'
-          + String(now.getMonth()+1).padStart(2,'0') + '-'
-          + String(now.getDate()).padStart(2,'0');
-  document.getElementById('alarm-end').value = ymd;
+  document.getElementById('alarm-end').value   = '2026-07-13';
+  document.getElementById('alarm-start').value = '2026-07-11';
 
   loadTrend();
 });

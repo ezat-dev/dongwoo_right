@@ -67,6 +67,14 @@ public class InspectDaoImpl implements InspectDao {
     }
 
     @Override
+    public void updateItemInputType(int itemId, String inputType) {
+        Map<String, Object> p = new java.util.HashMap<>();
+        p.put("itemId", itemId);
+        p.put("inputType", inputType);
+        sqlSession.update("InspectMapper.updateItemInputType", p);
+    }
+
+    @Override
     public void updateItemImg(int itemId, String imgFile) {
         Map<String, Object> p = new java.util.HashMap<>();
         p.put("itemId", itemId);

@@ -113,11 +113,28 @@
       "PowerShell($env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; D:\\\\apache-maven-3.9.15\\\\bin\\\\mvn.cmd -f \"d:\\\\sample_pro\\\\pom.xml\" clean package -DskipTests 2>&1 | Select-String \"BUILD|ERROR\" | Select-Object -Last 3)",
       "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\target\\\\classes\\\\com\\\\sample_pro\\\\service\\\\monitor\\\\MonitorCacheService.class\" \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\classes\\\\com\\\\sample_pro\\\\service\\\\monitor\\\\\" -Force)",
       "PowerShell($env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; $env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; & \"$env:CATALINA_HOME\\\\bin\\\\shutdown.bat\")",
-      "PowerShell(Start-Sleep -Seconds 5; $env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; $env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; & \"$env:CATALINA_HOME\\\\bin\\\\startup.bat\")"
+      "PowerShell(Start-Sleep -Seconds 5; $env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; $env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; & \"$env:CATALINA_HOME\\\\bin\\\\startup.bat\")",
+      "PowerShell($env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; $env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; & \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\shutdown.bat\")",
+      "PowerShell(Start-Sleep -Seconds 4; Get-Process -Name \"java\" -ErrorAction SilentlyContinue | Select-Object Id; $env:CATALINA_HOME = \"D:\\\\apache-tomcat-9.0.115\"; $env:JAVA_HOME = \"C:\\\\Program Files\\\\Java\\\\jdk-11\"; Start-Process \"D:\\\\apache-tomcat-9.0.115\\\\bin\\\\startup.bat\" -NoNewWindow)",
+      "PowerShell(Get-ChildItem \"C:\\\\Program Files\\\\Apache Software Foundation\" -ErrorAction SilentlyContinue | Select-Object Name; Get-ChildItem \"C:\\\\maven\" -ErrorAction SilentlyContinue | Select-Object Name; \\(Get-Command mvn.cmd -ErrorAction SilentlyContinue\\).Source)",
+      "PowerShell(Copy-Item \"d:\\\\sample_pro\\\\webapp\\\\WEB-INF\\\\views\\\\main_1\\\\facility\\\\calib_status.jsp\" \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro\\\\WEB-INF\\\\views\\\\main_1\\\\facility\\\\calib_status.jsp\" -Force)",
+      "PowerShell(python --version)",
+      "PowerShell(Get-Command python -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-Command python3 -ErrorAction SilentlyContinue)",
+      "PowerShell(& \"C:\\\\Users\\\\DELL\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\\\\python.exe\" --version)",
+      "PowerShell(node --version 2>&1)",
+      "PowerShell(npm --version 2>&1)",
+      "PowerShell($ppt = New-Object -ComObject PowerPoint.Application -ErrorAction SilentlyContinue; if \\($ppt\\) { Write-Output \"PowerPoint 설치됨\"; $ppt.Quit\\(\\) } else { Write-Output \"PowerPoint 없음\" })",
+      "PowerShell(powershell.exe -ExecutionPolicy Bypass -File \"D:\\\\generate_ppt.ps1\" 2>&1)",
+      "PowerShell(Get-Process POWERPNT -ErrorAction SilentlyContinue)",
+      "PowerShell(powershell.exe -ExecutionPolicy Bypass -File \"D:\\\\generate_ppt.ps1\")",
+      "Bash(xargs grep -l \"192\\\\.168\\\\|10\\\\.\\\\|opc\\\\|OPC\\\\|backup\")",
+      "Bash(xargs cat)"
     ],
     "additionalDirectories": [
       "D:\\apache-tomcat-9.0.115\\conf",
-      "D:\\apache-tomcat-9.0.115"
+      "D:\\apache-tomcat-9.0.115",
+      "D:\\"
     ]
   }
 }

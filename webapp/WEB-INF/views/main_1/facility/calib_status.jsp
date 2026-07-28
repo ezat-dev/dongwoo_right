@@ -115,7 +115,7 @@
     </div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
       <button class="btn-outline" onclick="loadList()">🔄 새로고침</button>
-      <button class="btn-primary" onclick="openModal(null)" id="addBtn" data-perm="add">＋ 보항 추가</button>
+      <button class="btn-primary" onclick="openModal(null)" id="addBtn" data-perm="add">＋ 항목 추가</button>
     </div>
   </div>
 
@@ -294,7 +294,7 @@ calibTable = new Tabulator('#calibDiv', {
       formatter: function(cell){ return esc(cell.getValue()||'—'); }
     },
     { title: '보전 예정일', field: 'lastCalibDt', width: 110, hozAlign: 'center' },
-    { title: '다음 예정일', field: 'nextCalibDt', width: 110, hozAlign: 'center',
+    { title: '다음 예정일', field: 'nextCalibDt', width: 110, hozAlign: 'center', visible: false,
       formatter: function(cell){ return cell.getValue() || '—'; }
     },
     { title: 'D-Day', width: 100, hozAlign: 'center',
@@ -466,7 +466,7 @@ function saveModal() {
     zoneLocation: document.getElementById('mZoneLocation').value.trim(),
     measLocation: document.getElementById('mMeasLocation').value.trim(),
     lastCalibDt:  document.getElementById('mLastCalibDt').value,
-    nextCalibDt:  '',
+    nextCalibDt:  0,
     handler:      document.getElementById('mHandler').value.trim(),
     status:       document.getElementById('mStatus').value,
     remark:       document.getElementById('mRemark').value.trim()

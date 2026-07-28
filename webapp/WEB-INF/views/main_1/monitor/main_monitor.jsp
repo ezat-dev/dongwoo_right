@@ -302,7 +302,7 @@
     <div class="bcf-belt-dt bcf-1-belt-dt  bcf1_s_40002"></div>
     <div class="bcf-belt-dt bcf-2-belt-dt  bcf2_s_40004"></div>
     <div class="bcf-belt-dt bcf-3-belt-dt  bcf3_s_40002"></div>
-    <div class="bcf-belt-dt bcf-4-belt-dt  bcf4_s_40004"></div>
+    <div class="bcf-belt-dt bcf-4-belt-dt  bcf4_s_40002"></div>
     <div class="bcf-belt-dt bcf-10-belt-dt bcf10_s_40002"></div>
     <div class="bcf-belt-dt bcf-5-belt-dt  bcf5_s_40002"></div>
 
@@ -424,7 +424,7 @@
         <img class="bcf-3-box-off-4" src="<%= ctx %>/img/main_monitor_1/bcf-3-box-off-40.png" />
         <img class="bcf-3-tray-2 bcf3_51" src="<%= ctx %>/img/main_monitor_1/bcf-3-tray-20.png" />
         <img class="bcf-3-tray-1 bcf3_50" src="<%= ctx %>/img/main_monitor_1/bcf-3-tray-10.png" />
-        <div class="back-3"></div>
+ 
         <div class="bcf-3-open-1 bcf3_8">열림</div>
         <div class="bcf-3-close-1">닫힘</div>
         <div class="bcf-3-open-2 bcf3_2">열림</div>
@@ -1181,8 +1181,8 @@
       applyData(data);
       // logByDevice(data);
       // debugDtOnly(data);
-      logBcf12Detail(data);
-      logBcf3Tray(data);
+      // logBcf12Detail(data);
+      // logBcf3Tray(data);
       scheduleNext(POLL_INTERVAL);
     })
     .catch(function (err) {

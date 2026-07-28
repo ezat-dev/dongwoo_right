@@ -194,7 +194,6 @@ body.tablet-mode .ctrl-bar { gap:14px; }
       <button class="btn-outline" onclick="openInModal(null)"  id="btnIn"  data-perm="add">📦 입고 등록</button>
       <button class="btn-outline" onclick="openOutModal(null)" id="btnOut" data-perm="add">🔧 사용 등록</button>
       <button class="btn-primary" onclick="openEditModal(null)" id="btnAdd" data-perm="add">＋ 항목 추가</button>
-      <button class="btn-outline" onclick="doExcel()" id="btnExcel">📥 엑셀 출력</button>
       <button class="btn-outline" onclick="openInspectorMgr()" style="height:34px">사용자 관리</button>
     </div>
   </div>
@@ -214,6 +213,7 @@ body.tablet-mode .ctrl-bar { gap:14px; }
           <input class="form-input" type="text" id="fKeyword" placeholder="구분·품명 검색"
                  style="width:180px" oninput="filterStock()">
           <span id="stockCount" style="font-size:11px;color:var(--muted)"></span>
+          <button class="btn-outline btn-sm" onclick="doStockExcel()" style="height:34px">📥 재고현황 엑셀</button>
         </div>
       </div>
       <!-- 일반 모드: 테이블 -->
@@ -263,7 +263,12 @@ body.tablet-mode .ctrl-bar { gap:14px; }
           <label class="form-label">종료일</label>
           <input class="form-input" type="date" id="hTo" style="width:140px">
         </div>
+        <div class="form-field">
+          <label class="form-label">품명/구분</label>
+          <input class="form-input" type="text" id="hKeyword" placeholder="구분·품명 검색" style="width:160px" oninput="filterHistory()">
+        </div>
         <button class="btn-primary btn-sm" style="margin-top:18px;height:34px" onclick="loadHistory()">조회</button>
+        <button class="btn-outline btn-sm" style="margin-top:18px;height:34px" onclick="doHistoryExcel()">📥 이력 엑셀</button>
         <span id="histCount" style="margin-top:22px;font-size:11px;color:var(--muted)"></span>
       </div>
       <!-- 일반 모드: 테이블 -->
@@ -424,6 +429,7 @@ var canAdd        = true;
 var canEdit       = true;
 var canDel        = true;
 var stockCache    = [];
+var histCache     = [];
 var tabletMode    = localStorage.getItem('cl_tablet_mode') === '1';
 var inspectorList = [];
 
@@ -622,8 +628,20 @@ function loadHistory() {
     .then(function(r){ return r.json(); })
     .then(function(d){
       if (!d.success) { alert(d.error || '조회 실패'); return; }
-      renderHistory(d.data || []);
+      histCache = d.data || [];
+      filterHistory();
     });
+}
+
+function filterHistory() {
+  var kw = (document.getElementById('hKeyword').value || '').trim().toLowerCase();
+  var filtered = kw
+    ? histCache.filter(function(r){
+        return (r.category||'').toLowerCase().indexOf(kw) >= 0
+            || (r.itemName||'').toLowerCase().indexOf(kw) >= 0;
+      })
+    : histCache;
+  renderHistory(filtered);
 }
 
 function renderHistory(list) {
@@ -871,7 +889,18 @@ function buildCategoryDatalist() {
     cats.map(function(c){ return '<option value="'+esc(c)+'">'; }).join('');
 }
 
-function doExcel() { location.href = base + '/consumable/excel'; }
+function doStockExcel() {
+  var kw = document.getElementById('fKeyword').value.trim();
+  location.href = base + '/consumable/excel' + (kw ? '?keyword=' + encodeURIComponent(kw) : '');
+}
+
+function doHistoryExcel() {
+  var qs = '?type='    + encodeURIComponent(document.getElementById('hType').value)
+         + '&fromDt='  + encodeURIComponent(document.getElementById('hFrom').value)
+         + '&toDt='    + encodeURIComponent(document.getElementById('hTo').value)
+         + '&keyword=' + encodeURIComponent((document.getElementById('hKeyword').value || '').trim());
+  location.href = base + '/consumable/history/excel' + qs;
+}
 
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 var escH = esc;

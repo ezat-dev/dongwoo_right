@@ -58,6 +58,29 @@ html, body { touch-action: manipulation; }
 .status-DONE { background:var(--green-l); color:var(--green); border:1px solid #9AE6B4; }
 .status-TEMP { background:var(--orange-l); color:var(--orange); border:1px solid #FBD38D; }
 
+/* ── ctrl + signer 한 줄 ── */
+.tb-top-row {
+  display:flex; gap:12px; margin-bottom:14px; align-items:stretch; flex-wrap:wrap;
+}
+.tb-top-row .tb-ctrl   { margin-bottom:0; flex:1; min-width:280px; }
+.tb-top-row .tb-signer { margin-bottom:0; flex:1; min-width:240px; }
+
+/* ── NUM 행 강조 (수치값 입력) ── */
+.row-num td            { background:#EDE9FE !important; }
+.row-num td.t-name     { background:#EDE9FE !important; }
+.row-num td.today-cell { background:#D9D3FC !important; }
+
+/* ── OX 드롭다운 ── */
+.tb-ox-select {
+  width:100%; height:56px; border:none; background:transparent;
+  text-align:center; font-size:20px; font-weight:700;
+  color:var(--text); outline:none; cursor:pointer;
+  -webkit-appearance:none; appearance:none;
+}
+.tb-ox-select:focus { background:#DDD6FE; border-radius:6px; }
+.tb-ox-select.has-o { background:#D1FAE5 !important; color:#065F46 !important; }
+.tb-ox-select.has-x { background:#FEE2E2 !important; color:#991B1B !important; }
+
 /* 주차 네비 */
 .week-nav {
   display:flex; align-items:center; justify-content:center; gap:20px; margin-bottom:14px;
@@ -153,6 +176,7 @@ html, body { touch-action: manipulation; }
 
 @media (max-width:640px) {
   .tb-nav-title { font-size:16px; }
+  .tb-top-row { flex-direction:column; }
   .tb-ctrl { flex-direction:column; }
   .tb-signer { flex-direction:column; align-items:flex-start; }
   .tb-table th.t-item { min-width:130px; }
@@ -177,35 +201,35 @@ html, body { touch-action: manipulation; }
     </div>
   </div>
 
-  <!-- 컨트롤 -->
-  <div class="tb-ctrl">
-    <div>
-      <label>점검월</label>
-      <input type="month" id="tbYm">
+  <!-- 컨트롤 + 점검자 한 줄 -->
+  <div class="tb-top-row">
+    <div class="tb-ctrl">
+      <div>
+        <label>점검월</label>
+        <input type="month" id="tbYm">
+      </div>
+      <div>
+        <label>설비</label>
+        <select id="tbEquip" onchange="loadData()">
+          <option>BCF_1</option><option>BCF_2</option><option>BCF_3</option>
+          <option>BCF_4</option><option>BCF_5</option><option>BCF_6</option>
+          <option>BCF_7</option><option>BCF_8</option><option>BCF_9</option>
+          <option>BCF_10</option><option>BCF_11</option><option>BCF_12</option>
+        </select>
+      </div>
+      <button class="tb-load-btn" onclick="loadData()">조회</button>
     </div>
-    <div>
-      <label>설비</label>
-      <select id="tbEquip">
-        <option>BCF_1</option><option>BCF_2</option><option>BCF_3</option>
-        <option>BCF_4</option><option>BCF_5</option><option>BCF_6</option>
-        <option>BCF_7</option><option>BCF_8</option><option>BCF_9</option>
-        <option>BCF_10</option><option>BCF_11</option><option>BCF_12</option>
-      </select>
+    <div class="tb-signer">
+      <div>
+        <label>점검자</label>
+        <input type="text" id="tbInspector" readonly>
+      </div>
+      <div>
+        <label>확인자</label>
+        <input type="text" id="tbConfirmer" placeholder="성명 입력" onchange="autoSaveHeader()">
+      </div>
+      <span id="tbStatus" class="status-badge status-TEMP" style="margin-left:auto">임시저장</span>
     </div>
-    <button class="tb-load-btn" onclick="loadData()">조회</button>
-  </div>
-
-  <!-- 점검자 -->
-  <div class="tb-signer">
-    <div>
-      <label>점검자</label>
-      <input type="text" id="tbInspector" readonly>
-    </div>
-    <div>
-      <label>확인자</label>
-      <input type="text" id="tbConfirmer" placeholder="성명 입력" onchange="autoSaveHeader()">
-    </div>
-    <span id="tbStatus" class="status-badge status-TEMP" style="margin-left:auto">임시저장</span>
   </div>
 
   <!-- 주차 네비 -->
@@ -369,36 +393,56 @@ function renderWeek(){
     return;
   }
 
+  /* inputType 맵 */
+  var inputTypeMap = {};
+  items.forEach(function(item){ inputTypeMap[item.itemId] = item.inputType || 'OX'; });
+
   var html = '';
   items.forEach(function(item){
+    var isNum   = inputTypeMap[item.itemId] === 'NUM';
     var results = item.results || {};
     var imgHtml = item.imgFile
       ? '<img class="tb-img" src="' + base + '/inspect/item/image/' + esc(item.imgFile) + '" alt="' + esc(item.itemName) + '" onclick="openLightbox(this)">'
       : '<span class="tb-img-none">—</span>';
-    html += '<tr><td class="t-name">' + esc(item.itemName) + '</td>'
+    html += '<tr' + (isNum ? ' class="row-num"' : '') + '>'
+          + '<td class="t-name">' + esc(item.itemName) + '</td>'
           + '<td class="t-photo-cell">' + imgHtml + '</td>';
     for(var day=curWkStart; day<=wkEnd; day++){
       var dayRes = results[day] || results[String(day)] || {};
       var dVal   = dayRes.D != null ? dayRes.D : '';
       var nVal   = dayRes.N != null ? dayRes.N : '';
       var tc     = (day===todayDay) ? ' today-cell' : '';
-      html += mkCell(item.itemId, day, 'D', dVal, tc);
-      html += mkCell(item.itemId, day, 'N', nVal, tc);
+      html += mkCell(item.itemId, day, 'D', dVal, tc, inputTypeMap[item.itemId]);
+      html += mkCell(item.itemId, day, 'N', nVal, tc, inputTypeMap[item.itemId]);
     }
     html += '</tr>';
   });
   document.getElementById('tbBody').innerHTML = html;
 }
 
-function mkCell(itemId, day, shift, val, extraCls){
-  var disp   = (val === 99 || val === '99') ? '√' : (val !== '' && val != null ? String(val) : '');
-  var hasCls = disp !== '' ? ' has-val' : '';
-  var chkCls = disp === '√' ? ' is-check' : '';
+function mkCell(itemId, day, shift, val, extraCls, inputType){
+  if (inputType === 'NUM') {
+    var disp   = (val === 99 || val === '99') ? '√' : (val !== '' && val != null ? String(val) : '');
+    var hasCls = disp !== '' ? ' has-val' : '';
+    var chkCls = disp === '√' ? ' is-check' : '';
+    return '<td class="' + extraCls + '" style="padding:3px">'
+      + '<input type="text" inputmode="numeric" class="tb-input' + hasCls + chkCls + '"'
+      + ' data-item="' + itemId + '" data-day="' + day + '" data-shift="' + shift + '"'
+      + ' value="' + esc(disp) + '" placeholder="—"'
+      + ' onfocus="onInspFocus(this)" oninput="onInspInput(this)" onblur="saveCell(this)">'
+      + '</td>';
+  }
+  /* OX 드롭다운 */
+  var oxVal  = (val === 'O' || val === 'X') ? val : '';
+  var selCls = 'tb-ox-select' + (oxVal==='O' ? ' has-o' : oxVal==='X' ? ' has-x' : '');
   return '<td class="' + extraCls + '" style="padding:3px">'
-    + '<input type="text" inputmode="numeric" class="tb-input' + hasCls + chkCls + '"'
+    + '<select class="' + selCls + '"'
     + ' data-item="' + itemId + '" data-day="' + day + '" data-shift="' + shift + '"'
-    + ' value="' + esc(disp) + '" placeholder="—"'
-    + ' onfocus="onInspFocus(this)" oninput="onInspInput(this)" onblur="saveCell(this)">'
+    + ' onchange="saveCell(this)">'
+    + '<option value="">—</option>'
+    + '<option value="O"' + (oxVal==='O'?' selected':'') + '>O</option>'
+    + '<option value="X"' + (oxVal==='X'?' selected':'') + '>X</option>'
+    + '</select>'
     + '</td>';
 }
 
@@ -415,16 +459,22 @@ function onInspInput(input){
     input.classList.toggle('has-val', v !== '');
   }
 }
-function saveCell(input){
-  if(input.value === '99'){ input.value='√'; input.classList.add('is-check','has-val'); }
-  var rawVal = input.value === '√' ? '99' : input.value;
+function saveCell(el){
+  var rawVal;
+  if (el.tagName === 'SELECT') {
+    rawVal = el.value;
+    el.className = 'tb-ox-select' + (el.value==='O' ? ' has-o' : el.value==='X' ? ' has-x' : '');
+  } else {
+    if(el.value === '99'){ el.value='√'; el.classList.add('is-check','has-val'); }
+    rawVal = el.value === '√' ? '99' : el.value;
+  }
   fetch(base + '/inspect/result/cell', {
     method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({
       equipId: selEquip, ym: selYm,
-      day:    parseInt(input.dataset.day),
-      itemId: parseInt(input.dataset.item),
-      shift:  input.dataset.shift,
+      day:    parseInt(el.dataset.day),
+      itemId: parseInt(el.dataset.item),
+      shift:  el.dataset.shift,
       val:    rawVal
     })
   }).then(function(r){ return r.json(); })

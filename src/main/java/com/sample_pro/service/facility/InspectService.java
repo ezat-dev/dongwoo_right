@@ -10,6 +10,7 @@ public interface InspectService {
     Map<String, Object> loadData(String equipId, String ym, HttpSession session);
     void addItem(Map<String, Object> params);
     void editItem(Map<String, Object> params);
+    void updateItemInputType(int itemId, String inputType);
     void deleteItem(int itemId);
     void saveHeader(Map<String, Object> body);
     void saveCell(Map<String, Object> body);

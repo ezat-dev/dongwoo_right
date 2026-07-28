@@ -264,6 +264,42 @@
      border: 1px solid rgba(245,158,11,.45) !important; color: #78350f !important;
      box-shadow: 0 4px 20px rgba(245,158,11,.28), inset 0 1px 0 rgba(255,255,255,.7);
    }
+
+.bcf-8-close-2 {
+    background: #02e62c;
+    border-style: solid;
+    border-color: #000000;
+    border-width: 1px;
+    width: 100px;
+    height: 16px;
+    position: absolute;
+    left: 588px;
+    top: 453px;
+}
+.bcf-9-close-2 {
+    background: #02e62c;
+    border-style: solid;
+    border-color: #000000;
+    border-width: 1px;
+    width: 100px;
+    height: 16px;
+    position: absolute;
+    left: 835px;
+    top: 453px;
+}
+.bcf-7-close-2 {
+    background: #02e62c;
+    border-style: solid;
+    border-color: #000000;
+    border-width: 1px;
+    width: 100px;
+    height: 16px;
+    position: absolute;
+    left: 1080px;
+    top: 453px;
+}
+
+
    .group-3 .conn-loading .breath-sq { animation: breathe-load 1.6s ease-in-out infinite; }
    </style>
   <title>Document</title>
@@ -1098,11 +1134,11 @@
     .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
     .then(function (data) {
       applyData(data);
-      logByDevice2(data);
+      // logByDevice2(data);
       scheduleNext(POLL_INTERVAL);
     })
     .catch(function (err) {
-      console.warn('[MON-2] PLC fetch 실패:', err);
+      // console.warn('[MON-2] PLC fetch 실패:', err);
       scheduleNext(FAIL_COOLDOWN);
     });
   }
