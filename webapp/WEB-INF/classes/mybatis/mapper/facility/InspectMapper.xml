@@ -108,4 +108,17 @@
         ON DUPLICATE KEY UPDATE val = VALUES(val)
     </insert>
 
+    <!-- ── 점검자 관리 (tb_inspector) ── -->
+    <select id="selectInspectors" resultType="map">
+        SELECT idx, name FROM tb_inspector WHERE del_yn = 'N' ORDER BY idx
+    </select>
+
+    <insert id="insertInspector" parameterType="string">
+        INSERT INTO tb_inspector (name) VALUES (#{name})
+    </insert>
+
+    <update id="deleteInspector" parameterType="int">
+        UPDATE tb_inspector SET del_yn = 'Y' WHERE idx = #{idx}
+    </update>
+
 </mapper>

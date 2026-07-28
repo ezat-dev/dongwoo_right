@@ -15,6 +15,11 @@ public interface InspectService {
     void saveHeader(Map<String, Object> body);
     void saveCell(Map<String, Object> body);
     Workbook exportExcel(String equipId, String ym, HttpSession session);
+    Workbook exportAllExcel(String ym, HttpSession session);
     int importExcel(String equipId, String ym, MultipartFile file);
     String uploadItemImage(int itemId, MultipartFile file) throws Exception;
+
+    java.util.List<java.util.Map<String, Object>> getInspectorList();
+    void addInspector(String name);
+    void removeInspector(int idx);
 }

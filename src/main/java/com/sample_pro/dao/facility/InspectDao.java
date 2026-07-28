@@ -22,4 +22,8 @@ public interface InspectDao {
     void upsertHeader(InspectHeader header);
     void upsertCell(InspectResult result);
     void updateItemImg(int itemId, String imgFile);
+
+    List<Map<String, Object>> selectInspectors();
+    void insertInspector(String name);
+    void deleteInspector(int idx);
 }

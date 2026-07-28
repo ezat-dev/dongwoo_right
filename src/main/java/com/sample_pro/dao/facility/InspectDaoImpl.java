@@ -81,4 +81,19 @@ public class InspectDaoImpl implements InspectDao {
         p.put("imgFile", imgFile);
         sqlSession.update("InspectMapper.updateItemImg", p);
     }
+
+    @Override
+    public List<Map<String, Object>> selectInspectors() {
+        return sqlSession.selectList("InspectMapper.selectInspectors");
+    }
+
+    @Override
+    public void insertInspector(String name) {
+        sqlSession.insert("InspectMapper.insertInspector", name);
+    }
+
+    @Override
+    public void deleteInspector(int idx) {
+        sqlSession.update("InspectMapper.deleteInspector", idx);
+    }
 }

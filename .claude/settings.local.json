@@ -155,7 +155,8 @@
       "PowerShell($env:CATALINA_HOME=\"D:\\\\apache-tomcat-9.0.115\"; $env:JAVA_HOME=\"C:\\\\Program Files\\\\Java\\\\jdk-11\"; Start-Process -FilePath \"$env:CATALINA_HOME\\\\bin\\\\startup.bat\" -NoNewWindow; Write-Host \"Tomcat starting\")",
       "PowerShell(Get-Process java | ForEach-Object { $id = $_.Id; $cmd = \\(Get-WmiObject Win32_Process -Filter \"ProcessId=$id\"\\).CommandLine; [PSCustomObject]@{PID=$id; Cmd=$cmd} } | Format-List)",
       "PowerShell(Stop-Process -Id 41172 -Force -Confirm:$false)",
-      "PowerShell($env:CATALINA_HOME=\"D:\\\\apache-tomcat-9.0.115\"; $env:JAVA_HOME=\"C:\\\\Program Files\\\\Java\\\\jdk-11\"; Start-Process -FilePath \"$env:CATALINA_HOME\\\\bin\\\\startup.bat\" -NoNewWindow -Wait; Write-Host \"Startup issued\")"
+      "PowerShell($env:CATALINA_HOME=\"D:\\\\apache-tomcat-9.0.115\"; $env:JAVA_HOME=\"C:\\\\Program Files\\\\Java\\\\jdk-11\"; Start-Process -FilePath \"$env:CATALINA_HOME\\\\bin\\\\startup.bat\" -NoNewWindow -Wait; Write-Host \"Startup issued\")",
+      "PowerShell(Copy-Item \"D:\\\\sample_pro\\\\target\\\\sample_pro.war\" \"D:\\\\apache-tomcat-9.0.115\\\\webapps\\\\sample_pro.war\" -Force; Write-Host \"Copied\"; $tomcatPid = \\(Get-NetTCPConnection -LocalPort 8080 -State Listen -ErrorAction SilentlyContinue | Select-Object -First 1\\).OwningProcess; if \\($tomcatPid\\) { Stop-Process -Id $tomcatPid -Force; Write-Host \"Stopped PID $tomcatPid\"; Start-Sleep 3 }; $env:CATALINA_HOME=\"D:\\\\apache-tomcat-9.0.115\"; $env:JAVA_HOME=\"C:\\\\Program Files\\\\Java\\\\jdk-11\"; Start-Process -FilePath \"$env:CATALINA_HOME\\\\bin\\\\startup.bat\" -NoNewWindow; Write-Host \"Started\")"
     ],
     "additionalDirectories": [
       "D:\\apache-tomcat-9.0.115\\webapps",

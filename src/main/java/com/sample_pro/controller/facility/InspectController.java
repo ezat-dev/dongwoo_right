@@ -92,14 +92,14 @@ public class InspectController {
     }
 
     @RequestMapping(value = "/excel/export", method = RequestMethod.GET)
-    public void excelExport(@RequestParam String equipId,
+    public void excelExport(@RequestParam(required = false) String equipId,
                             @RequestParam String ym,
                             HttpSession session,
                             HttpServletResponse response) throws Exception {
-        String fileName = URLEncoder.encode(equipId + "_" + ym + "_일상점검일지.xlsx", "UTF-8");
+        String fileName = URLEncoder.encode("일상점검일지_" + ym + ".xlsx", "UTF-8");
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + fileName);
-        try (Workbook wb = inspectService.exportExcel(equipId, ym, session)) {
+        try (Workbook wb = inspectService.exportAllExcel(ym, session)) {
             wb.write(response.getOutputStream());
         }
     }
@@ -145,6 +145,37 @@ public class InspectController {
             int len;
             while ((len = fis.read(buf)) != -1) response.getOutputStream().write(buf, 0, len);
         }
+    }
+
+    @RequestMapping(value = "/inspector/list", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<?> inspectorList() {
+        try {
+            Map<String, Object> m = ok();
+            m.put("inspectors", inspectService.getInspectorList());
+            return ResponseEntity.ok(m);
+        } catch (Exception e) { return ResponseEntity.ok(err("조회 실패: " + e.getMessage())); }
+    }
+
+    @RequestMapping(value = "/inspector/add", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<?> inspectorAdd(@RequestBody Map<String, Object> body) {
+        try {
+            inspectService.addInspector(body.get("name").toString());
+            return ResponseEntity.ok(ok());
+        } catch (Exception e) { return ResponseEntity.ok(err("추가 실패: " + e.getMessage())); }
+    }
+
+    @RequestMapping(value = "/inspector/delete", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<?> inspectorDelete(@RequestBody Map<String, Object> body) {
+        try {
+            inspectService.removeInspector(Integer.parseInt(body.get("idx").toString()));
+            return ResponseEntity.ok(ok());
+        } catch (Exception e) { return ResponseEntity.ok(err("삭제 실패: " + e.getMessage())); }
     }
 
     private Map<String, Object> ok()  { Map<String,Object> m=new HashMap<>(); m.put("success",true);  return m; }

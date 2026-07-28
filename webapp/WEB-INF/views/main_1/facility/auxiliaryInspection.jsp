@@ -79,6 +79,13 @@
 }
 .ax-input:focus { background:#EBF8FF; border-radius:3px; }
 
+/* ── 수치 입력 셀 ── */
+.num-input {
+  width:100%; border:none; background:transparent;
+  font-size:12px; text-align:center; outline:none; padding:0;
+}
+.num-input:focus { background:#EBF8FF; border-radius:3px; }
+
 /* ── 노트 영역 ── */
 /* 일반: col2Wrap 안에서 세로 배치 */
 #notesArea { display:flex; flex-direction:column; gap:10px; }
@@ -327,52 +334,52 @@ var tabletMode = _savedMode !== null ? (_savedMode === '1') : (window.innerWidth
 /* 옥외부대설비: gs=구분rowspan, ns=항목rowspan */
 var OUTDOOR_ROWS = [
   /* 보일러단 9행 */
-  {key:'1_1', no:1,  name:'온수온도',      std:'기화기내 50~70℃',                 sub:'1호',   group:'보일러단', gs:9, ns:2},
-  {key:'1_2', no:1,  name:null,             std:null,                               sub:'2호',   group:null,       gs:0, ns:0},
+  {key:'1_1', no:1,  name:'온수온도',      std:'기화기내 50~70℃',                 sub:'1호',   group:'보일러단', gs:9, ns:2, num:true},
+  {key:'1_2', no:1,  name:null,             std:null,                               sub:'2호',   group:null,       gs:0, ns:0, num:true},
   {key:'2_1', no:2,  name:'온수량',         std:'수위표시등 꺼짐보충<br>점등:물보충',sub:'1호',  group:null,       gs:0, ns:2},
   {key:'2_2', no:2,  name:null,             std:null,                               sub:'2호',   group:null,       gs:0, ns:0},
-  {key:'3_1', no:3,  name:'Tank내 압력',    std:'1~13kgf/cm²',                     sub:'TANK.1',group:null,       gs:0, ns:2},
-  {key:'3_2', no:3,  name:null,             std:null,                               sub:'TANK.2',group:null,       gs:0, ns:0},
-  {key:'4_1', no:4,  name:'가스량 레벨',    std:'30%이상',                         sub:'TANK.1',group:null,       gs:0, ns:2},
-  {key:'4_2', no:4,  name:null,             std:null,                               sub:'TANK.2',group:null,       gs:0, ns:0},
-  {key:'5_0', no:5,  name:'공급압력',       std:'0.5~0.9kgf/cm²',                 sub:null,    group:null,       gs:0, ns:1},
+  {key:'3_1', no:3,  name:'Tank내 압력',    std:'1~13kgf/cm²',                     sub:'TANK.1',group:null,       gs:0, ns:2, num:true},
+  {key:'3_2', no:3,  name:null,             std:null,                               sub:'TANK.2',group:null,       gs:0, ns:0, num:true},
+  {key:'4_1', no:4,  name:'가스량 레벨',    std:'30%이상',                         sub:'TANK.1',group:null,       gs:0, ns:2, num:true},
+  {key:'4_2', no:4,  name:null,             std:null,                               sub:'TANK.2',group:null,       gs:0, ns:0, num:true},
+  {key:'5_0', no:5,  name:'공급압력',       std:'0.5~0.9kgf/cm²',                 sub:null,    group:null,       gs:0, ns:1, num:true},
   /* 암모니아 8행 */
-  {key:'6_1', no:6,  name:'온수온도',       std:'기화기내 50~70℃',                sub:'1호',   group:'암모니아', gs:8, ns:2},
-  {key:'6_2', no:6,  name:null,             std:null,                               sub:'2호',   group:null,       gs:0, ns:0},
+  {key:'6_1', no:6,  name:'온수온도',       std:'기화기내 50~70℃',                sub:'1호',   group:'암모니아', gs:8, ns:2, num:true},
+  {key:'6_2', no:6,  name:null,             std:null,                               sub:'2호',   group:null,       gs:0, ns:0, num:true},
   {key:'7_1', no:7,  name:'온수량',         std:'80%이상 유지',                    sub:'1호',   group:null,       gs:0, ns:2},
   {key:'7_2', no:7,  name:null,             std:null,                               sub:'2호',   group:null,       gs:0, ns:0},
-  {key:'8_0', no:8,  name:'일차압력',       std:'3~13 kgf/cm²',                   sub:null,    group:null,       gs:0, ns:1},
-  {key:'9_0', no:9,  name:'이차압력',       std:'3~13 kgf/cm²',                   sub:null,    group:null,       gs:0, ns:1},
-  {key:'10_0',no:10, name:'공급압력',       std:'0.5~1.5kgf/cm²',                sub:null,    group:null,       gs:0, ns:1},
-  {key:'11_0',no:11, name:'미사용 봄베수',  std:'갯수',                            sub:null,    group:null,       gs:0, ns:1},
+  {key:'8_0', no:8,  name:'일차압력',       std:'3~13 kgf/cm²',                   sub:null,    group:null,       gs:0, ns:1, num:true},
+  {key:'9_0', no:9,  name:'이차압력',       std:'3~13 kgf/cm²',                   sub:null,    group:null,       gs:0, ns:1, num:true},
+  {key:'10_0',no:10, name:'공급압력',       std:'0.5~1.5kgf/cm²',                sub:null,    group:null,       gs:0, ns:1, num:true},
+  {key:'11_0',no:11, name:'미사용 봄베수',  std:'갯수',                            sub:null,    group:null,       gs:0, ns:1, num:true},
   /* 냉각수 5행 */
-  {key:'12_0',no:12, name:'가동PUMP호수',   std:'1호,2호',                        sub:null,    group:'냉각수',   gs:5, ns:1},
-  {key:'13_0',no:13, name:'PUMP토출압력',   std:'2.5~4.5kgf/cm²',               sub:null,    group:null,       gs:0, ns:1},
+  {key:'12_0',no:12, name:'가동PUMP호수',   std:'1호,2호',                        sub:null,    group:'냉각수',   gs:5, ns:1, num:true},
+  {key:'13_0',no:13, name:'PUMP토출압력',   std:'2.5~4.5kgf/cm²',               sub:null,    group:null,       gs:0, ns:1, num:true},
   {key:'14_0',no:14, name:'PUMP 진동음',    std:'정상,이상',                      sub:null,    group:null,       gs:0, ns:1},
-  {key:'15_0',no:15, name:'Tank 수위',      std:'2.7~3.7 m',                     sub:null,    group:null,       gs:0, ns:1},
+  {key:'15_0',no:15, name:'Tank 수위',      std:'2.7~3.7 m',                     sub:null,    group:null,       gs:0, ns:1, num:true},
   {key:'16_0',no:16, name:'냉각Tower(1,2)', std:'작동상태(정상,이상)',           sub:null,    group:null,       gs:0, ns:1}
 ];
 
 var COMP_ITEMS = [
   {no:1, name:'모타의 소음상태 및<br>진동상태 유무',      std:'이상음 발생'},
-  {no:2, name:'차압의 압력차를<br>확인한다',             std:'0.8 BAR 이하'},
-  {no:3, name:'온도를 점검<br>기록한다',                 std:'90℃ 이하'},
+  {no:2, name:'차압의 압력차를<br>확인한다',             std:'0.8 BAR 이하', num:true},
+  {no:3, name:'온도를 점검<br>기록한다',                 std:'90℃ 이하',    num:true},
   {no:4, name:'AIR DRYER의<br>이상상태를 확인한다',      std:'정등'},
   {no:5, name:'①의 OIL LEVEL<br>게이지 확인',           std:'투시창'}
 ];
 var COMP_MACHINES = [1,3,4];
 
 var N2GAS_ITEMS = [
-  '저장실 주위에 인화 물질, 화기 방치여부(육안확인)',
-  '설비장치의 작동여부(압력계 미작동시 고장으로 판단)',
-  'GAS 차단장치의 작동여부(밸브확인)',
-  '기화기 이상유무(성에 제거)',
-  '안전장치작동유무(긴급차단밸브 확인)',
-  'TANK내 압력계(10kgf/cm²이하)',
-  '탱크, 배관 누설여부(육안, 소리로 확인)',
-  'N₂ GAS량(1000이상 유지)',
-  'N₂ GAS의 압력(7kgf/cm²이하)',
-  '안전변의 원변은 열려있는가(안전밸브 open 여부 확인)'
+  {name:'저장실 주위에 인화 물질, 화기 방치여부(육안확인)'},
+  {name:'설비장치의 작동여부(압력계 미작동시 고장으로 판단)'},
+  {name:'GAS 차단장치의 작동여부(밸브확인)'},
+  {name:'기화기 이상유무(성에 제거)'},
+  {name:'안전장치작동유무(긴급차단밸브 확인)'},
+  {name:'TANK내 압력계(10kgf/cm²이하)',   num:true},
+  {name:'탱크, 배관 누설여부(육안, 소리로 확인)'},
+  {name:'N₂ GAS량(1000이상 유지)',         num:true},
+  {name:'N₂ GAS의 압력(7kgf/cm²이하)',    num:true},
+  {name:'안전변의 원변은 열려있는가(안전밸브 open 여부 확인)'}
 ];
 
 /* ── 사이클 값 ── */
@@ -552,8 +559,13 @@ function buildOutdoorTable() {
     /* 서브 */
     h += '<td class="sub-cell">'+(row.sub||'')+'</td>';
     /* 주/야 입력 */
-    h += '<td>'+makeOxCell(row.key,'day')+'</td>';
-    h += '<td>'+makeOxCell(row.key,'night')+'</td>';
+    if (row.num) {
+      h += '<td>'+makeNumCell('od','od_'+row.key+'_day',  row.key+'_day')+'</td>';
+      h += '<td>'+makeNumCell('od','od_'+row.key+'_night',row.key+'_night')+'</td>';
+    } else {
+      h += '<td>'+makeOxCell(row.key,'day')+'</td>';
+      h += '<td>'+makeOxCell(row.key,'night')+'</td>';
+    }
     h += '</tr>';
   });
   h += '</tbody>';
@@ -595,8 +607,15 @@ function buildCompTable() {
     h += '<td class="left">'+item.name+'</td>';
     h += '<td style="font-size:10px">'+item.std+'</td>';
     COMP_MACHINES.forEach(function(m) {
-      h += '<td>'+makeTriCell('comp',item.no,m,'day')+'</td>';
-      h += '<td>'+makeTriCell('comp',item.no,m,'night')+'</td>';
+      var storeDay   = item.no+'_'+m+'_day';
+      var storeNight = item.no+'_'+m+'_night';
+      if (item.num) {
+        h += '<td>'+makeNumCell('comp','comp_'+item.no+'_'+m+'_day',   storeDay)+'</td>';
+        h += '<td>'+makeNumCell('comp','comp_'+item.no+'_'+m+'_night', storeNight)+'</td>';
+      } else {
+        h += '<td>'+makeOxCell2('comp','comp_'+item.no+'_'+m+'_day',   storeDay)+'</td>';
+        h += '<td>'+makeOxCell2('comp','comp_'+item.no+'_'+m+'_night', storeNight)+'</td>';
+      }
     });
     h += '</tr>';
   });
@@ -625,6 +644,38 @@ function cycleTri(el, sect) {
   el.className = 'tri-cell' + (next==='○'?' val-ok':next==='△'?' val-warn':next==='⊙'?' val-done':'');
 }
 
+/* ── 수치 입력 셀 ── */
+function makeNumCell(sect, id, storeKey) {
+  return '<input type="text" class="num-input" id="'+id+'"'
+    + ' oninput="saveNumInput(\''+sect+'\',\''+storeKey+'\',this.value)"'
+    + (canEdit ? '' : ' readonly')
+    + '>';
+}
+
+function saveNumInput(sect, storeKey, val) {
+  if      (sect === 'od')   outdoorData[storeKey] = val;
+  else if (sect === 'comp') compData[storeKey]    = val;
+  else                      n2gasData[storeKey]   = val;
+}
+
+/* ── O/X 셀 (comp/n2 공용) ── */
+function makeOxCell2(sect, id, storeKey) {
+  return '<div class="ox-cell" id="'+id+'" data-sect="'+sect+'" data-key="'+storeKey+'" onclick="cycleOxStore(this)"></div>';
+}
+
+function cycleOxStore(el) {
+  if (!canEdit) return;
+  var sect  = el.dataset.sect;
+  var key   = el.dataset.key;
+  var store = sect === 'comp' ? compData : n2gasData;
+  var cur   = store[key] || '';
+  var idx   = OX_VALS.indexOf(cur);
+  var next  = OX_VALS[(idx+1) % OX_VALS.length];
+  store[key] = next;
+  el.textContent = next;
+  el.className = 'ox-cell' + (next==='O'?' val-O':next==='X'?' val-X':'');
+}
+
 /* ── N2 GAS ── */
 function buildN2GasTable() {
   var h = '<thead><tr>'
@@ -633,13 +684,18 @@ function buildN2GasTable() {
     + '<th style="width:34px">주</th>'
     + '<th style="width:34px">야</th>'
     + '</tr></thead><tbody>';
-  N2GAS_ITEMS.forEach(function(name, i) {
+  N2GAS_ITEMS.forEach(function(item, i) {
     var no = i + 1;
     h += '<tr>';
     h += '<td style="font-weight:700">'+no+'</td>';
-    h += '<td class="left">'+name+'</td>';
-    h += '<td>'+makeTriCell('n2',no,null,'day')+'</td>';
-    h += '<td>'+makeTriCell('n2',no,null,'night')+'</td>';
+    h += '<td class="left">'+item.name+'</td>';
+    if (item.num) {
+      h += '<td>'+makeNumCell('n2','n2_'+no+'_null_day',  no+'_day')+'</td>';
+      h += '<td>'+makeNumCell('n2','n2_'+no+'_null_night',no+'_night')+'</td>';
+    } else {
+      h += '<td>'+makeOxCell2('n2','n2_'+no+'_null_day',  no+'_day')+'</td>';
+      h += '<td>'+makeOxCell2('n2','n2_'+no+'_null_night',no+'_night')+'</td>';
+    }
     h += '</tr>';
   });
   h += '</tbody>';
@@ -691,8 +747,12 @@ function applyOutdoor() {
       var el = document.getElementById('od_'+row.key+'_'+shift);
       if (!el) return;
       var val = outdoorData[row.key+'_'+shift] || '';
-      el.textContent = val;
-      el.className = 'ox-cell' + (val==='O'?' val-O':val==='X'?' val-X':'');
+      if (el.tagName === 'INPUT') {
+        el.value = val;
+      } else {
+        el.textContent = val;
+        el.className = 'ox-cell' + (val==='O'?' val-O':val==='X'?' val-X':'');
+      }
     });
   });
 }
@@ -704,22 +764,30 @@ function applyComp() {
         var el = document.getElementById('comp_'+item.no+'_'+m+'_'+shift);
         if (!el) return;
         var val = compData[item.no+'_'+m+'_'+shift] || '';
-        el.textContent = val;
-        el.className = 'tri-cell' + (val==='○'?' val-ok':val==='△'?' val-warn':val==='⊙'?' val-done':'');
+        if (el.tagName === 'INPUT') {
+          el.value = val;
+        } else {
+          el.textContent = val;
+          el.className = 'ox-cell' + (val==='O'?' val-O':val==='X'?' val-X':'');
+        }
       });
     });
   });
 }
 
 function applyN2Gas() {
-  N2GAS_ITEMS.forEach(function(name, i) {
+  N2GAS_ITEMS.forEach(function(item, i) {
     var no = i + 1;
     ['day','night'].forEach(function(shift) {
       var el = document.getElementById('n2_'+no+'_null_'+shift);
       if (!el) return;
       var val = n2gasData[no+'_'+shift] || '';
-      el.textContent = val;
-      el.className = 'tri-cell' + (val==='○'?' val-ok':val==='△'?' val-warn':val==='⊙'?' val-done':'');
+      if (el.tagName === 'INPUT') {
+        el.value = val;
+      } else {
+        el.textContent = val;
+        el.className = 'ox-cell' + (val==='O'?' val-O':val==='X'?' val-X':'');
+      }
     });
   });
 }

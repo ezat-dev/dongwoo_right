@@ -11,7 +11,7 @@
 
 .matrix-wrap { overflow-x:auto; }
 .matrix-table {
-  border-collapse:collapse; font-size:12px; white-space:nowrap; min-width:100%;
+  border-collapse:collapse; font-size:13px; white-space:nowrap; min-width:100%;
 }
 .matrix-table th {
   background:var(--bg); padding:6px 4px; text-align:center;
@@ -22,10 +22,10 @@
 .matrix-table th.item-col { text-align:left; min-width:130px; position:sticky; left:0; z-index:3; }
 .matrix-table th.std-col  { text-align:left; min-width:140px; }
 .matrix-table th.img-col  { min-width:60px; width:60px; }
-.matrix-table th.day-hd   { min-width:96px; font-size:11px; color:var(--primary);
+.matrix-table th.day-hd   { min-width:116px; font-size:12px; color:var(--primary);
                              background:#EBF8FF; border-bottom:none; }
 .matrix-table th.day-hd.today-col { background:#BEE3F8; }
-.matrix-table th.sh-hd    { min-width:48px; width:48px; font-size:10px; font-weight:700;
+.matrix-table th.sh-hd    { min-width:58px; width:58px; font-size:11px; font-weight:700;
                              background:var(--bg); border-top:none; }
 .matrix-table th.sh-hd.today-col { background:#EBF8FF; }
 
@@ -33,10 +33,10 @@
   padding:0; border:1px solid var(--border); vertical-align:middle;
 }
 .matrix-table td.item-name {
-  padding:6px 10px; font-weight:600; font-size:12px;
+  padding:6px 10px; font-weight:600; font-size:13px;
   position:sticky; left:0; background:var(--white); z-index:1;
 }
-.matrix-table td.item-std { padding:6px 10px; color:var(--muted); font-size:11px; }
+.matrix-table td.item-std { padding:6px 10px; color:var(--muted); font-size:12px; }
 .matrix-table td.img-cell { padding:4px 6px; text-align:center; vertical-align:middle; }
 .matrix-table td.sh-cell  { padding:2px !important; }
 .matrix-table td.today-col { background:#EBF8FF !important; }
@@ -46,7 +46,7 @@
 /* 수치 입력 */
 .val-input {
   width:100%; height:34px; border:none; background:transparent;
-  text-align:center; font-size:12px; font-weight:600;
+  text-align:center; font-size:13px; font-weight:600;
   color:var(--text); outline:none;
 }
 .val-input:focus { background:#EBF8FF; border-radius:3px; }
@@ -113,8 +113,8 @@
 }
 .img-upload-btn:hover { border-color:var(--primary); color:var(--primary); }
 .edit-mode .img-upload-btn { display:block; }
-#imgPreviewModal .modal-box { width:640px; text-align:center; }
-#imgPreviewModal img { max-width:100%; max-height:72vh; border-radius:8px; }
+#imgPreviewModal .modal-box { width:min(960px,92vw); text-align:center; }
+#imgPreviewModal img { max-width:100%; max-height:82vh; border-radius:8px; }
 
 @media (max-width:640px) {
   .hide-mobile { display:none !important; }
@@ -141,11 +141,12 @@
       <label class="btn-outline" style="cursor:pointer;margin:0">
         📤 엑셀 가져오기<input type="file" id="importFile" accept=".xlsx" style="display:none" onchange="doImport(this)">
       </label>
+      <button class="btn-outline" onclick="openInspectorMgr()">👤 사용자 관리</button>
       <button class="btn-primary" onclick="saveDone()">✅ 점검완료</button>
     </div>
   </div>
 
-  <div class="card ctrl-bar" style="padding:14px 16px;margin-bottom:16px">
+  <div class="card ctrl-bar" style="padding:10px 16px;margin-bottom:12px">
     <div class="form-field">
       <label class="form-label">점검월</label>
       <input class="form-input" type="month" id="selYm" style="width:140px">
@@ -160,39 +161,12 @@
       </select>
     </div>
     <button class="btn-primary btn-sm" style="margin-top:18px;height:34px" onclick="loadData()">조회</button>
-    <div class="legend hide-mobile" style="margin-left:auto">
-      <span style="display:inline-flex;align-items:center;gap:4px">
-        <span style="width:12px;height:12px;background:#F0FFF4;border:1px solid #9AE6B4;border-radius:2px;display:inline-block"></span>주간 입력
-      </span>
-      <span style="display:inline-flex;align-items:center;gap:4px">
-        <span style="width:12px;height:12px;background:#FEFCBF;border:1px solid #F6E05E;border-radius:2px;display:inline-block"></span>야간 입력
-      </span>
-    </div>
+    <span id="statusBadge" class="status-badge status-TEMP" style="margin-left:auto;align-self:center">임시저장</span>
   </div>
 
   <div class="card" id="inspCard">
-    <div class="signer-row">
-      <div>
-        <label>점검자</label>
-        <input class="form-input" type="text" id="inspector" readonly style="background:var(--bg);width:100px">
-      </div>
-      <div>
-        <label>확인자</label>
-        <input class="form-input" type="text" id="confirmer" placeholder="성명 입력" style="width:110px"
-               onchange="autoSaveHeader()">
-      </div>
-      <span style="display:inline-flex;align-items:center;gap:10px;font-size:11px;color:var(--muted);margin-left:4px">
-        <span style="display:inline-flex;align-items:center;gap:4px">
-          <span style="width:12px;height:12px;background:#EDE9FE;border:1px solid #C4B5FD;border-radius:2px;display:inline-block;flex-shrink:0"></span>수치값 입력
-        </span>
-        <span style="display:inline-flex;align-items:center;gap:4px">
-          <span style="width:12px;height:12px;background:var(--bg);border:1px solid var(--border);border-radius:2px;display:inline-block;flex-shrink:0"></span>O/X 입력
-        </span>
-      </span>
-      <span id="statusBadge" class="status-badge status-TEMP" style="margin-left:auto">임시저장</span>
-    </div>
 
-    <div class="matrix-wrap" style="margin-top:12px">
+    <div class="matrix-wrap" style="margin-top:4px">
       <table class="matrix-table" id="matrixTable">
         <thead id="matrixHead"></thead>
         <tbody id="matrixBody">
@@ -218,6 +192,20 @@
     <div class="modal-actions">
       <button class="btn-outline" onclick="document.getElementById('imgPreviewModal').classList.remove('show')">닫기</button>
     </div>
+  </div>
+</div>
+
+<!-- 사용자 관리 모달 -->
+<div id="inspectorModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:2000;justify-content:center;align-items:center">
+  <div style="background:var(--bg);border-radius:8px;padding:24px;width:360px;max-height:80vh;display:flex;flex-direction:column;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,.2)">
+    <div style="font-size:16px;font-weight:700">👤 점검자 관리</div>
+    <div style="display:flex;gap:8px">
+      <input class="form-input" type="text" id="newInspectorName" placeholder="점검자 이름" style="flex:1"
+             onkeydown="if(event.key==='Enter')addInspector()">
+      <button class="btn-primary btn-sm" onclick="addInspector()">추가</button>
+    </div>
+    <div id="inspectorListBox" style="overflow-y:auto;flex:1;min-height:80px;border:1px solid var(--border);border-radius:6px;padding:4px"></div>
+    <button class="btn-outline" onclick="closeInspectorMgr()" style="align-self:flex-end">닫기</button>
   </div>
 </div>
 
@@ -249,7 +237,9 @@ var curData      = null;
 var selYm        = '';
 var selEquip     = '';
 var today        = new Date();
-var inputTypeMap = {};
+var inputTypeMap    = {};
+var inspectorList   = [];
+var inspectorItemIds = {};
 
 (function(){
   var d = new Date();
@@ -274,8 +264,7 @@ function loadData(){
     .then(function(r){ return r.json(); })
     .then(function(d){
       curData = d;
-      document.getElementById('inspector').value = d.inspectorName || d.loginName || '';
-      document.getElementById('confirmer').value = d.confirmerName || '';
+      if (d.inspectors) inspectorList = d.inspectors;
       setStatusBadge(d.status || 'TEMP');
       var ymFmt = selYm.substring(0,4) + '년 ' + parseInt(selYm.substring(4)) + '월';
       document.getElementById('pageSubTitle').textContent = selEquip + ' · ' + ymFmt;
@@ -318,14 +307,24 @@ function renderMatrix(d){
     return;
   }
 
-  // 서버 데이터로 inputTypeMap 갱신
+  // 서버 데이터로 inputTypeMap 갱신 + inspector 행 분리
+  inspectorItemIds = {};
+  var normalItems = [], inspRows = [];
   items.forEach(function(item){
     inputTypeMap[item.itemId] = item.inputType || 'NUM';
+    if (item.itemName && (item.itemName.indexOf('점검자') >= 0 || item.itemName.indexOf('확인자') >= 0)) {
+      inspectorItemIds[item.itemId] = true;
+      inspRows.push(item);
+    } else {
+      normalItems.push(item);
+    }
   });
+  var orderedItems = normalItems.concat(inspRows);
 
   var html = '';
-  items.forEach(function(item){
+  orderedItems.forEach(function(item){
     var isOX    = inputTypeMap[item.itemId] === 'OX';
+    var isInsp  = inspectorItemIds[item.itemId];
     var results = item.results || {};
     var imgCell = '';
     if(item.imgFile){
@@ -333,15 +332,18 @@ function renderMatrix(d){
               + 'class="img-thumb" onclick="previewImg(\'' + esc(item.imgFile) + '\',\'' + esc(item.itemName) + '\')" '
               + 'title="' + esc(item.itemName) + '" alt="미리보기">';
     }
-    imgCell += '<button class="img-upload-btn" onclick="openImgUpload(' + item.itemId + ')">＋</button>';
+    if (!isInsp) imgCell += '<button class="img-upload-btn" onclick="openImgUpload(' + item.itemId + ')">＋</button>';
+
+    var editBtns = isInsp ? '' :
+        '<button class="eib eib-edit" onclick="openItemModal(' + item.itemId + ')">수정</button>'
+      + '<button class="eib eib-del"  onclick="delItem(' + item.itemId + ')">삭제</button>'
+      + '<button class="eib eib-type' + (!isOX?' active':'') + '" id="eib_type_' + item.itemId + '" onclick="toggleInputType(' + item.itemId + ')">' + (isOX ? '수치값' : 'O/X') + '</button>';
 
     html += '<tr' + (!isOX ? ' class="row-ox"' : '') + '>'
       + '<td class="item-name">'
       +   '<span>' + esc(item.itemName) + '</span>'
       +   '<div class="edit-item-btns' + (editMode?' show':'') + '" id="eib_' + item.itemId + '">'
-      +     '<button class="eib eib-edit" onclick="openItemModal(' + item.itemId + ')">수정</button>'
-      +     '<button class="eib eib-del"  onclick="delItem(' + item.itemId + ')">삭제</button>'
-      +     '<button class="eib eib-type' + (!isOX?' active':'') + '" id="eib_type_' + item.itemId + '" onclick="toggleInputType(' + item.itemId + ')">' + (isOX ? '수치값' : 'O/X') + '</button>'
+      +     editBtns
       +   '</div>'
       + '</td>'
       + '<td class="item-std">' + esc(item.itemStd || '') + '</td>'
@@ -361,6 +363,16 @@ function renderMatrix(d){
 }
 
 function mkCell(itemId, day, shift, val, extraCls){
+  if (inspectorItemIds[itemId]) {
+    var opts = '<option value="">—</option>';
+    inspectorList.forEach(function(ins){
+      var n = ins.name || ins.NAME || '';
+      opts += '<option value="' + esc(n) + '"' + (val === n ? ' selected' : '') + '>' + esc(n) + '</option>';
+    });
+    return '<td class="sh-cell' + extraCls + '">'
+      + '<select class="ox-select" data-item="' + itemId + '" data-day="' + day + '" data-shift="' + shift + '"'
+      + ' onchange="saveCell(this)">' + opts + '</select></td>';
+  }
   if (inputTypeMap[itemId] === 'OX') {
     var oxVal  = (val === 'O' || val === 'X') ? val : '';
     var selCls = 'ox-select' + (oxVal==='O' ? ' has-o' : oxVal==='X' ? ' has-x' : '');
@@ -439,16 +451,54 @@ function saveDone(){
     });
 }
 
-function autoSaveHeader(){
-  fetch(base + '/inspect/header/save', {
-    method:'POST', headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({
-      equipId: selEquip, ym: selYm,
-      inspector: document.getElementById('inspector').value,
-      confirmer: document.getElementById('confirmer').value,
-      status: 'TEMP'
-    })
+function autoSaveHeader(){ /* inspector/confirmer 항목으로 이동 — 미사용 */ }
+
+function openInspectorMgr(){
+  document.getElementById('inspectorModal').style.display = 'flex';
+  fetchInspectors();
+}
+function closeInspectorMgr(){
+  document.getElementById('inspectorModal').style.display = 'none';
+}
+function fetchInspectors(){
+  fetch(base + '/inspect/inspector/list').then(function(r){ return r.json(); })
+    .then(function(d){
+      if (d.inspectors) { inspectorList = d.inspectors; renderInspectorModal(); }
+    });
+}
+function renderInspectorModal(){
+  var html = '';
+  inspectorList.forEach(function(ins){
+    var n = ins.name || ins.NAME || '';
+    var idx = ins.idx || ins.IDX;
+    html += '<div style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-bottom:1px solid var(--border)">'
+      + '<span style="flex:1;font-size:13px">' + esc(n) + '</span>'
+      + '<button class="btn-outline btn-sm" onclick="deleteInspector(' + idx + ')">삭제</button>'
+      + '</div>';
   });
+  if(!html) html = '<div style="color:var(--muted);text-align:center;padding:16px;font-size:13px">등록된 점검자가 없습니다</div>';
+  document.getElementById('inspectorListBox').innerHTML = html;
+}
+function addInspector(){
+  var name = document.getElementById('newInspectorName').value.trim();
+  if(!name) return;
+  fetch(base + '/inspect/inspector/add', {
+    method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({name: name})
+  }).then(function(r){ return r.json(); })
+    .then(function(d){
+      if(d.success){ document.getElementById('newInspectorName').value = ''; fetchInspectors(); }
+      else alert(d.error || '추가 실패');
+    });
+}
+function deleteInspector(idx){
+  if(!confirm('삭제하시겠습니까?')) return;
+  fetch(base + '/inspect/inspector/delete', {
+    method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({idx: idx})
+  }).then(function(r){ return r.json(); })
+    .then(function(d){
+      if(d.success) fetchInspectors();
+      else alert(d.error || '삭제 실패');
+    });
 }
 
 function toggleInputType(itemId) {

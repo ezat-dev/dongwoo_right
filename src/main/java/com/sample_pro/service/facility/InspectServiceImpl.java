@@ -90,6 +90,7 @@ public class InspectServiceImpl implements InspectService {
         resp.put("status",        header != null ? header.getStatus()        : "TEMP");
         resp.put("daysInMonth",   daysInMonth);
         resp.put("items",         itemRows);
+        resp.put("inspectors",    inspectDao.selectInspectors());
         return resp;
     }
 
@@ -177,16 +178,35 @@ public class InspectServiceImpl implements InspectService {
         inspectDao.upsertCell(r);
     }
 
-    /* ── 엑셀 출력 ── */
+    /* ── 엑셀 출력 (단일 설비) ── */
     @Override
     public Workbook exportExcel(String equipId, String ym, HttpSession session) {
+        XSSFWorkbook wb = new XSSFWorkbook();
+        addEquipSheet(wb, equipId, ym, session);
+        return wb;
+    }
+
+    /* ── 엑셀 출력 (전체 설비 BCF_1~BCF_12) ── */
+    @Override
+    public Workbook exportAllExcel(String ym, HttpSession session) {
+        List<String> equipIds = Arrays.asList(
+            "BCF_1","BCF_2","BCF_3","BCF_4","BCF_5","BCF_6",
+            "BCF_7","BCF_8","BCF_9","BCF_10","BCF_11","BCF_12"
+        );
+        XSSFWorkbook wb = new XSSFWorkbook();
+        for (String equipId : equipIds) {
+            addEquipSheet(wb, equipId, ym, session);
+        }
+        return wb;
+    }
+
+    private void addEquipSheet(XSSFWorkbook wb, String equipId, String ym, HttpSession session) {
         Map<String, Object> p = new HashMap<>();
         p.put("equipId", equipId);
         p.put("ym", ym);
 
         List<InspectItem>   items   = inspectDao.selectItems(p);
         List<InspectResult> results = inspectDao.selectResults(p);
-        InspectHeader       header  = inspectDao.selectHeader(p);
 
         Map<Integer, Map<Integer, Map<String, String>>> matrix = new HashMap<>();
         for (InspectResult r : results) {
@@ -200,19 +220,14 @@ public class InspectServiceImpl implements InspectService {
         Calendar cal = Calendar.getInstance();
         cal.set(year, month - 1, 1);
         int totalDays = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-        int half1End  = Math.min(16, totalDays); // 첫 번째 절반: 1~16일
+        int half1End  = Math.min(16, totalDays);
 
-        String inspector = header != null ? header.getInspectorName() : getLoginName(session);
-        String confirmer = header != null ? header.getConfirmerName() : "";
-
-        XSSFWorkbook wb    = new XSSFWorkbook();
-        XSSFSheet    sheet = wb.createSheet(equipId + "_" + ym);
+        XSSFSheet sheet = wb.createSheet(equipId);
 
         // ─── 스타일 정의 ──────────────────────────────────────────────────
-        // 제목 (보라색 배경, 흰색 텍스트)
         XSSFCellStyle sTitle = wb.createCellStyle();
         XSSFFont fTitle = wb.createFont();
-        fTitle.setBold(true); fTitle.setFontHeightInPoints((short) 13);
+        fTitle.setBold(true); fTitle.setFontHeightInPoints((short) 16);
         fTitle.setColor(IndexedColors.WHITE.getIndex());
         sTitle.setFont(fTitle);
         sTitle.setAlignment(HorizontalAlignment.CENTER);
@@ -221,18 +236,16 @@ public class InspectServiceImpl implements InspectService {
         sTitle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         setBorderAll(sTitle);
 
-        // 결재 레이블 (세로쓰기)
+        // 결재 레이블 - 가로 텍스트 (회전 없음)
         XSSFCellStyle sApvKet = wb.createCellStyle();
         XSSFFont fApvKet = wb.createFont(); fApvKet.setBold(true); fApvKet.setFontHeightInPoints((short) 11);
         sApvKet.setFont(fApvKet);
         sApvKet.setAlignment(HorizontalAlignment.CENTER);
         sApvKet.setVerticalAlignment(VerticalAlignment.CENTER);
-        sApvKet.setRotation((short) 90);
         sApvKet.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
         sApvKet.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         setBorderAll(sApvKet);
 
-        // 결재 헤더 (작성/검토/승인)
         XSSFCellStyle sApvHead = wb.createCellStyle();
         XSSFFont fApvHead = wb.createFont(); fApvHead.setBold(true); fApvHead.setFontHeightInPoints((short) 10);
         sApvHead.setFont(fApvHead);
@@ -242,19 +255,17 @@ public class InspectServiceImpl implements InspectService {
         sApvHead.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         setBorderAll(sApvHead);
 
-        // 결재 입력칸
         XSSFCellStyle sApvCell = wb.createCellStyle();
         sApvCell.setAlignment(HorizontalAlignment.CENTER);
         sApvCell.setVerticalAlignment(VerticalAlignment.CENTER);
         setBorderAll(sApvCell);
 
-        // 결재 구분선 "/"
+        // "/" 가운데 정렬
         XSSFCellStyle sApvSlash = wb.createCellStyle();
-        sApvSlash.setAlignment(HorizontalAlignment.RIGHT);
+        sApvSlash.setAlignment(HorizontalAlignment.CENTER);
         sApvSlash.setVerticalAlignment(VerticalAlignment.BOTTOM);
         setBorderAll(sApvSlash);
 
-        // 데이터 헤더 (회색)
         XSSFCellStyle sDataHead = wb.createCellStyle();
         XSSFFont fDataHead = wb.createFont(); fDataHead.setBold(true); fDataHead.setFontHeightInPoints((short) 10);
         sDataHead.setFont(fDataHead);
@@ -264,7 +275,6 @@ public class InspectServiceImpl implements InspectService {
         sDataHead.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         setBorderAll(sDataHead);
 
-        // 날짜 헤더 (연한 파랑)
         XSSFCellStyle sDayHead = wb.createCellStyle();
         XSSFFont fDayHead = wb.createFont(); fDayHead.setBold(true); fDayHead.setFontHeightInPoints((short) 10);
         fDayHead.setColor(IndexedColors.DARK_BLUE.getIndex());
@@ -275,13 +285,11 @@ public class InspectServiceImpl implements InspectService {
         sDayHead.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         setBorderAll(sDayHead);
 
-        // 데이터 셀
         XSSFCellStyle sCell = wb.createCellStyle();
         sCell.setAlignment(HorizontalAlignment.CENTER);
         sCell.setVerticalAlignment(VerticalAlignment.CENTER);
         setBorderAll(sCell);
 
-        // 항목명 셀 (굵은 글씨, 좌측정렬)
         XSSFCellStyle sItem = wb.createCellStyle();
         XSSFFont fItem = wb.createFont(); fItem.setBold(true);
         sItem.setFont(fItem);
@@ -289,14 +297,12 @@ public class InspectServiceImpl implements InspectService {
         sItem.setVerticalAlignment(VerticalAlignment.CENTER);
         setBorderAll(sItem);
 
-        // 기준 셀 (좌측정렬)
         XSSFCellStyle sStd = wb.createCellStyle();
         sStd.setAlignment(HorizontalAlignment.LEFT);
         sStd.setVerticalAlignment(VerticalAlignment.CENTER);
         setBorderAll(sStd);
 
         // ─── 컬럼 레이아웃 ───────────────────────────────────────────────
-        // Col 0 (A): 점검 항목, Col 1 (B): 점검 기준, Col 2+ (C~): 날짜 데이터
         final int COL_ITEM = 0;
         final int COL_STD  = 1;
         final int COL_DATA = 2;
@@ -307,35 +313,31 @@ public class InspectServiceImpl implements InspectService {
             row.setHeightInPoints(i == 1 || i == 2 ? 36 : 20);
         }
 
-        // 제목: A1:AA4 = 행 0~3, 열 0~26
+        // 제목: 행 0~3, 열 0~26 (A~AA) - 점검자/확인자 없음, 폰트 16pt
         for (int r = 0; r < 4; r++)
             for (int c = 0; c <= 26; c++)
                 sheet.getRow(r).createCell(c).setCellStyle(sTitle);
-        String titleStr = equipId + " 일상점검일지 [" + year + "년 " + month + "월]"
-                + "   점검자: " + inspector + "   확인자: " + confirmer;
-        sheet.getRow(0).getCell(0).setCellValue(titleStr);
+        sheet.getRow(0).getCell(0).setCellValue(
+                equipId + " 일상점검일지 [" + year + "년 " + month + "월]");
         sheet.addMergedRegion(new CellRangeAddress(0, 3, 0, 26));
 
-        // 결재란: AB1:AK4 = 행 0~3, 열 27~36
-        // 결재 세로 레이블 (열 27, 행 0~3 병합)
+        // 결재란: 열 27~33 (AB~AH) — 데이터 범위 내에 배치
+        // 결재 가로 레이블 (열 27, 행 0~3 병합, 회전 없음)
         for (int r = 0; r < 4; r++) sheet.getRow(r).createCell(27).setCellStyle(sApvKet);
         sheet.getRow(0).getCell(27).setCellValue("결재");
         sheet.addMergedRegion(new CellRangeAddress(0, 3, 27, 27));
 
-        // 작성(AC-AE=28-30), 검토(AF-AH=31-33), 승인(AI-AK=34-36)
+        // 작성(28-29), 검토(30-31), 승인(32-33) — 각 2열
         String[] apvNames  = {"작성", "검토", "승인"};
-        int[]    apvStarts = {28, 31, 34};
+        int[]    apvStarts = {28, 30, 32};
         for (int i = 0; i < 3; i++) {
-            int sc = apvStarts[i], ec = sc + 2;
-            // 행 0: 레이블
+            int sc = apvStarts[i], ec = sc + 1;
             for (int c = sc; c <= ec; c++) sheet.getRow(0).createCell(c).setCellStyle(sApvHead);
             sheet.getRow(0).getCell(sc).setCellValue(apvNames[i]);
             sheet.addMergedRegion(new CellRangeAddress(0, 0, sc, ec));
-            // 행 1~2: 입력칸
             for (int r = 1; r <= 2; r++)
                 for (int c = sc; c <= ec; c++) sheet.getRow(r).createCell(c).setCellStyle(sApvCell);
             sheet.addMergedRegion(new CellRangeAddress(1, 2, sc, ec));
-            // 행 3: "/" 구분선
             for (int c = sc; c <= ec; c++) sheet.getRow(3).createCell(c).setCellStyle(sApvSlash);
             sheet.getRow(3).getCell(sc).setCellValue("/");
             sheet.addMergedRegion(new CellRangeAddress(3, 3, sc, ec));
@@ -343,12 +345,8 @@ public class InspectServiceImpl implements InspectService {
 
         // ─── 데이터 섹션 ─────────────────────────────────────────────────
         int rowIdx = 4;
-
-        // 전반부: 1~16일
         rowIdx = writeSection(sheet, items, matrix, 1, half1End, rowIdx,
                 COL_ITEM, COL_STD, COL_DATA, sDataHead, sDayHead, sItem, sStd, sCell);
-
-        // 후반부: 17일~말일 (2행 공백 후 재시작)
         if (half1End < totalDays) {
             rowIdx += 2;
             writeSection(sheet, items, matrix, half1End + 1, totalDays, rowIdx,
@@ -356,16 +354,14 @@ public class InspectServiceImpl implements InspectService {
         }
 
         // ─── 열 너비 ─────────────────────────────────────────────────────
-        sheet.setColumnWidth(COL_ITEM, 45 * 256); // 너비 45
-        sheet.setColumnWidth(COL_STD,  45 * 256); // 너비 45
+        sheet.setColumnWidth(COL_ITEM, 45 * 256);
+        sheet.setColumnWidth(COL_STD,  45 * 256);
         for (int d = 0; d < 31; d++) {
             sheet.setColumnWidth(COL_DATA + d * 2,     1100);
             sheet.setColumnWidth(COL_DATA + d * 2 + 1, 1100);
         }
-        sheet.setColumnWidth(27, 800); // 결재
-        for (int c = 28; c <= 36; c++) sheet.setColumnWidth(c, 1400);
-
-        return wb;
+        sheet.setColumnWidth(27, 1800);                         // 결재
+        for (int c = 28; c <= 33; c++) sheet.setColumnWidth(c, 2000); // 작성/검토/승인
     }
 
     private int writeSection(Sheet sheet, List<InspectItem> items,
@@ -494,6 +490,21 @@ public class InspectServiceImpl implements InspectService {
 
         inspectDao.updateItemImg(itemId, savedName);
         return savedName;
+    }
+
+    @Override
+    public java.util.List<java.util.Map<String, Object>> getInspectorList() {
+        return inspectDao.selectInspectors();
+    }
+
+    @Override
+    public void addInspector(String name) {
+        inspectDao.insertInspector(name);
+    }
+
+    @Override
+    public void removeInspector(int idx) {
+        inspectDao.deleteInspector(idx);
     }
 
     private String getCellStr(Cell cell) {

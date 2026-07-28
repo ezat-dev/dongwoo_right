@@ -186,33 +186,49 @@ public class AuxiliaryInspectionController {
             CellStyle blankSt = mkSt(wb,false, 9,HorizontalAlignment.CENTER,VerticalAlignment.CENTER,IndexedColors.WHITE,            BorderStyle.THIN);
             CellStyle sepSt   = mkSt(wb,false, 9,HorizontalAlignment.CENTER,VerticalAlignment.CENTER,IndexedColors.WHITE,            BorderStyle.NONE);
 
-            /* 행 인덱스 */
-            final int RT=0, RI=1, RS=2, RC=3, RD=4;
+            /* 결재 스타일 */
+            CellStyle apvHeadSt  = mkSt(wb,true, 10,HorizontalAlignment.CENTER,VerticalAlignment.CENTER,IndexedColors.GREY_25_PERCENT,BorderStyle.THIN);
+            CellStyle apvCellSt  = mkSt(wb,false, 9,HorizontalAlignment.CENTER,VerticalAlignment.CENTER,IndexedColors.WHITE,           BorderStyle.THIN);
+            CellStyle apvSlashSt = mkSt(wb,false, 9,HorizontalAlignment.CENTER,VerticalAlignment.BOTTOM,IndexedColors.WHITE,           BorderStyle.THIN);
+
+            /* 행 인덱스: rows 0-3 = 제목+결재란, rows 4-6 = 기존 헤더, row 7+ = 데이터 */
+            final int RI=4, RS=5, RC=6, RD=7;
             final int OD_N=22, CP_N=5, N2_N=10, TOTAL=RD+OD_N;
 
             Row[] rows = new Row[TOTAL];
             for (int i=0;i<TOTAL;i++) { rows[i]=sh.createRow(i); rows[i].setHeightInPoints(16f); }
-            rows[RT].setHeightInPoints(30f); rows[RI].setHeightInPoints(18f);
+            rows[0].setHeightInPoints(22f); rows[1].setHeightInPoints(28f);
+            rows[2].setHeightInPoints(28f); rows[3].setHeightInPoints(18f);
+            rows[RI].setHeightInPoints(18f);
             rows[RS].setHeightInPoints(22f); rows[RC].setHeightInPoints(18f);
 
             /* 구분선 열 */
             for (int r=0;r<TOTAL;r++) { bc(rows[r],7,sepSt); bc(rows[r],17,sepSt); }
 
-            /* ── Row 0: 제목 ── */
-            mc(sh,rows[RT],RT,RT,0,21,"부대설비  점검표     ( "+date+" )",titleSt);
+            /* ── Rows 0-3: 제목(A~P) + 결재란(Q~V) ── */
+            mc(sh,rows[0],0,3,0,15,"부대설비  점검표     ( "+date+" )",titleSt);
+            /* 결재란: 작성(Q-R=16-17), 검토(S-T=18-19), 승인(U-V=20-21) */
+            String[] apvN = {"작성","검토","승인"};
+            int[]    apvC = {16, 18, 20};
+            for (int i=0;i<3;i++) {
+                int sc=apvC[i], ec=sc+1;
+                mc(sh,rows[0],0,0,sc,ec,apvN[i],apvHeadSt);   // 레이블 (row 0)
+                mc(sh,rows[1],1,2,sc,ec,"",   apvCellSt);      // 서명 공간 (rows 1-2 병합)
+                mc(sh,rows[3],3,3,sc,ec,"/",  apvSlashSt);     // "/" 가운데 (row 3)
+            }
 
-            /* ── Row 1: 정보 ── */
+            /* ── Row 4: 정보 ── */
             mc(sh,rows[RI],RI,RI,0,6,"  점검일자: "+date.replace("-",".")
                +"     주간 점검자: "+dayI+"     야간 점검자: "+nightI, infoSt);
             mc(sh,rows[RI],RI,RI, 8,16,"(점검이상무 ○, 점검이상 △, 이상조치완료 ⊙)",subSt);
             mc(sh,rows[RI],RI,RI,18,21,"(점검이상무 ○, 점검이상 △, 이상조치완료 ⊙)",subSt);
 
-            /* ── Row 2: 섹션 헤더 ── */
+            /* ── Row 5: 섹션 헤더 ── */
             mc(sh,rows[RS],RS,RS, 0, 6,"옥 외 부 대 설 비 점 검 표",secSt);
             mc(sh,rows[RS],RS,RS, 8,16,"콤 프 레 샤  점 검 표",secSt);
             mc(sh,rows[RS],RS,RS,18,21,"N₂ GAS  일일 점검일지",secSt);
 
-            /* ── Row 3: 컬럼 헤더 ── */
+            /* ── Row 6: 컬럼 헤더 ── */
             for (int i=0;i<new String[]{"구분","No","점검항목","관리기준","호기","주","야"}.length;i++)
                 hc(rows[RC],i,new String[]{"구분","No","점검항목","관리기준","호기","주","야"}[i],hdrSt);
             hc(rows[RC],8,"No",hdrSt); hc(rows[RC],9,"점검사항",hdrSt); hc(rows[RC],10,"기준",hdrSt);
