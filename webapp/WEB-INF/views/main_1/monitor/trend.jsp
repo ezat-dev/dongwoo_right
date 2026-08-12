@@ -854,6 +854,9 @@ function buildKpiCards(selList, rows) {
       if (!isNaN(v) && /cp.*pv|pv.*cp/.test(kpiTagName) && /[_\-]6([_\-]|$)/.test(kpiTagName)) {
         v = v * 0.001;
       }
+      if (!isNaN(v) && /가열cp|침탄cp/.test(kpiTagName) && /cp.*sp|sp.*cp/.test(kpiTagName) && /[_\-]6([_\-]|$)/.test(kpiTagName)) {
+        v = v * 0.001;
+      }
       if (!isNaN(v) && /유조.*pv|pv.*유조|침탄.*pv|pv.*침탄/.test(kpiTagName) && /[_\-]8([_\-]|$)/.test(kpiTagName)) {
         v = v / 10;
       }
@@ -875,7 +878,7 @@ function buildKpiCards(selList, rows) {
       if (!isNaN(v) && /유조.*온도|온도.*유조/.test(kpiTagName) && /[_\-]9([_\-]|$)/.test(kpiTagName)) {
         v = v - 9;
       }
-      if (!isNaN(v) && /유조.*온도|온도.*유조/.test(kpiTagName) && /[_\-]7([_\-]|$)/.test(kpiTagName)) {
+      if (!isNaN(v) && /유조.*온도|온도.*유조/.test(kpiTagName) && !/sp/i.test(kpiTagName) && /[_\-]7([_\-]|$)/.test(kpiTagName)) {
         v = v + 8;
       }
       return v;
@@ -915,7 +918,7 @@ function buildKpiCards(selList, rows) {
 /* ── CP 태그 판별 ── */
 function isCpTag(t) {
   var name = (t.trendName || t.tagName || t.colName || '').toLowerCase();
-  return name.split(/[_\s]+/).indexOf('cp') !== -1 || /cp.*pv|pv.*cp/.test(name);
+  return name.split(/[_\s]+/).indexOf('cp') !== -1 || /cp.*pv|pv.*cp/.test(name) || /가열cp|침탄cp/.test(name);
 }
 
 /* ── 유량 태그 판별 (tagName/trendName/colName 에 유량 관련 키워드 포함) ── */
@@ -963,6 +966,9 @@ function buildMainChart(selList, rows) {
       if (!isNaN(v) && /cp.*pv|pv.*cp/.test(tName) && /[_\-]6([_\-]|$)/.test(tName)) {
         v = v * 0.001;
       }
+      if (!isNaN(v) && /가열cp|침탄cp/.test(tName) && /cp.*sp|sp.*cp/.test(tName) && /[_\-]6([_\-]|$)/.test(tName)) {
+        v = v * 0.001;
+      }
       if (!isNaN(v) && /유조.*pv|pv.*유조|침탄.*pv|pv.*침탄/.test(tName) && /[_\-]8([_\-]|$)/.test(tName)) {
         v = v / 10;
       }
@@ -984,7 +990,7 @@ function buildMainChart(selList, rows) {
       if (!isNaN(v) && /유조.*온도|온도.*유조/.test(tName) && /[_\-]9([_\-]|$)/.test(tName)) {
         v = v - 9;
       }
-      if (!isNaN(v) && /유조.*온도|온도.*유조/.test(tName) && /[_\-]7([_\-]|$)/.test(tName)) {
+      if (!isNaN(v) && /유조.*온도|온도.*유조/.test(tName) && !/sp/i.test(tName) && /[_\-]7([_\-]|$)/.test(tName)) {
         v = v + 8;
       }
       if (!isNaN(v)) data.push([ts, v]);
@@ -1057,7 +1063,7 @@ function buildMainChart(selList, rows) {
       borderRadius: 8,
       style: { color: '#d0ddf0' },
       formatter: function() {
-        var s = '<span style="font-size:10px;color:#8899bb">'
+        var s = '<span style="font-size:13px;color:#ffffff;font-weight:600">'
               + Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x)
               + '</span><br/>';
         this.points.forEach(function(p) {

@@ -387,9 +387,14 @@ public class ExcelExportService {
             else if (b6)  raw = raw * 0.001;
         }
 
+        // BCF6 가열CP_SP / 침탄CP_SP → ÷1000
+        boolean isCpSp6 = b6 && (lo.contains("가열cp") || lo.contains("침탄cp"))
+                       && (lo.matches(".*cp.*sp.*") || cn.contains("_cp_sp"));
+        if (isCpSp6) raw = raw * 0.001;
+
         if (b7) {
-            boolean isUjTemp = lo.matches(".*(유조.*온도|온도.*유조).*")
-                            || cn.contains("_uj_pv");
+            boolean isUjTemp = (lo.matches(".*(유조.*온도|온도.*유조).*") || cn.contains("_uj_pv"))
+                            && !lo.contains("sp") && !cn.contains("_uj_sp");
             if (isUjTemp) raw = raw + 8.0;
         }
 
