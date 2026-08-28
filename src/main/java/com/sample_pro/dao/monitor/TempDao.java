@@ -30,6 +30,7 @@ public interface TempDao {
     void renameTempSnapshotColumn(Map<String, Object> params);
     List<Map<String, Object>> selectTempSnapshot(Map<String, Object> params);
     List<Map<String, Object>> selectTempSnapshotRange(Map<String, Object> params);
+    List<Map<String, Object>> selectRecentSnapshot();
 
     List<TempMemo> selectMemoList(Map<String, Object> params);
     void insertMemo(TempMemo memo);

@@ -183,9 +183,10 @@ public class TempController {
     @ResponseBody
     public ResponseEntity<?> memoList(
             @RequestParam("from") String from,
-            @RequestParam("to") String to) {
+            @RequestParam("to") String to,
+            @RequestParam(value = "equipId", defaultValue = "ALL") String equipId) {
         try {
-            return ResponseEntity.ok(tempService.getMemoList(from, to));
+            return ResponseEntity.ok(tempService.getMemoList(from, to, equipId));
         } catch (Exception e) {
             return ResponseEntity.ok(err("Memo list failed: " + e.getMessage()));
         }
@@ -197,6 +198,8 @@ public class TempController {
         try {
             if (memo.getTcName() == null || memo.getTcName().trim().isEmpty())
                 return ResponseEntity.ok(err("메모 제목을 입력하세요"));
+            if (memo.getEquipId() == null || memo.getEquipId().trim().isEmpty())
+                memo.setEquipId("0");
             if (memo.getTcRegtime() == null || memo.getTcRegtime().trim().isEmpty()) {
                 String now = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
                 memo.setTcRegtime(now);

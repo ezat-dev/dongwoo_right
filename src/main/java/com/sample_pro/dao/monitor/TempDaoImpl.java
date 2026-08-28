@@ -116,6 +116,11 @@ public class TempDaoImpl implements TempDao {
     }
 
     @Override
+    public List<Map<String, Object>> selectRecentSnapshot() {
+        return sqlSession.selectList("TempMapper.selectRecentSnapshot");
+    }
+
+    @Override
     public List<TempMemo> selectMemoList(Map<String, Object> params) {
         return sqlSession.selectList("TempMapper.selectMemoList", params);
     }

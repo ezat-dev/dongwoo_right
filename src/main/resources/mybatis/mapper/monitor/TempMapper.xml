@@ -188,10 +188,20 @@
         ORDER BY record_time ASC
     </select>
 
+    <select id="selectRecentSnapshot" resultType="hashmap">
+        SELECT record_time,
+               `BCF_1_CT_PV`, `BCF_2_CT_PV`, `BCF_3_CT_PV`, `BCF_4_CT_PV`,
+               `BCF_5_CT_PV`, `BCF_6_CT1_PV`, `BCF_7_CT_PV`, `BCF_8_CT_PV`,
+               `BCF_9_CT_PV`, `BCF_10_CT_PV`, `BCF_11_ROOM1_TEMP_PV`, `BCF_12_CT_PV`
+        FROM tb_temp_snapshot
+        ORDER BY record_time DESC
+        LIMIT 5
+    </select>
 
     <!-- Memo -->
     <resultMap id="tempMemoMap" type="com.sample_pro.domain.TempMemo">
         <id     property="tcCnt"      column="tc_cnt"/>
+        <result property="equipId"    column="equip_id"/>
         <result property="tcRegtime"  column="tc_regtime"/>
         <result property="tcName"     column="tc_name"/>
         <result property="tcDesc"     column="tc_desc"/>
@@ -201,17 +211,18 @@
     </resultMap>
 
     <select id="selectMemoList" parameterType="map" resultMap="tempMemoMap">
-        SELECT tc_cnt, tc_regtime, tc_name, tc_desc, tc_user_code, tc_user_name, tc_yn
+        SELECT tc_cnt, equip_id, tc_regtime, tc_name, tc_desc, tc_user_code, tc_user_name, tc_yn
         FROM   tb_temp_memo
         WHERE  tc_yn = 'Y'
           AND  tc_regtime BETWEEN #{from} AND #{to}
+          AND  (equip_id = '0' OR equip_id = #{equipId} OR #{equipId} = 'ALL')
         ORDER  BY tc_regtime ASC
     </select>
 
     <insert id="insertMemo" parameterType="com.sample_pro.domain.TempMemo"
             useGeneratedKeys="true" keyProperty="tcCnt">
-        INSERT INTO tb_temp_memo (tc_regtime, tc_name, tc_desc, tc_user_code, tc_user_name, tc_yn)
-        VALUES (#{tcRegtime}, #{tcName}, #{tcDesc}, #{tcUserCode}, #{tcUserName}, 'Y')
+        INSERT INTO tb_temp_memo (equip_id, tc_regtime, tc_name, tc_desc, tc_user_code, tc_user_name, tc_yn)
+        VALUES (COALESCE(#{equipId}, '0'), #{tcRegtime}, #{tcName}, #{tcDesc}, #{tcUserCode}, #{tcUserName}, 'Y')
     </insert>
 
     <update id="deleteMemo" parameterType="int">

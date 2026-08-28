@@ -18,7 +18,7 @@ public interface TempService {
     List<Map<String, Object>> getTempSnapshot(int limit);
     List<Map<String, Object>> getTempSnapshotRange(String from, String to);
 
-    List<TempMemo> getMemoList(String from, String to);
+    List<TempMemo> getMemoList(String from, String to, String equipId);
     void insertMemo(TempMemo memo);
     void deleteMemo(int tcCnt);
 }

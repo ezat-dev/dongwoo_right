@@ -2,6 +2,7 @@ package com.sample_pro.domain;
 
 public class TempMemo {
     private int    tcCnt;
+    private String equipId;
     private String tcRegtime;
     private String tcName;
     private String tcDesc;
@@ -11,6 +12,8 @@ public class TempMemo {
 
     public int    getTcCnt()               { return tcCnt; }
     public void   setTcCnt(int tcCnt)      { this.tcCnt = tcCnt; }
+    public String getEquipId()             { return equipId; }
+    public void   setEquipId(String v)     { this.equipId = v; }
     public String getTcRegtime()           { return tcRegtime; }
     public void   setTcRegtime(String v)   { this.tcRegtime = v; }
     public String getTcName()              { return tcName; }

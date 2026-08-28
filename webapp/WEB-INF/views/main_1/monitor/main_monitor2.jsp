@@ -178,6 +178,18 @@
 }
 
 
+.bcf-8-dt-1 {
+    background: #99dfa6;
+    border-style: solid;
+    border-color: #000000;
+    border-width: 1px;
+    width: 38px;
+    height: 23px;
+    position: absolute;
+    left: 620px;
+    top: 455px;
+}
+
 .bcf-8-dt-2 {
     background: #99dfa6;
     border-style: solid;
@@ -221,7 +233,8 @@
      top: 82px !important;
    }
 
-   /* bcf-8-dt-2 : 이미지 뒤에 가려지는 문제 해결 */
+   /* bcf-8-dt-1/2 : 이미지 뒤에 가려지는 문제 해결 */
+   .group-2 .bcf-8-dt-1 { z-index: 200; }
    .group-2 .bcf-8-dt-2 { z-index: 200; }
 
    .group-3 [class*="-conn"] {

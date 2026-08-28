@@ -433,6 +433,11 @@ body { font-family: 'Pretendard','Noto Sans KR','Segoe UI',sans-serif; }
       <label>내용 <span style="color:var(--muted);font-weight:400">(최대 100자)</span></label>
       <textarea id="memoDesc" maxlength="100" placeholder="메모 내용을 입력하세요 (선택)"></textarea>
     </div>
+    <div class="memo-field" style="display:flex;align-items:center;gap:8px;margin-bottom:0;padding:8px 10px;background:rgba(128,90,213,.06);border-radius:7px;border:1px solid rgba(128,90,213,.18)">
+      <input type="checkbox" id="memoAll" style="width:auto;margin:0;cursor:pointer;accent-color:#805AD5">
+      <label for="memoAll" style="margin:0;font-size:12px;font-weight:600;color:#553C9A;cursor:pointer;user-select:none">전체 설비에 적용</label>
+      <span id="memoEquipLabel" style="margin-left:auto;font-size:11px;color:var(--muted)"></span>
+    </div>
     <div class="memo-modal-btns">
       <button class="btn-outline btn-sm" onclick="closeMemoModal()">취소</button>
       <button class="btn-primary btn-sm" onclick="saveMemo()">저장</button>
@@ -1569,6 +1574,9 @@ function openMemoModal() {
   document.getElementById('memoTimeVal').value = ts;
   document.getElementById('memoName').value = '';
   document.getElementById('memoDesc').value = '';
+  document.getElementById('memoAll').checked = false;
+  var lbl = document.getElementById('memoEquipLabel');
+  if (lbl) lbl.textContent = curEquip === 'ALL' ? '현재: 전체' : '현재 설비: ' + curEquip;
   document.getElementById('memoOverlay').style.display = 'flex';
   setTimeout(function(){ document.getElementById('memoName').focus(); }, 50);
 }
@@ -1583,11 +1591,12 @@ function saveMemo() {
   var rawTime = document.getElementById('memoTimeVal').value;
   if (!name)    { alert('메모 제목을 입력하세요'); return; }
   if (!rawTime) { alert('시간을 선택하세요'); return; }
-  var regtime = rawTime.replace('T', ' ') + (rawTime.length === 16 ? ':00' : '');
+  var regtime  = rawTime.replace('T', ' ') + (rawTime.length === 16 ? ':00' : '');
+  var equipId  = document.getElementById('memoAll').checked ? '0' : curEquip;
   fetch(base + '/temp/memo/insert', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ tcName: name, tcDesc: desc, tcRegtime: regtime, tcUserCode: 0 })
+    body: JSON.stringify({ tcName: name, tcDesc: desc, tcRegtime: regtime, tcUserCode: 0, equipId: equipId })
   })
   .then(function(r){ return r.json(); })
   .then(function(d){
@@ -1600,7 +1609,7 @@ function saveMemo() {
 
 function loadMemos(from, to) {
   if (!from || !to) return;
-  fetch(base + '/temp/memo/list?from=' + encodeURIComponent(from) + '&to=' + encodeURIComponent(to))
+  fetch(base + '/temp/memo/list?from=' + encodeURIComponent(from) + '&to=' + encodeURIComponent(to) + '&equipId=' + encodeURIComponent(curEquip))
     .then(function(r){ return r.json(); })
     .then(function(d){
       if (!Array.isArray(d)) return;

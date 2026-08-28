@@ -113,10 +113,11 @@ public class TempServiceImpl implements TempService {
     }
 
     @Override
-    public List<TempMemo> getMemoList(String from, String to) {
+    public List<TempMemo> getMemoList(String from, String to, String equipId) {
         Map<String, Object> p = new HashMap<>();
         p.put("from", from);
         p.put("to", to);
+        p.put("equipId", equipId != null ? equipId : "ALL");
         return tempDao.selectMemoList(p);
     }
 

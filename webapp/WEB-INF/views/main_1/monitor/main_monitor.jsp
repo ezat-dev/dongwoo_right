@@ -829,6 +829,12 @@
   });
 
   const allTags = Object.keys(wordElMap).concat(Object.keys(bitElMap));
+  if (allTags.indexOf('bcf1_s_40004') < 0) allTags.push('bcf1_s_40004');
+  if (allTags.indexOf('bcf3_s_40004') < 0) allTags.push('bcf3_s_40004');
+  if (allTags.indexOf('bcf5_s_40004') < 0) allTags.push('bcf5_s_40004');
+  if (allTags.indexOf('bcf2_s_40002') < 0) allTags.push('bcf2_s_40002');
+  if (allTags.indexOf('bcf4_s_40004') < 0) allTags.push('bcf4_s_40004');
+  if (allTags.indexOf('bcf10_s_40004') < 0) allTags.push('bcf10_s_40004');
 
   // 초기 상태: 비트 요소 모두 숨김 (jogging은 항상 표시, bcf12 open 열림은 visible 유지)
   Object.keys(bitElMap).forEach(function(tag) {
@@ -965,6 +971,66 @@
         var el = document.querySelector(m.dt);
         if (el) el.style.visibility = (data[m.tray] === 1) ? 'visible' : 'hidden';
       });
+    })();
+
+    // bcf1 belt-dt: 40002와 40004 중 0이 아닌 값 표시
+    (function() {
+      var el = document.querySelector('.bcf-1-belt-dt');
+      if (!el) return;
+      var v2 = Number(data['bcf1_s_40002']);
+      var v4 = Number(data['bcf1_s_40004']);
+      var val = (!isNaN(v2) && v2 !== 0) ? v2 : (!isNaN(v4) && v4 !== 0) ? v4 : 0;
+      el.textContent = String(Math.round(val));
+    })();
+
+    // bcf3 belt-dt: 40002와 40004 중 0이 아닌 값 표시
+    (function() {
+      var el = document.querySelector('.bcf-3-belt-dt');
+      if (!el) return;
+      var v2 = Number(data['bcf3_s_40002']);
+      var v4 = Number(data['bcf3_s_40004']);
+      var val = (!isNaN(v2) && v2 !== 0) ? v2 : (!isNaN(v4) && v4 !== 0) ? v4 : 0;
+      el.textContent = String(Math.round(val));
+    })();
+
+    // bcf5 belt-dt: 40002와 40004 중 0이 아닌 값 표시
+    (function() {
+      var el = document.querySelector('.bcf-5-belt-dt');
+      if (!el) return;
+      var v2 = Number(data['bcf5_s_40002']);
+      var v4 = Number(data['bcf5_s_40004']);
+      var val = (!isNaN(v2) && v2 !== 0) ? v2 : (!isNaN(v4) && v4 !== 0) ? v4 : 0;
+      el.textContent = String(Math.round(val));
+    })();
+
+    // bcf2 belt-dt: 40002와 40004 중 0이 아닌 값 표시
+    (function() {
+      var el = document.querySelector('.bcf-2-belt-dt');
+      if (!el) return;
+      var v2 = Number(data['bcf2_s_40002']);
+      var v4 = Number(data['bcf2_s_40004']);
+      var val = (!isNaN(v2) && v2 !== 0) ? v2 : (!isNaN(v4) && v4 !== 0) ? v4 : 0;
+      el.textContent = String(Math.round(val));
+    })();
+
+    // bcf4 belt-dt: 40002와 40004 중 0이 아닌 값 표시
+    (function() {
+      var el = document.querySelector('.bcf-4-belt-dt');
+      if (!el) return;
+      var v2 = Number(data['bcf4_s_40002']);
+      var v4 = Number(data['bcf4_s_40004']);
+      var val = (!isNaN(v2) && v2 !== 0) ? v2 : (!isNaN(v4) && v4 !== 0) ? v4 : 0;
+      el.textContent = String(Math.round(val));
+    })();
+
+    // bcf10 belt-dt: 40002와 40004 중 0이 아닌 값 표시
+    (function() {
+      var el = document.querySelector('.bcf-10-belt-dt');
+      if (!el) return;
+      var v2 = Number(data['bcf10_s_40002']);
+      var v4 = Number(data['bcf10_s_40004']);
+      var val = (!isNaN(v2) && v2 !== 0) ? v2 : (!isNaN(v4) && v4 !== 0) ? v4 : 0;
+      el.textContent = String(Math.round(val));
     })();
 
     penEls.forEach(function(el) {
