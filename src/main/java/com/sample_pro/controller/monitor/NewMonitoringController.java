@@ -1,9 +1,12 @@
 package com.sample_pro.controller.monitor;
 
+import com.sample_pro.service.monitor.CommErrMemoService;
 import com.sample_pro.service.monitor.MonitorCacheService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,6 +21,9 @@ public class NewMonitoringController {
 
     private final MonitorCacheService cacheService;
 
+    @Autowired
+    private CommErrMemoService commErrMemoService;
+
     public NewMonitoringController(MonitorCacheService cacheService) {
         this.cacheService = cacheService;
     }
@@ -25,5 +31,14 @@ public class NewMonitoringController {
     @GetMapping(value = "/snapshot", produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> snapshot() {
         return cacheService.getSnapshot();
+    }
+
+    /** 현재 통신 오류 호기 목록 — main_monitor.jsp 팝업용 */
+    @GetMapping(value = "/comm-errors", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> commErrors() {
+        List<Map<String, String>> errors = commErrMemoService.getCommErrors();
+        Map<String, Object> resp = new java.util.HashMap<>();
+        resp.put("errors", errors);
+        return resp;
     }
 }

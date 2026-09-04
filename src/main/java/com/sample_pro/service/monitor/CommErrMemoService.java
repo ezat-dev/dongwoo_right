@@ -6,8 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,10 +36,27 @@ public class CommErrMemoService {
     };
 
     // 중복 삽입 방지: 호기별 오류 상태 (정상→오류 전환 시에만 메모 삽입)
-    private final Map<String, Boolean> alertingMap = new ConcurrentHashMap<>();
+    private final Map<String, Boolean> alertingMap  = new ConcurrentHashMap<>();
+    // 오류 최초 감지 시각 (오류 중인 호기만 보관)
+    private final Map<String, String>  alertStartMap = new ConcurrentHashMap<>();
 
     @Autowired
     private TempDao tempDao;
+
+    /** 현재 통신 오류 중인 호기 목록 반환 (Controller에서 REST 노출용) */
+    public List<Map<String, String>> getCommErrors() {
+        List<Map<String, String>> result = new ArrayList<>();
+        for (String[] bcf : BCF_COLS) {
+            String bcfId = bcf[0];
+            if (Boolean.TRUE.equals(alertingMap.get(bcfId))) {
+                Map<String, String> item = new HashMap<>();
+                item.put("equipId", bcfId.replace("_", "")); // BCF_7 → BCF7
+                item.put("since",   alertStartMap.getOrDefault(bcfId, ""));
+                result.add(item);
+            }
+        }
+        return result;
+    }
 
     @Scheduled(fixedDelay = 60000)
     public void checkCommErrors() {
@@ -66,11 +87,12 @@ public class CommErrMemoService {
                 String rtStr = formatTime(rows.get(2).get("record_time"), sdf);
                 String hhmm  = rtStr.length() >= 16 ? rtStr.substring(11, 16) : "";
 
+                String equipId = bcfId.replace("_", ""); // "BCF_7" → "BCF7"
                 TempMemo memo = new TempMemo();
-                memo.setEquipId(bcfId.replace("_", "")); // "BCF_7" → "BCF7"
+                memo.setEquipId(equipId);
                 memo.setTcRegtime(rtStr);
-                memo.setTcName(bcfId + "_통신오류(" + hhmm + ")");
-                memo.setTcDesc("연속 3회 이상 NULL 감지 - 통신 불량");
+                memo.setTcName(equipId + "_통신오류");   // 최대 10자: "BCF12_통신오류"
+                memo.setTcDesc(hhmm + " 연속3회NULL - 통신불량");
                 memo.setTcUserCode(0);
                 memo.setTcUserName("시스템");
 
@@ -79,13 +101,24 @@ public class CommErrMemoService {
                 } catch (Exception ex) {
                     // 삽입 실패 무시
                 }
+                appendCommErrLog(equipId, rtStr, hhmm);
+                alertStartMap.put(bcfId, rtStr);
                 alertingMap.put(bcfId, true);
 
             } else if (!allNull && wasAlerting) {
                 // 통신 복구 → 상태 초기화
+                alertStartMap.remove(bcfId);
                 alertingMap.put(bcfId, false);
             }
         }
+    }
+
+    private void appendCommErrLog(String equipId, String rtStr, String hhmm) {
+        try (BufferedWriter bw = new BufferedWriter(
+                new FileWriter("D:\\sample_pro\\통신 이상 발생.txt", true))) {
+            bw.write("[" + rtStr + "] " + equipId + " 통신 이상 감지 (" + hhmm + " 연속3회NULL)");
+            bw.newLine();
+        } catch (Exception ignored) {}
     }
 
     private String formatTime(Object rtObj, SimpleDateFormat sdf) {

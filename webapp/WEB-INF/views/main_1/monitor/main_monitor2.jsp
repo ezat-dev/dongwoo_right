@@ -187,7 +187,7 @@
     height: 23px;
     position: absolute;
     left: 620px;
-    top: 455px;
+    top: 198px;
 }
 
 .bcf-8-dt-2 {

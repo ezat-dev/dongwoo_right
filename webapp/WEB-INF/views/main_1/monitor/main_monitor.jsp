@@ -59,6 +59,107 @@
    .ov-tab-auto:hover:not(.running) { background: #C6F6D5; color: #276749; }
    .ov-tab-auto.running { background: #276749; color: #fff; }
 
+   /* ── 통신 이상 팝업 ── */
+   #commErrPopup {
+     display: none;
+     position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+     z-index: 19999;
+     width: 480px;
+     background: #fff;
+     border-radius: 12px;
+     box-shadow: 0 8px 40px rgba(0,0,0,.32), 0 2px 8px rgba(0,0,0,.18);
+     font-family: 'Malgun Gothic', 'Segoe UI', sans-serif;
+     overflow: hidden;
+     animation: commPopIn .22s ease;
+   }
+   @keyframes commPopIn {
+     from { opacity:0; transform: translate(-50%,-48%) scale(.95); }
+     to   { opacity:1; transform: translate(-50%,-50%) scale(1);   }
+   }
+   #commErrPopup .pop-head {
+     display: flex; align-items: center; justify-content: space-between;
+     padding: 14px 18px 12px;
+     background: linear-gradient(135deg, #c53030 0%, #e53e3e 100%);
+     color: #fff;
+   }
+   #commErrPopup .pop-head-title {
+     display: flex; align-items: center; gap: 8px;
+     font-size: 15px; font-weight: 800; letter-spacing: .4px;
+   }
+   #commErrPopup .pop-head-icon {
+     width: 22px; height: 22px;
+     background: rgba(255,255,255,.22);
+     border-radius: 50%;
+     display: flex; align-items: center; justify-content: center;
+     font-size: 13px;
+   }
+   #commErrPopup .pop-close {
+     background: rgba(255,255,255,.18); border: none; cursor: pointer;
+     color: #fff; font-size: 16px; font-weight: 700;
+     width: 28px; height: 28px; border-radius: 6px;
+     display: flex; align-items: center; justify-content: center;
+     transition: background .13s;
+   }
+   #commErrPopup .pop-close:hover { background: rgba(255,255,255,.35); }
+   #commErrPopup .pop-body {
+     padding: 18px 20px 14px;
+   }
+   #commErrPopup .pop-sub {
+     font-size: 12px; color: #718096; margin-bottom: 14px;
+   }
+   #commErrPopup .pop-err-list {
+     list-style: none; margin: 0 0 14px; padding: 0;
+     max-height: 200px; overflow-y: auto;
+   }
+   #commErrPopup .pop-err-list li {
+     display: flex; align-items: center; justify-content: space-between;
+     padding: 9px 12px;
+     background: #fff5f5;
+     border: 1px solid #fed7d7;
+     border-radius: 7px;
+     margin-bottom: 7px;
+   }
+   #commErrPopup .pop-err-list li:last-child { margin-bottom: 0; }
+   #commErrPopup .pop-equip {
+     font-size: 14px; font-weight: 800; color: #c53030; letter-spacing: .5px;
+   }
+   #commErrPopup .pop-since {
+     font-size: 11px; color: #718096; text-align: right; line-height: 1.4;
+   }
+   #commErrPopup .pop-notice {
+     font-size: 11.5px; color: #4a5568;
+     background: #fffbeb; border: 1px solid #fbd38d;
+     border-radius: 6px; padding: 9px 12px; margin-bottom: 16px;
+     line-height: 1.6;
+   }
+   #commErrPopup .pop-notice b { color: #b7791f; }
+   #commErrPopup .pop-foot {
+     display: flex; gap: 8px; justify-content: flex-end;
+     padding: 0 20px 18px;
+   }
+   #commErrPopup .pop-btn-trend {
+     padding: 9px 18px; border-radius: 7px; cursor: pointer; font-size: 13px;
+     font-weight: 700; font-family: inherit;
+     background: linear-gradient(135deg, #3182ce, #2b6cb0);
+     color: #fff; border: none;
+     box-shadow: 0 2px 6px rgba(49,130,206,.35);
+     transition: opacity .13s;
+   }
+   #commErrPopup .pop-btn-trend:hover { opacity: .88; }
+   #commErrPopup .pop-btn-close {
+     padding: 9px 18px; border-radius: 7px; cursor: pointer; font-size: 13px;
+     font-weight: 700; font-family: inherit;
+     background: #edf2f7; color: #4a5568; border: none;
+     transition: background .13s;
+   }
+   #commErrPopup .pop-btn-close:hover { background: #e2e8f0; }
+   #commErrOverlay {
+     display: none;
+     position: fixed; inset: 0;
+     background: rgba(0,0,0,.38);
+     z-index: 19998;
+   }
+
    /* ── BCF 명칭 / 운전모드 라벨 ── */
    .bcf-name-lbl {
      position: absolute;
@@ -1317,6 +1418,107 @@
   window.addEventListener('resize', scaleToFit);
   scaleToFit();
 })();
+/* ── 통신 이상 팝업 폴링 ── */
+(function() {
+  var ctx2 = '<%= ctx %>';
+  var seenErrors = {}; // 사용자가 이미 확인한 오류 set
+
+  function formatSince(since) {
+    if (!since) return '';
+    // "2026-09-04 14:17:30" → "09-04 14:17 부터"
+    var m = since.match(/(\d{4})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2})/);
+    if (!m) return since;
+    return m[2] + '-' + m[3] + ' ' + m[4] + ':' + m[5] + ' 부터';
+  }
+
+  function renderPopup(errors) {
+    var list = document.getElementById('commErrList');
+    if (!list) return;
+    list.innerHTML = '';
+    errors.forEach(function(e) {
+      var li = document.createElement('li');
+      li.innerHTML =
+        '<span class="pop-equip">' + e.equipId + '</span>' +
+        '<span class="pop-since">통신 이상<br>' + formatSince(e.since) + '</span>';
+      list.appendChild(li);
+    });
+  }
+
+  function showPopup(errors) {
+    renderPopup(errors);
+    document.getElementById('commErrOverlay').style.display = 'block';
+    document.getElementById('commErrPopup').style.display  = 'block';
+  }
+  window.showCommErrPopup = showPopup;
+
+  function hidePopup() {
+    document.getElementById('commErrOverlay').style.display = 'none';
+    document.getElementById('commErrPopup').style.display  = 'none';
+  }
+
+  window.closeCommErrPopup = function() {
+    hidePopup();
+  };
+
+  window.goCommErrTrend = function() {
+    window.open(ctx2 + '/main_1/trend', '_blank');
+    hidePopup();
+  };
+
+  function pollCommErrors() {
+    fetch(ctx2 + '/monitor/comm-errors')
+      .then(function(r) { return r.ok ? r.json() : Promise.reject(); })
+      .then(function(data) {
+        var errors = data.errors || [];
+        var currentIds = errors.map(function(e) { return e.equipId; });
+
+        // 복구된 항목은 seen에서 제거 (다음 발생 시 재알림)
+        Object.keys(seenErrors).forEach(function(id) {
+          if (currentIds.indexOf(id) === -1) delete seenErrors[id];
+        });
+
+        // 새로 오류인 항목 확인
+        var newErrors = errors.filter(function(e) { return !seenErrors[e.equipId]; });
+
+        if (newErrors.length > 0) {
+          // 현재 오류 전체를 팝업에 표시, 새 항목만 seen 등록
+          newErrors.forEach(function(e) { seenErrors[e.equipId] = true; });
+          showPopup(errors);
+        }
+      })
+      .catch(function() {});
+  }
+
+  // 페이지 로드 후 5초 뒤 첫 체크 (화면 그려진 후), 이후 60초마다
+  setTimeout(function() {
+    pollCommErrors();
+    setInterval(pollCommErrors, 60000);
+  }, 5000);
+})();
 </script>
+
+<!-- 통신 이상 팝업 -->
+<div id="commErrOverlay"></div>
+<div id="commErrPopup" role="dialog" aria-modal="true">
+  <div class="pop-head">
+    <div class="pop-head-title">
+      <span class="pop-head-icon">!</span>
+      통신 이상 감지
+    </div>
+    <button class="pop-close" onclick="closeCommErrPopup()" title="닫기">&#10005;</button>
+  </div>
+  <div class="pop-body">
+    <p class="pop-sub">다음 설비의 PLC 통신 오류 발생</p>
+    <ul class="pop-err-list" id="commErrList"></ul>
+    <div class="pop-notice">
+      <b>자동 메모가 트랜드에 기록되었습니다.</b><br>
+      담당자에게 통신 조치를 요청하세요.
+    </div>
+  </div>
+  <div class="pop-foot">
+    <button class="pop-btn-trend" onclick="goCommErrTrend()">트랜드 확인</button>
+    <button class="pop-btn-close" onclick="closeCommErrPopup()">닫기</button>
+  </div>
+</div>
 </body>
 </html>

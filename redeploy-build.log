@@ -1,4 +1,4 @@
-[INFO] Scanning for projects...
+﻿[INFO] Scanning for projects...
 [INFO] 
 [INFO] --------------------------< com.ez25367:web >---------------------------
 [INFO] Building sample_pro 1.0.0-BUILD-SNAPSHOT
@@ -6,7 +6,7 @@
 [INFO] --------------------------------[ war ]---------------------------------
 [INFO] 
 [INFO] --- clean:3.2.0:clean (default-clean) @ web ---
-[INFO] Deleting D:\sample_pro\target
+[INFO] Deleting d:\sample_pro\target
 [INFO] 
 [INFO] --- resources:3.4.0:resources (default-resources) @ web ---
 [WARNING] Using platform encoding (MS949 actually) to copy filtered resources, i.e. build is platform dependent!
@@ -14,9 +14,9 @@
 [INFO] 
 [INFO] --- compiler:3.10.1:compile (default-compile) @ web ---
 [INFO] Changes detected - recompiling the module!
-[INFO] Compiling 135 source files to D:\sample_pro\target\classes
-[INFO] /D:/sample_pro/src/main/java/com/sample_pro/controller/facility/AuxiliaryInspectionController.java: D:\sample_pro\src\main\java\com\sample_pro\controller\facility\AuxiliaryInspectionController.java uses or overrides a deprecated API.
-[INFO] /D:/sample_pro/src/main/java/com/sample_pro/controller/facility/AuxiliaryInspectionController.java: Recompile with -Xlint:deprecation for details.
+[INFO] Compiling 136 source files to d:\sample_pro\target\classes
+[INFO] /d:/sample_pro/src/main/java/com/sample_pro/controller/facility/AuxiliaryInspectionController.java: d:\sample_pro\src\main\java\com\sample_pro\controller\facility\AuxiliaryInspectionController.java uses or overrides a deprecated API.
+[INFO] /d:/sample_pro/src/main/java/com/sample_pro/controller/facility/AuxiliaryInspectionController.java: Recompile with -Xlint:deprecation for details.
 [INFO] 
 [INFO] --- resources:3.4.0:testResources (default-testResources) @ web ---
 [WARNING] Using platform encoding (MS949 actually) to copy filtered resources, i.e. build is platform dependent!
@@ -30,12 +30,12 @@
 [INFO] 
 [INFO] --- war:3.3.1:war (default-war) @ web ---
 [INFO] Packaging webapp
-[INFO] Assembling webapp [web] in [D:\sample_pro\webapp]
+[INFO] Assembling webapp [web] in [d:\sample_pro\webapp]
 [INFO] Processing war project
-[INFO] Building war: D:\sample_pro\target\sample_pro.war
+[INFO] Building war: d:\sample_pro\target\sample_pro.war
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  9.431 s
-[INFO] Finished at: 2026-08-21T08:37:14+09:00
+[INFO] Total time:  7.397 s
+[INFO] Finished at: 2026-09-04T15:44:51+09:00
 [INFO] ------------------------------------------------------------------------
