@@ -64,90 +64,100 @@
      display: none;
      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
      z-index: 19999;
-     width: 480px;
+     width: 880px;
      background: #fff;
-     border-radius: 12px;
+     border-radius: 18px;
      box-shadow: 0 8px 40px rgba(0,0,0,.32), 0 2px 8px rgba(0,0,0,.18);
      font-family: 'Malgun Gothic', 'Segoe UI', sans-serif;
      overflow: hidden;
-     animation: commPopIn .22s ease;
+     animation: commPopIn .25s ease, commErrGlow 3s ease-in-out .3s infinite;
    }
    @keyframes commPopIn {
-     from { opacity:0; transform: translate(-50%,-48%) scale(.95); }
+     from { opacity:0; transform: translate(-50%,-48%) scale(.94); }
      to   { opacity:1; transform: translate(-50%,-50%) scale(1);   }
+   }
+   @keyframes commErrGlow {
+     0%, 100% { box-shadow: 0 8px 40px rgba(0,0,0,.28), 0 0  0   0   rgba(197,48,48,.0); }
+     50%       { box-shadow: 0 12px 64px rgba(0,0,0,.18), 0 0 32px 12px rgba(197,48,48,.32); }
+   }
+   @keyframes commHeadPulse {
+     0%, 100% { filter: brightness(1); }
+     50%       { filter: brightness(0.68); }
    }
    #commErrPopup .pop-head {
      display: flex; align-items: center; justify-content: space-between;
-     padding: 14px 18px 12px;
+     padding: 28px 36px 26px;
      background: linear-gradient(135deg, #c53030 0%, #e53e3e 100%);
      color: #fff;
+     animation: commHeadPulse 2s ease-in-out infinite;
    }
    #commErrPopup .pop-head-title {
-     display: flex; align-items: center; gap: 8px;
-     font-size: 15px; font-weight: 800; letter-spacing: .4px;
+     display: flex; align-items: center; gap: 14px;
+     font-size: 24px; font-weight: 800; letter-spacing: .4px;
    }
    #commErrPopup .pop-head-icon {
-     width: 22px; height: 22px;
+     width: 36px; height: 36px;
      background: rgba(255,255,255,.22);
      border-radius: 50%;
      display: flex; align-items: center; justify-content: center;
-     font-size: 13px;
+     font-size: 20px; font-weight: 900;
    }
    #commErrPopup .pop-close {
      background: rgba(255,255,255,.18); border: none; cursor: pointer;
-     color: #fff; font-size: 16px; font-weight: 700;
-     width: 28px; height: 28px; border-radius: 6px;
+     color: #fff; font-size: 22px; font-weight: 700;
+     width: 42px; height: 42px; border-radius: 9px;
      display: flex; align-items: center; justify-content: center;
      transition: background .13s;
    }
    #commErrPopup .pop-close:hover { background: rgba(255,255,255,.35); }
    #commErrPopup .pop-body {
-     padding: 18px 20px 14px;
+     padding: 34px 38px 24px;
    }
    #commErrPopup .pop-sub {
-     font-size: 12px; color: #718096; margin-bottom: 14px;
+     font-size: 17px; color: #718096; margin-bottom: 20px; font-weight: 600;
    }
    #commErrPopup .pop-err-list {
-     list-style: none; margin: 0 0 14px; padding: 0;
-     max-height: 200px; overflow-y: auto;
+     list-style: none; margin: 0 0 20px; padding: 0;
+     max-height: 300px; overflow-y: auto;
    }
    #commErrPopup .pop-err-list li {
      display: flex; align-items: center; justify-content: space-between;
-     padding: 9px 12px;
+     padding: 20px 26px;
      background: #fff5f5;
      border: 1px solid #fed7d7;
-     border-radius: 7px;
-     margin-bottom: 7px;
+     border-left: 6px solid #e53e3e;
+     border-radius: 11px;
+     margin-bottom: 12px;
    }
    #commErrPopup .pop-err-list li:last-child { margin-bottom: 0; }
    #commErrPopup .pop-equip {
-     font-size: 14px; font-weight: 800; color: #c53030; letter-spacing: .5px;
+     font-size: 24px; font-weight: 900; color: #c53030; letter-spacing: 1.2px;
    }
    #commErrPopup .pop-since {
-     font-size: 11px; color: #718096; text-align: right; line-height: 1.4;
+     font-size: 15px; color: #718096; text-align: right; line-height: 1.8;
    }
    #commErrPopup .pop-notice {
-     font-size: 11.5px; color: #4a5568;
+     font-size: 15px; color: #4a5568;
      background: #fffbeb; border: 1px solid #fbd38d;
-     border-radius: 6px; padding: 9px 12px; margin-bottom: 16px;
-     line-height: 1.6;
+     border-radius: 9px; padding: 16px 20px; margin-bottom: 24px;
+     line-height: 1.9;
    }
    #commErrPopup .pop-notice b { color: #b7791f; }
    #commErrPopup .pop-foot {
-     display: flex; gap: 8px; justify-content: flex-end;
-     padding: 0 20px 18px;
+     display: flex; gap: 14px; justify-content: flex-end;
+     padding: 0 38px 32px;
    }
    #commErrPopup .pop-btn-trend {
-     padding: 9px 18px; border-radius: 7px; cursor: pointer; font-size: 13px;
+     padding: 16px 36px; border-radius: 10px; cursor: pointer; font-size: 17px;
      font-weight: 700; font-family: inherit;
      background: linear-gradient(135deg, #3182ce, #2b6cb0);
      color: #fff; border: none;
-     box-shadow: 0 2px 6px rgba(49,130,206,.35);
+     box-shadow: 0 2px 8px rgba(49,130,206,.35);
      transition: opacity .13s;
    }
    #commErrPopup .pop-btn-trend:hover { opacity: .88; }
    #commErrPopup .pop-btn-close {
-     padding: 9px 18px; border-radius: 7px; cursor: pointer; font-size: 13px;
+     padding: 16px 36px; border-radius: 10px; cursor: pointer; font-size: 17px;
      font-weight: 700; font-family: inherit;
      background: #edf2f7; color: #4a5568; border: none;
      transition: background .13s;
@@ -1420,12 +1430,14 @@
 })();
 /* ── 통신 이상 팝업 폴링 ── */
 (function() {
-  var ctx2 = '<%= ctx %>';
-  var seenErrors = {}; // 사용자가 이미 확인한 오류 set
+  var ctx2          = '<%= ctx %>';
+  var seenErrors    = {};   // 사용자가 확인한 오류 (재알림 방지)
+  var shownIds      = [];   // 현재 팝업에 표시 중인 호기 ID
+  var popupVisible  = false;
+  var autoCloseTimer = null;
 
   function formatSince(since) {
     if (!since) return '';
-    // "2026-09-04 14:17:30" → "09-04 14:17 부터"
     var m = since.match(/(\d{4})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2})/);
     if (!m) return since;
     return m[2] + '-' + m[3] + ' ' + m[4] + ':' + m[5] + ' 부터';
@@ -1446,19 +1458,24 @@
 
   function showPopup(errors) {
     renderPopup(errors);
+    shownIds = errors.map(function(e) { return e.equipId; });
     document.getElementById('commErrOverlay').style.display = 'block';
     document.getElementById('commErrPopup').style.display  = 'block';
+    popupVisible = true;
+    clearTimeout(autoCloseTimer);
+    autoCloseTimer = setTimeout(hidePopup, 10 * 60 * 1000); // 10분 자동 닫기
   }
   window.showCommErrPopup = showPopup;
 
   function hidePopup() {
+    clearTimeout(autoCloseTimer);
     document.getElementById('commErrOverlay').style.display = 'none';
     document.getElementById('commErrPopup').style.display  = 'none';
+    popupVisible = false;
+    shownIds = [];
   }
 
-  window.closeCommErrPopup = function() {
-    hidePopup();
-  };
+  window.closeCommErrPopup = function() { hidePopup(); };
 
   window.goCommErrTrend = function() {
     window.open(ctx2 + '/main_1/trend', '_blank');
@@ -1469,19 +1486,25 @@
     fetch(ctx2 + '/monitor/comm-errors')
       .then(function(r) { return r.ok ? r.json() : Promise.reject(); })
       .then(function(data) {
-        var errors = data.errors || [];
+        var errors     = data.errors || [];
         var currentIds = errors.map(function(e) { return e.equipId; });
 
-        // 복구된 항목은 seen에서 제거 (다음 발생 시 재알림)
+        // 복구된 항목 seen에서 제거
         Object.keys(seenErrors).forEach(function(id) {
           if (currentIds.indexOf(id) === -1) delete seenErrors[id];
         });
 
-        // 새로 오류인 항목 확인
-        var newErrors = errors.filter(function(e) { return !seenErrors[e.equipId]; });
+        // 팝업이 열려 있고 표시된 오류가 모두 복구됐으면 자동 닫기
+        if (popupVisible && shownIds.length > 0) {
+          var allResolved = shownIds.every(function(id) {
+            return currentIds.indexOf(id) === -1;
+          });
+          if (allResolved) { hidePopup(); return; }
+        }
 
+        // 새 오류 → 팝업 표시
+        var newErrors = errors.filter(function(e) { return !seenErrors[e.equipId]; });
         if (newErrors.length > 0) {
-          // 현재 오류 전체를 팝업에 표시, 새 항목만 seen 등록
           newErrors.forEach(function(e) { seenErrors[e.equipId] = true; });
           showPopup(errors);
         }
@@ -1489,7 +1512,6 @@
       .catch(function() {});
   }
 
-  // 페이지 로드 후 5초 뒤 첫 체크 (화면 그려진 후), 이후 60초마다
   setTimeout(function() {
     pollCommErrors();
     setInterval(pollCommErrors, 60000);

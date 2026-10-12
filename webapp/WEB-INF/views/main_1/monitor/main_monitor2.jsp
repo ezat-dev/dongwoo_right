@@ -1215,6 +1215,208 @@
   window.addEventListener('resize', scaleToFit);
   scaleToFit();
 })();
+
+/* ── 통신 이상 팝업 폴링 ── */
+(function() {
+  var ctx2          = '<%= ctx %>';
+  var seenErrors    = {};
+  var shownIds      = [];
+  var popupVisible  = false;
+  var autoCloseTimer = null;
+
+  function formatSince(since) {
+    if (!since) return '';
+    var m = since.match(/(\d{4})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2})/);
+    if (!m) return since;
+    return m[2] + '-' + m[3] + ' ' + m[4] + ':' + m[5] + ' 부터';
+  }
+
+  function renderPopup(errors) {
+    var list = document.getElementById('commErrList2');
+    if (!list) return;
+    list.innerHTML = '';
+    errors.forEach(function(e) {
+      var li = document.createElement('li');
+      li.innerHTML =
+        '<span class="pop-equip">' + e.equipId + '</span>' +
+        '<span class="pop-since">통신 이상<br>' + formatSince(e.since) + '</span>';
+      list.appendChild(li);
+    });
+  }
+
+  function showPopup(errors) {
+    renderPopup(errors);
+    shownIds = errors.map(function(e) { return e.equipId; });
+    document.getElementById('commErrOverlay2').style.display = 'block';
+    document.getElementById('commErrPopup2').style.display  = 'block';
+    popupVisible = true;
+    clearTimeout(autoCloseTimer);
+    autoCloseTimer = setTimeout(hidePopup, 10 * 60 * 1000);
+  }
+
+  function hidePopup() {
+    clearTimeout(autoCloseTimer);
+    document.getElementById('commErrOverlay2').style.display = 'none';
+    document.getElementById('commErrPopup2').style.display  = 'none';
+    popupVisible = false;
+    shownIds = [];
+  }
+
+  window.closeCommErrPopup2 = function() { hidePopup(); };
+
+  window.goCommErrTrend2 = function() {
+    window.open(ctx2 + '/main_1/trend', '_blank');
+    hidePopup();
+  };
+
+  function pollCommErrors() {
+    fetch(ctx2 + '/monitor/comm-errors')
+      .then(function(r) { return r.ok ? r.json() : Promise.reject(); })
+      .then(function(data) {
+        var errors     = data.errors || [];
+        var currentIds = errors.map(function(e) { return e.equipId; });
+
+        Object.keys(seenErrors).forEach(function(id) {
+          if (currentIds.indexOf(id) === -1) delete seenErrors[id];
+        });
+
+        if (popupVisible && shownIds.length > 0) {
+          var allResolved = shownIds.every(function(id) {
+            return currentIds.indexOf(id) === -1;
+          });
+          if (allResolved) { hidePopup(); return; }
+        }
+
+        var newErrors = errors.filter(function(e) { return !seenErrors[e.equipId]; });
+        if (newErrors.length > 0) {
+          newErrors.forEach(function(e) { seenErrors[e.equipId] = true; });
+          showPopup(errors);
+        }
+      })
+      .catch(function() {});
+  }
+
+  setTimeout(function() {
+    pollCommErrors();
+    setInterval(pollCommErrors, 60000);
+  }, 5000);
+})();
 </script>
+
+<style>
+  #commErrPopup2 {
+    display: none;
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    z-index: 19999; width: 880px;
+    background: #fff; border-radius: 18px;
+    box-shadow: 0 8px 40px rgba(0,0,0,.32);
+    font-family: 'Malgun Gothic', 'Segoe UI', sans-serif;
+    overflow: hidden;
+    animation: commPopIn2 .25s ease, commErrGlow2 3s ease-in-out .3s infinite;
+  }
+  @keyframes commPopIn2 {
+    from { opacity:0; transform: translate(-50%,-48%) scale(.94); }
+    to   { opacity:1; transform: translate(-50%,-50%) scale(1); }
+  }
+  @keyframes commErrGlow2 {
+    0%, 100% { box-shadow: 0 8px 40px rgba(0,0,0,.28), 0 0  0   0   rgba(197,48,48,.0); }
+    50%       { box-shadow: 0 12px 64px rgba(0,0,0,.18), 0 0 32px 12px rgba(197,48,48,.32); }
+  }
+  @keyframes commHeadPulse2 {
+    0%, 100% { filter: brightness(1); }
+    50%       { filter: brightness(0.68); }
+  }
+  #commErrPopup2 .pop-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 28px 36px 26px;
+    background: linear-gradient(135deg, #c53030 0%, #e53e3e 100%);
+    color: #fff;
+    animation: commHeadPulse2 2s ease-in-out infinite;
+  }
+  #commErrPopup2 .pop-head-title {
+    display: flex; align-items: center; gap: 14px;
+    font-size: 24px; font-weight: 800; letter-spacing: .4px;
+  }
+  #commErrPopup2 .pop-head-icon {
+    width: 36px; height: 36px; background: rgba(255,255,255,.22);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 900;
+  }
+  #commErrPopup2 .pop-close {
+    background: rgba(255,255,255,.18); border: none; cursor: pointer;
+    color: #fff; font-size: 22px; font-weight: 700;
+    width: 42px; height: 42px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .13s;
+  }
+  #commErrPopup2 .pop-close:hover { background: rgba(255,255,255,.35); }
+  #commErrPopup2 .pop-body { padding: 34px 38px 24px; }
+  #commErrPopup2 .pop-sub { font-size: 17px; color: #718096; margin-bottom: 20px; font-weight: 600; }
+  #commErrPopup2 .pop-err-list {
+    list-style: none; margin: 0 0 20px; padding: 0;
+    max-height: 300px; overflow-y: auto;
+  }
+  #commErrPopup2 .pop-err-list li {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 26px; background: #fff5f5;
+    border: 1px solid #fed7d7; border-left: 6px solid #e53e3e;
+    border-radius: 11px; margin-bottom: 12px;
+  }
+  #commErrPopup2 .pop-err-list li:last-child { margin-bottom: 0; }
+  #commErrPopup2 .pop-equip { font-size: 24px; font-weight: 900; color: #c53030; letter-spacing: 1.2px; }
+  #commErrPopup2 .pop-since { font-size: 15px; color: #718096; text-align: right; line-height: 1.8; }
+  #commErrPopup2 .pop-notice {
+    font-size: 15px; color: #4a5568;
+    background: #fffbeb; border: 1px solid #fbd38d;
+    border-radius: 9px; padding: 16px 20px; margin-bottom: 24px; line-height: 1.9;
+  }
+  #commErrPopup2 .pop-notice b { color: #b7791f; }
+  #commErrPopup2 .pop-foot {
+    display: flex; gap: 14px; justify-content: flex-end;
+    padding: 0 38px 32px;
+  }
+  #commErrPopup2 .pop-btn-trend {
+    padding: 16px 36px; border-radius: 10px; cursor: pointer; font-size: 17px;
+    font-weight: 700; font-family: inherit;
+    background: linear-gradient(135deg, #3182ce, #2b6cb0);
+    color: #fff; border: none; box-shadow: 0 2px 8px rgba(49,130,206,.35);
+    transition: opacity .13s;
+  }
+  #commErrPopup2 .pop-btn-trend:hover { opacity: .88; }
+  #commErrPopup2 .pop-btn-close {
+    padding: 16px 36px; border-radius: 10px; cursor: pointer; font-size: 17px;
+    font-weight: 700; font-family: inherit;
+    background: #edf2f7; color: #4a5568; border: none; transition: background .13s;
+  }
+  #commErrPopup2 .pop-btn-close:hover { background: #e2e8f0; }
+  #commErrOverlay2 {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,.38); z-index: 19998;
+  }
+</style>
+
+<!-- 통신 이상 팝업 (OV2) -->
+<div id="commErrOverlay2"></div>
+<div id="commErrPopup2" role="dialog" aria-modal="true">
+  <div class="pop-head">
+    <div class="pop-head-title">
+      <span class="pop-head-icon">!</span>
+      통신 이상 감지
+    </div>
+    <button class="pop-close" onclick="closeCommErrPopup2()" title="닫기">&#10005;</button>
+  </div>
+  <div class="pop-body">
+    <p class="pop-sub">다음 설비의 PLC 통신 오류 발생</p>
+    <ul class="pop-err-list" id="commErrList2"></ul>
+    <div class="pop-notice">
+      <b>자동 메모가 트랜드에 기록되었습니다.</b><br>
+      담당자에게 통신 조치를 요청하세요.
+    </div>
+  </div>
+  <div class="pop-foot">
+    <button class="pop-btn-trend" onclick="goCommErrTrend2()">트랜드 확인</button>
+    <button class="pop-btn-close" onclick="closeCommErrPopup2()">닫기</button>
+  </div>
+</div>
 </body>
 </html>
